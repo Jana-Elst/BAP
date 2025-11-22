@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoomable Parallax Canvas</title>
+    <style>
+        body,
+        html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #111;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            /* This is crucial! */
+            display: grid;
+            place-items: center;
+        }
+
+        #viewport {
+            /* This is the user's screen */
+            width: 90vw;
+            height: 90vh;
+            border: 1px solid #555;
+            background-color: #222;
+            overflow: hidden;
+            /* Hides parts of the world */
+            position: relative;
+            cursor: grab;
+            user-select: none;
+            /* Prevents text selection while dragging */
+        }
+
+        #viewport:active {
+            cursor: grabbing;
+        }
+
+        .layer {
+            /* Each layer holds items of a specific depth */
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            /* This transition adds the smooth "lerp" effect.
+              Remove it to see the raw, instant movement.
+            */
+            transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.3, 1);
+        }
+
+        .item {
+            /* A simple object on our canvas */
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* * Define our layers and items 
+         */
+
+        /* Layer 1: Far Background (moves slowly) */
+        .item-bg {
+            background-color: #4a5568;
+            /* Tailwind Gray 600 */
+            width: 200px;
+            height: 200px;
+            opacity: 0.5;
+        }
+
+        #item-bg-1 {
+            top: 10%;
+            left: 10%;
+        }
+
+        #item-bg-2 {
+            top: 60%;
+            left: 70%;
+        }
+
+        #item-bg-3 {
+            top: 70%;
+            left: 20%;
+        }
+
+
+        /* Layer 2: Main Content (moves normally) */
+        .item-mid {
+            background-color: #38b2ac;
+            /* Tailwind Teal 500 */
+        }
+
+        #item-mid-1 {
+            top: 20%;
+            left: 40%;
+        }
+
+        #item-mid-2 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #item-mid-3 {
+            top: 70%;
+            left: 60%;
+        }
+
+        /* Layer 3: Foreground (moves quickly) */
+        .item-fg {
+            background-color: #f6e05e;
+            /* Tailwind Yellow 400 */
+            color: #333;
+            width: 60px;
+            height: 60px;
+        }
+
+        #item-fg-1 {
+            top: 30%;
+            left: 20%;
+        }
+
+        #item-fg-2 {
+            top: 60%;
+            left: 45%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="viewport">
+        <div classclass="layer" id="layer-1" data-depth="0.5">
+            <div class="item item-bg" id="item-bg-1">Depth 0.5</div>
+            <div class="item item-bg" id="item-bg-2">Depth 0.5</div>
+            <div class="item item-bg" id="item-bg-3">Depth 0.5</div>
+        </div>
+
+        <div class="layer" id="layer-2" data-depth="1.0">
+            <div class="item item-mid" id="item-mid-1">Depth 1.0</div>
+            <div class="item item-mid" id="item-mid-2">Depth 1.0</div>
+            <div class="item item-mid" id="item-mid-3">Depth 1.0</div>
+        </div>
+
+        <div class="layer" id="layer-3" data-depth="1.5">
+            <div class="item item-fg" id="item-fg-1">Depth 1.5</div>
+            <div class="item item-fg" id="item-fg-2">Depth 1.5</div>
+        </div>
+    </div>
+
+    <script>
+        const viewport = document.getElementById('viewport');
+        const layers = document.querySelectorAll('.layer');
+
+        // This object holds the "camera" state
+        const camera = {
+            x: 0,       // Pan offset X
+            y: 0,       // Pan offset Y
+            scale: 1.0  // Zoom level
+        };
+
+        // This object tracks mouse dragging
+        const drag = {
+            isDown: false,
+            startX: 0,
+            startY: 0
+        };
+
+        // --- 1. Panning Logic ---
+
+        viewport.addEventListener('mousedown', (e) => {
+            drag.isDown = true;
+            // Record starting mouse position
+            drag.startX = e.clientX;
+            drag.startY = e.clientY;
+        });
+
+        viewport.addEventListener('mouseup', () => {
+            drag.isDown = false;
+        });
+
+        viewport.addEventListener('mouseleave', () => {
+            drag.isDown = false;
+        });
+
+        viewport.addEventListener('mousemove', (e) => {
+            if (!drag.isDown) return;
+
+            // Calculate the difference in mouse position
+            const deltaX = e.clientX - drag.startX;
+            const deltaY = e.clientY - drag.startY;
+
+            // Update the start position for the next frame
+            drag.startX = e.clientX;
+            drag.startY = e.clientY;
+
+            // Update the camera position.
+            // We divide by scale so that panning is slower when zoomed out
+            // and faster when zoomed in, which feels natural.
+            camera.x += deltaX / camera.scale;
+            camera.y += deltaY / camera.scale;
+
+            updateTransforms();
+        });
+
+        // --- 2. Zooming Logic ---
+
+        viewport.addEventListener('wheel', (e) => {
+            // Prevent the whole page from scrolling
+            e.preventDefault();
+
+            const zoomSpeed = 0.05;
+            let scaleChange;
+
+            if (e.deltaY < 0) {
+                // Zooming In
+                scaleChange = 1 + zoomSpeed;
+            } else {
+                // Zooming Out
+                scaleChange = 1 - zoomSpeed;
+            }
+
+            camera.scale *= scaleChange;
+
+            // TODO: A more advanced version would also adjust
+            // camera.x/y to zoom towards the mouse cursor.
+            // This example just zooms to the center.
+
+            updateTransforms();
+        });
+
+        // --- 3. Update Function ---
+
+        function updateTransforms() {
+            layers.forEach(layer => {
+                const depth = parseFloat(layer.getAttribute('data-depth'));
+
+                // Calculate position based on depth
+                const panX = camera.x * depth;
+                const panY = camera.y * depth;
+
+                // Apply all transforms: pan AND scale
+                // The order matters: pan first, then scale.
+                layer.style.transform = `translate(${panX}px, ${panY}px) scale(${camera.scale})`;
+            });
+        }
+
+        // Set initial state
+        updateTransforms();
+    </script>
+
+</body>
+
+</html>

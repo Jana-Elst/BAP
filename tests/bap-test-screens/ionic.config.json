@@ -1,0 +1,7 @@
+{
+  "name": "bap-test-screens",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
