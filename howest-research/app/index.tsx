@@ -41,8 +41,12 @@ export default function HomeScreen() {
 
   } else {
     return (
-      <View style={{ flex: 1 }}>
-        <Text>Er is geen extra scherm geconnecteerd</Text>
+      <View style={{ flex: 1, width: '100%', height: '100%' }}>
+        <ExternalScreen page={{
+          page: 'detailResearch',
+          id: 782,
+          previousPages: []
+        }} />
       </View>
     )
   }

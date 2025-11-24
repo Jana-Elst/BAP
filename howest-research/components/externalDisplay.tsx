@@ -1,7 +1,9 @@
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import data from '../assets/data/structured-data.json';
 import Scene3DWithLabels from './3DsceneWithLabels';
 import { getKeywords } from '../scripts/getData';
+import { LinearGradient } from 'expo-linear-gradient';
+
 const keywords = data.keywords;
 const clusters = data.clusters;
 const projects = data.projects;
@@ -28,6 +30,10 @@ export default function ExternalScreen(props: { page }) {
                 </View>
 
                 <View style={{ flex: 1, width: '100%', height: '100%' }}>
+                    <LinearGradient
+                        colors={['rgba(0, 0, 0, 1)', 'transparent']}
+                        style={styles.background}
+                    />
                     <Scene3DWithLabels
                         name="dom"
                         projectKeywords={projectKeywords}
@@ -53,3 +59,19 @@ export default function ExternalScreen(props: { page }) {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'orange',
+    },
+    background: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        height: '100%',
+    },
+});

@@ -1,3 +1,4 @@
+// https://codesandbox.io/p/sandbox/11-pcktl?file=%2Fsrc%2Findex.js%3A90%2C1-91%2C1
 'use dom';
 
 //---------------------------- IMPORTS ----------------------------//
@@ -5,10 +6,16 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+
+import backgroundImage from "../assets/images/background-hologram.png";
 import megaphone from "../assets/models/business-en-media.glb";
+// import background from "../assets/enviroments/empty_warehouse_01_2k.hdr";
 
 
 //---------------------------- CONSTANTS ----------------------------//
+const background = "/empty_warehouse_01_2k.hdr";
+
 const boxCompositions = [
     {
         total: 1,
@@ -174,23 +181,65 @@ const colors = {
     digital: 0x87CEEB,
 };
 
+// const materials = {
+//     glass: new THREE.MeshPhysicalMaterial({
+//         // roughness: 1,
+//         roughness: 0,
+//         metalness: 0.1,
+//         sheen: 0,
+//         sheenColor: 0,
+//         sheenRoughness: 1,
+//         emissive: 0,
+//         emissiveIntensity: 0,
+//         specularIntensity: 1,
+//         specularColor: 16777215,
+//         clearcoat: 1,
+//         clearcoatRoughness: 0,
+//         dispersion: 0,
+//         iridescence: 0,
+//         iridescenceIOR: 1.3,
+//         iridescenceThicknessRange: [100, 400],
+//         anisotropy: 0,
+//         envMapIntensity: 0.9,
+//         reflectivity: 0.2,
+//         transmission: 1,
+//         thickness: 5,
+//         attenuationColor: 16777215,
+//         opacity: 0.7,
+//         // opacity: 0.1,
+//         transparent: true,
+//         ior: 1.5,
+//     }),
+//     color: new THREE.MeshStandardMaterial({
+//         color: 0x87CEEB,
+//         roughness: 0.8023255467414856,
+//         metalness: 0,
+//         emissive: 0,
+//         envMapIntensity: 1,
+//         side: THREE.DoubleSide,
+//         blendColor: 0
+//     }),
+// };
+
 const materials = {
     glass: new THREE.MeshPhysicalMaterial({
-        color: 0xffffff,
-        metalness: 0.0,
-        roughness: 0.293,
-        transmission: 1.0,
-        opacity: 0.9,
-        clearcoat: 1.0,
-        ior: 1.5,
-        side: THREE.DoubleSide,
+        transmission: 1,
+        thickness: 1.5,
+        roughness: 0.67,
+        envMapIntensity: 1.5,
+        clearcoat: 1,
+        clearcoatRoughness: 0.12,
+        metalness: 0,
+        ior: 1.5, // Index of refraction
     }),
-    color: new THREE.MeshPhysicalMaterial({
+    color: new THREE.MeshStandardMaterial({
         color: 0x87CEEB,
-        metalness: 0.0,
-        roughness: 0.802,
-        transparent: true,
-        opacity: 1.0,
+        roughness: 0.8023255467414856,
+        metalness: 0,
+        emissive: 0,
+        envMapIntensity: 1,
+        side: THREE.DoubleSide,
+        blendColor: 0
     }),
 };
 
@@ -201,12 +250,47 @@ let lenghtKeywords = 0;
 
 //---------------------------- FUNCTIONS ----------------------------//
 const createLight = (scene) => {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+    // // AmbientLight constructor takes (color, intensity)
+    // const ambientLight = new THREE.AmbientLight(0x2236962, 1);
+    // ambientLight.intensity = 3;
+    // ambientLight.layers.mask = 1;
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 5, 5);
-    scene.add(directionalLight);
+    // // DirectionalLight 1
+    // const directionalLight1 = new THREE.DirectionalLight(0xCDCB67, 1);
+    // directionalLight1.intensity = 2;
+    // directionalLight1.position.set(9.78465163525888, 5.779565015314256, -3.8775094811620456);
+    // directionalLight1.layers.mask = 1;
+    // directionalLight1.castShadow = true;
+
+    // // Configure shadow camera
+    // directionalLight1.shadow.camera.left = -5;
+    // directionalLight1.shadow.camera.right = 5;
+    // directionalLight1.shadow.camera.top = 5;
+    // directionalLight1.shadow.camera.bottom = -5;
+    // directionalLight1.shadow.camera.near = 0.5;
+    // directionalLight1.shadow.camera.far = 500;
+
+    // // DirectionalLight 2
+    // const directionalLight2 = new THREE.DirectionalLight(0xBBBBF3, 1);
+    // directionalLight2.position.set(5.030294146954194, 10, 5.887691105957724);
+    // directionalLight2.intensity = 2;
+    // directionalLight2.layers.mask = 1;
+    // directionalLight2.castShadow = true;
+
+    // // Configure shadow camera
+    // directionalLight2.shadow.camera.left = -5;
+    // directionalLight2.shadow.camera.right = 5;
+    // directionalLight2.shadow.camera.top = 5;
+    // directionalLight2.shadow.camera.bottom = -5;
+    // directionalLight2.shadow.camera.near = 0.5;
+    // directionalLight2.shadow.camera.far = 500;
+
+    // scene.add(ambientLight);
+    // scene.add(directionalLight1);
+    // scene.add(directionalLight2);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
 }
 
 const createBoxes = (scene, boxCompositions) => {
@@ -214,12 +298,13 @@ const createBoxes = (scene, boxCompositions) => {
 
     boxComposition.forEach((boxData) => {
         const geometry = new THREE.BoxGeometry(...boxData.size as [number, number, number]);
-        const material = new THREE.MeshStandardMaterial({
-            color: boxData.color,
-            transparent: true,
-            opacity: 1,
-            wireframe: true
-        });
+        const material = materials.glass;
+        // const material = new THREE.MeshStandardMaterial({
+        //     color: boxData.color,
+        //     transparent: true,
+        //     opacity: 1,
+        //     wireframe: true
+        // });
         const cube = new THREE.Mesh(geometry, material);
         cube.position.set(...boxData.position as [number, number, number]);
         scene.add(cube);
@@ -436,7 +521,7 @@ const create3DText = (scene, text: string, position: [number, number, number], c
 
 
     // Draw text
-    context.fillStyle = 'white';
+    context.fillStyle = 'black';
     context.fillText(text, canvas.width / 2, canvas.height / 2);
 
     // Create texture from canvas
@@ -511,16 +596,29 @@ const createLines = (scene) => {
 }
 
 const buildScene = async (scene, projectKeywords) => {
-    console.log('BUILD SCENE', projectKeywords);
     createLight(scene);
+
+    try {
+        const environmentLoader = new HDRLoader();
+        const envMap = await environmentLoader.loadAsync(background);
+        envMap.mapping = THREE.EquirectangularReflectionMapping;
+
+        // Update the glass material with the environment map
+        materials.glass.envMap = envMap;
+        materials.glass.needsUpdate = true;
+
+        console.log('HDR environment loaded successfully');
+    } catch (error) {
+        console.error('Failed to load HDR environment:', error);
+    }
 
     if (lenghtKeywords > 0) {
         createBoxes(scene, boxCompositions);
         // createTextBoxes(scene, textCompositions);
-        showLabels(scene, projectKeywords);
+        // showLabels(scene, projectKeywords);
 
-        await showModels(scene, projectKeywords);
-        createLines(scene);
+        // await showModels(scene, projectKeywords);
+        // createLines(scene);
     }
 }
 
@@ -539,7 +637,7 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
 
         const canvas = canvasRef.current;
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xffffff);
+        // scene.background = new THREE.Color(0x000000);
 
         const size = {
             width: window.innerWidth,
@@ -553,10 +651,15 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
 
         const renderer = new THREE.WebGLRenderer({
             canvas: canvas,
-            antialias: true
+            antialias: true,
+            alpha: true
         });
         renderer.setSize(size.width, size.height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
 
         renderer.sortObjects = true;
 
@@ -606,7 +709,11 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
     }, []);
 
     return (
-        <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
+        <div style={{
+            width: '100%',
+            height: '100vh',
+            position: 'relative',
+        }}>
             <canvas
                 ref={canvasRef}
                 className="webgl"
