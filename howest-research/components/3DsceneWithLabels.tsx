@@ -9,26 +9,162 @@ import megaphone from "../assets/models/business-en-media.glb";
 
 
 //---------------------------- CONSTANTS ----------------------------//
-const boxComposition = [
-    { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-    { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-    { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
-    { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
-    { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
-    { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
-    { position: [-3, 3.2, 0], size: [1, 1, 1], color: "orange", label: "Orange Box" },
-    { position: [-5, -2, 0], size: [1.8, 1.8, 1.8], color: "pink", label: "Pink Box" },
+const boxCompositions = [
+    {
+        total: 1,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+        ]
+    },
+    {
+        total: 2,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+        ]
+    },
+    {
+        total: 3,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" }
+        ]
+    },
+    {
+        total: 4,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
+            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" }]
+    },
+    {
+        total: 5,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
+            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
+            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
+        ]
+    },
+    {
+        total: 6,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
+            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
+            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
+            { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
+        ]
+    },
+    {
+        total: 7,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
+            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
+            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
+            { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
+            { position: [-3, 3.2, 0], size: [1, 1, 1], color: "orange", label: "Orange Box" },
+        ]
+    },
+    {
+        total: 8,
+        positions: [
+            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
+            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
+            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
+            { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
+            { position: [-3, 3.2, 0], size: [1, 1, 1], color: "orange", label: "Orange Box" },
+            { position: [-5, -2, 0], size: [1.8, 1.8, 1.8], color: "pink", label: "Pink Box" },
+        ]
+    },
+
 ];
 
-const textComposition = [
-    { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-    { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-    { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
-    { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
-    { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
-    { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
-    { position: [-4, 2.3, -1], color: "orange", startLine: [-4, 2.3, 0] },
-    { position: [-5, -0.7, -1], color: "pink", startLine: [-5, -0.7, 0] },
+const textCompositions = [
+    {
+        total: 1,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+        ]
+    },
+    {
+        total: 2,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+        ]
+    },
+    {
+        total: 3,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+        ]
+    },
+    {
+        total: 4,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
+        ]
+    },
+    {
+        total: 5,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
+            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
+        ]
+    },
+    {
+        total: 6,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
+            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
+            { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
+        ]
+    },
+    {
+        total: 7,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
+            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
+            { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
+            { position: [-4, 2.3, -1], color: "orange", startLine: [-4, 2.3, 0] },
+        ]
+    },
+    {
+        total: 8,
+        positions: [
+            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
+            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
+            { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
+            { position: [-4, 2.3, -1], color: "orange", startLine: [-4, 2.3, 0] },
+            { position: [-5, -0.7, -1], color: "pink", startLine: [-5, -0.7, 0] }
+        ]
+    },
 ];
 
 let startPositionLines = []; //numbers
@@ -43,10 +179,9 @@ const materials = {
         color: 0xffffff,
         metalness: 0.0,
         roughness: 0.293,
-        transparent: true,
+        transmission: 1.0,
         opacity: 0.9,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.1,
         ior: 1.5,
         side: THREE.DoubleSide,
     }),
@@ -61,6 +196,8 @@ const materials = {
 
 const models = [megaphone, megaphone, megaphone, megaphone, megaphone, megaphone, megaphone, megaphone];
 
+//---------------------------- VARIABLES ----------------------------//
+let lenghtKeywords = 0;
 
 //---------------------------- FUNCTIONS ----------------------------//
 const createLight = (scene) => {
@@ -72,7 +209,9 @@ const createLight = (scene) => {
     scene.add(directionalLight);
 }
 
-const createBoxes = (scene, boxData) => {
+const createBoxes = (scene, boxCompositions) => {
+    const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
+
     boxComposition.forEach((boxData) => {
         const geometry = new THREE.BoxGeometry(...boxData.size as [number, number, number]);
         const material = new THREE.MeshStandardMaterial({
@@ -87,7 +226,9 @@ const createBoxes = (scene, boxData) => {
     });
 }
 
-const createTextBoxes = (scene, textComposition) => {
+const createTextBoxes = (scene, textCompositions) => {
+    const textComposition = textCompositions[lenghtKeywords - 1].positions;
+
     textComposition.forEach((textData) => {
         const geometry = new THREE.BoxGeometry(2, 0.5, 0.01);
         const material = new THREE.MeshStandardMaterial({
@@ -125,6 +266,8 @@ const createBoundingBox = (model: THREE.Group, color: string) => {
 
 const loadGLBModel = (scene, modelPath, index) => {
     return new Promise((resolve, reject) => {
+        const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
+
         const loader = new GLTFLoader();
         console.log('LOADING MODEL', modelPath);
 
@@ -218,7 +361,7 @@ const loadGLBModel = (scene, modelPath, index) => {
 };
 
 const showModels = async (scene) => {
-    // Use map() instead of forEach() and create an array of Promises
+    const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
     const loadPromises = models.map((modelPath, index) => {
         if (index < boxComposition.length) {
             return loadGLBModel(scene, modelPath, index);
@@ -231,11 +374,14 @@ const showModels = async (scene) => {
     console.log('All models loaded.');
 }
 
-const showLabels = (scene) => {
-    models.forEach((modelPath, index) => {
-        if (index < textComposition.length) {
-            create3DText(scene, 'Testtttttttt', textComposition[index].position, 'black');
-        }
+const showLabels = (scene, projectKeywords) => {
+    console.log('SHOW LABELS', projectKeywords);
+    const textComposition = textCompositions[lenghtKeywords - 1].positions;
+    console.log('TEXT COMPOSITION', textComposition);
+
+    projectKeywords.forEach((keywords, index) => {
+        console.log('LABEL TEXT', keywords.Label);
+        create3DText(scene, keywords.Label, textComposition[index].position, 'black');
     });
 }
 
@@ -328,11 +474,9 @@ const create3DText = (scene, text: string, position: [number, number, number], c
 }
 
 const createLines = (scene) => {
-    console.log('LINE')
-    textComposition.forEach((box, index) => {
-        console.log('startPositionLines', startPositionLines[index].x);
-        if (!startPositionLines[index]) return;
+    const textComposition = textCompositions[lenghtKeywords - 1].positions;
 
+    textComposition.forEach((box, index) => {
         const points = [
             new THREE.Vector3(box.startLine[0], box.startLine[1], box.startLine[2]),
             new THREE.Vector3(startPositionLines[index].x, startPositionLines[index].y, startPositionLines[index].z),
@@ -366,20 +510,29 @@ const createLines = (scene) => {
     // scene.add(startSphere);
 }
 
-const buildScene = async (scene) => {
+const buildScene = async (scene, projectKeywords) => {
+    console.log('BUILD SCENE', projectKeywords);
     createLight(scene);
-    // createBoxes(scene, boxComposition);
-    // createTextBoxes(scene, textComposition);
 
-    await showModels(scene);
-    createLines(scene);
-    showLabels(scene);
+    if (lenghtKeywords > 0) {
+        createBoxes(scene, boxCompositions);
+        // createTextBoxes(scene, textCompositions);
+        showLabels(scene, projectKeywords);
 
+        await showModels(scene, projectKeywords);
+        createLines(scene);
+    }
 }
 
 //---------------------------- COMPONENT ----------------------------//
-export default function Scene3DWithLabels({ name }: { name: string }) {
+interface Scene3DProps {
+    name: string;
+    projectKeywords: any[];
+}
+
+export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    lenghtKeywords = projectKeywords.length;
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -407,7 +560,7 @@ export default function Scene3DWithLabels({ name }: { name: string }) {
 
         renderer.sortObjects = true;
 
-        buildScene(scene);
+        buildScene(scene, projectKeywords);
 
         let animationId: number;
 
