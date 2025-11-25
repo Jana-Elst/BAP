@@ -17,7 +17,7 @@ export default function ExternalScreen(props: { page }) {
 
         return (
             <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <View>
+                {/* <View>
                     <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{project.CCODE}</Text>
                     <Text style={{ color: 'white', fontSize: 48 }}>
                         {clusters.find(c => c.Id === project.ClusterId)?.Label}
@@ -27,7 +27,7 @@ export default function ExternalScreen(props: { page }) {
                             <Text key={keyword.ID} style={{ color: 'white', fontSize: 24 }}>{keyword.Label}</Text>
                         ))
                     }
-                </View>
+                </View> */}
 
                 <View style={{ flex: 1, width: '100%', height: '100%'}}>
                     {/* <LinearGradient

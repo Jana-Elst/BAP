@@ -50,11 +50,11 @@ const boxCompositions = [
     {
         total: 5,
         positions: [
-            { position: ['R-0', 'T+0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'B-0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
-            { position: ['L-0', 'B+0', -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-right' },
-            { position: ['L-0', 'T+0', -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'bottom-right' },
-            { position: ['R-0', 'T+0', -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0.25', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R+0.35', 'B-0.25', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
+            { position: ['L-0.25', 'B+0.25', -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-right' },
+            { position: ['L-1', 'T+2', -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'top-right' },
+            { position: ['L+0', 'T+1', -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -175,8 +175,6 @@ const textCompositions = [
     },
 ];
 
-let startPositionLines = []; //numbers
-
 const colors = {
     glass: 0xffffff,
     digital: 0x87CEEB,
@@ -212,6 +210,7 @@ const materials = {
 const models = [businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia];
 
 //---------------------------- VARIABLES ----------------------------//
+let startPositionLines = []; //numbers
 let lenghtKeywords = 0;
 let refPoints = {
     top: null,
@@ -219,6 +218,7 @@ let refPoints = {
     left: null,
     right: null
 }
+let scale = 1.0;
 
 //---------------------------- FUNCTIONS ----------------------------//
 const createLight = (scene) => {
@@ -241,7 +241,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
             modelPath,
             (gltf) => {
                 const model = gltf.scene;
-                let switchColorChild = null;
+                let connectionPoints = [];
 
                 // Apply materials
                 model.traverse((child) => {
@@ -252,6 +252,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                             child.material = materials.color;
                         } else {
                             child.material = materials.color;
+                            connectionPoints.push(child);
                         }
                     }
                 });
@@ -266,7 +267,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     color: boxInformation.color,
                     wireframe: true,
                     transparent: true,
-                    opacity: 0.5
+                    opacity: 0.0
                 });
                 const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
                 boundingBoxMesh.position.copy(center);
@@ -275,6 +276,22 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                 const group = new THREE.Group();
                 group.add(model);
                 group.add(boundingBoxMesh);
+
+                const maxSize = Math.max(boxSize.x, boxSize.y);
+                scale = 2.0 / maxSize;
+                // group.scale.set(scale, scale, scale);
+
+                if (type === 'cluster') {
+                    group.scale.set(scale, scale, scale);
+                } else if (type === 'keyword') {
+                    group.scale.set(1.5 / maxSize, 1.5 / maxSize, 1.5 / maxSize);
+                }
+
+                //center model
+                group.position.x -= center.x;
+                group.position.y -= center.y;
+                group.position.z -= center.z;
+
                 scene.add(group);
 
                 if (type === 'keyword') {
@@ -330,16 +347,16 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     group.position.z = -boxSize.z / 2;
                 }
 
-                // group.rotation.set(
-                //     THREE.MathUtils.degToRad(boxInformation.rotation[0]),
-                //     THREE.MathUtils.degToRad(boxInformation.rotation[1]),
-                //     THREE.MathUtils.degToRad(boxInformation.rotation[2])
-                // );
+                const groupSize = new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
 
-
+                group.rotation.set(
+                    THREE.MathUtils.degToRad(boxInformation.rotation[0]),
+                    THREE.MathUtils.degToRad(boxInformation.rotation[1]),
+                    THREE.MathUtils.degToRad(boxInformation.rotation[2])
+                );
 
                 console.log(`Model loaded successfully at:`, boxInformation.position);
-                resolve(boxSize);
+                resolve(groupSize);
             },
             undefined,
             (error) => {
