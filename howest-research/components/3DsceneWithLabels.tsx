@@ -1,4 +1,5 @@
 // https://codesandbox.io/p/sandbox/11-pcktl?file=%2Fsrc%2Findex.js%3A90%2C1-91%2C1
+//https://tympanus.net/codrops/2021/10/27/creating-the-effect-of-transparent-glass-and-plastic-in-three-js/
 'use dom';
 
 //---------------------------- IMPORTS ----------------------------//
@@ -7,6 +8,7 @@ import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import backgroundImage from "../assets/images/background-hologram.png";
 import megaphone from "../assets/models/business-en-media.glb";
@@ -49,11 +51,11 @@ const boxCompositions = [
     {
         total: 5,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
-            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
-            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
+            { position: [1.25, 0.35, -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: [1.1, -0.85, -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
+            { position: [-1.1, -1.15, -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-left' },
+            { position: [0.9, -1.3, -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'top-right' },
+            { position: [-0.6, 1.2, -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -294,20 +296,78 @@ const createLight = (scene) => {
 }
 
 const createBoxes = (scene, boxCompositions) => {
-    const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
+    // const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
+    const boxComposition = boxCompositions[5 - 1].positions;
+
+    const box = new THREE.BoxGeometry(2, 2, 2);
+    const material = new THREE.MeshStandardMaterial({
+        color: 'black',
+        transparent: true,
+        opacity: 1,
+        wireframe: true
+    });
+    const mainBox = new THREE.Mesh(box, material);
+    mainBox.position.set(0, 0, 0);
+    scene.add(mainBox);
 
     boxComposition.forEach((boxData) => {
+        // Create a small sphere to visualize the position
+        const sphereGeometry = new THREE.SphereGeometry(0.05, 8, 8);
+        const sphereMaterial = new THREE.MeshBasicMaterial({
+            color: boxData.color,
+            wireframe: false
+        });
+        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        sphere.position.set(...boxData.position as [number, number, number]);
+        scene.add(sphere);
+
+        // Create the box
+        console.log('BOX DATA:', boxData);
         const geometry = new THREE.BoxGeometry(...boxData.size as [number, number, number]);
-        const material = materials.glass;
-        // const material = new THREE.MeshStandardMaterial({
-        //     color: boxData.color,
-        //     transparent: true,
-        //     opacity: 1,
-        //     wireframe: true
-        // });
+        const material = new THREE.MeshStandardMaterial({
+            color: boxData.color,
+            transparent: true,
+            opacity: 1,
+            wireframe: true
+        });
+
         const cube = new THREE.Mesh(geometry, material);
         cube.position.set(...boxData.position as [number, number, number]);
+
         scene.add(cube);
+
+        // Get box measurements
+        const boundingBox = new THREE.Box3().setFromObject(cube);
+        const size = boundingBox.getSize(new THREE.Vector3());
+        const center = boundingBox.getCenter(new THREE.Vector3());
+        // cube.rotation.set(...((boxData.rotation as [number, number, number]).map(deg => THREE.MathUtils.degToRad(deg))));
+        console.log('Box Measurements:', {
+            width: size.x,
+            height: size.y,
+            depth: size.z,
+            centerX: center.x,
+            centerY: center.y,
+            centerZ: center.z
+        });
+
+        //reposition cubes
+        //anchorPoint left-right
+        const anchorPoint = boxData.anchorPoint.split('-');
+        console.log('Anchor Point:', anchorPoint);
+        if (anchorPoint[1] === 'left') {
+            cube.position.x = center.x + size.x / 2;
+        } else if (anchorPoint[1] === 'right') {
+            cube.position.x = center.x - size.x / 2;
+        }
+
+        //anchorPoint top-bottom
+        if (anchorPoint[0] === 'top') {
+            cube.position.y = center.y - size.y / 2;
+        } else if (anchorPoint[0] === 'bottom') {
+            cube.position.y = center.y + size.y / 2;
+        }
+
+        // cube.rotation.set(...((boxData.rotation as [number, number, number]).map(deg => THREE.MathUtils.degToRad(deg))));
     });
 }
 
@@ -335,7 +395,7 @@ const createBoundingBox = (model: THREE.Group, color: string) => {
     const center = box.getCenter(new THREE.Vector3());
 
     // Create wireframe box
-    const boxGeometry = new THREE.BoxGeometry(size.x, size.x, size.x);
+    const boxGeometry = new THREE.BoxGeometry(size.x, size.y, size.z);
     const boxMaterial = new THREE.MeshBasicMaterial({
         color: 'green',
         wireframe: false,
@@ -376,54 +436,29 @@ const loadGLBModel = (scene, modelPath, index) => {
                     }
                 });
 
-                const box = new THREE.Box3().setFromObject(model);
-                const center = box.getCenter(new THREE.Vector3());
-                const boxSize = box.getSize(new THREE.Vector3());
-
-                // Center the model at origin
-                model.position.sub(center);
-
-
-                // Calculate scale
-                const sizeMax = boxComposition[index].size[0];
-                const sizeOrig = Math.max(boxSize.x, boxSize.y, boxSize.z);
-                const scale = sizeMax / sizeOrig;
-                model.scale.setScalar(scale);
-
-                model.rotation.y = -Math.PI / 2;
-
-                model.updateMatrixWorld(true);
-
-                const rotatedBox = new THREE.Box3().setFromObject(model);
-                const rotatedCenter = rotatedBox.getCenter(new THREE.Vector3());
-                const rotatedSize = rotatedBox.getSize(new THREE.Vector3());
-
-                model.position.sub(rotatedCenter);
-
-                model.updateMatrixWorld(true);
+                const boundingBox = new THREE.Box3().setFromObject(model);
+                const center = boundingBox.getCenter(new THREE.Vector3());
+                const boxSize = boundingBox.getSize(new THREE.Vector3());
 
                 const group = new THREE.Group();
                 group.add(model);
 
-                const finalBox = new THREE.Box3().setFromObject(model);
-                const finalSize = finalBox.getSize(new THREE.Vector3());
-
-                const boxGeometry = new THREE.BoxGeometry(finalSize.x, finalSize.y, finalSize.z);
+                // Create bounding box with the correct size
+                const boxGeometry = new THREE.BoxGeometry(boxSize.x, boxSize.y, boxSize.z);
                 const boxMaterial = new THREE.MeshBasicMaterial({
-                    color: boxComposition[index].color,
+                    color: 'green',
                     wireframe: true,
                     transparent: true,
                     opacity: 0.5
                 });
-                const boundingBox = new THREE.Mesh(boxGeometry, boxMaterial);
+                const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+                boundingBoxMesh.position.set(center.x, center.y, center.z);
+                group.add(boundingBoxMesh);
 
-                // group.add(boundingBox);
+                scene.add(group);      
 
-                group.position.set(...boxComposition[index].position as [number, number, number]);
 
-                scene.add(group);
-                group.updateMatrixWorld(true);
-
+                //add start position for lines
                 if (switchColorChild) {
                     const worldPosition = new THREE.Vector3();
                     switchColorChild.getWorldPosition(worldPosition);
@@ -431,7 +466,7 @@ const loadGLBModel = (scene, modelPath, index) => {
                 }
 
                 console.log(`Model ${index} loaded successfully at:`, boxComposition[index].position);
-                resolve();
+                // resolve();
             },
             undefined,
             (error) => {
@@ -445,7 +480,7 @@ const loadGLBModel = (scene, modelPath, index) => {
     )
 };
 
-const showModels = async (scene) => {
+const showModels = async (scene, projectKeywords) => {
     const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
     const loadPromises = models.map((modelPath, index) => {
         if (index < boxComposition.length) {
@@ -597,6 +632,7 @@ const createLines = (scene) => {
 
 const buildScene = async (scene, projectKeywords) => {
     createLight(scene);
+    console.log('projectKeywords length:', projectKeywords);
 
     try {
         const environmentLoader = new HDRLoader();
@@ -613,11 +649,11 @@ const buildScene = async (scene, projectKeywords) => {
     }
 
     if (lenghtKeywords > 0) {
-        createBoxes(scene, boxCompositions);
+        // createBoxes(scene, boxCompositions);
         // createTextBoxes(scene, textCompositions);
         // showLabels(scene, projectKeywords);
 
-        // await showModels(scene, projectKeywords);
+        await showModels(scene, projectKeywords);
         // createLines(scene);
     }
 }
@@ -637,7 +673,6 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
 
         const canvas = canvasRef.current;
         const scene = new THREE.Scene();
-        // scene.background = new THREE.Color(0x000000);
 
         const size = {
             width: window.innerWidth,
@@ -646,8 +681,8 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
 
         const camera = createCamera(scene, size);
 
-        // const controls = new OrbitControls(camera, canvas);
-        // controls.enableDamping = true;
+        const controls = new OrbitControls(camera, canvas);
+        controls.enableDamping = true;
 
         const renderer = new THREE.WebGLRenderer({
             canvas: canvas,
@@ -692,7 +727,7 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
         return () => {
             window.removeEventListener('resize', handleResize);
             window.cancelAnimationFrame(animationId);
-            // controls.dispose();
+            controls.dispose();
             renderer.dispose();
 
             scene.traverse((object) => {
@@ -717,7 +752,9 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
             <canvas
                 ref={canvasRef}
                 className="webgl"
-                style={{ display: 'block', width: '100%', height: '100%' }}
+                style={{
+                    display: 'block', width: '100%', height: '100%', backgroundColor: 'grey'
+                }}
             />
         </div>
     );

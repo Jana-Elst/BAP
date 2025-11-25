@@ -44,7 +44,7 @@ export default function HomeScreen() {
       <View style={{ flex: 1, width: '100%', height: '100%' }}>
         <ExternalScreen page={{
           page: 'detailResearch',
-          id: 782,
+          id: 878,
           previousPages: []
         }} />
       </View>

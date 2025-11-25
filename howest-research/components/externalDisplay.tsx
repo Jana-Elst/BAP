@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native';
 import data from '../assets/data/structured-data.json';
-import Scene3DWithLabels from './3DsceneWithLabels';
+import Scene3DWithLabels from './3DsceneNew';
 import { getKeywords } from '../scripts/getData';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -29,11 +29,11 @@ export default function ExternalScreen(props: { page }) {
                     }
                 </View>
 
-                <View style={{ flex: 1, width: '100%', height: '100%' }}>
-                    <LinearGradient
-                        colors={['rgba(0, 0, 0, 1)', 'transparent']}
+                <View style={{ flex: 1, width: '100%', height: '100%'}}>
+                    {/* <LinearGradient
+                        colors={['rgba(255, 255, 255, 1)', 'transparent']}
                         style={styles.background}
-                    />
+                    /> */}
                     <Scene3DWithLabels
                         name="dom"
                         projectKeywords={projectKeywords}
