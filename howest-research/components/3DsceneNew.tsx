@@ -50,11 +50,11 @@ const boxCompositions = [
     {
         total: 5,
         positions: [
-            { position: [0.35, 1.25, -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
-            { position: [1.1, -0.85, -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
-            { position: [-1.1, -0.85, -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-right' },
-            { position: [-1.3, 0.9, -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'top-right' },
-            { position: [-0.6, 1.2, -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -280,23 +280,52 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     //set position
                     const anchorPoint = boxInformation.anchorPoint.split('-');
                     console.log('Anchor Point:', anchorPoint);
+
+                    //anchorPoint left-right
+                    const positionXStr = boxInformation.position[0].replace('L-', `${refPoints.left}MIN`).replace('R-', `${refPoints.right}MIN`).replace('L', refPoints.left).replace('R', refPoints.right);
+                    const positionYStr = boxInformation.position[1].replace('T-', `${refPoints.top}MIN`).replace('B-', `${refPoints.bottom}MIN`).replace('T', refPoints.top).replace('B', refPoints.bottom);
+
+                    let positionX = 0;
+                    let positionY = 0;
+
+                    if (positionXStr.includes('+')) {
+                        const positions = [parseFloat(positionXStr.split('+')[0]), parseFloat(positionXStr.split('+')[1])];
+                        positionX = positions[0] + positions[1];
+                    }
+
+                    if (positionXStr.includes('MIN')) {
+                        const positions = [parseFloat(positionXStr.split('MIN')[0]), parseFloat(positionXStr.split('MIN')[1])];
+                        positionX = positions[0] - positions[1];
+                    }
+
+                    if (positionYStr.includes('+')) {
+                        const positions = [parseFloat(positionYStr.split('+')[0]), parseFloat(positionYStr.split('+')[1])];
+                        positionY = positions[0] + positions[1];
+                    }
+
+                    if (positionYStr.includes('MIN')) {
+                        const positions = [parseFloat(positionYStr.split('MIN')[0]), parseFloat(positionYStr.split('MIN')[1])];
+                        positionY = positions[0] - positions[1];
+                    }
+
+                    console.log('Anchor Point:', anchorPoint);
                     console.log('Position:', boxInformation.position);
 
                     //anchorPoint left-right
                     if (anchorPoint[1] === 'left') {
-                        group.position.x = boxInformation.position[0] + boxSize.x / 2;
+                        group.position.x = positionX + boxSize.x / 2;
                     } else if (anchorPoint[1] === 'right') {
-                        group.position.x = boxInformation.position[0] - boxSize.x / 2;
+                        group.position.x = positionX - boxSize.x / 2;
                     }
 
                     //anchorPoint top-bottom
                     if (anchorPoint[0] === 'top') {
-                        group.position.y = boxInformation.position[1] - boxSize.y / 2;
+                        group.position.y = positionY - boxSize.y / 2;
                     } else if (anchorPoint[0] === 'bottom') {
-                        group.position.y = boxInformation.position[1] + boxSize.y / 2;
+                        group.position.y = positionY + boxSize.y / 2;
                     }
 
-                    group.position.z = boxInformation.position[2] - boxSize.z / 2;
+                    // group.position.z = boxInformation.position[2] - boxSize.z / 2;
                 }
 
                 // group.rotation.set(
@@ -367,21 +396,6 @@ const pointsMiddle = (scene, x, y, z, color) => {
     scene.add(sphere);
 }
 
-const showAnchorPoints = (scene) => {
-    const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
-
-    boxComposition.forEach(boxData => {
-        const sphereGeometry = new THREE.SphereGeometry(0.05, 8, 8);
-        const sphereMaterial = new THREE.MeshBasicMaterial({
-            color: boxData.color,
-            wireframe: false
-        });
-        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        sphere.position.set(...boxData.position as [number, number, number]);
-        scene.add(sphere);
-    });
-};
-
 //---------------------------- BUILD SCENE ----------------------------//
 const buildScene = async (scene, projectKeywords, cluster) => {
     createLight(scene);
@@ -393,7 +407,6 @@ const buildScene = async (scene, projectKeywords, cluster) => {
 
     if (lenghtKeywords > 0) {
         await showModelsKeywords(scene, projectKeywords);
-        await showAnchorPoints(scene);
     }
 }
 
