@@ -51,9 +51,9 @@ const boxCompositions = [
         total: 5,
         positions: [
             { position: ['R-0', 'T+0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'B-0', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
+            { position: ['L-0', 'B+0', -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-right' },
+            { position: ['L-0', 'T+0', -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'bottom-right' },
             { position: ['R-0', 'T+0', -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
         ]
     },
@@ -326,6 +326,8 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     }
 
                     // group.position.z = boxInformation.position[2] - boxSize.z / 2;
+                    group.position.z = -boxSize.z / 2;
+
                 }
 
                 // group.rotation.set(
