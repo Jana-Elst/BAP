@@ -10,13 +10,30 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import businessEnMedia from "../assets/models/businessEnMedia.glb";
 
 
 //---------------------------- CONSTANTS ----------------------------//
+//LUNA - Hier kan je de composities van de boxen aanpassen
+/*
+Dit is hoe een de constructie van 1 box eruit ziet:
+{
+    position: ['R-0', 'T+0.25', -1.5], Posite van de box TOV de hoofdbox (cluster). R = berekend vanaf rechterwand, L = berekend vanaf linkerwand, T = berekend vanaf top, B = berekend vanaf bottom
+    rotation: [-20, -20, -20], Rotatie van de box in graden
+    size: [1, 1, 1], Laat dit maar op 1 staan
+    color: "black", Kleur van bounding box
+    label: "1", Geef dit telkens 1, 2, 3, afh. hoeveelste box in de rij het is
+    anchorPoint:'bottom-left' //vanaf welk punt van de box gerekend moet worden
+    }
+*/
+
+/*
+TEMPLATE
+{ position: ['R-0', 'T+0.25', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+*/
+
 const boxCompositions = [
     {
         total: 1,
@@ -96,6 +113,7 @@ const boxCompositions = [
 
 ];
 
+//DEZE IS NOG NIET KLAAR
 const textCompositions = [
     {
         total: 1,
@@ -180,6 +198,7 @@ const colors = {
     digital: 0x87CEEB,
 };
 
+//LUNA - materiaal instellingen hier aanpassen
 const materials = {
     glass: new THREE.MeshPhysicalMaterial({
         transmission: 1,
@@ -207,6 +226,8 @@ const materials = {
     })
 }
 
+const opacityBoundingBox = 0; //Toon of hide bounding box
+
 const models = [businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia];
 
 //---------------------------- VARIABLES ----------------------------//
@@ -222,11 +243,13 @@ let scale = 1.0;
 
 //---------------------------- FUNCTIONS ----------------------------//
 const createLight = (scene) => {
+    //LUNA - maak maar extra lichten aan en zo...
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
 }
 
 const createCamera = (scene, size) => {
+    //LUNA - speel maar met de camera
     const camera = new THREE.PerspectiveCamera(30, size.width / size.height, 0.1, 100);
     camera.position.set(0, 0, 15);
     scene.add(camera);
@@ -267,7 +290,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     color: boxInformation.color,
                     wireframe: true,
                     transparent: true,
-                    opacity: 1.0
+                    opacity: opacityBoundingBox
                 });
                 const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
                 boundingBoxMesh.position.copy(center);
@@ -524,7 +547,8 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
                 ref={canvasRef}
                 className="webgl"
                 style={{
-                    display: 'block', width: '100%', height: '100%', backgroundColor: 'grey'
+                    display: 'block', width: '100%', height: '100%', 
+                    backgroundColor: 'black' //LUNA - Pas hier  de achtergrondkleur aan
                 }}
             />
         </div>
