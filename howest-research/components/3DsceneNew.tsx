@@ -154,12 +154,12 @@ const textCompositions = [
     {
         total: 5,
         positions: [
-            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "green", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "red", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "orange", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "yellow", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "blue", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "green", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "red", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "orange", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "yellow", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "blue", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -244,7 +244,7 @@ const opacityBoundingBox = 1; //Toon of hide bounding box
 const models = [digitalSkillsEnMediaWijsheid, marketingEnCommunication, onderwijsEnVorming, sharedCreativity, stemSteam, businessEnMedia, businessEnMedia];
 
 //---------------------------- VARIABLES ----------------------------//
-let startPositionLines = []; //numbers
+let connectionPoints = [];
 let lenghtKeywords = 0;
 let refPoints = {
     top: null,
@@ -271,25 +271,23 @@ const createCamera = (scene, size) => {
     return camera;
 }
 
-const loadGLBModel = (scene, modelPath, boxInformation, type) => {
+const loadGLBModel = (scene, modelPath, boxInformation, textInformation, type) => {
     return new Promise((resolve, reject) => {
         const loader = new GLTFLoader();
         loader.load(
             modelPath,
             (gltf) => {
                 const model = gltf.scene;
-                let connectionPoints = [];
 
                 // Apply materials
                 model.traverse((child) => {
                     if (child instanceof THREE.Mesh) {
                         if (child.name.includes("glass")) {
-                            child.material = materials.color;
+                            child.material = materials.glass;
                         } else if (child.name.includes("color")) {
                             child.material = materials.color;
                         } else {
                             child.material = materials.color;
-                            connectionPoints.push(child);
                         }
                     }
                 });
@@ -352,6 +350,16 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     THREE.MathUtils.degToRad(boxInformation.rotation[2])
                 );
 
+                group.traverse((child) => {
+                    if (child instanceof THREE.Mesh) {
+                        if (child.name.includes(`anchorPoint${textInformation.anchorPointObject}`)) {
+                            const worldPos = new THREE.Vector3();
+                            child.getWorldPosition(worldPos);
+                            connectionPoints.push(worldPos);
+                        }
+                    }
+                });
+
                 console.log(`Model loaded successfully at:`, boxInformation.position);
                 resolve(groupSize);
             },
@@ -367,11 +375,6 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
 };
 
 const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
-    console.log('BOXSIZE', boxSize);
-    console.log('BOXINFO', boxInformation);
-
-    console.log('REFPOINTS', refPoints);
-
     //set position
     const anchorPoint = boxInformation.anchorPoint.split('-');
 
@@ -424,10 +427,12 @@ const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
 
 const showModelsKeywords = async (scene, projectKeywords) => {
     const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
+    const TextComposition = textCompositions[lenghtKeywords - 1].positions;
     const loadPromises = models.map((modelPath, index) => {
         if (index < boxComposition.length) {
             const boxInformation = boxComposition[index];
-            return loadGLBModel(scene, modelPath, boxInformation, 'keyword');
+            const textInformation = TextComposition[index];
+            return loadGLBModel(scene, modelPath, boxInformation, textInformation, 'keyword');
         }
         return Promise.resolve(); // Return resolved promise for skipped items
     });
@@ -436,9 +441,10 @@ const showModelsKeywords = async (scene, projectKeywords) => {
 };
 
 const showModelCluster = async (scene, cluster) => {
-    const boxInformation = { position: [0, 0, 0], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' }
+    const boxInformation = { position: [0, 0, 0], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' };
+    const textInformation = { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' };
     const modelPath = businessEnMedia;
-    const modelSize = await loadGLBModel(scene, modelPath, boxInformation, 'cluster');
+    const modelSize = await loadGLBModel(scene, modelPath, boxInformation, textInformation, 'cluster');
 
     //draw points  
     refPoints.left = -modelSize.x / 2;
@@ -499,10 +505,12 @@ const showLabels = (scene, projectKeywords) => {
     const textComposition = textCompositions[lenghtKeywords - 1].positions;
 
     projectKeywords.forEach((keyword, index) => {
-        console.log('Keyword', keyword.Label);
-        createText(scene, keyword.Label, textComposition[index], 'white', textComposition[index]);
-        // createLines(scene, textComposition[index]);
+        // createText(scene, keyword.Label, textComposition[index], 'white');
+        createLines(scene, textComposition[index], connectionPoints[index + 1]);
     });
+
+    //for cluster - JANA
+    createLines(scene, textComposition[0], connectionPoints[0]);
 }
 
 const createText = (scene, text: string, textComposition: [number, number, number], color: string) => {
@@ -578,11 +586,12 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
     scene.add(textBox);
 }
 
-const createLines = (scene, textComposition) => {
+const createLines = (scene, textComposition, connectionPoint) => {
     console.log('Create line to:', textComposition);
+    console.log('Start line at:', connectionPoint);
     const points = [
-        new THREE.Vector3(textComposition.postion[0], textComposition.postion[1], textComposition.postion[2]),
-        new THREE.Vector3(startPositionLines[index].x, startPositionLines[index].y, startPositionLines[index].z),
+        new THREE.Vector3(3, 3, 3), //anchorpoint thingy aanpassen
+        new THREE.Vector3(connectionPoint.x, connectionPoint.y, connectionPoint.z),
     ];
 
     // // Create curve from points
@@ -625,7 +634,7 @@ const buildScene = async (scene, projectKeywords, cluster) => {
         await showModelsKeywords(scene, projectKeywords);
     }
 
-    // showLabels(scene, projectKeywords);
+    showLabels(scene, projectKeywords);
 }
 
 //---------------------------- COMPONENT ----------------------------//
