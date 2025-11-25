@@ -251,7 +251,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                         } else if (child.name.includes("color")) {
                             child.material = materials.color;
                         } else {
-                            child.material = materials.transparent;
+                            child.material = materials.color;
                         }
                     }
                 });
@@ -269,6 +269,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     opacity: 0.5
                 });
                 const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+                boundingBoxMesh.position.copy(center);
 
                 //create group model + bounding box
                 const group = new THREE.Group();
@@ -327,7 +328,6 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
 
                     // group.position.z = boxInformation.position[2] - boxSize.z / 2;
                     group.position.z = -boxSize.z / 2;
-
                 }
 
                 // group.rotation.set(
