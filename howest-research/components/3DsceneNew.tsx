@@ -149,11 +149,11 @@ const textCompositions = [
         total: 5,
         positions: [
             { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "green", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "red", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "orange", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "yellow", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "blue", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -198,6 +198,11 @@ const colors = {
     glass: 0xffffff,
     digital: 0x87CEEB,
 };
+
+//Constants for labels
+const fontSize = 16;
+const paddingWidht = 16; // pixels of padding on each side
+const paddingHeight = 8; // pixels of padding on each side
 
 //LUNA - materiaal instellingen hier aanpassen
 const materials = {
@@ -468,15 +473,13 @@ const showLabels = (scene, projectKeywords) => {
 
     projectKeywords.forEach((keyword, index) => {
         console.log('Keyword', keyword.Label);
-        create3DText(scene, keyword.Label, textComposition[index].position, 'white');
+        createText(scene, keyword.Label, textComposition[index], 'white', textComposition[index]);
     });
 }
 
-const create3DText = (scene, text: string, position: [number, number, number], color: string) => {
-    const fontSize = 48;
-    const paddingWidht = 32; // pixels of padding on each side
-    const paddingHeight = 16; // pixels of padding on each side
-
+const createText = (scene, text: string, textComposition: [number, number, number], color: string) => {
+    const font = `bold ${fontSize}px Arial`;
+    
     // Create a canvas to draw text on
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -484,34 +487,28 @@ const create3DText = (scene, text: string, position: [number, number, number], c
     if (!context) return;
 
     // Set font before measuring
-    context.font = `bold ${fontSize}px Arial`;
+    context.font = font;
 
     // Measure text width
     const textMetrics = context.measureText(text);
     const textWidth = textMetrics.width;
     const textHeight = fontSize;
 
-    // Calculate padding
-    const totalWidth = textWidth + (paddingWidht * 2);
-    const totalHeight = textHeight + (paddingHeight * 2);
-
     // Resize canvas to fit text
-    canvas.width = totalWidth;
-    canvas.height = totalHeight;
+    canvas.width = textWidth + (paddingWidht * 2);
+    canvas.height = textHeight + (paddingHeight * 2);
 
     // Re-set font after canvas resize (resize clears the canvas)
-    context.font = 'bold 48px Arial';
+    context.font = font;
     context.textAlign = 'center';
     context.textBaseline = 'middle';
 
-    // Draw background with rounded corners
-    const cornerRadius = totalHeight / 2;
-    context.fillStyle = `#${colors.digital.toString(16)}`;
+    // Draw background
+    context.fillStyle = textComposition.color;
     context.beginPath();
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
     context.fill();
-
 
     // Draw text
     context.fillStyle = 'white';
@@ -540,7 +537,10 @@ const create3DText = (scene, text: string, position: [number, number, number], c
     // Create box with rounded corners
     const geometry = new RoundedBoxGeometry(boxWidth, boxHeight, 0.001, 8, 0);
     const textBox = new THREE.Mesh(geometry, material);
-    textBox.position.set(...position);
+    const boxSize = new THREE.Box3().setFromObject(textBox).getSize(new THREE.Vector3());
+    
+    setPostionFromAnchorPoint(textComposition, boxSize, textBox);
+
 
     textBox.renderOrder = 999;
     textBox.material.forEach(m => {
