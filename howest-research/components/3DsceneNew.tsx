@@ -38,6 +38,8 @@ TEMPLATE
 { position: ['R-0', 'T+0.25', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
 */
 
+//LUNA - Stuur voor de z-positie
+
 const boxCompositions = [
     {
         total: 1,
@@ -71,11 +73,11 @@ const boxCompositions = [
     {
         total: 5,
         positions: [
-            { position: ['R-0', 'T+0.25', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
-            { position: ['R+0.35', 'B-0.25', -1.5], rotation: [-20, -20, -20], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
-            { position: ['L-0.25', 'B+0.25', -1.5], rotation: [20, -20, -20], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-right' },
-            { position: ['L-1', 'T+2', -1.5], rotation: [-15, -20, 20], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'top-right' },
-            { position: ['L+0', 'T+1', -1.5], rotation: [10, 20, 10], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R+0', 'B-0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "red", label: "2", anchorPoint: 'top-left' },
+            { position: ['L-0', 'B+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "blue", label: "3", anchorPoint: 'top-right' },
+            { position: ['L+0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "green", label: "4", anchorPoint: 'bottom-right' },
+            { position: ['R+0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "yellow", label: "5", anchorPoint: 'top-left' },
         ]
     },
     {
@@ -152,12 +154,12 @@ const textCompositions = [
     {
         total: 5,
         positions: [
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "green", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "red", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "orange", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "yellow", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "blue", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "green", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "red", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "orange", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "yellow", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "blue", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -236,9 +238,10 @@ const materials = {
     })
 }
 
-const opacityBoundingBox = 0; //Toon of hide bounding box
+const opacityBoundingBox = 1; //Toon of hide bounding box
 
-const models = [businessEnMedia, digitalSkillsEnMediaWijsheid, marketingEnCommunication, onderwijsEnVorming, sharedCreativity, stemSteam, businessEnMedia, businessEnMedia];
+//const models = [businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia];
+const models = [digitalSkillsEnMediaWijsheid, marketingEnCommunication, onderwijsEnVorming, sharedCreativity, stemSteam, businessEnMedia, businessEnMedia];
 
 //---------------------------- VARIABLES ----------------------------//
 let startPositionLines = []; //numbers
@@ -250,6 +253,7 @@ let refPoints = {
     right: null
 }
 let scale = 1.0;
+let sizeCluster = { x: 0, y: 0, z: 0 };
 
 //---------------------------- FUNCTIONS ----------------------------//
 const createLight = (scene) => {
@@ -280,7 +284,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                 model.traverse((child) => {
                     if (child instanceof THREE.Mesh) {
                         if (child.name.includes("glass")) {
-                            child.material = materials.glass;
+                            child.material = materials.color;
                         } else if (child.name.includes("color")) {
                             child.material = materials.color;
                         } else {
@@ -305,36 +309,42 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                 const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
                 boundingBoxMesh.position.copy(center);
 
+                //center model and bounding box
+                model.position.x -= center.x;
+                model.position.y -= center.y;
+                model.position.z -= center.z;
+                boundingBoxMesh.position.x -= center.x;
+                boundingBoxMesh.position.y -= center.y;
+                boundingBoxMesh.position.z -= center.z;
+
                 //create group model + bounding box
                 const group = new THREE.Group();
                 group.add(model);
                 group.add(boundingBoxMesh);
 
                 const maxSize = Math.max(boxSize.x, boxSize.y);
-                scale = 2.0 / maxSize;
-                // group.scale.set(scale, scale, scale);
-
                 if (type === 'cluster') {
-                    group.scale.set(scale, scale, scale);
-                } else if (type === 'keyword') {
-                    group.scale.set(1.5 / maxSize, 1.5 / maxSize, 1.5 / maxSize);
+                    scale = 2.0 / maxSize;
                 }
 
-                //center model
-                group.position.x -= center.x;
-                group.position.y -= center.y;
-                group.position.z -= center.z;
+                group.scale.set(scale, scale, scale);
 
                 scene.add(group);
-
-                if (type === 'keyword') {
-                    setPostionFromAnchorPoint(boxInformation, boxSize, group);
-                }
 
                 const rotation = -Math.PI / 2;
                 group.rotation.set(0, rotation, 0);
 
                 const groupSize = new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
+                if (type === 'keyword') {
+                    //boxInformation = voorgedefinieerde informatie
+                    //boxSize = brekende grooote van de box
+                    //group = model + bounding box
+                    setPostionFromAnchorPoint(boxInformation, groupSize, group);
+
+
+                    const groupCenter = new THREE.Box3().setFromObject(group).getCenter(new THREE.Vector3());
+                    anchorPointBox(scene, groupCenter, groupSize, boxInformation.anchorPoint);
+                }
 
                 group.rotation.set(
                     THREE.MathUtils.degToRad(boxInformation.rotation[0]),
@@ -357,6 +367,11 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
 };
 
 const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
+    console.log('BOXSIZE', boxSize);
+    console.log('BOXINFO', boxInformation);
+
+    console.log('REFPOINTS', refPoints);
+
     //set position
     const anchorPoint = boxInformation.anchorPoint.split('-');
 
@@ -401,9 +416,11 @@ const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
         element.position.y = positionY + boxSize.y / 2;
     }
 
-    // group.position.z = boxInformation.position[2] - boxSize.z / 2;
-    element.position.z = -boxSize.z / 2;
+    // element.position.z = boxInformation.position[2] - boxSize.z / 2;
+    // element.position.z = -boxSize.z / 2;
+    element.position.z = 0;
 }
+
 
 const showModelsKeywords = async (scene, projectKeywords) => {
     const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
@@ -448,6 +465,33 @@ const pointsMiddle = (scene, x, y, z, color) => {
     scene.add(sphere);
 }
 
+const anchorPointBox = (scene, groupCenter, boxSize, anchorPoint) => {
+    const sphereGeometry = new THREE.SphereGeometry(0.05, 20, 20);
+    const sphereMaterial = new THREE.MeshBasicMaterial({
+        color: 'green',
+        wireframe: false,
+        opacity: opacityBoundingBox
+    });
+    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
+    if (anchorPoint === 'bottom-left') {
+        sphere.position.set(groupCenter.x - boxSize.x / 2, groupCenter.y - boxSize.y / 2, groupCenter.z + boxSize.z / 2);
+    }
+
+    if (anchorPoint === 'top-left') {
+        sphere.position.set(groupCenter.x - boxSize.x / 2, groupCenter.y + boxSize.y / 2, groupCenter.z + boxSize.z / 2);
+    }
+
+    if (anchorPoint === 'bottom-right') {
+        sphere.position.set(groupCenter.x + boxSize.x / 2, groupCenter.y - boxSize.y / 2, groupCenter.z + boxSize.z / 2);
+    }
+
+    if (anchorPoint === 'top-right') {
+        sphere.position.set(groupCenter.x + boxSize.x / 2, groupCenter.y + boxSize.y / 2, groupCenter.z + boxSize.z / 2);
+    }
+    scene.add(sphere);
+}
+
 //---------------------------- TEXT ----------------------------//
 const showLabels = (scene, projectKeywords) => {
     // createTextBoxes(scene);
@@ -457,12 +501,13 @@ const showLabels = (scene, projectKeywords) => {
     projectKeywords.forEach((keyword, index) => {
         console.log('Keyword', keyword.Label);
         createText(scene, keyword.Label, textComposition[index], 'white', textComposition[index]);
+        // createLines(scene, textComposition[index]);
     });
 }
 
 const createText = (scene, text: string, textComposition: [number, number, number], color: string) => {
     const font = `bold ${fontSize}px Arial`;
-    
+
     // Create a canvas to draw text on
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
@@ -521,7 +566,7 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
     const geometry = new RoundedBoxGeometry(boxWidth, boxHeight, 0.001, 8, 0);
     const textBox = new THREE.Mesh(geometry, material);
     const boxSize = new THREE.Box3().setFromObject(textBox).getSize(new THREE.Vector3());
-    
+
     setPostionFromAnchorPoint(textComposition, boxSize, textBox);
 
     textBox.renderOrder = 999;
@@ -531,6 +576,40 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
         }
     });
     scene.add(textBox);
+}
+
+const createLines = (scene, textComposition) => {
+    console.log('Create line to:', textComposition);
+    const points = [
+        new THREE.Vector3(textComposition.postion[0], textComposition.postion[1], textComposition.postion[2]),
+        new THREE.Vector3(startPositionLines[index].x, startPositionLines[index].y, startPositionLines[index].z),
+    ];
+
+    // // Create curve from points
+    const curve = new THREE.CatmullRomCurve3(points);
+
+
+    // // Create tube geometry for the line
+    const tubeGeometry = new THREE.TubeGeometry(curve, 20, 0.02, 8, false);
+
+    // Create material with box color
+    const lineMaterial = new THREE.MeshBasicMaterial({
+        color: textComposition.color,
+        transparent: true,
+        opacity: 0.8,
+        depthTest: true,
+    });
+
+    const lineMesh = new THREE.Mesh(tubeGeometry, lineMaterial);
+    lineMesh.renderOrder = -1;
+    scene.add(lineMesh);
+
+    // Optional: Add a sphere at the start position to visualize it
+    // const sphereGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+    // const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    // const startSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    // startSphere.position.copy(startPosition);
+    // scene.add(startSphere);
 }
 
 //---------------------------- BUILD SCENE ----------------------------//
@@ -546,7 +625,7 @@ const buildScene = async (scene, projectKeywords, cluster) => {
         await showModelsKeywords(scene, projectKeywords);
     }
 
-    showLabels(scene, projectKeywords);
+    // showLabels(scene, projectKeywords);
 }
 
 //---------------------------- COMPONENT ----------------------------//
