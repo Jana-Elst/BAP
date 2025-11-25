@@ -1,4 +1,4 @@
-// https://codesandbox.io/p/sandbox/11-pcktl?file=%2Fsrc%2Findex.js%3A90%2C1-91%2C1
+//https://codesandbox.io/p/sandbox/11-pcktl?file=%2Fsrc%2Findex.js%3A90%2C1-91%2C1
 //https://tympanus.net/codrops/2021/10/27/creating-the-effect-of-transparent-glass-and-plastic-in-three-js/
 
 //react tree fiber & drei
@@ -148,11 +148,12 @@ const textCompositions = [
     {
         total: 5,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
-            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
-            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -270,9 +271,9 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                 model.traverse((child) => {
                     if (child instanceof THREE.Mesh) {
                         if (child.name.includes("glass")) {
-                            child.material = materials.glass;
+                            child.material = materials.transparent;
                         } else if (child.name.includes("color")) {
-                            child.material = materials.color;
+                            child.material = materials.transparent;
                         } else {
                             child.material = materials.color;
                             connectionPoints.push(child);
@@ -318,56 +319,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                 scene.add(group);
 
                 if (type === 'keyword') {
-                    //set position
-                    const anchorPoint = boxInformation.anchorPoint.split('-');
-                    console.log('Anchor Point:', anchorPoint);
-
-                    //anchorPoint left-right
-                    const positionXStr = boxInformation.position[0].replace('L-', `${refPoints.left}MIN`).replace('R-', `${refPoints.right}MIN`).replace('L', refPoints.left).replace('R', refPoints.right);
-                    const positionYStr = boxInformation.position[1].replace('T-', `${refPoints.top}MIN`).replace('B-', `${refPoints.bottom}MIN`).replace('T', refPoints.top).replace('B', refPoints.bottom);
-
-                    let positionX = 0;
-                    let positionY = 0;
-
-                    if (positionXStr.includes('+')) {
-                        const positions = [parseFloat(positionXStr.split('+')[0]), parseFloat(positionXStr.split('+')[1])];
-                        positionX = positions[0] + positions[1];
-                    }
-
-                    if (positionXStr.includes('MIN')) {
-                        const positions = [parseFloat(positionXStr.split('MIN')[0]), parseFloat(positionXStr.split('MIN')[1])];
-                        positionX = positions[0] - positions[1];
-                    }
-
-                    if (positionYStr.includes('+')) {
-                        const positions = [parseFloat(positionYStr.split('+')[0]), parseFloat(positionYStr.split('+')[1])];
-                        positionY = positions[0] + positions[1];
-                    }
-
-                    if (positionYStr.includes('MIN')) {
-                        const positions = [parseFloat(positionYStr.split('MIN')[0]), parseFloat(positionYStr.split('MIN')[1])];
-                        positionY = positions[0] - positions[1];
-                    }
-
-                    console.log('Anchor Point:', anchorPoint);
-                    console.log('Position:', boxInformation.position);
-
-                    //anchorPoint left-right
-                    if (anchorPoint[1] === 'left') {
-                        group.position.x = positionX + boxSize.x / 2;
-                    } else if (anchorPoint[1] === 'right') {
-                        group.position.x = positionX - boxSize.x / 2;
-                    }
-
-                    //anchorPoint top-bottom
-                    if (anchorPoint[0] === 'top') {
-                        group.position.y = positionY - boxSize.y / 2;
-                    } else if (anchorPoint[0] === 'bottom') {
-                        group.position.y = positionY + boxSize.y / 2;
-                    }
-
-                    // group.position.z = boxInformation.position[2] - boxSize.z / 2;
-                    group.position.z = -boxSize.z / 2;
+                    setPostionFromAnchorPoint(boxInformation, boxSize, group);
                 }
 
                 const rotation = -Math.PI / 2;
@@ -395,6 +347,55 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
     })
 };
 
+const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
+    //set position
+    const anchorPoint = boxInformation.anchorPoint.split('-');
+
+    //anchorPoint left-right
+    const positionXStr = boxInformation.position[0].replace('L-', `${refPoints.left}MIN`).replace('R-', `${refPoints.right}MIN`).replace('L', refPoints.left).replace('R', refPoints.right);
+    const positionYStr = boxInformation.position[1].replace('T-', `${refPoints.top}MIN`).replace('B-', `${refPoints.bottom}MIN`).replace('T', refPoints.top).replace('B', refPoints.bottom);
+
+    let positionX = 0;
+    let positionY = 0;
+
+    if (positionXStr.includes('+')) {
+        const positions = [parseFloat(positionXStr.split('+')[0]), parseFloat(positionXStr.split('+')[1])];
+        positionX = positions[0] + positions[1];
+    }
+
+    if (positionXStr.includes('MIN')) {
+        const positions = [parseFloat(positionXStr.split('MIN')[0]), parseFloat(positionXStr.split('MIN')[1])];
+        positionX = positions[0] - positions[1];
+    }
+
+    if (positionYStr.includes('+')) {
+        const positions = [parseFloat(positionYStr.split('+')[0]), parseFloat(positionYStr.split('+')[1])];
+        positionY = positions[0] + positions[1];
+    }
+
+    if (positionYStr.includes('MIN')) {
+        const positions = [parseFloat(positionYStr.split('MIN')[0]), parseFloat(positionYStr.split('MIN')[1])];
+        positionY = positions[0] - positions[1];
+    }
+
+    //anchorPoint left-right
+    if (anchorPoint[1] === 'left') {
+        element.position.x = positionX + boxSize.x / 2;
+    } else if (anchorPoint[1] === 'right') {
+        element.position.x = positionX - boxSize.x / 2;
+    }
+
+    //anchorPoint top-bottom
+    if (anchorPoint[0] === 'top') {
+        element.position.y = positionY - boxSize.y / 2;
+    } else if (anchorPoint[0] === 'bottom') {
+        element.position.y = positionY + boxSize.y / 2;
+    }
+
+    // group.position.z = boxInformation.position[2] - boxSize.z / 2;
+    element.position.z = -boxSize.z / 2;
+}
+
 const showModelsKeywords = async (scene, projectKeywords) => {
     const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
     const loadPromises = models.map((modelPath, index) => {
@@ -412,9 +413,6 @@ const showModelCluster = async (scene, cluster) => {
     const boxInformation = { position: [0, 0, 0], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' }
     const modelPath = businessEnMedia;
     const modelSize = await loadGLBModel(scene, modelPath, boxInformation, 'cluster');
-
-    console.log('Model size:', modelSize); // { x, y, z }
-    console.log('Width:', modelSize.x, 'Height:', modelSize.y, 'Depth:', modelSize.z);
 
     //draw points  
     refPoints.left = -modelSize.x / 2;
@@ -441,6 +439,118 @@ const pointsMiddle = (scene, x, y, z, color) => {
     scene.add(sphere);
 }
 
+//---------------------------- TEXT ----------------------------//
+const createTextBoxes = (scene) => {
+    const textComposition = textCompositions[lenghtKeywords - 1].positions;
+
+    textComposition.forEach((textData) => {
+        const geometry = new THREE.BoxGeometry(2, 0.5, 0.01);
+        const material = new THREE.MeshStandardMaterial({
+            color: textData.color,
+            transparent: false,
+            opacity: 1,
+            wireframe: false
+        });
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.set(0, 0, 0);
+        const boxSize = new THREE.Box3().setFromObject(cube).getSize(new THREE.Vector3());
+
+        setPostionFromAnchorPoint(textData, boxSize, cube);
+
+        scene.add(cube);
+    });
+}
+
+const showLabels = (scene, projectKeywords) => {
+    // createTextBoxes(scene);
+
+    const textComposition = textCompositions[lenghtKeywords - 1].positions;
+
+    projectKeywords.forEach((keyword, index) => {
+        console.log('Keyword', keyword.Label);
+        create3DText(scene, keyword.Label, textComposition[index].position, 'white');
+    });
+}
+
+const create3DText = (scene, text: string, position: [number, number, number], color: string) => {
+    const fontSize = 48;
+    const paddingWidht = 32; // pixels of padding on each side
+    const paddingHeight = 16; // pixels of padding on each side
+
+    // Create a canvas to draw text on
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+
+    if (!context) return;
+
+    // Set font before measuring
+    context.font = `bold ${fontSize}px Arial`;
+
+    // Measure text width
+    const textMetrics = context.measureText(text);
+    const textWidth = textMetrics.width;
+    const textHeight = fontSize;
+
+    // Calculate padding
+    const totalWidth = textWidth + (paddingWidht * 2);
+    const totalHeight = textHeight + (paddingHeight * 2);
+
+    // Resize canvas to fit text
+    canvas.width = totalWidth;
+    canvas.height = totalHeight;
+
+    // Re-set font after canvas resize (resize clears the canvas)
+    context.font = 'bold 48px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+
+    // Draw background with rounded corners
+    const cornerRadius = totalHeight / 2;
+    context.fillStyle = `#${colors.digital.toString(16)}`;
+    context.beginPath();
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.closePath();
+    context.fill();
+
+
+    // Draw text
+    context.fillStyle = 'white';
+    context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    // Create texture from canvas
+    const texture = new THREE.CanvasTexture(canvas);
+    // texture.needsUpdate = true;
+
+    // Calculate box width based on aspect ratio
+    const boxHeight = 0.5;
+    const aspectRatio = canvas.width / canvas.height;
+    const boxWidth = boxHeight * aspectRatio;
+
+    // Create materials array - one for each face of the box
+    // Box faces order: [right, left, top, bottom, front, back]
+    const material = [
+        materials.color, // right side - no texture
+        materials.color, // left side - no texture
+        materials.color, // top - no texture
+        materials.color, // bottom - no texture
+        new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide, depthTest: false, depthWrite: false }), // front - with texture
+        new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide, depthTest: false, depthWrite: false })  // back - with texture
+    ];
+
+    // Create box with rounded corners
+    const geometry = new RoundedBoxGeometry(boxWidth, boxHeight, 0.001, 8, 0);
+    const textBox = new THREE.Mesh(geometry, material);
+    textBox.position.set(...position);
+
+    textBox.renderOrder = 999;
+    textBox.material.forEach(m => {
+        if (m.depthTest === false) {
+            m.depthWrite = false; // ADD THIS
+        }
+    });
+    scene.add(textBox);
+}
+
 //---------------------------- BUILD SCENE ----------------------------//
 const buildScene = async (scene, projectKeywords, cluster) => {
     createLight(scene);
@@ -453,6 +563,8 @@ const buildScene = async (scene, projectKeywords, cluster) => {
     if (lenghtKeywords > 0) {
         await showModelsKeywords(scene, projectKeywords);
     }
+
+    showLabels(scene, projectKeywords);
 }
 
 //---------------------------- COMPONENT ----------------------------//
@@ -547,8 +659,8 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
                 ref={canvasRef}
                 className="webgl"
                 style={{
-                    display: 'block', width: '100%', height: '100%', 
-                    backgroundColor: 'black' //LUNA - Pas hier  de achtergrondkleur aan
+                    display: 'block', width: '100%', height: '100%',
+                    backgroundColor: 'grey' //LUNA - Pas hier  de achtergrondkleur aan
                 }}
             />
         </div>
