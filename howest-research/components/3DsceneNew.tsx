@@ -267,7 +267,7 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     color: boxInformation.color,
                     wireframe: true,
                     transparent: true,
-                    opacity: 0.0
+                    opacity: 1.0
                 });
                 const boundingBoxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
                 boundingBoxMesh.position.copy(center);
@@ -347,11 +347,14 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                     group.position.z = -boxSize.z / 2;
                 }
 
+                const rotation = -Math.PI / 2;
+                group.rotation.set(0, rotation, 0);
+
                 const groupSize = new THREE.Box3().setFromObject(group).getSize(new THREE.Vector3());
 
                 group.rotation.set(
                     THREE.MathUtils.degToRad(boxInformation.rotation[0]),
-                    THREE.MathUtils.degToRad(boxInformation.rotation[1]),
+                    THREE.MathUtils.degToRad(boxInformation.rotation[1]) + rotation,
                     THREE.MathUtils.degToRad(boxInformation.rotation[2])
                 );
 
