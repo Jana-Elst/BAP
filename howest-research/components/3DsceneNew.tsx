@@ -13,7 +13,11 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import businessEnMedia from "../assets/models/businessEnMedia.glb";
-
+import digitalSkillsEnMediaWijsheid from "../assets/models/digitalSkillsEnMediaWijsheid.glb";
+import marketingEnCommunication from "../assets/models/marketingEnCommunication.glb";
+import onderwijsEnVorming from "../assets/models/onderwijsEnVorming.glb";
+import sharedCreativity from "../assets/models/sharedCreativity.glb";
+import stemSteam from "../assets/models/stemSteam.glb";
 
 //---------------------------- CONSTANTS ----------------------------//
 //LUNA - Hier kan je de composities van de boxen aanpassen
@@ -148,12 +152,12 @@ const textCompositions = [
     {
         total: 5,
         positions: [
-            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "green", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "red", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "orange", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "yellow", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', -1.5], color: "blue", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "green", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "red", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "orange", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "yellow", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], color: "blue", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -201,8 +205,8 @@ const colors = {
 
 //Constants for labels
 const fontSize = 16;
-const paddingWidht = 16; // pixels of padding on each side
-const paddingHeight = 8; // pixels of padding on each side
+const paddingWidht = 32; // pixels of padding on each side
+const paddingHeight = 16; // pixels of padding on each side
 
 //LUNA - materiaal instellingen hier aanpassen
 const materials = {
@@ -234,7 +238,7 @@ const materials = {
 
 const opacityBoundingBox = 0; //Toon of hide bounding box
 
-const models = [businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia];
+const models = [businessEnMedia, digitalSkillsEnMediaWijsheid, marketingEnCommunication, onderwijsEnVorming, sharedCreativity, stemSteam, businessEnMedia, businessEnMedia];
 
 //---------------------------- VARIABLES ----------------------------//
 let startPositionLines = []; //numbers
@@ -276,9 +280,9 @@ const loadGLBModel = (scene, modelPath, boxInformation, type) => {
                 model.traverse((child) => {
                     if (child instanceof THREE.Mesh) {
                         if (child.name.includes("glass")) {
-                            child.material = materials.transparent;
+                            child.material = materials.glass;
                         } else if (child.name.includes("color")) {
-                            child.material = materials.transparent;
+                            child.material = materials.color;
                         } else {
                             child.material = materials.color;
                             connectionPoints.push(child);
@@ -445,27 +449,6 @@ const pointsMiddle = (scene, x, y, z, color) => {
 }
 
 //---------------------------- TEXT ----------------------------//
-const createTextBoxes = (scene) => {
-    const textComposition = textCompositions[lenghtKeywords - 1].positions;
-
-    textComposition.forEach((textData) => {
-        const geometry = new THREE.BoxGeometry(2, 0.5, 0.01);
-        const material = new THREE.MeshStandardMaterial({
-            color: textData.color,
-            transparent: false,
-            opacity: 1,
-            wireframe: false
-        });
-        const cube = new THREE.Mesh(geometry, material);
-        cube.position.set(0, 0, 0);
-        const boxSize = new THREE.Box3().setFromObject(cube).getSize(new THREE.Vector3());
-
-        setPostionFromAnchorPoint(textData, boxSize, cube);
-
-        scene.add(cube);
-    });
-}
-
 const showLabels = (scene, projectKeywords) => {
     // createTextBoxes(scene);
 
@@ -499,12 +482,12 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
     canvas.height = textHeight + (paddingHeight * 2);
 
     // Re-set font after canvas resize (resize clears the canvas)
-    context.font = font;
+    // context.font = font;
     context.textAlign = 'center';
     context.textBaseline = 'middle';
 
     // Draw background
-    context.fillStyle = textComposition.color;
+    context.fillStyle = 'black';
     context.beginPath();
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.closePath();
@@ -540,7 +523,6 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
     const boxSize = new THREE.Box3().setFromObject(textBox).getSize(new THREE.Vector3());
     
     setPostionFromAnchorPoint(textComposition, boxSize, textBox);
-
 
     textBox.renderOrder = 999;
     textBox.material.forEach(m => {
