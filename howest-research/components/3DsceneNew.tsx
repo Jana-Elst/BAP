@@ -750,7 +750,7 @@ export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProp
                 className="webgl"
                 style={{
                     display: 'block', width: '100%', height: '100%',
-                    backgroundColor: 'grey' //LUNA - Pas hier  de achtergrondkleur aan
+                    backgroundColor: 'black' //LUNA - Pas hier  de achtergrondkleur aan
                 }}
             />
         </div>

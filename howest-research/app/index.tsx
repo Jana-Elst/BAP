@@ -39,14 +39,22 @@ export default function HomeScreen() {
       </>
     )
 
+
+    //No external screen connected
   } else {
     return (
       <View style={{ flex: 1, width: '100%', height: '100%' }}>
-        <ExternalScreen page={{
+        <Ipad page={{
           page: 'detailResearch',
           id: 878,
           previousPages: []
-        }} />
+        }} setPage={setPage} keyword={null} />
+
+        {/* <ExternalScreen page={{
+          page: 'detailResearch',
+          id: 878,
+          previousPages: []
+        }} /> */}
       </View>
     )
   }
