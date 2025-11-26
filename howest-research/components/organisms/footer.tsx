@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ViewToggle } from '../molecules/viewToggle';
 
-export default function Footer(props: { project, page, setPage }) {
+export default function Footer() {
     const image = require('../../assets/images/logoHowestResearchRGB.png')
 
     return (

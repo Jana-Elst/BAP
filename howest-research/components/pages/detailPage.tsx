@@ -5,6 +5,7 @@ import BTNBack from '../atoms/BTNBack';
 import { Colors, Fonts } from '@/constants/theme';
 import Scene3D from '../3Dscenes/3DsceneNew';
 import { getKeywords } from '../../scripts/getData';
+import { contain } from 'three/src/extras/TextureUtils.js';
 
 // import { createImagePaths } from '../scripts/create-image-paths';
 
@@ -37,8 +38,8 @@ export default function DetailPage(props: { page, setPage }) {
     console.log(props.page.previousPages.length);
 
     return (
-        <View>
-            <View style={styles.container}>
+        <View style={styles.container}>
+            <View style={styles.content}>
                 {
                     props.page.previousPages.length > 1 && <BTNBack project={project} page={props.page} setPage={props.setPage} />
                 }
@@ -57,7 +58,7 @@ export default function DetailPage(props: { page, setPage }) {
                         </TouchableOpacity>
                     ))}
             </View>
-            <View style={{ flex: 1, width: '100%', height: '100%' }}>
+            <View style={styles.container3D}>
                 {/* <LinearGradient
                         colors={['rgba(255, 255, 255, 1)', 'transparent']}
                         style={styles.background}
@@ -74,9 +75,17 @@ export default function DetailPage(props: { page, setPage }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+
+    content: {
+        flex: 1,
+    },
+
+    container3D: {
+        flex: 1,
+        height: '100%',
+        width: '100%',
     },
 
     button: {
@@ -88,5 +97,5 @@ const styles = StyleSheet.create({
         padding: 20,
         margin: 10,
         backgroundColor: 'pink'
-    }
+    },
 });

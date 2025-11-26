@@ -5,13 +5,12 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import data from '../../assets/data/structured-data.json';
 import DiscoverCard from "../molecules/discoverCard";
 import OverlayComponent from "../organisms/overlay";
-import { Button, Overlay, Icon } from '@rneui/themed';
+import { Button, Overlay } from '@rneui/themed';
 import React, { useState } from 'react';
 import { StyledText } from "../atoms/styledComponents";
 import BTNBack from "../atoms/BTNBack";
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
-import { overlay } from "three/src/nodes/TSL.js";
 
 export default function Ipad(props: { keyword, page, setPage }) {
     const projects = data.projects;
@@ -67,31 +66,33 @@ export default function Ipad(props: { keyword, page, setPage }) {
                 <Footer />
             </View>
 
-            <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} style={styles.overlay}>
-                {
-                    props.page.previousPages.length > 1 &&
-                    <TouchableOpacity onPress={handleBack} style={styles.button}>
-                        <StyledText>TERUG</StyledText>
-                    </TouchableOpacity>
-                }
-                {
-                    props.page.page === 'detailResearch' &&
-                    (
-                        <DetailPage page={props.page} setPage={props.setPage} />
-                    )
-                }
+            <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>
+                <View style={styles.overlayContent}>
+                    {
+                        props.page.previousPages.length > 1 &&
+                        <TouchableOpacity onPress={handleBack} style={styles.button}>
+                            <StyledText>TERUG</StyledText>
+                        </TouchableOpacity>
+                    }
+                    {
+                        props.page.page === 'detailResearch' &&
+                        (
+                            <DetailPage page={props.page} setPage={props.setPage} />
+                        )
+                    }
 
-                {
-                    props.page.page === 'detailKeyword' &&
-                    (
-                        <DetailKeyword keyword={keywords.find(k => k.ID === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
-                    )
-                }
+                    {
+                        props.page.page === 'detailKeyword' &&
+                        (
+                            <DetailKeyword keyword={keywords.find(k => k.ID === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                        )
+                    }
 
-                <Button
-                    title="SLUIT"
-                    onPress={() => handleClosePopUp(props.setPage, props.page)}
-                />
+                    <Button
+                        title="SLUIT"
+                        onPress={() => handleClosePopUp(props.setPage, props.page)}
+                    />
+                </View>
             </Overlay>
         </View>
     );
@@ -114,12 +115,15 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         zIndex: -1,
-        backgroundColor: '#751d1dff',
     },
 
     overlay: {
-        backgroundColor: 'pink',
-        width: '90%',
-        height: '90%',
+        width: '100%',
+        height: '100%',
+    },
+
+    overlayContent: {
+        backgroundColor:'green',
+        flex: 1,
     }
 });
