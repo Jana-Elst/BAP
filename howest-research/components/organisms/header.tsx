@@ -1,35 +1,45 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-// import { createImagePaths } from '../scripts/create-image-paths';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Header(props: { project, page, setPage }) {
+    const image = require('../../assets/images/logoHowestResearchRGB.png')
+
     return (
         <View style={styles.container}>
-            <TouchableOpacity onPress={handleOpenDetail} style={styles.container} >
-                <Text> {props.project.CCODE}</Text>
-                <Image
-                    style={styles.image}
-                    source={image}
-                    contentFit="cover"
-                />
-                <Text>FILTER</Text>
+            <Image
+                style={styles.image}
+                source={image}
+                contentFit="contain"
+            />
+
+            <Text style={styles.filter}>FILTER</Text>
+
+            <View style={styles.rightSection}>
                 <Text>SEARCH</Text>
                 <Text>NL/ENG</Text>
-            </TouchableOpacity>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        justifyContent: 'center',
+        backgroundColor: 'green',
+        padding: 16,
     },
+
     image: {
         width: 200,
-        height: 200,
-        backgroundColor: '#0553',
+        height: 60,
     },
+
+    rightSection: {
+        flexDirection: 'row',
+    },
+
+    filter: {
+    }
 });

@@ -12,12 +12,12 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-import businessEnMedia from "../assets/models/businessEnMedia.glb";
-import digitalSkillsEnMediaWijsheid from "../assets/models/digitalSkillsEnMediaWijsheid.glb";
-import marketingEnCommunication from "../assets/models/marketingEnCommunication.glb";
-import onderwijsEnVorming from "../assets/models/onderwijsEnVorming.glb";
-import sharedCreativity from "../assets/models/sharedCreativity.glb";
-import stemSteam from "../assets/models/stemSteam.glb";
+import businessEnMedia from "../../assets/models/businessEnMedia.glb";
+import digitalSkillsEnMediaWijsheid from "../../assets/models/digitalSkillsEnMediaWijsheid.glb";
+import marketingEnCommunication from "../../assets/models/marketingEnCommunication.glb";
+import onderwijsEnVorming from "../../assets/models/onderwijsEnVorming.glb";
+import sharedCreativity from "../../assets/models/sharedCreativity.glb";
+import stemSteam from "../../assets/models/stemSteam.glb";
 
 //---------------------------- CONSTANTS ----------------------------//
 //LUNA - Hier kan je de composities van de boxen aanpassen

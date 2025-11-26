@@ -7,7 +7,7 @@ import BTNClose from '../atoms/BTNClose';
 
 // import { createImagePaths } from '../scripts/create-image-paths';
 
-export default function DetailKeyword(props: { keyword, page, setPage }) {
+export default function DetailKeyword(props: { keyword, page, setPage, isVisible }) {
     const projects = data.projects;
 
     const filteredProjects = projects.filter(project =>
@@ -16,23 +16,17 @@ export default function DetailKeyword(props: { keyword, page, setPage }) {
 
     return (
         <View style={styles.container}>
-            {
-                props.page.previousPages.length > 1 && <BTNBack project={props.project} page={props.page} setPage={props.setPage} />
-            }
             <Text>{props.keyword.Label}</Text>
             <View style={styles.listContainer}>
                 <FlashList
                     data={filteredProjects}
                     renderItem={({ item: project }) =>
-                        <DiscoverCard project={project} page={props.page} setPage={props.setPage} />
+                        <DiscoverCard project={project} page={props.page} setPage={props.setPage} isVisible={props.isVisible} />
                     }
                     showsVerticalScrollIndicator={true}
                     estimatedItemSize={200}
                 />
             </View>
-
-            <BTNClose project={props.project} page={props.page} setPage={props.setPage} />
-
         </View>
     )
 }

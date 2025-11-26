@@ -1,9 +1,17 @@
 import DetailKeyword from "@/components/pages/detailKeyword";
 import DetailPage from "@/components/pages/detailPage";
 import { FlashList } from "@shopify/flash-list";
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import data from '../../assets/data/structured-data.json';
 import DiscoverCard from "../molecules/discoverCard";
+import OverlayComponent from "../organisms/overlay";
+import { Button, Overlay, Icon } from '@rneui/themed';
+import React, { useState } from 'react';
+import { StyledText } from "../atoms/styledComponents";
+import BTNBack from "../atoms/BTNBack";
+import Header from "../organisms/header";
+import Footer from "../organisms/footer";
+import { overlay } from "three/src/nodes/TSL.js";
 
 export default function Ipad(props: { keyword, page, setPage }) {
     const projects = data.projects;
@@ -13,33 +21,78 @@ export default function Ipad(props: { keyword, page, setPage }) {
 
     const projectImages = {};
 
+    const [visible, setVisible] = useState(false);
+
+    const isVisible = (page) => {
+        if (page === 'discover' || page === 'gallery' || page === 'filter') {
+            setVisible(false);
+        } else {
+            setVisible(true);
+        }
+    };
+
+    const handleClosePopUp = (setPage, page) => {
+        console.log('CLOSE POP UP', page);
+        setPage({
+            page: page.previousPages[0].page,
+            id: null,
+            previousPages: []
+        })
+        isVisible(page.previousPages[0].page);
+    }
+
+    const handleBack = () => {
+        props.setPage({
+            page: props.page.previousPages[props.page.previousPages.length - 1].page,
+            id: props.page.previousPages[props.page.previousPages.length - 1].id,
+            previousPages: props.page.previousPages.slice(0, -1)
+        })
+        isVisible(props.page.previousPages[props.page.previousPages.length - 1].page);
+    }
+
     return (
         <View style={styles.container}>
-            <FlashList
-                data={projects}
-                renderItem={({ item: project }) =>
-                    <DiscoverCard project={project} page={props.page} setPage={props.setPage} />
+            <View style={styles.homeScreen}>
+                <View>
+                    <Header project={null} page={props.page} setPage={props.setPage} />
+                </View>
+                <FlashList
+                    data={projects}
+                    renderItem={({ item: project }) =>
+                        <DiscoverCard project={project} page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                    }
+                    estimatedItemSize={200}
+                    style={styles.projectList}
+                />
+                <Footer />
+            </View>
+
+            <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} style={styles.overlay}>
+                {
+                    props.page.previousPages.length > 1 &&
+                    <TouchableOpacity onPress={handleBack} style={styles.button}>
+                        <StyledText>TERUG</StyledText>
+                    </TouchableOpacity>
                 }
-                estimatedItemSize={200}
-            />
+                {
+                    props.page.page === 'detailResearch' &&
+                    (
+                        <DetailPage page={props.page} setPage={props.setPage} />
+                    )
+                }
 
-            {
-                props.page.page === 'detailResearch' &&
-                (
-                    <View style={styles.detail}>
-                        <DetailPage project={projects.find(p => p.ID === props.page.id)} page={props.page} setPage={props.setPage} />
-                    </View>
-                )
-            }
+                {
+                    props.page.page === 'detailKeyword' &&
+                    (
+                        <DetailKeyword keyword={keywords.find(k => k.ID === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                    )
+                }
 
-            {
-                props.page.page === 'detailKeyword' &&
-                (
-                    <View style={styles.detail}>
-                        <DetailKeyword keyword={keywords.find(k => k.ID === props.page.id)} page={props.page} setPage={props.setPage} />
-                    </View>
-                )
-            }
+                <Button
+                    title="SLUIT"
+                    onPress={() => handleClosePopUp(props.setPage, props.page)}
+                />
+            </Overlay>
         </View>
     );
 }
@@ -47,63 +100,26 @@ export default function Ipad(props: { keyword, page, setPage }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f5f5f5',
     },
-    detail: {
+
+    homeScreen: {
+        flex: 1,
+        justifyContent: 'space-between',
+    },
+
+    projectList: {
         position: 'absolute',
-        // top: '50%',
-        // left: '50%',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
+        backgroundColor: '#751d1dff',
     },
-    projectCard: {
-        backgroundColor: '#ffffff',
-        padding: 16,
-        marginHorizontal: 16,
-        marginVertical: 8,
-        borderRadius: 12,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    projectCode: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#1a1a1a',
-        marginBottom: 8,
-    },
-    clusterLabel: {
-        fontSize: 16,
-        color: '#2563eb',
-        fontWeight: '600',
-        marginBottom: 16,
-    },
-    section: {
-        marginTop: 12,
-    },
-    sectionTitle: {
-        fontSize: 14,
-        fontWeight: '600',
-        color: '#4b5563',
-        marginBottom: 8,
-        textTransform: 'uppercase',
-        letterSpacing: 0.5,
-    },
-    tag: {
-        backgroundColor: '#e0e7ff',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 16,
-        marginRight: 8,
-        marginBottom: 8,
-        alignSelf: 'flex-start',
-    },
-    tagText: {
-        fontSize: 13,
-        color: '#3730a3',
-        fontWeight: '500',
-    },
-    separator: {
-        height: 8,
-    },
+
+    overlay: {
+        backgroundColor: 'pink',
+        width: '90%',
+        height: '90%',
+    }
 });
