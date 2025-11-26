@@ -7,7 +7,7 @@ export default function DiscoverCard(props: { project, page, setPage }) {
     // const imagePath = imagePaths.find(i => i === project.CCODE);
     // console.log(imagePath);
 
-    const image = require('../assets/images/visualizationsProjects/AHUMAIN.png')
+    const image = require('../../assets/images/visualizationsProjects/AHUMAIN.png')
 
     const handleOpenDetail = () => {
         console.log(props.project.CCODE);

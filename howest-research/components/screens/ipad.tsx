@@ -1,5 +1,5 @@
 import DetailKeyword from "@/components/pages/detailKeyword";
-import DetailPage from "@/components/detailPage";
+import DetailPage from "@/components/pages/detailPage";
 import { FlashList } from "@shopify/flash-list";
 import { StyleSheet, View } from 'react-native';
 import data from '../../assets/data/structured-data.json';
