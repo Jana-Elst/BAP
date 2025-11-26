@@ -154,10 +154,10 @@ const textCompositions = [
     {
         total: 5,
         positions: [
-            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "green", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "red", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
-            { position: ['R-0', 'T+0', 0], color: "orange", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'B+0', 0], color: "green", anchorPointObject: 'W', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['L-0', 'B+0', 0], color: "red", anchorPointObject: 'Z', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['L-0', 'T+0', 0], color: "orange", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-right' },
             { position: ['R-0', 'T+0', 0], color: "yellow", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
             { position: ['R-0', 'T+0', 0], color: "blue", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
@@ -287,7 +287,8 @@ const loadGLBModel = (scene, modelPath, boxInformation, textInformation, type) =
                         } else if (child.name.includes("color")) {
                             child.material = materials.color;
                         } else {
-                            child.material = materials.color;
+                            // child.material = materials.transparent;
+                            child.visible = false;
                         }
                     }
                 });
@@ -337,7 +338,8 @@ const loadGLBModel = (scene, modelPath, boxInformation, textInformation, type) =
                     //boxInformation = voorgedefinieerde informatie
                     //boxSize = brekende grooote van de box
                     //group = model + bounding box
-                    setPostionFromAnchorPoint(boxInformation, groupSize, group);
+                    const position = setPostionFromAnchorPoint(boxInformation, groupSize);
+                    group.position.set(position.x, position.y, position.z);
 
 
                     const groupCenter = new THREE.Box3().setFromObject(group).getCenter(new THREE.Vector3());
@@ -374,7 +376,9 @@ const loadGLBModel = (scene, modelPath, boxInformation, textInformation, type) =
     })
 };
 
-const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
+const setPostionFromAnchorPoint = (boxInformation, boxSize) => {
+    console.log('info ANCHOR', boxInformation, boxSize);
+
     //set position
     const anchorPoint = boxInformation.anchorPoint.split('-');
 
@@ -384,6 +388,8 @@ const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
 
     let positionX = 0;
     let positionY = 0;
+
+    let x, y, z;
 
     if (positionXStr.includes('+')) {
         const positions = [parseFloat(positionXStr.split('+')[0]), parseFloat(positionXStr.split('+')[1])];
@@ -407,21 +413,23 @@ const setPostionFromAnchorPoint = (boxInformation, boxSize, element) => {
 
     //anchorPoint left-right
     if (anchorPoint[1] === 'left') {
-        element.position.x = positionX + boxSize.x / 2;
+        x = positionX + boxSize.x / 2;
     } else if (anchorPoint[1] === 'right') {
-        element.position.x = positionX - boxSize.x / 2;
+        x = positionX - boxSize.x / 2;
     }
 
     //anchorPoint top-bottom
     if (anchorPoint[0] === 'top') {
-        element.position.y = positionY - boxSize.y / 2;
+        y = positionY - boxSize.y / 2;
     } else if (anchorPoint[0] === 'bottom') {
-        element.position.y = positionY + boxSize.y / 2;
+        y = positionY + boxSize.y / 2;
     }
 
-    // element.position.z = boxInformation.position[2] - boxSize.z / 2;
-    // element.position.z = -boxSize.z / 2;
-    element.position.z = 0;
+    // z = boxInformation.position[2] - boxSize.z / 2;
+    // z = -boxSize.z / 2;
+    z = 0;
+
+    return { x, y, z };
 }
 
 
@@ -505,12 +513,15 @@ const showLabels = (scene, projectKeywords) => {
     const textComposition = textCompositions[lenghtKeywords - 1].positions;
 
     projectKeywords.forEach((keyword, index) => {
-        // createText(scene, keyword.Label, textComposition[index], 'white');
-        createLines(scene, textComposition[index], connectionPoints[index + 1]);
+        const textInformation = textComposition[index];
+        const connectionPointsInformation = connectionPoints[index + 1]
+
+        const boxSize = createText(scene, keyword.Label, textComposition[index], 'white');
+        createLines(scene, textComposition[index], connectionPointsInformation, boxSize);
     });
 
     //for cluster - JANA
-    createLines(scene, textComposition[0], connectionPoints[0]);
+    // createLines(scene, textComposition[0], connectionPoints[0]);
 }
 
 const createText = (scene, text: string, textComposition: [number, number, number], color: string) => {
@@ -575,7 +586,8 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
     const textBox = new THREE.Mesh(geometry, material);
     const boxSize = new THREE.Box3().setFromObject(textBox).getSize(new THREE.Vector3());
 
-    setPostionFromAnchorPoint(textComposition, boxSize, textBox);
+    const position = setPostionFromAnchorPoint(textComposition, boxSize);
+    textBox.position.set(position.x, position.y, position.z);
 
     textBox.renderOrder = 999;
     textBox.material.forEach(m => {
@@ -584,13 +596,22 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
         }
     });
     scene.add(textBox);
+
+    return {
+        x: boxSize.x,
+        y: boxSize.y,
+        z: boxSize.z
+    };
 }
 
-const createLines = (scene, textComposition, connectionPoint) => {
+const createLines = (scene, textComposition, connectionPoint, boxSize) => {
     console.log('Create line to:', textComposition);
     console.log('Start line at:', connectionPoint);
+
+    const startPosition = setPostionFromAnchorPoint(textComposition, boxSize); //boxSize van tekst
+
     const points = [
-        new THREE.Vector3(3, 3, 3), //anchorpoint thingy aanpassen
+        new THREE.Vector3(startPosition.x, startPosition.y, startPosition.z),
         new THREE.Vector3(connectionPoint.x, connectionPoint.y, connectionPoint.z),
     ];
 
@@ -599,26 +620,25 @@ const createLines = (scene, textComposition, connectionPoint) => {
 
 
     // // Create tube geometry for the line
-    const tubeGeometry = new THREE.TubeGeometry(curve, 20, 0.02, 8, false);
+    const tubeGeometry = new THREE.TubeGeometry(curve, 20, 0.05, 8, false);
 
     // Create material with box color
-    const lineMaterial = new THREE.MeshBasicMaterial({
-        color: textComposition.color,
-        transparent: true,
-        opacity: 0.8,
-        depthTest: true,
-    });
+    const lineMaterial = materials.color;
 
     const lineMesh = new THREE.Mesh(tubeGeometry, lineMaterial);
     lineMesh.renderOrder = -1;
     scene.add(lineMesh);
 
-    // Optional: Add a sphere at the start position to visualize it
-    // const sphereGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-    // const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-    // const startSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    // startSphere.position.copy(startPosition);
-    // scene.add(startSphere);
+    //add sphere at begin and end
+    const sphereGeometry = new THREE.SphereGeometry(0.05, 20, 20);
+    const sphereMaterial = materials.color;
+    const sphereStart = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphereStart.position.set(startPosition.x, startPosition.y, startPosition.z);
+    scene.add(sphereStart);
+
+    const sphereEnd = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphereEnd.position.set(connectionPoint.x, connectionPoint.y, connectionPoint.z);
+    scene.add(sphereEnd);
 }
 
 //---------------------------- BUILD SCENE ----------------------------//
