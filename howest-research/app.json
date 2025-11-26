@@ -55,7 +55,6 @@
             "./assets/fonts/OpenSans/OpenSans-Regular.ttf",
             "./assets/fonts/OpenSans/OpenSans-SemiBold.ttf",
             "./assets/fonts/OpenSans/OpenSans-SemiBoldItalic.ttf",
-
             "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf",
             "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf",
             "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Light.otf",
@@ -63,20 +62,83 @@
           ],
           "android": {
             "fonts": [
-              { 
-              "fontFamily": "VAGRounded",
-              "fontDefinitions": [
+              {
+                "fontFamily": "VAGRounded",
+                "fontDefinitions": [
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf", "weight": "900", "style": "black"
+                    "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf",
+                    "weight": "900",
+                    "style": "black"
                   },
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf", "weight": "700", "style": "bold"
+                    "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf",
+                    "weight": "700",
+                    "style": "bold"
                   },
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Light.otf", "weight": "300", "style": "light"
+                    "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Light.otf",
+                    "weight": "300",
+                    "style": "light"
                   },
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Thin.otf", "weight": "100", "style": "thin"
+                    "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Thin.otf",
+                    "weight": "100",
+                    "style": "thin"
+                  }
+                ]
+              },
+              {
+                "fontFamily": "OpenSans",
+                "fontDefinitions": [
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-Bold.ttf",
+                    "weight": "700",
+                    "style": "bold"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-BoldItalic.ttf",
+                    "weight": "700",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-ExtraBold.ttf",
+                    "weight": "800",
+                    "style": "bold"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-ExtraBoldItalic.ttf",
+                    "weight": "800",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-Italic.ttf",
+                    "weight": "400",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-Light.ttf",
+                    "weight": "300",
+                    "style": "light"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-LightItalic.ttf",
+                    "weight": "300",
+                    "style": "italic"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-Regular.ttf",
+                    "weight": "400",
+                    "style": "normal"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-SemiBold.ttf",
+                    "weight": "600",
+                    "style": "bold"
+                  },
+                  {
+                    "path": "./assets/fonts/OpenSans/OpenSans-SemiBoldItalic.ttf",
+                    "weight": "600",
+                    "style": "italic"
                   }
                 ]
               }
@@ -94,7 +156,6 @@
               "./assets/fonts/OpenSans/OpenSans-Regular.ttf",
               "./assets/fonts/OpenSans/OpenSans-SemiBold.ttf",
               "./assets/fonts/OpenSans/OpenSans-SemiBoldItalic.ttf",
-
               "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf",
               "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf",
               "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Light.otf",
