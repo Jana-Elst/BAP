@@ -67,16 +67,16 @@
               "fontFamily": "VAGRounded",
               "fontDefinitions": [
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf", weight: "900", style: "black"
+                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf", "weight": "900", "style": "black"
                   },
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf", weight: "700", style: "bold"
+                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf", "weight": "700", "style": "bold"
                   },
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Light.otf", weight: "300", style: "light"
+                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Light.otf", "weight": "300", "style": "light"
                   },
                   {
-                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Thin.otf", weight: "100", style: "thin"
+                  "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Thin.otf", "weight": "100", "style": "thin"
                   }
                 ]
               }
