@@ -1,5 +1,5 @@
-import ExternalScreen from "@/components/externalDisplay";
-import Ipad from "@/components/ipad";
+import ExternalScreen from "@/components/screens/externalDisplay";
+import Ipad from "@/components/screens/ipad";
 import React, { useState } from "react";
 import { Text, View } from 'react-native';
 import ExternalDisplay, {

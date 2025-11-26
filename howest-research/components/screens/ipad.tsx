@@ -1,9 +1,9 @@
-import DetailKeyword from "@/components/detailKeyword";
+import DetailKeyword from "@/components/pages/detailKeyword";
 import DetailPage from "@/components/detailPage";
 import { FlashList } from "@shopify/flash-list";
 import { StyleSheet, View } from 'react-native';
-import data from '../assets/data/structured-data.json';
-import DiscoverCard from "../components/discoverCard";
+import data from '../../assets/data/structured-data.json';
+import DiscoverCard from "../molecules/discoverCard";
 
 export default function Ipad(props: { keyword, page, setPage }) {
     const projects = data.projects;

@@ -1,9 +1,9 @@
 import { FlashList } from "@shopify/flash-list";
 import { StyleSheet, Text, View } from 'react-native';
-import data from '../assets/data/structured-data.json';
-import DiscoverCard from "../components/discoverCard";
-import BTNBack from './BTNBack';
-import BTNClose from './BTNClose';
+import data from '../../assets/data/structured-data.json';
+import DiscoverCard from "../molecules/discoverCard";
+import BTNBack from '../atoms/BTNBack';
+import BTNClose from '../atoms/BTNClose';
 
 // import { createImagePaths } from '../scripts/create-image-paths';
 

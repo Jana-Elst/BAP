@@ -63,7 +63,7 @@
           "android": {
             "fonts": [
               {
-                "fontFamily": "VAGRounded",
+                "fontFamily": "VAGRoundedStd",
                 "fontDefinitions": [
                   {
                     "path": "./assets/fonts/VAGRoundedStd/VAGRoundedStd-Black.otf",

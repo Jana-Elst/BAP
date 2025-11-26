@@ -1,13 +1,17 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import data from '../assets/data/structured-data.json';
-import BTNBack from './BTNBack';
-import BTNClose from './BTNClose';
+import BTNBack from './atoms/BTNBack';
+import BTNClose from './atoms/BTNClose';
+import { Colors, Fonts } from '@/constants/theme';
 
 // import { createImagePaths } from '../scripts/create-image-paths';
 
 export default function DetailPage(props: { project, page, setPage }) {
     const keywords = data.keywords;
     const clusters = data.clusters;
+
+    console.log('FONT', Fonts);
+    console.log('FONT SANS', Fonts.sans);
 
     const handleOpendetailKeyword = (keywordId) => {
         console.log(keywordId);
@@ -32,7 +36,7 @@ export default function DetailPage(props: { project, page, setPage }) {
                 props.page.previousPages.length > 1 && <BTNBack project={props.project} page={props.page} setPage={props.setPage} />
             }
 
-            <Text>{props.project.CCODE}</Text>
+            <Text style={{ fontFamily: Fonts.rounded.bold, fontSize: 32, fontWeight: 'bold', backgroundColor: Colors.blue100 }}>{props.project.CCODE}</Text>
             <Text>
                 {clusters.find(c => c.Id === props.project.ClusterId)?.Label}
             </Text>

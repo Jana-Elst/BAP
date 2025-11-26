@@ -38,10 +38,7 @@ const purple50 = '#C8BFDD';
 const purple25 = '#E1DCEB';
 const purple10 = '#F2F1F8';
 
-
-
 export const Colors = {
-  light: {
     white: white,
     black: black,
 
@@ -74,66 +71,88 @@ export const Colors = {
     purple50: purple50,
     purple25: purple25,
     purple10: purple10,
-  },
-  dark: {
-    white: white,
-    black: black,
-
-    blue100: blue100,
-    blue80: blue80,
-    blue50: blue50,
-    blue25: blue25,
-    blue10: blue10,
-
-    pink100: pink100,
-    pink80: pink80,
-    pink50: pink50,
-    pink25: pink25,
-    pink10: pink10,
-
-    yellow100: yellow100,
-    yellow80: yellow80,
-    yellow50: yellow50,
-    yellow25: yellow25,
-    yellow10: yellow10,
-
-    green100: green100,
-    green80: green80,
-    green50: green50,
-    green25: green25,
-    green10: green10,
-
-    purple100: purple100,
-    purple80: purple80,
-    purple50: purple50,
-    purple25: purple25,
-    purple10: purple10,
-  },
+  
 };
 
 export const Fonts = Platform.select({
   ios: {
-    sans: 'VAGRounded',
-    serif: 'VAGRounded',
-    rounded: 'VAGRounded',
-    mono: 'VAGRounded',
+    sans: {
+      bold: 'OpenSans-Bold',
+      boldItalic: 'OpenSans-BoldItalic',
+      ExtraBold: 'OpenSans-ExtraBold',
+      ExtraBoldItalic: 'OpenSans-ExtraBoldItalic',
+      italic: 'OpenSans-Italic',
+      light: 'OpenSans-Light',
+      lightItalic: 'OpenSans-LightItalic',
+      regular: 'OpenSans-Regular',
+      semiBold: 'OpenSans-SemiBold',
+      semiBoldItalic: 'OpenSans-SemiBoldItalic',
+    },
+    rounded: {
+      black: 'VAGRoundedStd-Black',
+      bold: 'VAGRoundedStd-Bold',
+      light: 'VAGRoundedStd-Light',
+      thin: 'VAGRoundedStd-Thin',
+    }
   },
   android: {
-    sans: 'VAGRounded',
-    serif: 'VAGRounded',
-    rounded: 'VAGRounded',
-    mono: 'VAGRounded',
+    sans: {
+      bold: 'VAGRoundedStd-Bold',
+      boldItalic: 'VAGRoundedStd-BoldItalic',
+      ExtraBold: 'VAGRoundedStd-ExtraBold',
+      ExtraBoldItalic: 'VAGRoundedStd-ExtraBoldItalic',
+      italic: 'VAGRoundedStd-Italic',
+      light: 'VAGRoundedStd-Light',
+      lightItalic: 'VAGRoundedStd-LightItalic',
+      regular: 'VAGRoundedStd-Regular',
+      semiBold: 'VAGRoundedStd-SemiBold',
+      semiBoldItalic: 'VAGRoundedStd-SemiBoldItalic',
+    },
+    rounded: {
+      black: 'VAGRoundedStd-Black',
+      bold: 'VAGRoundedStd-Bold',
+      light: 'VAGRoundedStd-Light',
+      thin: 'VAGRoundedStd-Thin',
+    }
   },
   default: {
-    sans: 'VAGRounded',
-    serif: 'VAGRounded',
-    rounded: 'VAGRounded',
-    mono: 'VAGRounded',
+    sans: {
+      bold: 'VAGRoundedStd-Bold',
+      boldItalic: 'VAGRoundedStd-BoldItalic',
+      ExtraBold: 'VAGRoundedStd-ExtraBold',
+      ExtraBoldItalic: 'VAGRoundedStd-ExtraBoldItalic',
+      italic: 'VAGRoundedStd-Italic',
+      light: 'VAGRoundedStd-Light',
+      lightItalic: 'VAGRoundedStd-LightItalic',
+      regular: 'VAGRoundedStd-Regular',
+      semiBold: 'VAGRoundedStd-SemiBold',
+      semiBoldItalic: 'VAGRoundedStd-SemiBoldItalic',
+    },
+    rounded: {
+      black: 'VAGRoundedStd-Black',
+      bold: 'VAGRoundedStd-Bold',
+      light: 'VAGRoundedStd-Light',
+      thin: 'VAGRoundedStd-Thin',
+    }
   },
   web: {
-    sans: "'VAGRounded', sans-serif",
-    serif: "'VAGRounded', serif",
-    rounded: "'VAGRounded', sans-serif",
-    mono: "'VAGRounded', monospace",
+    sans: {
+      bold: 'VAGRoundedStd-Bold',
+      boldItalic: 'VAGRoundedStd-BoldItalic',
+      ExtraBold: 'VAGRoundedStd-ExtraBold',
+      ExtraBoldItalic: 'VAGRoundedStd-ExtraBoldItalic',
+      italic: 'VAGRoundedStd-Italic',
+      light: 'VAGRoundedStd-Light',
+      lightItalic: 'VAGRoundedStd-LightItalic',
+      regular: 'VAGRoundedStd-Regular',
+      semiBold: 'VAGRoundedStd-SemiBold',
+      semiBoldItalic: 'VAGRoundedStd-SemiBoldItalic',
+    },
+    rounded: {
+      black: 'VAGRoundedStd-Black',
+      bold: 'VAGRoundedStd-Bold',
+      light: 'VAGRoundedStd-Light',
+      thin: 'VAGRoundedStd-Thin',
+    }
   },
 });
