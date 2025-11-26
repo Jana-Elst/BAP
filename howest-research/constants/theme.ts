@@ -113,25 +113,27 @@ export const Colors = {
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+    sans: 'VAGRounded',
+    serif: 'VAGRounded',
+    rounded: 'VAGRounded',
+    mono: 'VAGRounded',
+  },
+  android: {
+    sans: 'VAGRounded',
+    serif: 'VAGRounded',
+    rounded: 'VAGRounded',
+    mono: 'VAGRounded',
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: 'VAGRounded',
+    serif: 'VAGRounded',
+    rounded: 'VAGRounded',
+    mono: 'VAGRounded',
   },
   web: {
-    sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-    serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
-    mono: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace",
+    sans: "'VAGRounded', sans-serif",
+    serif: "'VAGRounded', serif",
+    rounded: "'VAGRounded', sans-serif",
+    mono: "'VAGRounded', monospace",
   },
 });
