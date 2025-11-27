@@ -1,9 +1,8 @@
 import { Image } from 'expo-image';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default function DiscoverCard(props: { project, page, setPage, isVisible }) {
+const ProjectCard = (props: { project, page, setPage, isVisible }) => {
     const image = require('../../assets/images/visualizationsProjects/AHUMAIN.png')
-
 
     const handleOpenDetail = () => {
         console.log('DETAIL', props.page.page, props.page.id);
@@ -24,14 +23,16 @@ export default function DiscoverCard(props: { project, page, setPage, isVisible 
     return (
         <TouchableOpacity onPress={handleOpenDetail} style={styles.container} >
             <Text> {props.project.CCODE}</Text>
-            {/* <Image
+            <Image
                 style={styles.image}
                 source={image}
                 contentFit="cover"
-            /> */}
+            />
         </TouchableOpacity>
     )
 }
+
+export default ProjectCard
 
 const styles = StyleSheet.create({
     container: {
