@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 export default function DiscoverCard(props: { project, page, setPage, isVisible }) {
     const image = require('../../assets/images/visualizationsProjects/AHUMAIN.png')
 
+
     const handleOpenDetail = () => {
         console.log('DETAIL', props.page.page, props.page.id);
         props.setPage({

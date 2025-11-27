@@ -1,86 +1,96 @@
 import { StyleSheet, View, PanResponder } from 'react-native';
-import { Image } from 'expo-image';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, use } from 'react';
 import { InfiniteGrid } from "../../scripts/infiniteGrid";
 import DiscoverCard from '../molecules/discoverCard';
-
-const originalSize = { w: 1522, h: 1238 };
-
-const images = [
-    require('../../assets/imgExample/image-1.jpg'),
-    require('../../assets/imgExample/image-2.jpg'),
-    require('../../assets/imgExample/image-3.jpg'),
-    require('../../assets/imgExample/image-4.jpg'),
-    require('../../assets/imgExample/image-5.jpg'),
-    require('../../assets/imgExample/image-6.jpg'),
-    require('../../assets/imgExample/image-7.jpg'),
-    require('../../assets/imgExample/image-8.jpg'),
-    require('../../assets/imgExample/image-9.jpg'),
-]
+import getPositions from '../../scripts/placeCards';
 
 //position on screen
-const data = [
-    { x: 71, y: 58, w: 400, h: 270 },
-    { x: 211, y: 255, w: 540, h: 360 },
-    { x: 631, y: 158, w: 400, h: 270 },
-    { x: 1191, y: 245, w: 260, h: 195 },
-    { x: 351, y: 687, w: 260, h: 290 },
-    { x: 751, y: 824, w: 205, h: 154 },
-    { x: 911, y: 540, w: 260, h: 350 },
-    { x: 1051, y: 803, w: 400, h: 300 },
-    { x: 71, y: 922, w: 350, h: 260 },
-];
+// const data = [
+//     { x: 300, y: 0, w: 300, h: 300 },
+//     { x: 600, y: 0, w: 300, h: 300 },
+//     { x: 900, y: 0, w: 300, h: 300 },
+//     { x: 1200, y: 0, w: 300, h: 300 },
+//     { x: 1500, y: 0, w: 300, h: 300 },
+//     { x: 1800, y: 0, w: 300, h: 300 },
+//     { x: 2100, y: 0, w: 300, h: 300 },
+//     { x: 2400, y: 0, w: 300, h: 300 },
+//     { x: 2700, y: 0, w: 300, h: 300 },
+// ];
 
 const InfiniteGridComponent = (props: { projects, page, setPage, isVisible }) => {
     const [items, setItems] = useState([]);
     const gridRef = useRef(null); //store infinite grid object
     const lastPanRef = useRef({ x: 0, y: 0 });
 
-    const panResponderRef = useRef(
-        PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: (e, { dx, dy }) => {
+    const data = props.projects.map((project, index) => {
+        return {
+            x: (index * 300),
+            y: 0,
+            w: 300,
+            h: 300,
+        }
+    });
 
-                // Calculate delta from last position
-                const deltaX = dx - lastPanRef.current.x;
-                const deltaY = dy - lastPanRef.current.y;
+    // const [data, setData] = useState(
+    //     getPositions(
+    //         props.projects.length,
+    //         5000,
+    //         5000,
+    //         300,
+    //         300
+    //     )
+    // );
 
-                lastPanRef.current = { x: dx, y: dy };
+    // console.log('DATA POSITIONS:', data);
 
-                if (gridRef.current) {
-                    gridRef.current.onScroll(deltaX, deltaY);
-                }
-            },
-            onPanResponderRelease: () => {
-                lastPanRef.current = { x: 0, y: 0 };
-            },
-        }),
-    ).current;
+const originalSize = { w: 300 * props.projects.length, h: 300 * props.projects.length };
+// const originalSize = { w: 5000, h: 5000 };
 
-    useEffect(() => {
-        gridRef.current = InfiniteGrid({
-            sources: images,
-            data: data,
-            originalSize: originalSize,
-            onItemsUpdate: setItems,
-        });
+const panResponderRef = useRef(
+    PanResponder.create({
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderMove: (e, { dx, dy }) => {
 
-        gridRef.current.start();
+            // Calculate delta from last position
+            const deltaX = dx - lastPanRef.current.x;
+            const deltaY = dy - lastPanRef.current.y;
 
-        return () => {
+            lastPanRef.current = { x: dx, y: dy };
+
             if (gridRef.current) {
-                gridRef.current.destroy();
+                gridRef.current.onScroll(deltaX, deltaY);
             }
-        };
-    }, []);
+        },
+        onPanResponderRelease: () => {
+            lastPanRef.current = { x: 0, y: 0 };
+        },
+    }),
+).current;
 
-    return (
-        <View
-            style={styles.images}
-            {...panResponderRef.panHandlers}
-        >
-            <View>
-                {items.map((item, index) => (
+useEffect(() => {
+    gridRef.current = InfiniteGrid({
+        data: data,
+        originalSize: originalSize,
+        onItemsUpdate: setItems,
+    });
+
+    gridRef.current.start();
+
+    return () => {
+        if (gridRef.current) {
+            gridRef.current.destroy();
+        }
+    };
+}, []);
+
+return (
+    <View
+        style={styles.images}
+        {...panResponderRef.panHandlers}
+    >
+        <View>
+            {items.map((item, index) => {
+                return (
                     <View
                         key={index}
                         style={{
@@ -91,15 +101,14 @@ const InfiniteGridComponent = (props: { projects, page, setPage, isVisible }) =>
                             top: item.translateY,
                         }}
                     >
-                        <Image
-                            source={item.src}
-                            style={{ width: '100%', height: '100%' }}
-                        />
+                        <DiscoverCard project={props.projects[index % props.projects.length]} page={props.page} setPage={props.setPage} isVisible={props.isVisible} />
                     </View>
-                ))}
-            </View>
+                )
+            }
+            )}
         </View>
-    );
+    </View>
+);
 };
 
 export default InfiniteGridComponent;

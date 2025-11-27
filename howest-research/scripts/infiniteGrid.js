@@ -22,15 +22,15 @@ export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => 
     let tileSize;
 
     //-------------------- HELPER FUNCTIONS --------------------//
-    const onResize = ({ sources, data, originalSize, onItemsUpdate }) => {
+    const onResize = ({ data, originalSize, onItemsUpdate }) => {
         const { width: w, height: h } = Dimensions.get('window');
         winW = w;
         winH = h;
 
         //size of the area where the images are positioned
         tileSize = {
-            w: winW,
-            h: (winW) * (originalSize.h / originalSize.w),
+            w: originalSize.w,
+            h: originalSize.w,
         };
 
         scroll.current = { x: 0, y: 0 };
@@ -40,13 +40,21 @@ export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => 
         const baseItems = data.map((d, i) => {
             const scaleX = tileSize.w / originalSize.w;
             const scaleY = tileSize.h / originalSize.h;
-            const source = sources[i % sources.length];
+            // const source = sources[i % sources.length];
+            // return {
+            //     src: source,
+            //     x: d.x * scaleX,
+            //     y: d.y * scaleY,
+            //     w: d.w * scaleX,
+            //     h: d.h * scaleY
+            // };
+
             return {
-                src: source,
-                x: d.x * scaleX,
-                y: d.y * scaleY,
-                w: d.w * scaleX,
-                h: d.h * scaleY
+                // src: source,
+                x: d.x,
+                y: d.y,
+                w: d.w,
+                h: d.h
             };
         });
 
