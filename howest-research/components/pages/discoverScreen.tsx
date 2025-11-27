@@ -48,75 +48,71 @@ const DiscoverScreen = () => {
 const InfiniteGridComponent = () => {
     const [items, setItems] = useState([]);
     const gridRef = useRef(null); //store infinite grid object
-    // const panResponderRef = useRef(null);
-
-    const pan = useRef(new Animated.ValueXY()).current;
+    const lastPanRef = useRef({ x: 0, y: 0 });
 
     const panResponderRef = useRef(
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
+            onPanResponderMove: (e, { dx, dy }) => {
+                // Calculate delta from last position
+                const deltaX = dx - lastPanRef.current.x;
+                const deltaY = dy - lastPanRef.current.y;
+
+                lastPanRef.current = { x: dx, y: dy };
+
+                // Pass to InfiniteGrid
+                if (gridRef.current) {
+                    gridRef.current.onScroll(deltaX, deltaY);
+                }
+            },
             onPanResponderRelease: () => {
-                pan.extractOffset();
+                lastPanRef.current = { x: 0, y: 0 };
             },
         }),
     ).current;
 
-    // useEffect(() => {
-    //     gridRef.current = InfiniteGrid({
-    //         sources: images,
-    //         data: data,
-    //         originalSize: originalSize,
-    //         onItemsUpdate: setItems,
-    //     });
+    useEffect(() => {
+        gridRef.current = InfiniteGrid({
+            sources: images,
+            data: data,
+            originalSize: originalSize,
+            onItemsUpdate: setItems,
+        });
 
-    //     gridRef.current.start();
+        gridRef.current.start();
 
-    //     panResponderRef.current = PanResponder.create({
-    //         //start capturing touch events
-    //         onMoveShouldSetPanResponder: () => true,
-
-    //         onPanResponderMove: (e, { dx, dy, moveX, moveY}) => {
-    //             console.log('onScroll', dx, dy, moveX, moveY);
-
-    //             if (gridRef.current) {
-    //                 gridRef.current.onScroll(dx, dy);
-    //             }
-    //         },
-    //     });
-
-    //     return () => {
-    //         if (gridRef.current) {
-    //             gridRef.current.destroy();
-    //         }
-    //     };
-    // }, []);
+        return () => {
+            if (gridRef.current) {
+                gridRef.current.destroy();
+            }
+        };
+    }, []);
 
     return (
-        <Animated.View
-            style={[styles.images, { transform: [{ translateX: pan.x }, { translateY: pan.y }]   }]}
+        <View
+            style={styles.images}
             {...panResponderRef.panHandlers}
         >
-            {images.map((image, index) => (
-                <View
-                    key={index}
-                    style={{
-                        // position: 'absolute',
-                        // width: item.w,
-                        // height: item.h,
-                        // transform: [
-                        //     { translateX: item.translateX },
-                        //     { translateY: item.translateY }
-                        // ]                  
-                    }}
-                >
-                    <Image
-                        source={image}
-                        style={{width: data[index].w, height: data[index].h, position: 'absolute', left: data[index].x, top: data[index].y }}
-                    />
-                </View>
-            ))}
-        </Animated.View>
+            <View>
+                {items.map((item, index) => (
+                    <View
+                        key={index}
+                        style={{
+                            position: 'absolute',
+                            width: item.w,
+                            height: item.h,
+                            left: item.translateX,
+                            top: item.translateY,
+                        }}
+                    >
+                        <Image
+                            source={images[index]}
+                            style={{ width: '100%', height: '100%' }}
+                        />
+                    </View>
+                ))}
+            </View>
+        </View>
     );
 };
 
@@ -129,9 +125,8 @@ const styles = StyleSheet.create({
 
     images: {
         flex: 1,
-        backgroundColor: 'blue',
-        width: originalSize.w,
-        height: originalSize.h,
+        width: '100%',
+        height: '100%',
     },
 
     image: {

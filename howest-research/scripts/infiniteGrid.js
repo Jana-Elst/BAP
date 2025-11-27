@@ -75,12 +75,12 @@ export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => 
         scroll.current.x = scroll.target.x = scroll.last.x = -winW * 0.1;
         scroll.current.y = scroll.target.y = scroll.last.y = -winH * 0.1;
 
-        // updateItems();
+        updateItems();
     }
 
     const onScroll = (deltaX, deltaY) => {
-        scroll.target.x -= deltaX;
-        scroll.target.y -= deltaY;
+        scroll.target.x += deltaX;
+        scroll.target.y += deltaY;
     }
 
     //render...???
