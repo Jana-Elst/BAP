@@ -1,13 +1,9 @@
 import { Image } from 'expo-image';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-// import { createImagePaths } from '../scripts/create-image-paths';
 
 export default function DiscoverCard(props: { project, page, setPage, isVisible }) {
-    // const imagePaths = createImagePaths();
-    // const imagePath = imagePaths.find(i => i === project.CCODE);
-    // console.log(imagePath);
-
     const image = require('../../assets/images/visualizationsProjects/AHUMAIN.png')
+
 
     const handleOpenDetail = () => {
         console.log('DETAIL', props.page.page, props.page.id);
