@@ -36,6 +36,7 @@ const getPositions = (totalProjects, containerWidth, containerHeight, cardWidth,
         getPosition(cardWidth, cardHeight, containerWidth, containerHeight, positions, overlapThreshold)
     }
 
+    console.log('Final positions:', positions);
     return positions;
 };
 
