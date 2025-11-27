@@ -1,16 +1,17 @@
 import DetailKeyword from "@/components/pages/detailKeyword";
 import DetailPage from "@/components/pages/detailPage";
 import { FlashList } from "@shopify/flash-list";
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Animated, PanResponder } from 'react-native';
 import data from '../../assets/data/structured-data.json';
 import DiscoverCard from "../molecules/discoverCard";
 import OverlayComponent from "../organisms/overlay";
 import { Button, Overlay } from '@rneui/themed';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyledText } from "../atoms/styledComponents";
 import BTNBack from "../atoms/BTNBack";
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
+import DiscoverScreen from "../pages/discoverScreen";
 
 export default function Ipad(props: { keyword, page, setPage }) {
     const projects = data.projects;
@@ -51,20 +52,7 @@ export default function Ipad(props: { keyword, page, setPage }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.homeScreen}>
-                <View>
-                    <Header project={null} page={props.page} setPage={props.setPage} />
-                </View>
-                <FlashList
-                    data={projects}
-                    renderItem={({ item: project }) =>
-                        <DiscoverCard project={project} page={props.page} setPage={props.setPage} isVisible={isVisible} />
-                    }
-                    estimatedItemSize={200}
-                    style={styles.projectList}
-                />
-                <Footer />
-            </View>
+            <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} />
 
             <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>
                 <View style={styles.overlayContent}>
@@ -94,7 +82,7 @@ export default function Ipad(props: { keyword, page, setPage }) {
                     />
                 </View>
             </Overlay>
-        </View>
+        </View >
     );
 }
 
@@ -108,7 +96,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    projectList: {
+    projectListContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
@@ -117,13 +105,27 @@ const styles = StyleSheet.create({
         zIndex: -1,
     },
 
+    projectList: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: 16,
+        padding: 16,
+    },
+
+    cardWrapper :{
+        backgroundColor: 'yellow',
+        position: 'absolute',
+        top: 50,
+        left: '50%',
+    },
+
     overlay: {
         width: '100%',
         height: '100%',
     },
 
     overlayContent: {
-        backgroundColor:'green',
+        backgroundColor: 'green',
         flex: 1,
     }
 });
