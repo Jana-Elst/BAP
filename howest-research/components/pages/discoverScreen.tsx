@@ -1,11 +1,12 @@
 import { FlashList } from "@shopify/flash-list";
-import { StyleSheet, View, PanResponder, Dimensions } from 'react-native';
+import { StyleSheet, View, PanResponder, Dimensions, Animated } from 'react-native';
 import { Image } from 'expo-image';
 import DiscoverCard from "../molecules/discoverCard";
 import React, { useState, useRef, useEffect } from 'react';
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
 import { InfiniteGrid } from "../../scripts/infiniteGrid";
+import { or } from "three/src/nodes/TSL.js";
 
 const { windowWidth, windowHeight } = Dimensions.get('window');
 
@@ -44,77 +45,78 @@ const DiscoverScreen = () => {
 };
 
 // Separate component for infinite layer effect
-// const InfiniteGrid = () => {
-//     return (
-//         <View style={styles.images}>
-//             {images.map((img, index) => (
-//                 <Image
-//                     key={index}
-//                     source={img}
-//                     style={[styles.image, { top: data[index].y, left: data[index].x, width: data[index].w, height: data[index].h }]}
-//                 />
-//             ))}
-//         </View>
-//     );
-// };
-
 const InfiniteGridComponent = () => {
     const [items, setItems] = useState([]);
-    const gridRef = useRef(null);
-    const panResponderRef = useRef(null);
+    const gridRef = useRef(null); //store infinite grid object
+    // const panResponderRef = useRef(null);
 
-    useEffect(() => {
-        gridRef.current = new InfiniteGrid({
-            sources: images,
-            data: data,
-            originalSize: originalSize,
-            onItemsUpdate: setItems,
-        });
+    const pan = useRef(new Animated.ValueXY()).current;
 
-        gridRef.current.start();
-
-        panResponderRef.current = PanResponder.create({
-            onStartShouldSetPanResponder: () => true,
+    const panResponderRef = useRef(
+        PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
-            onPanResponderMove: (evt, { dx, dy }) => {
-                if (gridRef.current) {
-                    gridRef.current.onScroll(dx, dy);
-                }
+            onPanResponderMove: Animated.event([null, { dx: pan.x, dy: pan.y }]),
+            onPanResponderRelease: () => {
+                pan.extractOffset();
             },
-        });
+        }),
+    ).current;
 
-        return () => {
-            if (gridRef.current) {
-                gridRef.current.destroy();
-            }
-        };
-    }, []);
+    // useEffect(() => {
+    //     gridRef.current = InfiniteGrid({
+    //         sources: images,
+    //         data: data,
+    //         originalSize: originalSize,
+    //         onItemsUpdate: setItems,
+    //     });
+
+    //     gridRef.current.start();
+
+    //     panResponderRef.current = PanResponder.create({
+    //         //start capturing touch events
+    //         onMoveShouldSetPanResponder: () => true,
+
+    //         onPanResponderMove: (e, { dx, dy, moveX, moveY}) => {
+    //             console.log('onScroll', dx, dy, moveX, moveY);
+
+    //             if (gridRef.current) {
+    //                 gridRef.current.onScroll(dx, dy);
+    //             }
+    //         },
+    //     });
+
+    //     return () => {
+    //         if (gridRef.current) {
+    //             gridRef.current.destroy();
+    //         }
+    //     };
+    // }, []);
 
     return (
-        <View
-            style={styles.images}
-            {...panResponderRef.current?.panHandlers}
+        <Animated.View
+            style={[styles.images, { transform: [{ translateX: pan.x }, { translateY: pan.y }]   }]}
+            {...panResponderRef.panHandlers}
         >
-            {items.map((item) => (
+            {images.map((image, index) => (
                 <View
-                    key={item.id}
+                    key={index}
                     style={{
-                        position: 'absolute',
-                        width: item.w,
-                        height: item.h,
-                        transform: [
-                            { translateX: item.translateX },
-                            { translateY: item.translateY }
-                        ]
+                        // position: 'absolute',
+                        // width: item.w,
+                        // height: item.h,
+                        // transform: [
+                        //     { translateX: item.translateX },
+                        //     { translateY: item.translateY }
+                        // ]                  
                     }}
                 >
                     <Image
-                        source={item.src}
-                        style={{ width: '100%', height: '100%' }}
+                        source={image}
+                        style={{width: data[index].w, height: data[index].h, position: 'absolute', left: data[index].x, top: data[index].y }}
                     />
                 </View>
             ))}
-        </View>
+        </Animated.View>
     );
 };
 
@@ -127,6 +129,9 @@ const styles = StyleSheet.create({
 
     images: {
         flex: 1,
+        backgroundColor: 'blue',
+        width: originalSize.w,
+        height: originalSize.h,
     },
 
     image: {

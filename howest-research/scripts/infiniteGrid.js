@@ -1,44 +1,43 @@
+//-------------------- IMPORTS --------------------//
 import { Animated, PanResponder, Dimensions, Platform } from 'react-native';
+//-------------------- EXPORT --------------------//
+export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => {
+    //-------------------- VARIABLES --------------------//
+    let scroll = {
+        ease: 0.5,
+        current: { x: 0, y: 0 }, //moveX and moveY
+        target: { x: 0, y: 0 },
+        last: { x: 0, y: 0 },
+        delta: { x: { c: 0, t: 0 }, y: { c: 0, t: 0 } } //dx and dy
+    };
 
-export class InfiniteGrid {
-    constructor({ sources, data, originalSize, onItemsUpdate }) {
-        this.sources = sources;
-        this.data = data;
-        this.originalSize = originalSize;
-        this.onItemsUpdate = onItemsUpdate;
+    let items = [];
+    let animationFrameId = null; //UUHMMM
+    let isDestroyed = false; //UUHMMM
 
-        this.scroll = {
-            ease: 0.085,
-            current: { x: 0, y: 0 },
-            target: { x: 0, y: 0 },
-            last: { x: 0, y: 0 },
+    let winW
+    let winH
+    let tileSize;
+
+    //-------------------- HELPER FUNCTIONS --------------------//
+    const onResize = ({ sources, data, originalSize, onItemsUpdate }) => {
+        const { width: w, height: h } = Dimensions.get('window');
+        winW = w;
+        winH = h;
+
+        tileSize = {
+            w: winW,
+            h: (winW) * (originalSize.h / originalSize.w),
         };
 
-        this.items = [];
-        this.animationFrameId = null;
-        this.isDestroyed = false;
+        scroll.current = { x: 0, y: 0 };
+        scroll.target = { x: 0, y: 0 };
+        scroll.last = { x: 0, y: 0 };
 
-        this.onResize();
-    }
-
-    onResize() {
-        const { width: winW, height: winH } = Dimensions.get('window');
-        this.winW = winW;
-        this.winH = winH;
-
-        this.tileSize = {
-            w: this.winW,
-            h: (this.winW) * (this.originalSize.h / this.originalSize.w),
-        };
-
-        this.scroll.current = { x: 0, y: 0 };
-        this.scroll.target = { x: 0, y: 0 };
-        this.scroll.last = { x: 0, y: 0 };
-
-        const baseItems = this.data.map((d, i) => {
-            const scaleX = this.tileSize.w / this.originalSize.w;
-            const scaleY = this.tileSize.h / this.originalSize.h;
-            const source = this.sources[i % this.sources.length];
+        const baseItems = data.map((d, i) => {
+            const scaleX = tileSize.w / originalSize.w;
+            const scaleY = tileSize.h / originalSize.h;
+            const source = sources[i % sources.length];
             return {
                 src: source,
                 x: d.x * scaleX,
@@ -48,14 +47,14 @@ export class InfiniteGrid {
             };
         });
 
-        this.items = [];
-        const repsX = [0, this.tileSize.w];
-        const repsY = [0, this.tileSize.h];
+        items = [];
+        const repsX = [0, tileSize.w];
+        const repsY = [0, tileSize.h];
 
         baseItems.forEach((base, baseIndex) => {
             repsX.forEach(offsetX => {
                 repsY.forEach(offsetY => {
-                    this.items.push({
+                    items.push({
                         id: `${baseIndex}-${offsetX}-${offsetY}`,
                         src: base.src,
                         x: base.x + offsetX,
@@ -70,84 +69,88 @@ export class InfiniteGrid {
             });
         });
 
-        this.tileSize.w *= 2;
-        this.tileSize.h *= 2;
+        tileSize.w *= 2;
+        tileSize.h *= 2;
 
-        this.scroll.current.x = this.scroll.target.x = this.scroll.last.x = -this.winW * 0.1;
-        this.scroll.current.y = this.scroll.target.y = this.scroll.last.y = -this.winH * 0.1;
+        scroll.current.x = scroll.target.x = scroll.last.x = -winW * 0.1;
+        scroll.current.y = scroll.target.y = scroll.last.y = -winH * 0.1;
 
-        this.updateItems();
+        // updateItems();
     }
 
-    onScroll(deltaX, deltaY) {
-        this.scroll.target.x -= deltaX;
-        this.scroll.target.y -= deltaY;
+    const onScroll = (deltaX, deltaY) => {
+        scroll.target.x -= deltaX;
+        scroll.target.y -= deltaY;
     }
 
-    updateItems() {
+    //render...???
+    const updateItems = () => {
         //let start scrolling
-        this.scroll.current.x += (this.scroll.target.x - this.scroll.current.x) * this.scroll.ease;
-        this.scroll.current.y += (this.scroll.target.y - this.scroll.current.y) * this.scroll.ease;
+        scroll.current.x += (scroll.target.x - scroll.current.x);
+        scroll.current.y += (scroll.target.y - scroll.current.y);
 
         //determine scroll direction
-        const dirX = this.scroll.current.x > this.scroll.last.x ? 'right' : 'left';
-        const dirY = this.scroll.current.y > this.scroll.last.y ? 'down' : 'up';
+        const dirX = scroll.current.x > scroll.last.x ? 'right' : 'left';
+        const dirY = scroll.current.y > scroll.last.y ? 'down' : 'up';
 
-        const updatedItems = this.items.map(item => {
-            const scrollX = this.scroll.current.x;
-            const scrollY = this.scroll.current.y;
-
-            let { extraX, extraY } = item;
+        const updatedItems = items.map(item => {
+            //how far did the user scroll?
+            const scrollX = scroll.current.x;
+            const scrollY = scroll.current.y;
 
             //current position
-            const posX = item.x + scrollX + extraX;
-            const posY = item.y + scrollY + extraY;
+            const posX = item.x + scrollX + item.extraX;
+            const posY = item.y + scrollY + item.extraY;
 
             //infinite wrap horizontal
-            const beforeX = posX > this.winW;
+            const beforeX = posX > winW;
             const afterX = posX + item.w < 0;
-            if (dirX === 'right' && beforeX) extraX -= this.tileSize.w;
-            if (dirX === 'left' && afterX) extraX += this.tileSize.w;
+            if (dirX === 'right' && beforeX) item.extraX -= tileSize.w;
+            if (dirX === 'left' && afterX) item.extraX += tileSize.w;
 
             //infinite wrap vertical
-            const beforeY = posY > this.winH;
+            const beforeY = posY > winH;
             const afterY = posY + item.h < 0;
-            if (dirY === 'down' && beforeY) extraY -= this.tileSize.h;
-            if (dirY === 'up' && afterY) extraY += this.tileSize.h;
+            if (dirY === 'down' && beforeY) item.extraY -= tileSize.h;
+            if (dirY === 'up' && afterY) item.extraY += tileSize.h;
 
             //final positions
-            const fx = item.x + scrollX + extraX;
-            const fy = item.y + scrollY + extraY;
+            const fx = item.x + scrollX + item.extraX;
+            const fy = item.y + scrollY + item.extraY;
 
             return {
                 ...item,
-                extraX,
-                extraY,
+                extraX: item.extraX,
+                extraY: item.extraY,
                 translateX: fx,
                 translateY: fy,
             };
         });
 
-        this.items = updatedItems;
-        this.onItemsUpdate(updatedItems);
+        scroll.last.x = scroll.current.x;
+        scroll.last.y = scroll.current.y;
 
-        //store position for the next frame
-        this.scroll.last.x = this.scroll.current.x;
-        this.scroll.last.y = this.scroll.current.y;
+        items = updatedItems;
+        onItemsUpdate(updatedItems);
 
-        if (!this.isDestroyed) {
-            this.animationFrameId = requestAnimationFrame(() => this.updateItems());
+        if (!isDestroyed) {
+            animationFrameId = requestAnimationFrame(() => updateItems());
         }
     }
 
-    start() {
-        this.updateItems();
+    const start = () => {
+        updateItems();
     }
 
-    destroy() {
-        this.isDestroyed = true;
-        if (this.animationFrameId) {
-            cancelAnimationFrame(this.animationFrameId);
+    const destroy = () => {
+        isDestroyed = true;
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
         }
     }
+
+    //-------------------- INIT --------------------//
+    onResize({ sources, data, originalSize, onItemsUpdate });
+
+    return { onScroll, start, destroy };
 }
