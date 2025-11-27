@@ -3,10 +3,10 @@ import Header from "../organisms/header";
 import Footer from "../organisms/footer";
 import InfiniteGridComponent from '../organisms/infiniteGrid';
 
-const DiscoverScreen = () => {
+const DiscoverScreen = (props: {projects, page, setPage, isVisible}) => {
     return (
         <View style={styles.hero}>
-            <InfiniteGridComponent />
+            <InfiniteGridComponent {...props} />
         </View>
     );
 };

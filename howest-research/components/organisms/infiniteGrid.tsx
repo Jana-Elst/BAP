@@ -2,6 +2,7 @@ import { StyleSheet, View, PanResponder } from 'react-native';
 import { Image } from 'expo-image';
 import React, { useState, useRef, useEffect } from 'react';
 import { InfiniteGrid } from "../../scripts/infiniteGrid";
+import DiscoverCard from '../molecules/discoverCard';
 
 const originalSize = { w: 1522, h: 1238 };
 
@@ -17,6 +18,7 @@ const images = [
     require('../../assets/imgExample/image-9.jpg'),
 ]
 
+//position on screen
 const data = [
     { x: 71, y: 58, w: 400, h: 270 },
     { x: 211, y: 255, w: 540, h: 360 },
@@ -29,7 +31,7 @@ const data = [
     { x: 71, y: 922, w: 350, h: 260 },
 ];
 
-const InfiniteGridComponent = () => {
+const InfiniteGridComponent = (props: { projects, page, setPage, isVisible }) => {
     const [items, setItems] = useState([]);
     const gridRef = useRef(null); //store infinite grid object
     const lastPanRef = useRef({ x: 0, y: 0 });
