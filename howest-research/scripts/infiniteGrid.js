@@ -1,7 +1,9 @@
 //-------------------- IMPORTS --------------------//
-import { Animated, PanResponder, Dimensions, Platform } from 'react-native';
+import { Dimensions } from 'react-native';
+
 //-------------------- EXPORT --------------------//
 export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => {
+    
     //-------------------- VARIABLES --------------------//
     let scroll = {
         ease: 0.5,
@@ -12,8 +14,8 @@ export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => 
     };
 
     let items = [];
-    let animationFrameId = null; //UUHMMM
-    let isDestroyed = false; //UUHMMM
+    let animationFrameId = null;
+    let isDestroyed = false;
 
     let winW
     let winH
