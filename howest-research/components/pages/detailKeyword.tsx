@@ -9,6 +9,7 @@ import BTNClose from '../atoms/BTNClose';
 
 export default function DetailKeyword(props: { keyword, page, setPage, isVisible }) {
     const projects = data.projects;
+    console.log('DETAILFILTER KEYWORD', props.keyword)
 
     const filteredProjects = projects.filter(project =>
         project.keywords?.includes(props.keyword.id)

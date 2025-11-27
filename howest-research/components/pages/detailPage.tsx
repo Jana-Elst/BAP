@@ -9,7 +9,6 @@ import { getKeywords } from '../../scripts/getData';
 // import { createImagePaths } from '../scripts/create-image-paths';
 
 export default function DetailPage(props: { page, setPage }) {
-    const keywords = data.keywords;
     const clusters = data.clusters;
     const projects = data.projects;
 
@@ -17,14 +16,13 @@ export default function DetailPage(props: { page, setPage }) {
 
     const project = projects.find(p => p.id === props.page.id);
 
-    console.log('PROJECT', project);
-    const keywordIDs = project.keywords;
+    const keywordIDs = project.transitiedomeinen;
     console.log('KEYWORD IDS', keywordIDs);
     const projectKeywords = getKeywords(keywordIDs);
     console.log('PROJECT KEYS', projectKeywords);
 
     const handleOpendetailKeyword = (keywordId) => {
-        console.log(keywordId);
+        console.log('KEYWORD ID', keywordId);
         props.setPage({
             page: 'detailKeyword',
             id: keywordId,
@@ -53,12 +51,10 @@ export default function DetailPage(props: { page, setPage }) {
                 </StyledText>
 
                 <StyledText>Keywords</StyledText>
-                {project.keywords
-                    .map(keyword => keywords.find(k => k.id === keyword && k.keywordCategoryIDs !== 3))
-                    .filter(Boolean)
-                    .map((keyword) => (
+                {projectKeywords
+                    .map(keyword => (
                         <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.id)} key={keyword.id} style={styles.tag}>
-                            <StyledText style={styles.tagStyledText}>{keyword.label}</StyledText>
+                            <StyledText style={styles.tagStyledText}>{keyword.label} {keyword.id}</StyledText>
                         </TouchableOpacity>
                     ))}
             </View>
