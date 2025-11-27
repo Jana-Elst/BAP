@@ -35,7 +35,7 @@ export default function HomeScreen() {
           <ExternalScreen page={page} />
         </ExternalDisplay>
 
-        <Ipad page={page} setPage={setPage} keyword={null} />
+        <Ipad page={page} setPage={setPage} />
       </>
     )
 
@@ -44,7 +44,7 @@ export default function HomeScreen() {
   } else {
     return (
       <View style={{ flex: 1, width: '100%', height: '100%' }}>
-        <Ipad page={page} setPage={setPage} keyword={null} />
+        <Ipad page={page} setPage={setPage} />
 
         {/* <ExternalScreen page={{
           page: 'detailResearch',

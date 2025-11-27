@@ -10,9 +10,9 @@ const projects = data.projects;
 
 export default function ExternalScreen(props: { page }) {
     if (props.page.page === 'detailResearch') {
-        const project = projects.find(p => p.ID === props.page.id);
+        const project = projects.find(p => p.id === props.page.id);
 
-        const keywordIDs = project.Keywords;
+        const keywordIDs = project.keywords;
         const projectKeywords = getKeywords(keywordIDs);
 
         return (
@@ -20,11 +20,11 @@ export default function ExternalScreen(props: { page }) {
                 <View>
                     <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{project.CCODE}</Text>
                     <Text style={{ color: 'white', fontSize: 48 }}>
-                        {clusters.find(c => c.Id === project.ClusterId)?.Label}
+                        {clusters.find(c => c.Id === project.clusterId)?.label}
                     </Text>
                     {projectKeywords
                         .map((keyword) => (
-                            <Text key={keyword.ID} style={{ color: 'white', fontSize: 24 }}>{keyword.Label}</Text>
+                            <Text key={keyword.id} style={{ color: 'white', fontSize: 24 }}>{keyword.label}</Text>
                         ))
                     }
                 </View>
@@ -42,10 +42,10 @@ export default function ExternalScreen(props: { page }) {
             </View >
         );
     } else if (props.page.page === 'detailKeyword') {
-        const keyword = keywords.find(k => k.ID === props.page.id);
+        const keyword = keywords.find(k => k.id === props.page.id);
         return (
             <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
-                <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{keyword.Label}</Text>
+                <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{keyword.label}</Text>
             </View>
         )
 

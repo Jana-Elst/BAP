@@ -4,26 +4,37 @@ import { InfiniteGrid } from "../../scripts/infiniteGrid";
 import DiscoverCard from '../molecules/discoverCard';
 import getPositions from '../../scripts/placeCards';
 
-const canvasSize = { w: 5000, h: 5000 };
+const canvasSize = { w: 1000, h: 1000 };
 
 const InfiniteGridComponent = (props: { projects, page, setPage, isVisible }) => {
     const [items, setItems] = useState([]);
     const gridRef = useRef(null); //store infinite grid object
     const lastPanRef = useRef({ x: 0, y: 0 });
 
+    // const data = useMemo(() =>
+    //     getPositions(
+    //         props.projects.length,
+    //         canvasSize.w,
+    //         canvasSize.h,
+    //         300,
+    //         300
+    //     ),
+    //     [props.projects.length]
+    // );
+
     const data = useMemo(() =>
         getPositions(
-            props.projects.length,
+            2,
             canvasSize.w,
             canvasSize.h,
             300,
             300
         ),
-        [props.projects.length]
+        []
     );
 
     // const originalSize = { w: 300 * props.projects.length, h: 300 * props.projects.length };
-    const originalSize = { w: canvasSize.w, h: canvasSize.h };
+    const originalSize = useMemo(() => ({ w: canvasSize.w, h: canvasSize.h }), [canvasSize.w, canvasSize.h]);
 
     const panResponderRef = useRef(
         PanResponder.create({
@@ -80,7 +91,7 @@ const InfiniteGridComponent = (props: { projects, page, setPage, isVisible }) =>
                                 top: item.translateY,
                             }}
                         >
-                            <DiscoverCard project={props.projects[index % props.projects.length]} page={props.page} setPage={props.setPage} isVisible={props.isVisible} />
+                            <DiscoverCard project={props.projects[index]} page={props.page} setPage={props.setPage} isVisible={props.isVisible} />
                         </View>
                     )
                 }

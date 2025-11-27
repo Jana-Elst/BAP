@@ -12,12 +12,30 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-import businessEnMedia from "../../assets/models/businessEnMedia.glb";
-import digitalSkillsEnMediaWijsheid from "../../assets/models/digitalSkillsEnMediaWijsheid.glb";
-import marketingEnCommunication from "../../assets/models/marketingEnCommunication.glb";
+import businessMedia from "../../assets/models/businessMedia.glb";
+import digitalSkillsMediawijsheid from "../../assets/models/digitalSkillsMediawijsheid.glb";
+import marketingCommunicatie from "../../assets/models/marketingCommunicatie.glb";
 import onderwijsEnVorming from "../../assets/models/onderwijsEnVorming.glb";
-import sharedCreativity from "../../assets/models/sharedCreativity.glb";
+import socialCreativity from "../../assets/models/socialCreativity.glb";
 import stemSteam from "../../assets/models/stemSteam.glb";
+
+// const importedModels = {
+//     "businessMedia": businessMedia,
+//     "digitalSkillsMediawijsheid": digitalSkillsMediawijsheid,
+//     "marketingCommunicatie": marketingCommunicatie,
+//     "onderwijsEnVorming": onderwijsEnVorming, 
+//     "socialCreativity": socialCreativity, 
+//     "stemSteam": stemSteam
+// }
+
+const importedModels = {
+    businessMedia,
+    digitalSkillsMediawijsheid,
+    marketingCommunicatie,
+    onderwijsEnVorming,
+    socialCreativity,
+    stemSteam
+};
 
 //---------------------------- CONSTANTS ----------------------------//
 //LUNA - Hier kan je de composities van de boxen aanpassen
@@ -44,31 +62,32 @@ const boxCompositions = [
     {
         total: 1,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 2,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 3,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" }
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 4,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
-            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" }]
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+        ]
     },
     {
         total: 5,
@@ -83,37 +102,37 @@ const boxCompositions = [
     {
         total: 6,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
-            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
-            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
-            { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 7,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
-            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
-            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
-            { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
-            { position: [-3, 3.2, 0], size: [1, 1, 1], color: "orange", label: "Orange Box" },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 8,
         positions: [
-            { position: [0, 0, 0], size: [4, 4, 4], color: "black", label: "Center Box" },
-            { position: [4, 3, -1], size: [2, 2, 2], color: "red", label: "Red Box" },
-            { position: [4, -2.5, 0], size: [1.4, 1.4, 1.4], color: "blue", label: "Blue Box" },
-            { position: [3, 0, 0], size: [1.2, 1.2, 1.2], color: "green", label: "Green Box" },
-            { position: [-4, 0.5, 0], size: [1.1, 1.1, 1.1], color: "yellow", label: "Yellow Box" },
-            { position: [-2.5, -3, 0], size: [1.6, 1.6, 1.6], color: "purple", label: "Purple Box" },
-            { position: [-3, 3.2, 0], size: [1, 1, 1], color: "orange", label: "Orange Box" },
-            { position: [-5, -2, 0], size: [1.8, 1.8, 1.8], color: "pink", label: "Pink Box" },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', -1.5], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' },
         ]
     },
 
@@ -124,31 +143,31 @@ const textCompositions = [
     {
         total: 1,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 2,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 3,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 4,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
-            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
@@ -165,37 +184,37 @@ const textCompositions = [
     {
         total: 6,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
-            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
-            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
-            { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 7,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
-            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
-            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
-            { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
-            { position: [-4, 2.3, -1], color: "orange", startLine: [-4, 2.3, 0] },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
     {
         total: 8,
         positions: [
-            { position: [1, 2.5, -1], color: "black", startLine: [1, 2.5, 0] },
-            { position: [5, 1.5, -1], color: "red", startLine: [5, 1.5, 0] },
-            { position: [3.5, -4, -1], color: "blue", startLine: [3.5, -4, 0] },
-            { position: [4, -1, -1], color: "green", startLine: [4, -1, 0] },
-            { position: [-5.5, 1.5, -1], color: "yellow", startLine: [-5.5, 1.5, 0] },
-            { position: [-3.5, -4.5, -1], color: "purple", startLine: [-3.5, -4.5, 0] },
-            { position: [-4, 2.3, -1], color: "orange", startLine: [-4, 2.3, 0] },
-            { position: [-5, -0.7, -1], color: "pink", startLine: [-5, -0.7, 0] }
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
+            { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'O', anchorPointText: '', anchorPoint: 'bottom-left' },
         ]
     },
 ];
@@ -241,8 +260,8 @@ const materials = {
 const opacityBoundingBox = 1; //Toon of hide bounding box
 
 //const models = [businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia, businessEnMedia];
-const models = [digitalSkillsEnMediaWijsheid, marketingEnCommunication, onderwijsEnVorming, sharedCreativity, stemSteam, businessEnMedia, businessEnMedia];
-
+// const models = [digitalSkillsEnMediaWijsheid, marketingEnCommunication, onderwijsEnVorming, sharedCreativity, stemSteam, businessEnMedia, businessEnMedia];
+let models = [];
 //---------------------------- VARIABLES ----------------------------//
 let connectionPoints = [];
 let lenghtKeywords = 0;
@@ -377,8 +396,6 @@ const loadGLBModel = (scene, modelPath, boxInformation, textInformation, type) =
 };
 
 const setPostionFromAnchorPoint = (boxInformation, boxSize) => {
-    console.log('info ANCHOR', boxInformation, boxSize);
-
     //set position
     const anchorPoint = boxInformation.anchorPoint.split('-');
 
@@ -436,11 +453,25 @@ const setPostionFromAnchorPoint = (boxInformation, boxSize) => {
 const showModelsKeywords = async (scene, projectKeywords) => {
     const boxComposition = boxCompositions[lenghtKeywords - 1].positions;
     const TextComposition = textCompositions[lenghtKeywords - 1].positions;
-    const loadPromises = models.map((modelPath, index) => {
-        if (index < boxComposition.length) {
-            const boxInformation = boxComposition[index];
-            const textInformation = TextComposition[index];
-            return loadGLBModel(scene, modelPath, boxInformation, textInformation, 'keyword');
+    const loadPromises = models.map((model, index) => {
+        console.log('Loading model:', model);
+        const boxInformation = boxComposition[index];
+        const textInformation = TextComposition[index];
+        if (importedModels.hasOwnProperty(model)) {
+            console.log('MODEL FOUND');
+            return loadGLBModel(scene, importedModels[model], boxInformation, textInformation, 'keyword');
+        } else {
+            console.log('MODEL NOT FOUND');
+
+            //create placeholder
+            const geometry = new THREE.SphereGeometry(0.5, 32, 16);
+            const material = materials.glass;
+            const sphere = new THREE.Mesh(geometry, material);
+            scene.add(sphere);
+
+            const size = new THREE.Box3().setFromObject(sphere).getSize(new THREE.Vector3());
+            const position = setPostionFromAnchorPoint(boxInformation, size);
+            sphere.position.set(position.x, position.y, position. z);
         }
         return Promise.resolve(); // Return resolved promise for skipped items
     });
@@ -451,7 +482,7 @@ const showModelsKeywords = async (scene, projectKeywords) => {
 const showModelCluster = async (scene, cluster) => {
     const boxInformation = { position: [0, 0, 0], rotation: [0, 0, 0], size: [1, 1, 1], color: "black", label: "1", anchorPoint: 'bottom-left' };
     const textInformation = { position: ['R-0', 'T+0', 0], color: "black", anchorPointObject: 'N', anchorPointText: '', anchorPoint: 'bottom-left' };
-    const modelPath = businessEnMedia;
+    const modelPath = businessMedia;
     const modelSize = await loadGLBModel(scene, modelPath, boxInformation, textInformation, 'cluster');
 
     //draw points  
@@ -516,8 +547,8 @@ const showLabels = (scene, projectKeywords) => {
         const textInformation = textComposition[index];
         const connectionPointsInformation = connectionPoints[index + 1]
 
-        const boxSize = createText(scene, keyword.Label, textComposition[index], 'white');
-        createLines(scene, textComposition[index], connectionPointsInformation, boxSize);
+        const boxSize = createText(scene, keyword.label, textComposition[index], 'white');
+        // createLines(scene, textComposition[index], connectionPointsInformation, boxSize);
     });
 
     //for cluster - JANA
@@ -605,9 +636,6 @@ const createText = (scene, text: string, textComposition: [number, number, numbe
 }
 
 const createLines = (scene, textComposition, connectionPoint, boxSize) => {
-    console.log('Create line to:', textComposition);
-    console.log('Start line at:', connectionPoint);
-
     const startPosition = setPostionFromAnchorPoint(textComposition, boxSize); //boxSize van tekst
 
     const points = [
@@ -666,6 +694,7 @@ interface Scene3DProps {
 export default function Scene3DWithLabels({ name, projectKeywords }: Scene3DProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     lenghtKeywords = projectKeywords.length;
+    models = projectKeywords.map(keyword => keyword.formattedName);
 
     useEffect(() => {
         if (!canvasRef.current) return;

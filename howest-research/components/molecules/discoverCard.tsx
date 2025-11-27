@@ -9,7 +9,7 @@ export default function DiscoverCard(props: { project, page, setPage, isVisible 
         console.log('DETAIL', props.page.page, props.page.id);
         props.setPage({
             page: 'detailResearch',
-            id: props.project.ID,
+            id: props.project.id,
             previousPages: [
                 ...(props.page.previousPages || []),
                 {

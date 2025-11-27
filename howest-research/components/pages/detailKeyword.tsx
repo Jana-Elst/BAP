@@ -11,12 +11,12 @@ export default function DetailKeyword(props: { keyword, page, setPage, isVisible
     const projects = data.projects;
 
     const filteredProjects = projects.filter(project =>
-        project.Keywords?.includes(props.keyword.ID)
+        project.keywords?.includes(props.keyword.id)
     );
 
     return (
         <View style={styles.container}>
-            <Text>{props.keyword.Label}</Text>
+            <Text>{props.keyword.label}</Text>
             <View style={styles.listContainer}>
                 <FlashList
                     data={filteredProjects}

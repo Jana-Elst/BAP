@@ -13,11 +13,13 @@ import Header from "../organisms/header";
 import Footer from "../organisms/footer";
 import DiscoverScreen from "../pages/discoverScreen";
 
-export default function Ipad(props: { keyword, page, setPage }) {
+export default function Ipad(props: { page, setPage }) {
     const projects = data.projects;
     const domains = data.transitiedomeinen;
     const keywords = data.keywords;
     const clusters = data.clusters;
+
+    console.log('page', props.page)
 
     const projectImages = {};
 
@@ -72,7 +74,7 @@ export default function Ipad(props: { keyword, page, setPage }) {
                     {
                         props.page.page === 'detailKeyword' &&
                         (
-                            <DetailKeyword keyword={keywords.find(k => k.ID === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                            <DetailKeyword keyword={keywords.find(k => k.id === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
                         )
                     }
 
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
 
-    cardWrapper :{
+    cardWrapper: {
         backgroundColor: 'yellow',
         position: 'absolute',
         top: 50,
