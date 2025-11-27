@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 
 //-------------------- EXPORT --------------------//
 export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => {
-    
+
     //-------------------- VARIABLES --------------------//
     let scroll = {
         ease: 0.5,
@@ -27,6 +27,7 @@ export const InfiniteGrid = ({ sources, data, originalSize, onItemsUpdate }) => 
         winW = w;
         winH = h;
 
+        //size of the area where the images are positioned
         tileSize = {
             w: winW,
             h: (winW) * (originalSize.h / originalSize.w),

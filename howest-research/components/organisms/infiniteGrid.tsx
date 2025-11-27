@@ -1,11 +1,7 @@
-import { StyleSheet, View, PanResponder, Dimensions, Animated } from 'react-native';
+import { StyleSheet, View, PanResponder } from 'react-native';
 import { Image } from 'expo-image';
 import React, { useState, useRef, useEffect } from 'react';
-import Header from "../organisms/header";
-import Footer from "../organisms/footer";
 import { InfiniteGrid } from "../../scripts/infiniteGrid";
-
-const { windowWidth, windowHeight } = Dimensions.get('window');
 
 const originalSize = { w: 1522, h: 1238 };
 
@@ -42,13 +38,13 @@ const InfiniteGridComponent = () => {
         PanResponder.create({
             onMoveShouldSetPanResponder: () => true,
             onPanResponderMove: (e, { dx, dy }) => {
+
                 // Calculate delta from last position
                 const deltaX = dx - lastPanRef.current.x;
                 const deltaY = dy - lastPanRef.current.y;
 
                 lastPanRef.current = { x: dx, y: dy };
 
-                // Pass to InfiniteGrid
                 if (gridRef.current) {
                     gridRef.current.onScroll(deltaX, deltaY);
                 }
@@ -94,7 +90,7 @@ const InfiniteGridComponent = () => {
                         }}
                     >
                         <Image
-                            source={images[index]}
+                            source={item.src}
                             style={{ width: '100%', height: '100%' }}
                         />
                     </View>
@@ -107,10 +103,6 @@ const InfiniteGridComponent = () => {
 export default InfiniteGridComponent;
 
 const styles = StyleSheet.create({
-    hero: {
-        flex: 1,
-    },
-
     images: {
         flex: 1,
         width: '100%',
