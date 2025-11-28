@@ -13,7 +13,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 import businessEnMedia from "../../assets/models/businessEnMedia.glb";
-import digitalSkillsEnMediaWijsheid from "../../assets/models/digitalSkillsEnMediaWijsheid.glb";
+import digitalSkillsEnMediaWijsheid from "../../assets/models/digitalSkillsEnMediawijsheid.glb";
 import marketingEnCommunication from "../../assets/models/marketingEnCommunication.glb";
 import onderwijsEnVorming from "../../assets/models/onderwijsEnVorming.glb";
 import sharedCreativity from "../../assets/models/sharedCreativity.glb";
