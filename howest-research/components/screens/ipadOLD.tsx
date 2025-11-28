@@ -1,12 +1,23 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import DetailKeyword from "@/components/pages/detailKeyword";
+import DetailPage from "@/components/pages/detailPage";
+import { StyleSheet, TouchableOpacity, View, Animated, PanResponder } from 'react-native';
 import data from '../../assets/data/structured-data.json';
-import HomeScreen from '../pages/homeScreen';
+import { Button, Overlay } from '@rneui/themed';
+import React, { useState, useRef } from 'react';
+import { StyledText } from "../atoms/styledComponents";
+import Header from "../organisms/header";
+import Footer from "../organisms/footer";
+import DiscoverScreen from "../pages/discoverScreen";
 
 export default function Ipad(props: { page, setPage }) {
+    const projects = data.projects;
+    const domains = data.transitiedomeinen;
     const keywords = data.keywords;
+    const clusters = data.clusters;
 
     console.log('page', props.page)
+
+    const projectImages = {};
 
     const [visible, setVisible] = useState(false);
 
@@ -39,10 +50,9 @@ export default function Ipad(props: { page, setPage }) {
 
     return (
         <View style={styles.container}>
-            <HomeScreen />
-            {/* <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} /> */}
+            <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} />
 
-            {/* <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>
+            <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>
                 <View style={styles.overlayContent}>
                     {
                         props.page.previousPages.length > 1 &&
@@ -60,7 +70,7 @@ export default function Ipad(props: { page, setPage }) {
                     {
                         props.page.page === 'detailKeyword' &&
                         (
-                            <DetailKeyword page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                            <DetailKeyword keyword={keywords.find(k => k.id === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
                         )
                     }
 
@@ -69,7 +79,7 @@ export default function Ipad(props: { page, setPage }) {
                         onPress={() => handleClosePopUp(props.setPage, props.page)}
                     />
                 </View>
-            </Overlay> */}
+            </Overlay>
         </View >
     );
 }
