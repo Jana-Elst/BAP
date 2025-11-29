@@ -29,50 +29,71 @@ const ProjectCard = ({ project, page, setPage }) => {
 
 
     return (
-        <BlurView intensity={24} tint="light" style={styles.container}>
-            <LinearGradient
-                colors={['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)']}
-                // locations={[0.1051, 0.2353, 0.7205]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0.6, y: 1 }}
-            >
-                <TouchableOpacity onPress={handleOpenDetail} >
-                    <StyledText style={styles.text}> {project.CCODE}</StyledText>
-                    <View style={styles.imageContainer}>
-                        <Image
-                            style={styles.image}
-                            source={ImageProject1}
-                            contentFit="contain"
-                        />
-                    </View>
-                </TouchableOpacity>
-            </LinearGradient>
+        <BlurView intensity={24} tint="light" style={styles.blurContainer}>
+            <View style={styles.shadowContainer}>
+                <LinearGradient
+                    style={styles.container}
+                    colors={['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)']}
+                    // locations={[0.1051, 0.2353, 0.7205]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 0.6, y: 1 }}
+                >
+                    <TouchableOpacity onPress={handleOpenDetail} >
+                        <View>
+                            <StyledText style={styles.title}> {project.CCODE}</StyledText>
+                            <StyledText style={styles.subtitle}>Hier komt de clusternaam</StyledText>
+                        </View>
+                        <View style={styles.imageContainer}>
+                            <Image
+                                style={styles.image}
+                                source={ImageProject1}
+                                contentFit="contain"
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </LinearGradient>
+            </View>
         </BlurView>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        borderWidth: 2,
-        borderColor: 'white',
-        padding: 16,
+    blurContainer: {
         borderRadius: 30,
-        gap: 16,
+    },
 
-        shadowColor: 'rgba(78, 78, 78)',
+    shadowContainer: {
+        backgroundColor: Colors.white,
+        borderRadius: 30,
+
+        shadowColor: 'rgba(78, 78, 78, 0.2)',
         shadowOffset: { width: 0, height: 3.38 },
         shadowOpacity: 0.2,
         shadowRadius: -1.915,
     },
 
-    text: {
+    container: {
+        borderWidth: 2,
+        borderColor: Colors.white,
+        padding: 16,
+        borderRadius: 30,
+        gap: 16,
+        backgroundColor: Colors.white,
+    },
+
+    title: {
+        fontFamily: Fonts.rounded.light,
+        textAlign: 'center',
+    },
+
+    subtitle: {
         fontFamily: Fonts.rounded.light,
         textAlign: 'center',
     },
 
     imageContainer: {
         borderWidth: 2,
-        borderColor: 'black',
+        borderColor: Colors.white,
         padding: 16,
         borderRadius: 30,
 
