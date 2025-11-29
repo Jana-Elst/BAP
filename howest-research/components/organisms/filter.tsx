@@ -13,6 +13,7 @@ import { getClusterName, getAllTransitionDomains } from '@/scripts/getData';
 
 import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
 import { Colors, Fonts } from "@/constants/theme";
+import FilterCard from '../molecules/filterCard';
 
 const Filter = () => {
     const [visible, setVisible] = useState(true);
@@ -22,7 +23,11 @@ const Filter = () => {
     const transitionDomains = getAllTransitionDomains();
     const clusters = data.clusters;
 
+    const [activeFilters, setActiveFilters] = useState([]);
+    const [filteredProjects, setFilteredProjects] = useState([]);
+
     const toggleOverlay = () => {
+        // setFilteredProjects(getFilteredProjects(activeFilters));
         setVisible(!visible);
     };
 
@@ -35,7 +40,26 @@ const Filter = () => {
         }
     };
 
-    const handleSelect = () => { };
+    const handleSelect = (item) => {
+        console.log('Selected item:', item);
+
+        const isAlreadySelected = activeFilters.some(filter => filter.id === item.id);
+        if (isAlreadySelected) {
+            // If already selected, remove it
+            setActiveFilters(
+                activeFilters.filter(filter => filter.id !== item.id)
+            );
+            return;
+        }
+
+        setActiveFilters(
+            [...activeFilters, item]
+        )
+    };
+
+    const clearFilters = () => {
+        setActiveFilters([]);
+    };
 
     return (
         <View style={styles.container}>
@@ -43,6 +67,7 @@ const Filter = () => {
                 <FilterButton
                     onPress={toggleOverlay}
                     isActive={visible}
+                    activeFilters={activeFilters}
                 />
             </View>
 
@@ -54,85 +79,92 @@ const Filter = () => {
                 <View style={styles.modalContainer}>
                     <Pressable style={styles.backdrop} onPress={toggleOverlay} />
 
-                    {/* Filter button stays visible and clickable */}
-                    <View style={[styles.buttonContainer, { top: buttonPosition.y, left: buttonPosition.x, width: buttonPosition.width, height: buttonPosition.height }]}>
+                    {/*-------------------- Filter button stays visible and clickable --------------------*/}
+                    <View style={[styles.buttonContainer,
+                    {
+                        top: buttonPosition.y,
+                        left: buttonPosition.x,
+                        width: buttonPosition.width,
+                        height: buttonPosition.height
+                    }]}>
                         <FilterButton
                             onPress={toggleOverlay}
                             isActive={visible}
+                            activeFilters={activeFilters}
                         />
                     </View>
 
-                    {/* Overlay content */}
+                    {/*-------------------- Overlay content --------------------*/}
                     <View style={styles.overlayContent}>
-                        <Card style={styles.card}>
+                        <Card>
+
+                            {/*-------------------- List of all selected filters --------------------*/}
                             <View>
-                                <StyledText>Transitiedomeinen</StyledText>
-                                <StyledText>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
                                 <FlashList
-                                    data={transitionDomains}
+                                    data={activeFilters}
                                     horizontal={true}
                                     renderItem={({ item, index }) => {
-                                        console.log('ITEM', item);
+                                        console.log('Rendering active filter item:', item);
                                         return (
-                                            <TouchableOpacity onPress={handleSelect} style={styles.container}>
-                                                <Card style={styles.card}>
-                                                    <View>
-                                                        <StyledText style={styles.title}>{item.label}</StyledText>
-                                                    </View>
-                                                    <View style={styles.imageContainer}>
-                                                        <Image
-                                                            style={styles.image}
-                                                            source={ImageProject1}
-                                                            contentFit="contain"
-                                                        />
-                                                    </View>
-                                                </Card>
-                                                {/* <View style={styles.radialGradientContainer}>
-                                                    <RadialGradientComponent width={containerSize.width} height={containerSize.height} color={projectInfo.color} />
-                                                </View> */}
-                                            </TouchableOpacity>
+                                            <Touchable onPress={() => handleSelect(item)} icon={'close'} iconPosition={'after'} isActive={true}>{item.label}</Touchable>
                                         );
-                                    }
-
-                                    }
+                                    }}
                                 />
+
+                                {
+                                    activeFilters.length > 0 && (
+                                        <>
+                                            <StyledText hasGradient={true}>{activeFilters.length}</StyledText>
+                                            <TouchableOpacity onPress={clearFilters}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
+                                        </>
+                                    )
+                                }
                             </View>
 
+                            {/*-------------------- Filters --------------------*/}
                             <View>
-                                <StyledText>Clusters</StyledText>
-                                <StyledText>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
-                                <FlashList
-                                    data={clusters}
-                                    horizontal={true}
-                                    renderItem={({ item, index }) => {
-                                        const clusterName = getClusterName(item.id);
-                                        return (
-                                            <Card style={styles.card}>
-                                                <View style={styles.imageContainer}>
-                                                    <Image
-                                                        style={styles.image}
-                                                        source={ImageProject1}
-                                                        contentFit="contain"
-                                                    />
-                                                </View>
-                                                <View>
-                                                    <StyledText style={styles.title}>{clusterName.label}</StyledText>
-                                                </View>
-                                            </Card>
-                                        );
-                                    }
+                                <View>
+                                    <StyledText>Transitiedomeinen</StyledText>
+                                    <StyledText>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
+                                    <FlashList
+                                        data={transitionDomains}
+                                        horizontal={true}
+                                        renderItem={({ item, index }) => {
+                                            return (
+                                                    <FilterCard project={item} style={styles.card} onPress={() => handleSelect(item)} isActive={activeFilters.includes(item)} />
+                                            );
+                                        }
 
-                                    }
-                                />
+                                        }
+                                    />
+                                </View>
+
+                                <View>
+                                    <StyledText>Clusters</StyledText>
+                                    <StyledText>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
+                                    <FlashList
+                                        data={clusters}
+                                        horizontal={true}
+                                        renderItem={({ item, index }) => {
+                                            const cluster = getClusterName(item.id);
+                                            return (
+                                                <FilterCard project={cluster} style={styles.card} onPress={() => handleSelect(cluster)} isActive={activeFilters.includes(cluster)}/>
+                                            )
+                                        }
+
+                                        }
+                                    />
+                                </View>
                             </View>
 
-                            <TouchableOpacity onPress={toggleOverlay}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
+                            {/*-------------------- Buttons footer --------------------*/}
+                            <TouchableOpacity onPress={clearFilters}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
                             <Touchable onPress={toggleOverlay} isActive={true}>Pas Filters toe</Touchable>
                         </Card>
                     </View>
                 </View>
-            </Modal>
-        </View>
+            </Modal >
+        </View >
     );
 };
 
@@ -156,12 +188,12 @@ const styles = StyleSheet.create({
     },
 
     overlayContent: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
+        top: 0,
+        left: 0,
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
+        // alignItems: 'center',
+        margin: 32,
     },
 
     title: {

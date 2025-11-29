@@ -6,10 +6,11 @@ import { Colors, Fonts } from "@/constants/theme";
 import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
 import Card from "@/components/atoms/card";
 
-const FilterCard = ({ project, page, setPage }) => {
+const FilterCard = ({ project, onPress, isActive }) => {
+    console.log('Rendering FilterCard for project:', project);
     return (
-        <TouchableOpacity onPress={() => { }} style={styles.container}>
-            <Card isActive={true} style={styles.card}>
+        <TouchableOpacity onPress={onPress} style={styles.container}>
+            <Card style={[styles.card, { backgroundColor: isActive ? Colors.blue100 : null }]}>
                 <View>
                     <View style={styles.imageContainer}>
                         <Image
@@ -18,7 +19,7 @@ const FilterCard = ({ project, page, setPage }) => {
                             contentFit="contain"
                         />
                     </View>
-                    <StyledText style={styles.text}>Label Title</StyledText>
+                    <StyledText style={styles.text}>{project.label}</StyledText>
                 </View>
             </Card>
         </TouchableOpacity>
@@ -31,13 +32,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
 
-    radialGradientContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        zIndex: -1,
-        borderRadius: 30,
-        overflow: 'hidden',
+    card: {
+        backgroundColor: Colors.blue100,
     },
 
     text: {
@@ -45,10 +41,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 
-
     imageContainer: {
-        borderWidth: 2,
-        borderColor: Colors.white,
         padding: 16,
         borderRadius: 30,
 
