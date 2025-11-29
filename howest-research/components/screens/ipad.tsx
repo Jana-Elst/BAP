@@ -39,7 +39,7 @@ export default function Ipad(props: { page, setPage }) {
 
     return (
         <View style={styles.container}>
-            <HomeScreen />
+            <HomeScreen page={props.page} setPage={props.setPage} />
             {/* <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} /> */}
 
             {/* <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>

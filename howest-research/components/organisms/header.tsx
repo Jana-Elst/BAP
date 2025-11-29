@@ -1,14 +1,11 @@
-import { Image } from 'expo-image';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Filter from './filter';
 import Search from './search';
 import HowestResearch from './howestResearch';
 import LanguageToggle from '../molecules/languageToggle';
 
 
-export default function Header(props: { project, page, setPage }) {
-    const image = require('../../assets/images/logoHowestResearchRGB.png')
-
+const Header = () => {
     return (
         <View style={styles.container}>
             <HowestResearch />
@@ -27,7 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'green',
+        // backgroundColor: 'green',
         padding: 16,
     },
 
@@ -43,3 +40,5 @@ const styles = StyleSheet.create({
     filter: {
     }
 });
+
+export default Header;

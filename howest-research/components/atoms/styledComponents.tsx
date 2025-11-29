@@ -1,8 +1,8 @@
 import { Fonts } from "@/constants/theme";
 import { Text, StyleSheet } from "react-native";
 
-export const StyledText = (props) => {
-    return <Text style={[styles.text, props.style]}> {props.children} </Text>
+export const StyledText = ({ children, style = null }) => {
+    return <Text style={[styles.text, style]}> {children} </Text>
 };
 
 const styles = StyleSheet.create({

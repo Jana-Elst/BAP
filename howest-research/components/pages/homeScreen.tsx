@@ -1,13 +1,15 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import ViewToggle from "../molecules/viewToggle";
 import Header from "../organisms/header";
-import DiscoverScreen from "./discoverScreen";
+import ProjectList from "../organisms/projectsList";
+import data from '../../assets/data/structured-data.json';
 
-const HomeScreen = (props: { projects, page, setPage, isVisible }) => {
+const HomeScreen = (props: { page, setPage }) => {
+
     return (
         <View style={styles.container}>
             <Header />
-            {/* <DiscoverScreen projects={props.projects} page={props.page} setPage={props.setPage} isVisible={props.isVisible} /> */}
+            <ProjectList page={props.page} setPage={props.setPage} />
             <ViewToggle />
         </View>
     );

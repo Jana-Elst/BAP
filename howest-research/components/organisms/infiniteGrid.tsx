@@ -1,7 +1,7 @@
 import { StyleSheet, View, PanResponder } from 'react-native';
 import React, { useState, useRef, useEffect, use, useMemo } from 'react';
 import { InfiniteGrid } from "../../scripts/infiniteGrid";
-import DiscoverCard from '../molecules/discoverCard';
+import DiscoverCard from '../molecules/projectCard';
 import getPositions from '../../scripts/placeCards';
 
 const canvasSize = { w: 1000, h: 1000 };
