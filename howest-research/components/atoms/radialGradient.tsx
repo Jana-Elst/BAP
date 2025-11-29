@@ -3,7 +3,7 @@ import Svg, { Defs, RadialGradient, Stop, Ellipse } from "react-native-svg";
 import { Colors, Fonts } from "@/constants/theme";
 
 
-const RadialGradientComponent = ({ width = 150, height = 342, rotate = '46.149deg' }) => {
+const RadialGradientComponent = ({ width = 150, height = 342, rotate = '46.149deg', color='blue' }) => {
     const ratio = 1.5;
 
     const cx = width / 2;
@@ -34,7 +34,7 @@ const RadialGradientComponent = ({ width = 150, height = 342, rotate = '46.149de
                         fy={cy}
                         gradientUnits="userSpaceOnUse"
                     >
-                        <Stop offset="0" stopColor="rgb(153, 142, 189)" stopOpacity="0.8" />
+                        <Stop offset="0" stopColor={Colors[color + '100']} stopOpacity="0.8" />
                         <Stop offset="1" stopColor="rgb(255, 255, 255)" stopOpacity="0.5" />
                     </RadialGradient>
                 </Defs>

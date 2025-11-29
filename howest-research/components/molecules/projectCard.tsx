@@ -8,8 +8,12 @@ import { BlurView } from 'expo-blur';
 import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
 import RadialGradientComponent from '../atoms/radialGradient';
 import { useState } from 'react';
+import { getProjectInfo } from '@/scripts/getData';
 
 const ProjectCard = ({ project, page, setPage }) => {
+    const projectInfo = getProjectInfo(project.id);
+    console.log('PROJECT INFO', projectInfo);
+
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
     const handleLayout = (event) => {
@@ -49,8 +53,8 @@ const ProjectCard = ({ project, page, setPage }) => {
                         onLayout={handleLayout}
                     >
                         <View>
-                            <StyledText style={styles.title}> {project.CCODE}</StyledText>
-                            <StyledText style={styles.subtitle}>Hier komt de clusternaam</StyledText>
+                            <StyledText style={styles.title}> {projectInfo.title}</StyledText>
+                            <StyledText style={styles.subtitle}>{projectInfo.cluster.label}</StyledText>
                         </View>
                         <View style={styles.imageContainer}>
                             <Image
@@ -63,7 +67,7 @@ const ProjectCard = ({ project, page, setPage }) => {
                 </View>
             </BlurView>
             <View style={styles.radialGradientContainer}>
-                <RadialGradientComponent width={containerSize.width} height={containerSize.height} />
+                <RadialGradientComponent width={containerSize.width} height={containerSize.height} color={projectInfo.color} />
             </View>
         </TouchableOpacity>
     )
