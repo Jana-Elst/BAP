@@ -6,8 +6,16 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
 import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
+import RadialGradientComponent from '../atoms/radialGradient';
+import { useState } from 'react';
 
 const ProjectCard = ({ project, page, setPage }) => {
+    const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
+
+    const handleLayout = (event) => {
+        const { width, height } = event.nativeEvent.layout;
+        setContainerSize({ width, height });
+    };
 
     const handleOpenDetail = () => {
         console.log('DETAIL', page.page, page.id);
@@ -29,16 +37,17 @@ const ProjectCard = ({ project, page, setPage }) => {
 
 
     return (
-        <BlurView intensity={24} tint="light" style={styles.blurContainer}>
-            <View style={styles.shadowContainer}>
-                <LinearGradient
-                    style={styles.container}
-                    colors={['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)']}
-                    // locations={[0.1051, 0.2353, 0.7205]}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0.6, y: 1 }}
-                >
-                    <TouchableOpacity onPress={handleOpenDetail} >
+        <TouchableOpacity onPress={handleOpenDetail} style={styles.container}>
+            <BlurView intensity={24} tint="light" style={styles.blurContainer}>
+                <View style={styles.shadowContainer}>
+                    <LinearGradient
+                        style={styles.card}
+                        colors={['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)']}
+                        // locations={[0.1051, 0.2353, 0.7205]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0.6, y: 1 }}
+                        onLayout={handleLayout}
+                    >
                         <View>
                             <StyledText style={styles.title}> {project.CCODE}</StyledText>
                             <StyledText style={styles.subtitle}>Hier komt de clusternaam</StyledText>
@@ -50,20 +59,27 @@ const ProjectCard = ({ project, page, setPage }) => {
                                 contentFit="contain"
                             />
                         </View>
-                    </TouchableOpacity>
-                </LinearGradient>
+                    </LinearGradient>
+                </View>
+            </BlurView>
+            <View style={styles.radialGradientContainer}>
+                <RadialGradientComponent width={containerSize.width} height={containerSize.height} />
             </View>
-        </BlurView>
+        </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create({
+    container: {
+        borderRadius: 30,
+        overflow: 'hidden',
+    },
+
     blurContainer: {
         borderRadius: 30,
     },
 
     shadowContainer: {
-        backgroundColor: Colors.white,
         borderRadius: 30,
 
         shadowColor: 'rgba(78, 78, 78, 0.2)',
@@ -72,13 +88,21 @@ const styles = StyleSheet.create({
         shadowRadius: -1.915,
     },
 
-    container: {
+    radialGradientContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        zIndex: -1,
+        borderRadius: 30,
+        overflow: 'hidden',
+    },
+
+    card: {
         borderWidth: 2,
         borderColor: Colors.white,
         padding: 16,
         borderRadius: 30,
         gap: 16,
-        backgroundColor: Colors.white,
     },
 
     title: {
