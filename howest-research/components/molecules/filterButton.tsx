@@ -1,15 +1,8 @@
 import Touchable from "../atoms/touchable";
-import { useState } from "react";
 
-const FilterButton = () => {
-    const [isActive, setIsActive] = useState(false);
-
-    const toggleFilterMenu = () => {
-        console.log("Filter menu opened");
-    };
-
+const FilterButton = ({ onPress, isActive }) => {
     return (
-        < Touchable onPress={() => { toggleFilterMenu() }} isActive={isActive} icon={'filter'}>Filter</Touchable>
+        < Touchable onPress={onPress} isActive={isActive} icon={'filter'}>Filter</Touchable>
     )
 }
 

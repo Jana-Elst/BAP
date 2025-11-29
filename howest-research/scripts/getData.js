@@ -65,9 +65,13 @@ export const getAllKeywords = (keywordIDs) => {
     return keywords;
 };
 
+export const getAllTransitionDomains = () => {
+    const transitionDomains = data.transitiedomeinen.filter(keyword => keyword.transitiedomeinCategoryID === 2);
+    return transitionDomains;
+};
+
 export const getKeywords = (keywordIDs) => {
     const allKeywords = getAllKeywords(keywordIDs);
-    console.log('ALL KEYWORDS', allKeywords);
     const filteredKeywords = allKeywords.filter(keyword => keyword.transitiedomeinCategoryID !== 2);
     return filteredKeywords;
 }
@@ -75,7 +79,7 @@ export const getKeywords = (keywordIDs) => {
 export const getTransitionDomain = (keywords) => {
     const keywordIDs = keywords.map(keyword => keyword.id);
     const allKeywords = getAllKeywords(keywordIDs);
-    const transitionDomain = allKeywords.find(keyword => keyword.transitiedomeinCategoryID === 3);
+    const transitionDomain = allKeywords.find(keyword => keyword.transitiedomeinCategoryID === 2);
     return transitionDomain;
 };
 
