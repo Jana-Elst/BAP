@@ -1,11 +1,17 @@
+//https://www.npmjs.com/package/react-native-qrcode-svg
+
 import { useState } from 'react';
 import { Modal, Pressable, View, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import QRCode from 'react-native-qrcode-svg';
+
 import HowestResearchButton from '../molecules/howestResearchButton';
-import Touchable from '../atoms/touchable';
 import Card from '../atoms/card';
 import { StyledText } from '../atoms/styledComponents';
 import AccordeonHowestResearch from '../molecules/accordeonHowestResearch';
 import CloseButton from '../atoms/closeButton';
+
+const image = require('../../assets/images/logoHowestResearchRGB.png')
 
 const HowestResearch = () => {
     const [visible, setVisible] = useState(false);
@@ -31,8 +37,19 @@ const HowestResearch = () => {
                         <Card>
                             <View>
                                 <Card>
+                                    <Image
+                                        style={styles.image}
+                                        source={image}
+                                        contentFit="contain"
+                                    />
+                                </Card>
+                                <Card>
                                     <StyledText>Geïnteresseerd in één van onze onderzoeksprojecten?</StyledText>
                                     <StyledText>Neem contact op</StyledText>
+                                    <QRCode
+                                        value="www.howest.be/nl/onderzoek-aan-howest"
+                                        backgroundColor='transparent'
+                                    />
                                     <StyledText>www.howest.be/nl/onderzoek-aan-howest</StyledText>
                                 </Card>
                             </View>
@@ -72,6 +89,11 @@ const styles = StyleSheet.create({
         left: 0,
         flex: 1,
         margin: 32,
+    },
+
+    image: {
+        width: 200,
+        height: 60,
     },
 });
 
