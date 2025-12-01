@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Modal } from 'react-native';
 import data from '../../assets/data/structured-data.json';
 import HomeScreen from '../pages/homeScreen';
+import CloseButton from '../atoms/closeButton';
+import BackButton from '../atoms/backButton';
+import Card from '../atoms/card';
+import { StyledText } from '../atoms/styledComponents';
+import DetailPage from '../pages/detailPage copy';
 
 export default function Ipad(props: { page, setPage }) {
-    const keywords = data.keywords;
-
     console.log('page', props.page)
 
     const [visible, setVisible] = useState(false);
@@ -42,37 +45,46 @@ export default function Ipad(props: { page, setPage }) {
 
     return (
         <View style={styles.container}>
-            <HomeScreen page={props.page} setPage={props.setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} />
+            <HomeScreen page={props.page} setPage={props.setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
             {/* <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} /> */}
 
-            {/* <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>
+            {/*--------------- Detailpage overlays --------------------*/}
+            <Modal
+                visible={visible}
+                onRequestClose={() => handleClosePopUp(props.setPage, props.page)}
+                style={styles.overlay}
+            >
                 <View style={styles.overlayContent}>
                     {
                         props.page.previousPages.length > 1 &&
-                        <TouchableOpacity onPress={handleBack} style={styles.button}>
-                            <StyledText>TERUG</StyledText>
-                        </TouchableOpacity>
+                        <BackButton onPress={handleBack}>Terug</BackButton>
                     }
+
                     {
                         props.page.page === 'detailResearch' &&
                         (
-                            <DetailPage page={props.page} setPage={props.setPage} />
+                            <Card>
+                                <DetailPage page={props.page} setPage={props.setPage} />
+                            </Card>
                         )
                     }
+                    {/* {
+                        props.page.page === 'detailResearch' &&
+                        (
+                            // <DetailPage page={props.page} setPage={props.setPage} />
+                        )
+                    } */}
 
-                    {
+                    {/* {
                         props.page.page === 'detailKeyword' &&
                         (
-                            <DetailKeyword page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                            // <DetailKeyword page={props.page} setPage={props.setPage} isVisible={isVisible} />
                         )
-                    }
+                    } */}
 
-                    <Button
-                        title="SLUIT"
-                        onPress={() => handleClosePopUp(props.setPage, props.page)}
-                    />
+                    <CloseButton onPress={() => handleClosePopUp(props.setPage, props.page)}>Sluit</CloseButton>
                 </View>
-            </Overlay> */}
+            </Modal>
         </View >
     );
 }
@@ -116,7 +128,7 @@ const styles = StyleSheet.create({
     },
 
     overlayContent: {
-        backgroundColor: 'green',
+        // backgroundColor: 'green',
         flex: 1,
     }
 });

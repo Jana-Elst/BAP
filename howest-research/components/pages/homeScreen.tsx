@@ -4,12 +4,12 @@ import Header from "../organisms/header";
 import ProjectList from "../organisms/projectsList";
 import data from '../../assets/data/structured-data.json';
 
-const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects }) => {
+const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects, setVisible }) => {
 
     return (
         <View style={styles.container}>
             <Header activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
-            <ProjectList page={page} setPage={setPage} projects={projects} />
+            <ProjectList page={page} setPage={setPage} projects={projects} setVisible={setVisible}/>
             <ViewToggle />
         </View>
     );

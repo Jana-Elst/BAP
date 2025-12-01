@@ -4,7 +4,7 @@ import ProjectCard from '../molecules/projectCard';
 import { FlashList } from "@shopify/flash-list";
 import { StyledText } from '../atoms/styledComponents';
 
-const ProjectList = ({ page, setPage, projects }) => {
+const ProjectList = ({ page, setPage, projects, setVisible }) => {
     const colNum = 4;
     const gap = 16;
 
@@ -23,7 +23,7 @@ const ProjectList = ({ page, setPage, projects }) => {
                                 paddingBottom: index % 1 === 0 ? gap : 0,
                                 paddingTop: index < colNum ? gap : 0,
                             }}>
-                            <ProjectCard project={item} page={page} setPage={setPage}></ProjectCard>
+                            <ProjectCard project={item} page={page} setPage={setPage} setVisible={setVisible}></ProjectCard>
                         </View>
                     }
                 />

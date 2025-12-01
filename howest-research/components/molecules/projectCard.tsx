@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { getProjectInfo } from '@/scripts/getData';
 import Card from "@/components/atoms/card";
 
-const ProjectCard = ({ project, page, setPage }) => {
+const ProjectCard = ({ project, page, setPage, setVisible }) => {
     const projectInfo = getProjectInfo(project.id);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
@@ -31,7 +31,7 @@ const ProjectCard = ({ project, page, setPage }) => {
                 }
             ]
         })
-        // props.isVisible('detailResearch');
+        setVisible(true);
     }
 
     return (
