@@ -1,4 +1,7 @@
+// https://docs.expo.dev/versions/latest/sdk/view-pager/
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import PagerView from 'react-native-pager-view';
+
 import { StyledText } from '../atoms/styledComponents';
 import data from '../../assets/data/structured-data.json';
 import BTNBack from '../atoms/BTNBack';
@@ -35,11 +38,22 @@ const DetailPage = ({ page, setPage }) => {
     console.log(page.previousPages.length);
 
     return (
-        <View>
-            <Card>
-                
-            </Card>
-        </View>
+        <PagerView
+            style={styles.container}
+            initialPage={0}
+            pageMargin={16}
+        >
+            <View key="1" >
+                <Card style={styles.card}>
+                    <StyledText>First CARD</StyledText>
+                </Card>
+            </View>
+            <View key="2">
+                <Card style={styles.card}>
+                    <StyledText>Second CARD</StyledText>
+                </Card>
+            </View>
+        </PagerView>
         // <View style={styles.container}>
         //     <View style={styles.content}>
         //         {
@@ -76,7 +90,12 @@ const DetailPage = ({ page, setPage }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
+    },
+
+    card: {
+        backgroundColor: 'green',
+        width: '50%',
+        height: '100%',
     },
 
     content: {
@@ -89,14 +108,11 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
-    button: {
-        padding: 20,
-        backgroundColor: 'green'
-    },
-
     tag: {
         padding: 20,
         margin: 10,
         backgroundColor: 'pink'
     },
 });
+
+export default DetailPage;

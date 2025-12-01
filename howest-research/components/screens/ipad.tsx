@@ -6,7 +6,7 @@ import CloseButton from '../atoms/closeButton';
 import BackButton from '../atoms/backButton';
 import Card from '../atoms/card';
 import { StyledText } from '../atoms/styledComponents';
-import DetailPage from '../pages/detailPage copy';
+import DetailPage from '../pages/detailPage';
 
 export default function Ipad(props: { page, setPage }) {
     console.log('page', props.page)
@@ -63,9 +63,7 @@ export default function Ipad(props: { page, setPage }) {
                     {
                         props.page.page === 'detailResearch' &&
                         (
-                            <Card>
-                                <DetailPage page={props.page} setPage={props.setPage} />
-                            </Card>
+                            <DetailPage page={props.page} setPage={props.setPage} />
                         )
                     }
                     {/* {
