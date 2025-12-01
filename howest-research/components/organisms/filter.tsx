@@ -14,7 +14,7 @@ import { getClusterName, getAllTransitionDomains, getFilteredProjects } from '@/
 import { Fonts } from "@/constants/theme";
 
 const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const buttonRef = useRef(null);
 

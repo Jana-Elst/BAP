@@ -4,13 +4,9 @@ import { StyleSheet } from 'react-native';
 
 const image = require('../../assets/images/logoHowestResearchRGB.png')
 
-const HowestResearchButton = () => {
-    const openResearch = () => {
-        console.log("Research opened");
-    };
-
+const HowestResearchButton = ({ onPress }) => {
     return (
-        <Touchable isActive={true} onPress={() => { openResearch() }} icon={'help-circle-outline'} iconPosition='after'>
+        <Touchable isActive={true} onPress={onPress} icon={'help-circle-outline'} iconPosition='after'>
             <Image
                 style={styles.image}
                 source={image}
