@@ -9,6 +9,9 @@ export default function Ipad(props: { page, setPage }) {
     console.log('page', props.page)
 
     const [visible, setVisible] = useState(false);
+    const [activeFilters, setActiveFilters] = useState([]);
+    const [projects, setProjects] = useState(data.projects);
+
 
     const isVisible = (page) => {
         if (page === 'discover' || page === 'gallery' || page === 'filter') {
@@ -23,7 +26,7 @@ export default function Ipad(props: { page, setPage }) {
         setPage({
             page: page.previousPages[0].page,
             id: null,
-            previousPages: []
+            previousPages: [],
         })
         isVisible(page.previousPages[0].page);
     }
@@ -39,7 +42,7 @@ export default function Ipad(props: { page, setPage }) {
 
     return (
         <View style={styles.container}>
-            <HomeScreen page={props.page} setPage={props.setPage} />
+            <HomeScreen page={props.page} setPage={props.setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} />
             {/* <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} /> */}
 
             {/* <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>

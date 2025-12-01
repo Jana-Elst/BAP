@@ -4,58 +4,72 @@ import data from '../assets/data/structured-data.json';
 const colors = [
     {
         clusterId: 1,
+        domainId: 4,
         color: 'pink',
     },
     {
         clusterId: 2,
+        domainId: 9,
         color: 'blue',
     },
     {
         clusterId: 3,
+        domainId: 9,
         color: 'blue',
     },
     {
         clusterId: 4,
+        domainId: 9,
         color: 'blue',
     },
     {
         clusterId: 5,
+        domainId: 10,
         color: 'yellow',
     },
     {
         clusterId: 6,
+        domainId: 9,
         color: 'blue',
     },
     {
         clusterId: 7,
+        domainId: 4,
         color: 'pink',
     },
     {
         clusterId: 8,
+        domainId: 9,
         color: 'blue',
     },
     {
         clusterId: 9,
+        domainId: 5,
         color: 'purple',
     },
     {
         clusterId: 10,
+        domainId: 4,
         color: 'pink',
     },
     {
         clusterId: 11,
+        domainId: 3,
         color: 'green',
     },
     {
         clusterId: 12,
+        domainId: 9,
         color: 'blue',
     },
     {
         clusterId: 13,
+        domainId: 4,
         color: 'pink',
     },
     {
         clusterId: 14,
+        domainId: 3,
         color: 'green',
     }
 ]
@@ -109,3 +123,36 @@ export const getProjectInfo = (projectID) => {
         color: getProjectColor(project.clusterId),
     }
 };
+
+export const getFilteredProjects = (activeFilters) => {
+    console.log('Active Filters:', activeFilters);
+    let filteredProjects = data.projects;
+
+    const selectedTransitionDomains = activeFilters.filter(filter => filter.transitiedomeinCategoryID === 2);
+    const selectedClusters = activeFilters.filter(filter => filter.transitiedomeinCategoryID !== 2);
+
+
+    if (selectedTransitionDomains.length > 0) {
+        const selectedTransitionDomainIDs = selectedTransitionDomains.map(transitionDomain => transitionDomain.id);
+
+        const allowedClusterIds = colors
+            .filter(colors => selectedTransitionDomainIDs.includes(colors.domainId))
+            .map(colors => colors.clusterId);
+        console.log('Allowed Cluster IDs:', allowedClusterIds);
+        filteredProjects = filteredProjects.filter(project => {
+            return allowedClusterIds.includes(project.clusterId);
+        });
+    }
+
+    if (selectedClusters.length > 0) {
+        const selectedClusterIDs = selectedClusters.map(cluster => cluster.id);
+        console.log('selectedClusterIDs:', selectedClusterIDs);
+
+        filteredProjects = filteredProjects.filter(project => {
+            if (!project.clusterId) return false;
+            return selectedClusterIDs.includes(project.clusterId);
+        });
+    }
+
+    return filteredProjects;
+}

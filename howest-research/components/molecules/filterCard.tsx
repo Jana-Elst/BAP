@@ -11,7 +11,7 @@ const FilterCard = ({ project, onPress, isActive }) => {
     return (
         <TouchableOpacity onPress={onPress} style={styles.container}>
             <Card style={[styles.card, { backgroundColor: isActive ? Colors.blue100 : null }]}>
-                <View>
+                {/* <View> */}
                     <View style={styles.imageContainer}>
                         <Image
                             style={styles.image}
@@ -20,7 +20,7 @@ const FilterCard = ({ project, onPress, isActive }) => {
                         />
                     </View>
                     <StyledText style={styles.text}>{project.label}</StyledText>
-                </View>
+                {/* </View> */}
             </Card>
         </TouchableOpacity>
     )
@@ -28,12 +28,14 @@ const FilterCard = ({ project, onPress, isActive }) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderRadius: 30,
-        overflow: 'hidden',
     },
 
     card: {
-        backgroundColor: Colors.blue100,
+        width: 275,
+        height: 275,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 16,
     },
 
     text: {
@@ -42,11 +44,11 @@ const styles = StyleSheet.create({
     },
 
     imageContainer: {
-        padding: 16,
-        borderRadius: 30,
-
+        flex: 1,
         width: '100%',
-        height: 200,
+        padding: 16,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 
     image: {

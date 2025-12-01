@@ -5,13 +5,13 @@ import HowestResearch from './howestResearch';
 import LanguageToggle from '../molecules/languageToggle';
 
 
-const Header = () => {
+const Header = ({ activeFilters, setActiveFilters, setProjects }) => {
     return (
         <View style={styles.container}>
             <HowestResearch />
 
             <View style={styles.rightSection}>
-                <Filter />
+                <Filter activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
                 <Search />
                 <LanguageToggle />
             </View>

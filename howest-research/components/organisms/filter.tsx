@@ -1,21 +1,19 @@
 import { useState, useRef } from 'react';
 import { View, StyleSheet, Modal, Pressable, TouchableOpacity, Text } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
-import { Image } from 'expo-image';
 
 import FilterButton from '../molecules/filterButton';
 import Card from "../atoms/card";
 import Touchable from "../atoms/touchable";
-
-import { StyledText } from "../atoms/styledComponents";
-import data from '../../assets/data/structured-data.json';
-import { getClusterName, getAllTransitionDomains } from '@/scripts/getData';
-
-import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
-import { Colors, Fonts } from "@/constants/theme";
 import FilterCard from '../molecules/filterCard';
+import { StyledText } from "../atoms/styledComponents";
 
-const Filter = () => {
+import data from '../../assets/data/structured-data.json';
+import { getClusterName, getAllTransitionDomains, getFilteredProjects } from '@/scripts/getData';
+
+import { Fonts } from "@/constants/theme";
+
+const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
     const [visible, setVisible] = useState(true);
     const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const buttonRef = useRef(null);
@@ -23,11 +21,9 @@ const Filter = () => {
     const transitionDomains = getAllTransitionDomains();
     const clusters = data.clusters;
 
-    const [activeFilters, setActiveFilters] = useState([]);
-    const [filteredProjects, setFilteredProjects] = useState([]);
-
     const toggleOverlay = () => {
-        // setFilteredProjects(getFilteredProjects(activeFilters));
+        const filteredProjects = getFilteredProjects(activeFilters);
+        setProjects(filteredProjects);
         setVisible(!visible);
     };
 
@@ -131,7 +127,7 @@ const Filter = () => {
                                         horizontal={true}
                                         renderItem={({ item, index }) => {
                                             return (
-                                                    <FilterCard project={item} style={styles.card} onPress={() => handleSelect(item)} isActive={activeFilters.includes(item)} />
+                                                <FilterCard project={item} style={styles.card} onPress={() => handleSelect(item)} isActive={activeFilters.includes(item)} />
                                             );
                                         }
 
@@ -148,7 +144,7 @@ const Filter = () => {
                                         renderItem={({ item, index }) => {
                                             const cluster = getClusterName(item.id);
                                             return (
-                                                <FilterCard project={cluster} style={styles.card} onPress={() => handleSelect(cluster)} isActive={activeFilters.includes(cluster)}/>
+                                                <FilterCard project={cluster} style={styles.card} onPress={() => handleSelect(cluster)} isActive={activeFilters.includes(cluster)} />
                                             )
                                         }
 
