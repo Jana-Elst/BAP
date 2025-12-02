@@ -70,7 +70,7 @@ export default function Ipad({ page, setPage }) {
                     {
                         page.page === 'detailKeyword' &&
                         (
-                            <DetailKeyword page={page} setPage={setPage} isVisible={isVisible} />
+                            <DetailKeyword page={page} setPage={setPage} setVisible={setVisible} />
                         )
                     }
 

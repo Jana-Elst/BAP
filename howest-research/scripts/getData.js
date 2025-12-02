@@ -112,11 +112,11 @@ export const getProjectColor = (clusterID) => {
 
 export const getProjectInfo = (projectID) => {
     const project = data.projects.find(project => project.id === projectID);
-    const projetName = project.CCODE;
+    const projectName = project.CCODE;
 
     return {
         id: project.id,
-        title: projetName,
+        title: projectName,
         cluster: getClusterName(project.clusterId),
         transitionDomain: getTransitionDomain(project.keywords),
         keywords: getKeywords(project.keywords),
@@ -133,6 +133,13 @@ export const getResearchGroup = (researchGroupId) => {
     const researchGroup = data.onderzoeksgroepen.find(group => group.id === researchGroupId);
     return researchGroup;
 }
+
+export const getProjectsByKeyword = (keywordID) => {
+    const projects = data.projects.filter(project =>
+        project.keywords?.includes(keywordID)
+    );
+    return projects;
+};
 
 export const getFilteredProjects = (activeFilters) => {
     console.log('Active Filters:', activeFilters);
