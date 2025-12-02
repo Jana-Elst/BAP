@@ -1,6 +1,6 @@
 
 import { TouchableOpacity, StyleSheet } from "react-native";
-import { StyledText } from "../atoms/styledComponents";
+import { StyledText } from "./styledComponents";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from "@/constants/theme";
 import Ionicons from '@expo/vector-icons/Ionicons';

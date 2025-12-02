@@ -2,7 +2,7 @@ import { Colors, Fonts } from "@/constants/theme";
 import { Text, StyleSheet } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 
-const StyledText = ({ children, style = null, hasGradient = false }) => {
+export const StyledText = ({ children, style = null, hasGradient = false }) => {
     if (hasGradient) {
         return (
             <LinearGradient
@@ -45,22 +45,33 @@ const TitleXSmall = ({ children, style = null }) => {
     return <Text style={[styles.TitleXSmall, style]}> {children} </Text>
 };
 
-export {
-    StyledText,
-    Title,
-    SubTitle,
-    Paragraph,
-    SubTitleSmall,
-    ParagraphSmall,
-    ParagraphLarge,
-    TitleXSmall
-};
+// export {
+//     StyledText,
+//     Title,
+//     SubTitle,
+//     Paragraph,
+//     SubTitleSmall,
+//     ParagraphSmall,
+//     ParagraphLarge,
+//     TitleXSmall
+// };
+
+// export default {
+//     StyledText,
+//     Title,
+//     SubTitle,
+//     Paragraph,
+//     SubTitleSmall,
+//     ParagraphSmall,
+//     ParagraphLarge,
+//     TitleXSmall
+// };
 
 const styles = StyleSheet.create({
     paragraph: {
         fontFamily: Fonts.sans.regular,
         fontSize: 20,
-        // lineHeight: 1.4,
+        lineHeight: 1.4,
     },
 
     title: {
@@ -72,30 +83,30 @@ const styles = StyleSheet.create({
     subTitle: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 30,
-        // lineHeight: 1.2,
+        lineHeight: 1.2,
     },
 
     subTitleSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 32,
-        // lineHeight: 1.2,
+        lineHeight: 1.2,
     },
 
     paragraphSmall: {
         fontFamily: Fonts.sans.regular,
         fontSize: 18,
-        // lineHeight: 1.4,
+        lineHeight: 1.4,
     },
 
     paragraphLarge: {
         fontFamily: Fonts.sans.regular,
         fontSize: 24,
-        // lineHeight: 1.35,
+        lineHeight: 1.35,
     },
 
     TitleXSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 24,
-        // lineHeight: 1.4,
+        lineHeight: 1.4,
     }
 });

@@ -131,7 +131,7 @@ const createDB = () => {
             clusterId: globaalEntry ? clusters.find(c => c.label === globaalEntry.Cluster)?.id || null : null,
             keywords: keywordsEntry ? [...new Set(keywordsEntry.map(k => keywords.find(kw => kw.label === k.KeywordLabel)?.id).filter(id => id !== undefined))] : [],
             transitiedomeinen: transitiedomeinenEntry ? [...new Set(transitiedomeinenEntry.map(t => transitiedomeinen.find(td => td.label === t.KeywordLabel)?.id).filter(id => id !== undefined))] : [],
-            cossierManagerFullName: project.DossierManagerFullName,
+            dossierManagerFullName: project.DossierManagerFullName,
             CCODE: project.CCODE,
             UCODE: project.UCODE,
             CDESC: project.CDESC,

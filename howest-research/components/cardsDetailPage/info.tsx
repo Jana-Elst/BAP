@@ -7,14 +7,14 @@ const Info = ({project}) => {
         <View style={styles.card}>
             <View>
                 <StyledText>Dit is een korte teaser van ongeveer 8 woorden.</StyledText>
-                <StyledText>Project uitleg</StyledText>
+                <StyledText>{project.abstract}</StyledText>
                 <StyledText>LOGOS</StyledText>
             </View>
 
             <View>
-                <StyledText>Onderzoeksgroep</StyledText>
-                <StyledText>ProjectLeider</StyledText>
-                <StyledText>ProjectDuur</StyledText>
+                <StyledText>{project.researchGroup.label}</StyledText>
+                <StyledText>{project.contactPerson}</StyledText>
+                <StyledText>{project.startDate} - {project.endDate}</StyledText>
                 <StyledText>Links</StyledText>
             </View>
 

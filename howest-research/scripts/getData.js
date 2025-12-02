@@ -121,8 +121,18 @@ export const getProjectInfo = (projectID) => {
         transitionDomain: getTransitionDomain(project.keywords),
         keywords: getKeywords(project.keywords),
         color: getProjectColor(project.clusterId),
+        abstract: project.teaserAbstractForWebsite,
+        researchGroup: getResearchGroup(project.researchGroupId),
+        contactPerson: project.dossierManagerFullName,
+        startDate: project.startDate,
+        endDate: project.endDate,
     }
 };
+
+export const getResearchGroup = (researchGroupId) => {
+    const researchGroup = data.onderzoeksgroepen.find(group => group.id === researchGroupId);
+    return researchGroup;
+}
 
 export const getFilteredProjects = (activeFilters) => {
     console.log('Active Filters:', activeFilters);

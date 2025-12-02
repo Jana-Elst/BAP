@@ -20,6 +20,7 @@ import QRCode from "../cardsDetailPage/qrCode";
 import data from '../../assets/data/structured-data.json';
 import { getKeywords, getProjectInfo, getTransitionDomain } from "@/scripts/getData";
 import { StyledText } from "../atoms/styledComponents";
+import { Fonts, Colors } from "@/constants/theme";
 
 const renderItems = [
     "model", "info", "images", "qrCode"
@@ -43,7 +44,7 @@ const onPressPagination = (index: number) => {
     });
 };
 
-const DetailPage = ({page, setPage}) => {
+const DetailPage = ({ page, setPage }) => {
     console.log('Project', page.id);
     const project = getProjectInfo(page.id);
     console.log('PROJECT DETAIL PAGE', project);
@@ -58,35 +59,30 @@ const DetailPage = ({page, setPage}) => {
                     width: windowWidth,
                     height: 741,
                     justifyContent: "center",
-                    alignItems: "center",
+                    // alignItems: "center",
                 }}
 
                 width={cardWidth + gap}
                 data={[...renderItems]}
                 renderItem={({ item, index, animationValue }) => {
                     return (
-                        <View style={{ flex: 1 }}>                            <StyledText>{project.title}</StyledText>
-                            <StyledText>TransitieDomein</StyledText>
+                        <View style={[{ flex: 1 }, styles.card]}>
+                            <View style={styles.header}>
+                                <StyledText style={styles.title}>{project.title}</StyledText>
+                                <StyledText style={styles.subtitle}>TransitieDomein</StyledText>
+                            </View>
 
-                            {
-                                item === "model" ? <ModelView width={cardWidth} height={741} project={project} /> :
-                                    item === "info" ? <Info project={project} /> :
-                                        item === "images" ? <Images /> :
-                                            item === "qrCode" ? <QRCode /> :
-                                                null
-                            }
+                            <View style={{ flex: 1 }}>
+                                {
+                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} /> :
+                                        item === "info" ? <Info project={project} /> :
+                                            item === "images" ? <Images /> :
+                                                item === "qrCode" ? <QRCode /> :
+                                                    null
+                                }
+                            </View>
                         </View>
                     );
-
-                    // if (item === "model") {
-                    //     return <ModelView width={cardWidth} height={741} />;
-                    // } else if (item === "info") {
-                    //     return <Info />;
-                    // } else if (item === "images") {
-                    //     return <Images />;
-                    // } else if (item === "qrCode") {
-                    //     return <QRCode />;
-                    // }
                 }}
 
                 // customAnimation={parallaxLayout(
@@ -114,5 +110,35 @@ const DetailPage = ({page, setPage}) => {
 
     );
 }
+
+const styles = StyleSheet.create({
+    card: {
+        padding: 64,
+        borderColor: Colors.blue100,
+        borderWidth: 2,
+        borderRadius: 16,
+        backgroundColor: Colors.white,
+    },
+
+    header: {
+        flexDirection: 'row',
+        gap: 8,
+        alignItems: 'baseline',
+        backgroundColor: 'green'
+    },
+
+    title: {
+        fontFamily: Fonts.rounded.bold,
+        fontSize: 48,
+        color: Colors.blue100,
+        backgroundColor: 'yellow'
+    },
+
+    subtitle: {
+        fontFamily: Fonts.rounded.bold,
+        fontSize: 24,
+        color: Colors.blue80,
+    }
+});
 
 export default DetailPage;
