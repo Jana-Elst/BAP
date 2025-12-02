@@ -3,7 +3,7 @@ import DetailPage from "@/components/pages/detailPage";
 import { FlashList } from "@shopify/flash-list";
 import { StyleSheet, TouchableOpacity, View, Animated, PanResponder } from 'react-native';
 import data from '../../assets/data/structured-data.json';
-import DiscoverCard from "../molecules/discoverCard";
+import DiscoverCard from "../molecules/projectCard";
 import OverlayComponent from "../organisms/overlay";
 import { Button, Overlay } from '@rneui/themed';
 import React, { useState, useRef } from 'react';

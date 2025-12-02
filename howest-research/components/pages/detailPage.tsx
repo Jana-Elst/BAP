@@ -1,101 +1,144 @@
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { StyledText } from '../atoms/styledComponents';
+import * as React from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
+import Carousel, {
+    ICarouselInstance,
+    Pagination,
+} from "react-native-reanimated-carousel";
+import { useSharedValue } from "react-native-reanimated";
+import { useRef } from "react";
+
+import { BlurView as _BlurView } from "expo-blur";
+import { parallaxLayout } from "../../app/carrousel/parallax";
+
+import Card from "../atoms/card";
+
+import ModelView from "../cardsDetailPage/modelView";
+import Info from "../cardsDetailPage/info";
+import Images from "../cardsDetailPage/images";
+import QRCode from "../cardsDetailPage/qrCode";
+
 import data from '../../assets/data/structured-data.json';
-import BTNBack from '../atoms/BTNBack';
-import { Colors, Fonts } from '@/constants/theme';
-import Scene3D from '../3Dscenes/3DsceneNew';
-import { getKeywords } from '../../scripts/getData';
-import { contain } from 'three/src/extras/TextureUtils.js';
+import { getKeywords, getProjectInfo, getTransitionDomain } from "@/scripts/getData";
+import { StyledText } from "../atoms/styledComponents";
+import { Fonts, Colors } from "@/constants/theme";
 
-// import { createImagePaths } from '../scripts/create-image-paths';
+const renderItems = [
+    "model", "info", "images", "qrCode"
+];
 
-export default function DetailPage(props: { page, setPage }) {
-    const keywords = data.keywords;
-    const clusters = data.clusters;
-    const projects = data.projects;
+const windowWidth = Dimensions.get("window").width;
+const cardWidth = 866;
+const gap = 32;
 
-    const project = projects.find(p => p.ID === props.page.id);
+const ref = useRef<ICarouselInstance>(null);
+const progress = useSharedValue<number>(0);
+
+const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+        /**
+         * Calculate the difference between the current index and the target index
+         * to ensure that the carousel scrolls to the nearest index
+         */
+        count: index - progress.value,
+        animated: true,
+    });
+};
+
+const DetailPage = ({ page, setPage }) => {
+    console.log('Project', page.id);
+    const project = getProjectInfo(page.id);
     console.log('PROJECT DETAIL PAGE', project);
 
-    const keywordIDs = project.Keywords;
-    const projectKeywords = getKeywords(keywordIDs);
-
-    const handleOpendetailKeyword = (keywordId) => {
-        console.log(keywordId);
-        props.setPage({
-            page: 'detailKeyword',
-            id: keywordId,
-            previousPages: [
-                ...props.page.previousPages || [],
-                {
-                    page: props.page.page,
-                    id: props.page.id
-                }
-            ]
-        })
-    }
-
-    console.log(props.page.previousPages.length);
-
     return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-                {
-                    props.page.previousPages.length > 1 && <BTNBack project={project} page={props.page} setPage={props.setPage} />
-                }
+        <View>
+            <Carousel
+                ref={ref}
+                onProgressChange={progress}
+                loop={false}
+                style={{
+                    width: windowWidth,
+                    height: 741,
+                    justifyContent: "center",
+                    // alignItems: "center",
+                }}
 
-                <StyledText style={{ fontFamily: Fonts.rounded.bold, fontSize: 32, fontWeight: 'bold', backgroundColor: Colors.blue100 }}>{project.CCODE}</StyledText>
-                <StyledText>
-                    {clusters.find(c => c.Id === project.ClusterId)?.Label}
-                </StyledText>
-                <StyledText>Keywords</StyledText>
-                {project.Keywords
-                    .map(keyword => keywords.find(k => k.ID === keyword && k.KeywordCategoryIDs !== 3))
-                    .filter(Boolean)
-                    .map((keyword) => (
-                        <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.ID)} key={keyword.ID} style={styles.tag}>
-                            <StyledText style={styles.tagStyledText}>{keyword.Label}</StyledText>
-                        </TouchableOpacity>
-                    ))}
-            </View>
-            <View style={styles.container3D}>
-                {/* <LinearGradient
-                        colors={['rgba(255, 255, 255, 1)', 'transparent']}
-                        style={styles.background}
-                    /> */}
-                <Scene3D
-                    name="dom"
-                    projectKeywords={projectKeywords}
-                />
-            </View>
-        </View>
-    )
+                width={cardWidth + gap}
+                data={[...renderItems]}
+                renderItem={({ item, index, animationValue }) => {
+                    return (
+                        <View style={[{ flex: 1 }, styles.card]}>
+                            <View style={styles.header}>
+                                <StyledText style={styles.title}>{project.title}</StyledText>
+                                <StyledText style={styles.subtitle}>TransitieDomein</StyledText>
+                            </View>
+
+                            <View style={{ flex: 1 }}>
+                                {
+                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
+                                        item === "info" ? <Info project={project} /> :
+                                            item === "images" ? <Images /> :
+                                                item === "qrCode" ? <QRCode /> :
+                                                    null
+                                }
+                            </View>
+                        </View>
+                    );
+                }}
+
+                // customAnimation={parallaxLayout(
+                //     {
+                //         size: Dimensions.get("window").width,
+                //         vertical: false,
+                //     },
+                //     {
+                //         parallaxScrollingScale: 1,
+                //         parallaxAdjacentItemScale: 0.5,
+                //         parallaxScrollingOffset: 40,
+                //     },
+                // )}
+                scrollAnimationDuration={600}
+            />
+
+            <Pagination.Basic
+                progress={progress}
+                data={[...renderItems]}
+                dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
+                containerStyle={{ gap: 5, marginTop: 10 }}
+                onPress={onPressPagination}
+            />
+        </View >
+
+    );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    card: {
+        padding: 64,
+        borderColor: Colors.blue100,
+        borderWidth: 2,
+        borderRadius: 16,
+        backgroundColor: Colors.white,
+    },
+
+    header: {
         flexDirection: 'row',
-    },
-
-    content: {
-        flex: 1,
-    },
-
-    container3D: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
-    },
-
-    button: {
-        padding: 20,
+        gap: 8,
+        alignItems: 'baseline',
         backgroundColor: 'green'
     },
 
-    tag: {
-        padding: 20,
-        margin: 10,
-        backgroundColor: 'pink'
+    title: {
+        fontFamily: Fonts.rounded.bold,
+        fontSize: 48,
+        color: Colors.blue100,
+        backgroundColor: 'yellow'
     },
+
+    subtitle: {
+        fontFamily: Fonts.rounded.bold,
+        fontSize: 24,
+        color: Colors.blue80,
+    }
 });
+
+export default DetailPage;

@@ -1,17 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
+import Toggle from "../atoms/toggle";
 
-export const ViewToggle = () => {
+const LanguageToggle = () => {
     return (
-        <View style={styles.container}>
-            <Text>Ontdek</Text>
-            <Text>Gallerij</Text>
-        </View>
-    );
+        <Toggle icon1="grid-outline" icon2="grid-outline" element1="Ontdek weergave" element2="Gallerij weergave" />
+    )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: 'orange',
-        flexDirection: 'row',
-    },
-});
+export default LanguageToggle;

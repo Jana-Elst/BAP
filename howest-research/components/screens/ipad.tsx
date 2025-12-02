@@ -1,27 +1,21 @@
-import DetailKeyword from "@/components/pages/detailKeyword";
-import DetailPage from "@/components/pages/detailPage";
-import { FlashList } from "@shopify/flash-list";
-import { StyleSheet, TouchableOpacity, View, Animated, PanResponder } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Modal } from 'react-native';
 import data from '../../assets/data/structured-data.json';
-import DiscoverCard from "../molecules/discoverCard";
-import OverlayComponent from "../organisms/overlay";
-import { Button, Overlay } from '@rneui/themed';
-import React, { useState, useRef } from 'react';
-import { StyledText } from "../atoms/styledComponents";
-import BTNBack from "../atoms/BTNBack";
-import Header from "../organisms/header";
-import Footer from "../organisms/footer";
-import DiscoverScreen from "../pages/discoverScreen";
+import HomeScreen from '../pages/homeScreen';
+import CloseButton from '../atoms/closeButton';
+import BackButton from '../atoms/backButton';
+import Card from '../atoms/card';
+import { StyledText } from '../atoms/styledComponents';
+import DetailPage from '../pages/detailPage';
+import DetailKeyword from '../pages/detailKeyword';
 
-export default function Ipad(props: { keyword, page, setPage }) {
-    const projects = data.projects;
-    const domains = data.transitiedomeinen;
-    const keywords = data.keywords;
-    const clusters = data.clusters;
-
-    const projectImages = {};
+export default function Ipad({ page, setPage }) {
+    console.log('page', page)
 
     const [visible, setVisible] = useState(false);
+    const [activeFilters, setActiveFilters] = useState([]);
+    const [projects, setProjects] = useState(data.projects);
+
 
     const isVisible = (page) => {
         if (page === 'discover' || page === 'gallery' || page === 'filter') {
@@ -36,52 +30,53 @@ export default function Ipad(props: { keyword, page, setPage }) {
         setPage({
             page: page.previousPages[0].page,
             id: null,
-            previousPages: []
+            previousPages: [],
         })
         isVisible(page.previousPages[0].page);
     }
 
     const handleBack = () => {
-        props.setPage({
-            page: props.page.previousPages[props.page.previousPages.length - 1].page,
-            id: props.page.previousPages[props.page.previousPages.length - 1].id,
-            previousPages: props.page.previousPages.slice(0, -1)
+        setPage({
+            page: page.previousPages[page.previousPages.length - 1].page,
+            id: page.previousPages[page.previousPages.length - 1].id,
+            previousPages: page.previousPages.slice(0, -1)
         })
-        isVisible(props.page.previousPages[props.page.previousPages.length - 1].page);
+        isVisible(page.previousPages[page.previousPages.length - 1].page);
     }
 
     return (
         <View style={styles.container}>
-            <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} />
+            <HomeScreen page={page} setPage={setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
+            {/* <DiscoverScreen projects={projects} page={page} setPage={setPage} isVisible={isVisible} /> */}
 
-            <Overlay isVisible={visible} onBackdropPress={() => handleClosePopUp(props.setPage, props.page)} overlayStyle={styles.overlay}>
+            {/*--------------- Detailpage overlays --------------------*/}
+            <Modal
+                visible={visible}
+                onRequestClose={() => handleClosePopUp(setPage, page)}
+                style={styles.overlay}
+            >
                 <View style={styles.overlayContent}>
                     {
-                        props.page.previousPages.length > 1 &&
-                        <TouchableOpacity onPress={handleBack} style={styles.button}>
-                            <StyledText>TERUG</StyledText>
-                        </TouchableOpacity>
-                    }
-                    {
-                        props.page.page === 'detailResearch' &&
-                        (
-                            <DetailPage page={props.page} setPage={props.setPage} />
-                        )
+                        page.previousPages.length > 1 &&
+                        <BackButton onPress={handleBack}>Terug</BackButton>
                     }
 
                     {
-                        props.page.page === 'detailKeyword' &&
+                        page.page === 'detailResearch' &&
                         (
-                            <DetailKeyword keyword={keywords.find(k => k.ID === props.page.id)} page={props.page} setPage={props.setPage} isVisible={isVisible} />
+                            <DetailPage page={page} setPage={setPage} />
+                        )
+                    }
+                    {
+                        page.page === 'detailKeyword' &&
+                        (
+                            <DetailKeyword page={page} setPage={setPage} setVisible={setVisible} />
                         )
                     }
 
-                    <Button
-                        title="SLUIT"
-                        onPress={() => handleClosePopUp(props.setPage, props.page)}
-                    />
+                    <CloseButton onPress={() => handleClosePopUp(setPage, page)}>Sluit</CloseButton>
                 </View>
-            </Overlay>
+            </Modal>
         </View >
     );
 }
@@ -112,7 +107,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
 
-    cardWrapper :{
+    cardWrapper: {
         backgroundColor: 'yellow',
         position: 'absolute',
         top: 50,
@@ -125,7 +120,7 @@ const styles = StyleSheet.create({
     },
 
     overlayContent: {
-        backgroundColor: 'green',
+        // backgroundColor: 'green',
         flex: 1,
     }
 });

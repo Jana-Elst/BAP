@@ -1,22 +1,19 @@
-import { Image } from 'expo-image';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Filter from './filter';
+import Search from './search';
+import HowestResearch from './howestResearch';
+import LanguageToggle from '../molecules/languageToggle';
 
-export default function Header(props: { project, page, setPage }) {
-    const image = require('../../assets/images/logoHowestResearchRGB.png')
 
+const Header = ({ activeFilters, setActiveFilters, setProjects }) => {
     return (
         <View style={styles.container}>
-            <Image
-                style={styles.image}
-                source={image}
-                contentFit="contain"
-            />
-
-            <Text style={styles.filter}>FILTER</Text>
+            <HowestResearch />
 
             <View style={styles.rightSection}>
-                <Text>SEARCH</Text>
-                <Text>NL/ENG</Text>
+                <Filter activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
+                <Search />
+                <LanguageToggle />
             </View>
         </View>
     )
@@ -27,7 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: 'green',
+        // backgroundColor: 'green',
         padding: 16,
     },
 
@@ -43,3 +40,5 @@ const styles = StyleSheet.create({
     filter: {
     }
 });
+
+export default Header;
