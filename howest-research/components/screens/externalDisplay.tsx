@@ -3,75 +3,49 @@ import data from '../../assets/data/structured-data.json';
 import Scene3DWithLabels from '../3Dscenes/3DsceneNew';
 import { getKeywords } from '../../scripts/getData';
 import { LinearGradient } from 'expo-linear-gradient';
+import Scene3D from '../3Dscenes/3DsceneNew';
 
 const keywords = data.keywords;
 const clusters = data.clusters;
 const projects = data.projects;
 
 export default function ExternalScreen(props: { page }) {
-    if (props.page.page === 'detailResearch') {
-        const project = projects.find(p => p.id === props.page.id);
-
-        const keywordIDs = project.keywords;
-        const projectKeywords = getKeywords(keywordIDs);
-
-        return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <View>
-                    <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{project.CCODE}</Text>
-                    <Text style={{ color: 'white', fontSize: 48 }}>
-                        {clusters.find(c => c.Id === project.clusterId)?.label}
-                    </Text>
-                    {projectKeywords
-                        .map((keyword) => (
-                            <Text key={keyword.id} style={{ color: 'white', fontSize: 24 }}>{keyword.label}</Text>
-                        ))
-                    }
-                </View>
-
-                <View style={{ flex: 1, width: '100%', height: '100%' }}>
-                    {/* <LinearGradient
-                        colors={['rgba(255, 255, 255, 1)', 'transparent']}
-                        style={styles.background}
-                    /> */}
-                    <Scene3DWithLabels
-                        name="dom"
-                        projectKeywords={projectKeywords}
-                    />
-                </View>
-            </View >
-        );
-    } else if (props.page.page === 'detailKeyword') {
-        const keyword = keywords.find(k => k.id === props.page.id);
-        return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
-                <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{keyword.label}</Text>
+    return (
+        <View style={styles.container}>
+            <View style={styles.container3D}>
+                <Scene3D
+                    name="dom"
+                    projectKeywords={[]}
+                />
             </View>
-        )
-
-    } else {
-        return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: 100 }}>
-                    This is the External Display!
-                </Text>
-            </View>
-        );
-    }
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'orange',
+        flexDirection: 'row',
     },
-    background: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
+
+    content: {
+        flex: 1,
+    },
+
+    container3D: {
+        flex: 1,
         height: '100%',
+        width: '100%',
+    },
+
+    button: {
+        padding: 20,
+        backgroundColor: 'green'
+    },
+
+    tag: {
+        padding: 20,
+        margin: 10,
+        backgroundColor: 'pink'
     },
 });

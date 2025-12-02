@@ -10,7 +10,7 @@ import businessMedia from "../../assets/models/businessMedia.glb";
 export default function Scene3D() {
     // Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x1a1a2e);
+    scene.background = new THREE.Color(0x000000);
 
     // Camera
     const camera = new THREE.PerspectiveCamera(
@@ -39,6 +39,24 @@ export default function Scene3D() {
     directionalLight.position.set(5, 5, 5);
     scene.add(directionalLight);
 
+    // Additional lights for glass reflections
+    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight2.position.set(-5, 3, -5);
+    scene.add(directionalLight2);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(0, 5, 0);
+    scene.add(pointLight);
+
+    const spotLight = new THREE.SpotLight(0xffffff, 1);
+    spotLight.position.set(3, 8, 3);
+    spotLight.angle = Math.PI / 6;
+    scene.add(spotLight);
+
+    // Enable environment map for better glass reflections
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+
     // Load GLB model
     let model;
     const loader = new GLTFLoader();
@@ -46,6 +64,24 @@ export default function Scene3D() {
         businessMedia,
         (gltf) => {
             model = gltf.scene;
+
+            model.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    const mat = child.material;
+                    // Check if it's a glass/transparent material
+                    if (mat.transparent || mat.transmission > 0 || mat.name?.toLowerCase().includes('glass')) {
+                        mat.roughness = 0.8; // Higher roughness = more frosted
+                        mat.metalness = 0.0;
+                        mat.transmission = 0.6; // Reduce transmission for frosted look
+                        mat.thickness = 0.5;
+                        mat.ior = 1.5;
+                        mat.opacity = 0.7;
+                        mat.transparent = true;
+                        mat.needsUpdate = true;
+                    }
+                }
+            });
+            
             scene.add(model);
 
             // Center the model
