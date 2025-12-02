@@ -1,118 +1,118 @@
-// https://docs.expo.dev/versions/latest/sdk/view-pager/
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import PagerView from 'react-native-pager-view';
+import * as React from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
+import Carousel, {
+    ICarouselInstance,
+    Pagination,
+} from "react-native-reanimated-carousel";
+import { useSharedValue } from "react-native-reanimated";
+import { useRef } from "react";
 
-import { StyledText } from '../atoms/styledComponents';
+import { BlurView as _BlurView } from "expo-blur";
+import { parallaxLayout } from "../../app/carrousel/parallax";
+
+import Card from "../atoms/card";
+
+import ModelView from "../cardsDetailPage/modelView";
+import Info from "../cardsDetailPage/info";
+import Images from "../cardsDetailPage/images";
+import QRCode from "../cardsDetailPage/qrCode";
+
 import data from '../../assets/data/structured-data.json';
-import BTNBack from '../atoms/BTNBack';
-import { Colors, Fonts } from '@/constants/theme';
-import Scene3D from '../3Dscenes/3DsceneNew';
-import { getKeywords } from '../../scripts/getData';
-import Card from '../atoms/card';
+import { getKeywords, getProjectInfo, getTransitionDomain } from "@/scripts/getData";
+import { StyledText } from "../atoms/styledComponents";
 
-// import { createImagePaths } from '../scripts/create-image-paths';
+const renderItems = [
+    "model", "info", "images", "qrCode"
+];
 
-const DetailPage = ({ page, setPage }) => {
-    const clusters = data.clusters;
-    const projects = data.projects;
+const windowWidth = Dimensions.get("window").width;
+const cardWidth = 866;
+const gap = 32;
 
-    const project = projects.find(p => p.id === page.id);
-    const keywordIDs = project.transitiedomeinen;
-    const projectKeywords = getKeywords(keywordIDs);
+const ref = useRef<ICarouselInstance>(null);
+const progress = useSharedValue<number>(0);
 
-    const handleOpendetailKeyword = (keywordId) => {
-        console.log('KEYWORD ID', keywordId);
-        setPage({
-            page: 'detailKeyword',
-            id: keywordId,
-            previousPages: [
-                ...page.previousPages || [],
-                {
-                    page: page.page,
-                    id: page.id
-                }
-            ]
-        })
-    }
+const onPressPagination = (index: number) => {
+    ref.current?.scrollTo({
+        /**
+         * Calculate the difference between the current index and the target index
+         * to ensure that the carousel scrolls to the nearest index
+         */
+        count: index - progress.value,
+        animated: true,
+    });
+};
 
-    console.log(page.previousPages.length);
+const DetailPage = ({page, setPage}) => {
+    console.log('Project', page.id);
+    const project = getProjectInfo(page.id);
+    console.log('PROJECT DETAIL PAGE', project);
 
     return (
-        <PagerView
-            style={styles.container}
-            initialPage={0}
-            pageMargin={16}
-        >
-            <View key="1" >
-                <Card style={styles.card}>
-                    <StyledText>First CARD</StyledText>
-                </Card>
-            </View>
-            <View key="2">
-                <Card style={styles.card}>
-                    <StyledText>Second CARD</StyledText>
-                </Card>
-            </View>
-        </PagerView>
-        // <View style={styles.container}>
-        //     <View style={styles.content}>
-        //         {
-        //             page.previousPages.length > 1 && <BTNBack project={project} page={page} setPage={setPage} />
-        //         }
+        <View>
+            <Carousel
+                ref={ref}
+                onProgressChange={progress}
+                loop={false}
+                style={{
+                    width: windowWidth,
+                    height: 741,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
 
-        //         <StyledText style={{ fontFamily: Fonts.rounded.bold, fontSize: 32, fontWeight: 'bold', backgroundColor: Colors.blue100 }}>{project.CCODE}</StyledText>
-        //         <StyledText>
-        //             {clusters.find(c => c.id === project.clusterId)?.label}
-        //         </StyledText>
+                width={cardWidth + gap}
+                data={[...renderItems]}
+                renderItem={({ item, index, animationValue }) => {
+                    return (
+                        <View style={{ flex: 1 }}>                            <StyledText>{project.title}</StyledText>
+                            <StyledText>TransitieDomein</StyledText>
 
-        //         <StyledText>Keywords</StyledText>
-        //         {projectKeywords
-        //             .map(keyword => (
-        //                 <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.id)} key={keyword.id} style={styles.tag}>
-        //                     <StyledText style={styles.tagStyledText}>{keyword.label} {keyword.id}</StyledText>
-        //                 </TouchableOpacity>
-        //             ))}
-        //     </View>
-        //     <View style={styles.container3D}>
-        //         {/* <LinearGradient
-        //                 colors={['rgba(255, 255, 255, 1)', 'transparent']}
-        //                 style={styles.background}
-        //             /> */}
-        //         <Scene3D
-        //             name="dom"
-        //             projectKeywords={projectKeywords}
-        //         />
-        //     </View>
-        // </View>
-    )
+                            {
+                                item === "model" ? <ModelView width={cardWidth} height={741} project={project} /> :
+                                    item === "info" ? <Info project={project} /> :
+                                        item === "images" ? <Images /> :
+                                            item === "qrCode" ? <QRCode /> :
+                                                null
+                            }
+                        </View>
+                    );
+
+                    // if (item === "model") {
+                    //     return <ModelView width={cardWidth} height={741} />;
+                    // } else if (item === "info") {
+                    //     return <Info />;
+                    // } else if (item === "images") {
+                    //     return <Images />;
+                    // } else if (item === "qrCode") {
+                    //     return <QRCode />;
+                    // }
+                }}
+
+                // customAnimation={parallaxLayout(
+                //     {
+                //         size: Dimensions.get("window").width,
+                //         vertical: false,
+                //     },
+                //     {
+                //         parallaxScrollingScale: 1,
+                //         parallaxAdjacentItemScale: 0.5,
+                //         parallaxScrollingOffset: 40,
+                //     },
+                // )}
+                scrollAnimationDuration={600}
+            />
+
+            <Pagination.Basic
+                progress={progress}
+                data={[...renderItems]}
+                dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
+                containerStyle={{ gap: 5, marginTop: 10 }}
+                onPress={onPressPagination}
+            />
+        </View >
+
+    );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-
-    card: {
-        backgroundColor: 'green',
-        width: '50%',
-        height: '100%',
-    },
-
-    content: {
-        flex: 1,
-    },
-
-    container3D: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
-    },
-
-    tag: {
-        padding: 20,
-        margin: 10,
-        backgroundColor: 'pink'
-    },
-});
 
 export default DetailPage;
