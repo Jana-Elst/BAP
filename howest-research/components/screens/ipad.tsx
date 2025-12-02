@@ -7,9 +7,10 @@ import BackButton from '../atoms/backButton';
 import Card from '../atoms/card';
 import { StyledText } from '../atoms/styledComponents';
 import DetailPage from '../pages/detailPage';
+import DetailKeyword from '../pages/detailKeyword';
 
-export default function Ipad(props: { page, setPage }) {
-    console.log('page', props.page)
+export default function Ipad({ page, setPage }) {
+    console.log('page', page)
 
     const [visible, setVisible] = useState(false);
     const [activeFilters, setActiveFilters] = useState([]);
@@ -35,52 +36,45 @@ export default function Ipad(props: { page, setPage }) {
     }
 
     const handleBack = () => {
-        props.setPage({
-            page: props.page.previousPages[props.page.previousPages.length - 1].page,
-            id: props.page.previousPages[props.page.previousPages.length - 1].id,
-            previousPages: props.page.previousPages.slice(0, -1)
+        setPage({
+            page: page.previousPages[page.previousPages.length - 1].page,
+            id: page.previousPages[page.previousPages.length - 1].id,
+            previousPages: page.previousPages.slice(0, -1)
         })
-        isVisible(props.page.previousPages[props.page.previousPages.length - 1].page);
+        isVisible(page.previousPages[page.previousPages.length - 1].page);
     }
 
     return (
         <View style={styles.container}>
-            <HomeScreen page={props.page} setPage={props.setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
-            {/* <DiscoverScreen projects={projects} page={props.page} setPage={props.setPage} isVisible={isVisible} /> */}
+            <HomeScreen page={page} setPage={setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
+            {/* <DiscoverScreen projects={projects} page={page} setPage={setPage} isVisible={isVisible} /> */}
 
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
                 visible={visible}
-                onRequestClose={() => handleClosePopUp(props.setPage, props.page)}
+                onRequestClose={() => handleClosePopUp(setPage, page)}
                 style={styles.overlay}
             >
                 <View style={styles.overlayContent}>
                     {
-                        props.page.previousPages.length > 1 &&
+                        page.previousPages.length > 1 &&
                         <BackButton onPress={handleBack}>Terug</BackButton>
                     }
 
                     {
-                        props.page.page === 'detailResearch' &&
+                        page.page === 'detailResearch' &&
                         (
-                            <DetailPage page={props.page} setPage={props.setPage} />
+                            <DetailPage page={page} setPage={setPage} />
                         )
                     }
-                    {/* {
-                        props.page.page === 'detailResearch' &&
+                    {
+                        page.page === 'detailKeyword' &&
                         (
-                            // <DetailPage page={props.page} setPage={props.setPage} />
+                            <DetailKeyword page={page} setPage={setPage} isVisible={isVisible} />
                         )
-                    } */}
+                    }
 
-                    {/* {
-                        props.page.page === 'detailKeyword' &&
-                        (
-                            // <DetailKeyword page={props.page} setPage={props.setPage} isVisible={isVisible} />
-                        )
-                    } */}
-
-                    <CloseButton onPress={() => handleClosePopUp(props.setPage, props.page)}>Sluit</CloseButton>
+                    <CloseButton onPress={() => handleClosePopUp(setPage, page)}>Sluit</CloseButton>
                 </View>
             </Modal>
         </View >

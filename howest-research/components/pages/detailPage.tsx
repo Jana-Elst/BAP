@@ -74,7 +74,7 @@ const DetailPage = ({ page, setPage }) => {
 
                             <View style={{ flex: 1 }}>
                                 {
-                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} /> :
+                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                         item === "info" ? <Info project={project} /> :
                                             item === "images" ? <Images /> :
                                                 item === "qrCode" ? <QRCode /> :
