@@ -2,11 +2,15 @@ import { StyleSheet, View } from 'react-native';
 import Header from "../organisms/header";
 import Footer from "../organisms/footer";
 import InfiniteGridComponent from '../organisms/infiniteGrid';
+import InfiniteScrollView from '../3Dscenes/infiniteScroll';
 
-const DiscoverScreen = (props: {projects, page, setPage, isVisible}) => {
+const DiscoverScreen = (projects, page, setPage, isVisible) => {
     return (
         <View style={styles.hero}>
-            <InfiniteGridComponent {...props} />
+            <InfiniteScrollView
+                name="dom"
+                projects={projects}
+            />
         </View>
     );
 };

@@ -3,8 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import Touchable from "../atoms/touchable";
 
-const Toggle = ({ icon1=null, icon2=null, element1, element2 }) => {
-    const [isActive, setIsActive] = useState(true);
+const Toggle = ({ icon1=null, icon2=null, element1, element2, setIsActive, isActive }) => {
+    // const [isActive, setIsActive] = useState(true);
 
     const handleToggle = () => {
         setIsActive(!isActive);
