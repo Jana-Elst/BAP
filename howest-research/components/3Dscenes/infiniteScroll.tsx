@@ -8,53 +8,175 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRe
 import { useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import ProjectCard3D from './projectCard3D';
+import getPositions from '../../scripts/placeCards';
+import data from '../../assets/data/structured-data.json';
 
 //---------------------------- CONSTANTS ----------------------------//
-const gridGap = 0.5;
+const projects = data.projects;
+
 const cardWidth = 320; // From ProjectCard3D
 const cardHeight = 380; // From ProjectCard3D
-const CssScale = 0.01; // Scale factor to convert pixels to Three.js units
-const tileWidth = cardWidth * CssScale; // 3.2 Three.js units
-const tileHeight = cardHeight * CssScale; // 3.8 Three.js units
-const tileSpaceX = tileWidth + gridGap;
-const tileSpaceY = tileHeight + gridGap;
-const gridSizeX = tileSpaceX * 3;
-const gridSizeY = tileSpaceY * 3;
-const totalGridSizeX = gridSizeX * 3;
-const totalGridSizeY = gridSizeY * 3;
-
-// Tile positions within a single grid
-const TILE_POSITIONS: [number, number, number][] = [
-    [-tileSpaceX, tileSpaceY, 0],
-    [0, tileSpaceY, 0],
-    [tileSpaceX, tileSpaceY, 0],
-    [-tileSpaceX, 0, 0],
-    [0, 0, 0],
-    [tileSpaceX, 0, 0],
-    [-tileSpaceX, -tileSpaceY, 0],
-    [0, -tileSpaceY, 0],
-    [tileSpaceX, -tileSpaceY, 0],
-];
-
-// Clone group positions (3x3 grid of grids)
-const GROUP_POSITIONS: [number, number, number][] = [
-    [-gridSizeX, gridSizeY, 0],
-    [0, gridSizeY, 0],
-    [gridSizeX, gridSizeY, 0],
-    [-gridSizeX, 0, 0],
-    [0, 0, 0],
-    [gridSizeX, 0, 0],
-    [-gridSizeX, -gridSizeY, 0],
-    [0, -gridSizeY, 0],
-    [gridSizeX, -gridSizeY, 0],
-];
-
-// Lerp function
-const lerp = (start: number, end: number, amount: number): number => {
-    return start * (1 - amount) + end * amount;
+const canvasScale = 1.3;
+const canvasSize = {
+    w: innerWidth * canvasScale,
+    h: innerHeight * canvasScale
 };
 
-//---------------------------- COMPONENT ----------------------------//
+const cardsPerCanvas = 6;
+const layers = 10;
+
+const totalProjects = projects.length;
+const totalCanvasses = Math.ceil(totalProjects / cardsPerCanvas);
+
+const visibleRows = 5; // 2 above, 1 middle, 2 below
+const visibleCols = 5; // Visible columns + buffer
+
+//---------------------------- VARS ----------------------------//
+let cardPositions: { x: number; y: number; z: number }[] = [];
+let frameCardPositions: Map<number, { x: number; y: number; z: number }[]> = new Map();
+
+
+//---------------------------- HELPER FUNCTIONS ----------------------------//
+// Cache for card elements to avoid recreating
+const cardElementCache = new Map<number, HTMLDivElement>();
+
+// Create CSS3D objects for each tile position
+
+const createCardElement = (index: number): HTMLDivElement => {
+    if (cardElementCache.has(index)) {
+        return cardElementCache.get(index)!.cloneNode(true) as HTMLDivElement;
+    }
+
+    const div = document.createElement('div');
+    div.style.width = `${cardWidth}px`;
+    div.style.height = `${cardHeight}px`;
+    div.style.border = '3px solid red';           // ADD: Debug border
+    // div.style.backgroundColor = 'white';          // ADD: Background
+    div.style.boxSizing = 'border-box';           // ADD: Include border in size
+
+    const project = projects[index % projects.length] || {
+        title: 'Project Title',
+        subtitle: 'Subtitle',
+        image: '',
+    };
+
+    const root = createRoot(div);
+    root.render(
+        <ProjectCard3D
+            title={project.CCODE || 'Project Title'}
+            subtitle={project.subtitle || 'Subtitle'}
+            imageSrc={project.image || ''}
+            imageAlt={project.title}
+        />
+    );
+
+    cardElementCache.set(index, div);
+
+    return div;
+};
+
+// Get frame position based on row and column
+const getFramePosition = (frameIndex: number, totalFrames: number, row: number) => {
+    const frameWidth = canvasSize.w;
+    const frameHeight = canvasSize.h;
+
+    // Middle row is 0, above = positive rows, below = negative rows
+    const distanceFromMiddle = Math.abs(row);
+
+    // X offset: staircase effect (increases by 1 for each row away from middle)
+    const xOffset = distanceFromMiddle;
+
+    // Column position + offset, wrapping the frame index
+    const wrappedFrameIndex = ((frameIndex + xOffset) % totalFrames + totalFrames) % totalFrames;
+
+    // Y position: row * frame height
+    const yPosition = row * frameHeight;
+
+    return {
+        x: frameIndex * frameWidth,
+        y: yPosition,
+        z: 0,
+        wrappedFrameIndex // Which frame content to show
+    };
+};
+
+// Helper to generate all frame positions for the grid
+// const generateFrameGrid = (totalFrames: number, visibleRows: number) => {
+//     const positions: { x: number; y: number; z: number; frameContentIndex: number }[] = [];
+
+//     const halfRows = Math.floor(visibleRows / 2);
+
+//     // Generate rows from top to bottom (e.g., +12 to -12 if visibleRows = 25)
+//     for (let row = halfRows; row >= -halfRows; row--) {
+//         const distanceFromMiddle = Math.abs(row);
+
+//         // Each row has totalFrames columns
+//         for (let col = 0; col < totalFrames; col++) {
+//             const frameWidth = canvasSize.w;
+//             const frameHeight = canvasSize.h;
+
+//             // Apply staircase offset and wrap
+//             const offsetCol = col + distanceFromMiddle;
+//             const wrappedFrameIndex = offsetCol % totalFrames;
+
+//             positions.push({
+//                 x: col * frameWidth,
+//                 y: row * frameHeight,
+//                 z: 0,
+//                 frameContentIndex: wrappedFrameIndex
+//             });
+//         }
+//     }
+
+//     return positions;
+// };
+
+const generateFrameGrid = (totalFrames: number, visibleRows: number, visibleCols: number) => {
+    const positions: { x: number; y: number; z: number; frameContentIndex: number }[] = [];
+
+    const halfRows = Math.floor(visibleRows / 2);
+    const halfCols = Math.floor(visibleCols / 2);
+
+    const frameWidth = canvasSize.w;
+    const frameHeight = canvasSize.h;
+
+    for (let row = halfRows; row >= -halfRows; row--) {
+        const distanceFromMiddle = Math.abs(row);
+
+        for (let col = -halfCols; col <= halfCols; col++) {
+            // Apply staircase offset and wrap for CONTENT index only
+            const offsetCol = ((col + distanceFromMiddle) % totalFrames + totalFrames) % totalFrames;
+
+            positions.push({
+                x: col * frameWidth,      // Position based on col (-2, -1, 0, 1, 2)
+                y: row * frameHeight,     // Position based on row (-2, -1, 0, 1, 2)
+                z: 0,
+                frameContentIndex: offsetCol  // Which content to show (staircase)
+            });
+        }
+    }
+
+    console.log('Frame grid sample:', positions.slice(0, 5));
+    return positions;
+};
+
+const calculateCameraZForScreen = (camera: THREE.PerspectiveCamera, screenHeight: number) => {
+    const fov = camera.fov * (Math.PI / 180);
+    // Rearranged formula: z = height / (2 * tan(fov/2))
+    const z = screenHeight / (2 * Math.tan(fov / 2));
+    return z;
+};
+
+// Calculate viewport - should now match screen dimensions
+const calculateViewport = (camera: THREE.PerspectiveCamera) => {
+    const fov = camera.fov * (Math.PI / 180);
+    const height = 2 * Math.tan(fov / 2) * camera.position.z;
+    const width = height * camera.aspect;
+
+    return { height, width };
+};
+
+//---------------------------- FUNCTION ----------------------------//
 interface InfiniteScrollViewProps {
     projects: {
         id: string;
@@ -63,186 +185,176 @@ interface InfiniteScrollViewProps {
     }[];
 }
 
-const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
+const InfiniteScrollView: React.FC<InfiniteScrollViewProps> = ({ projects }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const stateRef = useRef({
-        scroll: {
-            ease: 0.05,
-            scale: 0.02,
-            current: { x: 0, y: 0 },
-            target: { x: 0, y: 0 },
-            last: { x: 0, y: 0 },
-            position: { x: 0, y: 0 },
-        },
-        direction: { x: 1, y: 1 },
-        isDown: false,
-        startX: 0,
-        startY: 0,
-        screen: { width: 0, height: 0 },
-        viewport: { width: 0, height: 0 },
-        tileGroups: GROUP_POSITIONS.map((pos) => ({
-            pos,
-            offset: { x: 0, y: 0 },
-            group: new THREE.Group(),
-        })),
-    });
+
+    // useEffect(() => {
+    //     frameCardPositions = new Map();
+    //     cardElementCache.clear();
+    // }, []);
+
+    const gridSizeX = canvasSize.w; // Size of one frame
+    const gridSizeY = canvasSize.h;
+    const totalGridSizeX = visibleCols * canvasSize.w;
+    const totalGridSizeY = visibleRows * canvasSize.h;
+
+    // Calculate card positions
+    if (frameCardPositions.size === 0) {
+        for (let frameIndex = 0; frameIndex < totalCanvasses; frameIndex++) {
+            const positions = getPositions(
+                cardsPerCanvas, canvasSize.w, canvasSize.h, cardWidth, cardHeight,
+            );
+            frameCardPositions.set(frameIndex, positions);
+        }
+        console.log('Frame card positions generated for', frameCardPositions.size, 'frames');
+    }
 
     useEffect(() => {
         if (!canvasRef.current) return;
-
         const canvas = canvasRef.current;
-        const state = stateRef.current;
+        console.time('Setup'); // Performance timing
 
-        // Setup renderer
-        // const renderer = new THREE.WebGLRenderer({
-        //     canvas,
-        //     antialias: false,
-        //     alpha: true,
-        // });
-        // renderer.setClearColor(0xF0F0F0);
-        // renderer.setSize(window.innerWidth, window.innerHeight);
-        // renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+        const state = {
+            scroll: {
+                ease: 0.05,
+                scale: 2,
+                current: { x: 0, y: 0 },
+                target: { x: 0, y: 0 },
+                last: { x: 0, y: 0 },
+                position: { x: 0, y: 0 },
+            },
+            direction: { x: 1, y: 1 },
+            isDown: false,
+            startX: 0,
+            startY: 0,
+            screen: { width: window.innerWidth, height: window.innerHeight },
+            viewport: { width: 0, height: 0 },
+        };
 
-        // Setup CSS3D renderer
+        //setup CSS3D renderer
         const renderer = new CSS3DRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.domElement.style.position = 'absolute';
         renderer.domElement.style.top = '0';
-        canvas.parentElement?.appendChild(renderer.domElement);        
+        canvas.parentElement?.appendChild(renderer.domElement);
 
         // Setup camera
-        const camera = new THREE.PerspectiveCamera(
-            45,
-            window.innerWidth / window.innerHeight,
-            1,
-            1000
-        );
-        camera.position.z = 10;
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 50000);
+        camera.position.z = calculateCameraZForScreen(camera, window.innerHeight);
 
         // Setup scene
         const scene = new THREE.Scene();
 
+        //the frames
+        const frameGrid = generateFrameGrid(totalCanvasses, visibleRows, visibleCols);
 
-        // // Generate image URLs from projects or use placeholders
-        // const getImageUrl = (index: number): string => {
-        //     if (projects[index]?.image) {
-        //         return projects[index].image;
-        //     }
-        //     return `https://picsum.photos/${IMAGE_RES}?random=${index + 1}`;
-        // };
+        console.log('Total frames to render:', frameGrid.length);
 
-        // // Add objects
-        // const textureLoader = new THREE.TextureLoader();
-        // TILE_POSITIONS.forEach((pos, i) => {
-        //     const imageUrl = getImageUrl(i);
-        //     const imageTexture = textureLoader.load(imageUrl);
-        //     const geometry = new THREE.PlaneGeometry(TILE_SIZE, TILE_SIZE);
-        //     const material = new THREE.MeshBasicMaterial({ map: imageTexture });
-        //     const mesh = new THREE.Mesh(geometry, material);
-        //     mesh.position.set(...pos);
+        const frameObjects: {
+            pos: { x: number; y: number; z: number };
+            offset: { x: number; y: number };
+            group: THREE.Group;
+        }[] = [];
 
-        //     state.tileGroups.forEach((obj) => obj.group.add(mesh.clone()));
-        // });
+        console.log('7. Starting frame loop...');
 
-        // Create CSS3D objects for each tile position
-        const createCardElement = (index: number): HTMLDivElement => {
-            const div = document.createElement('div');
-            div.style.width = `${cardWidth}px`;
-            div.style.height = `${cardHeight}px`;
+        frameGrid.forEach((framePos) => {
+            const group = new THREE.Group();
+            group.position.set(framePos.x, framePos.y, framePos.z);
 
-            const project = projects[index % projects.length] || {
-                title: 'Project Title',
-                subtitle: 'Subtitle',
-                image: '',
-            };
+            // Get the card positions for THIS frame's content
+            const frameContentIndex = framePos.frameContentIndex;
+            const positions = frameCardPositions.get(frameContentIndex) || [];
 
-            const root = createRoot(div);
-            root.render(
-                <ProjectCard3D
-                    title={project.title || 'Project Title'}
-                    subtitle={project.subtitle || 'Subtitle'}
-                    imageSrc={project.image || ''}
-                    imageAlt={project.title}
-                />
-            );
+            console.log(`Frame at (${framePos.x}, ${framePos.y}) using content ${frameContentIndex}, cards: ${positions.length}`);
 
-            return div;
-        };
+            let cardsAdded = 0;
+            positions.forEach((card, i) => {
+                if (!card) return;
 
-        // Add CSS3D objects to each group
-        TILE_POSITIONS.forEach((pos, i) => {
-            state.tileGroups.forEach((obj) => {
-                const element = createCardElement(i);
+                // Create card
+                const cardIndex = frameContentIndex * cardsPerCanvas + i;
+                const element = createCardElement(cardIndex);
                 const cssObject = new CSS3DObject(element);
-                cssObject.position.set(pos[0], pos[1], pos[2]);
-                cssObject.scale.set(CssScale, CssScale, CssScale);
-                obj.group.add(cssObject);
+
+                // Position card RELATIVE to this frame's center
+                cssObject.position.set(
+                    card.x - canvasSize.w / 2 + cardWidth / 2,
+                    -card.y + canvasSize.h / 2 - cardHeight / 2,
+                    card.z || 0
+                );
+
+                group.add(cssObject);
+                cardsAdded++;
+            });
+
+            console.log(`  → Added ${cardsAdded} cards to group`);
+
+            scene.add(group);
+
+            frameObjects.push({
+                pos: { x: framePos.x, y: framePos.y, z: framePos.z },
+                offset: { x: 0, y: 0 },
+                group: group,
             });
         });
 
-        state.tileGroups.forEach((obj) => scene.add(obj.group));
+        console.log('Total frameObjects:', frameObjects.length);
+        console.timeEnd('Setup');
 
-        // Calculate viewport
-        const calculateViewport = () => {
-            const fov = camera.fov * (Math.PI / 180);
-            const height = 2 * Math.tan(fov / 2) * camera.position.z;
-            const width = height * camera.aspect;
-            return { height, width };
-        };
+        console.log(calculateViewport(camera));
+        state.viewport = calculateViewport(camera);
 
-        // Set positions
+        // Set positions with infinite scroll wrapping
         const setPositions = () => {
             const scrollX = state.scroll.current.x;
             const scrollY = state.scroll.current.y;
 
-            state.tileGroups.forEach((obj, i) => {
-                const posX = obj.pos[0] + scrollX + obj.offset.x;
-                const posY = obj.pos[1] + scrollY + obj.offset.y;
-                const dir = state.direction;
-                const groupOff = GRID_SIZE / 2;
-                const viewportOff = {
-                    x: state.viewport.width / 2,
-                    y: state.viewport.height / 2,
-                };
+            const viewportOff = {
+                x: state.viewport.width / 2,
+                y: state.viewport.height / 2,
+            };
 
-                obj.group.position.set(posX, posY, obj.pos[2]);
+            frameObjects.forEach((obj, i) => {
+                const posX = obj.pos.x + scrollX + obj.offset.x;
+                const posY = obj.pos.y + scrollY + obj.offset.y;
+                const dir = state.direction;
+
+                // Update group position
+                obj.group.position.set(posX, posY, obj.pos.z);
 
                 // Wrap horizontally
                 if (dir.x < 0 && posX - gridSizeX / 2 > viewportOff.x) {
-                    state.tileGroups[i].offset.x -= totalGridSizeX;
+                    frameObjects[i].offset.x -= totalGridSizeX;
                 } else if (dir.x > 0 && posX + gridSizeX / 2 < -viewportOff.x) {
-                    state.tileGroups[i].offset.x += totalGridSizeX;
+                    frameObjects[i].offset.x += totalGridSizeX;
                 }
 
                 // Wrap vertically
                 if (dir.y < 0 && posY - gridSizeY / 2 > viewportOff.y) {
-                    state.tileGroups[i].offset.y -= totalGridSizeY;
+                    frameObjects[i].offset.y -= totalGridSizeY;
                 } else if (dir.y > 0 && posY + gridSizeY / 2 < -viewportOff.y) {
-                    state.tileGroups[i].offset.y += totalGridSizeY;
+                    frameObjects[i].offset.y += totalGridSizeY;
                 }
             });
         };
 
-        // Resize handler
         const handleResize = () => {
             state.screen = {
                 width: window.innerWidth,
                 height: window.innerHeight,
             };
+            canvasSize.w = window.innerWidth * canvasScale;
+            canvasSize.h = window.innerHeight * canvasScale;
+
             renderer.setSize(state.screen.width, state.screen.height);
             camera.aspect = state.screen.width / state.screen.height;
             camera.updateProjectionMatrix();
 
-            // Mobile adjustments
-            if (state.screen.width < 768) {
-                camera.position.z = 20;
-                state.scroll.scale = 0.08;
-            } else {
-                camera.position.z = 10;
-                state.scroll.scale = 0.02;
-            }
+            // Camera Z based on SCREEN height (not canvas)
+            camera.position.z = calculateCameraZForScreen(camera, window.innerHeight);
+            state.viewport = calculateViewport(camera);
 
-            state.viewport = calculateViewport();
             setPositions();
         };
 
@@ -277,55 +389,39 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
             state.isDown = false;
         };
 
-        // Animation loop
         let animationId: number;
+
         const render = () => {
-            state.scroll.current = {
-                x: lerp(state.scroll.current.x, state.scroll.target.x, state.scroll.ease),
-                y: lerp(state.scroll.current.y, state.scroll.target.y, state.scroll.ease),
-            };
+            // Calculate direction based on scroll movement
+            state.direction.x = state.scroll.target.x > state.scroll.current.x ? 1 : -1;
+            state.direction.y = state.scroll.target.y > state.scroll.current.y ? 1 : -1;
 
-            // Update direction
-            if (state.scroll.current.y > state.scroll.last.y) {
-                state.direction.y = -1;
-            } else if (state.scroll.current.y < state.scroll.last.y) {
-                state.direction.y = 1;
-            }
-            if (state.scroll.current.x > state.scroll.last.x) {
-                state.direction.x = -1;
-            } else if (state.scroll.current.x < state.scroll.last.x) {
-                state.direction.x = 1;
-            }
+            // Smooth scroll interpolation (lerp)
+            state.scroll.current.x += (state.scroll.target.x - state.scroll.current.x) * state.scroll.ease;
+            state.scroll.current.y += (state.scroll.target.y - state.scroll.current.y) * state.scroll.ease;
 
+            // Update positions with wrapping
             setPositions();
-
-            state.scroll.last = {
-                x: state.scroll.current.x,
-                y: state.scroll.current.y,
-            };
 
             renderer.render(scene, camera);
             animationId = requestAnimationFrame(render);
         };
 
-        // Initialize
         handleResize();
 
-        // Add event listeners
         window.addEventListener('resize', handleResize);
         window.addEventListener('touchstart', handleTouchDown);
         window.addEventListener('touchmove', handleTouchMove);
         window.addEventListener('touchend', handleTouchUp);
-
         render();
 
-        // Cleanup
         return () => {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('touchstart', handleTouchDown);
             window.removeEventListener('touchmove', handleTouchMove);
             window.removeEventListener('touchend', handleTouchUp);
             cancelAnimationFrame(animationId);
+            renderer.domElement.remove();
 
             scene.traverse((object) => {
                 if (object instanceof THREE.Mesh) {
@@ -338,8 +434,10 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
                 }
             });
         };
+
     }, [projects]);
 
+    //---------------------------- HTML ----------------------------//
     return (
         <div style={{
             width: '100%',
@@ -359,6 +457,6 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
             />
         </div>
     );
-};
+}
 
 export default InfiniteScrollView;

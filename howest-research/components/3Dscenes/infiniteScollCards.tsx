@@ -1,3 +1,5 @@
+//https://codepen.io/chungeric/pen/oNEoKjg
+
 'use dom';
 
 //---------------------------- IMPORTS ----------------------------//
@@ -8,36 +10,43 @@ import { createRoot } from 'react-dom/client';
 import ProjectCard3D from './projectCard3D';
 
 //---------------------------- CONSTANTS ----------------------------//
-const GRID_GAP = 50;
-const TILE_SIZE = 300;
-const TILE_SPACE = TILE_SIZE + GRID_GAP;
-const GRID_SIZE = TILE_SPACE * 3;
-const TOTAL_GRID_SIZE = GRID_SIZE * 3;
+const gridGap = 0.5;
+const cardWidth = 320; // From ProjectCard3D
+const cardHeight = 380; // From ProjectCard3D
+const CssScale = 0.01; // Scale factor to convert pixels to Three.js units
+const tileWidth = cardWidth * CssScale; // 3.2 Three.js units
+const tileHeight = cardHeight * CssScale; // 3.8 Three.js units
+const tileSpaceX = tileWidth + gridGap;
+const tileSpaceY = tileHeight + gridGap;
+const gridSizeX = tileSpaceX * 3;
+const gridSizeY = tileSpaceY * 3;
+const totalGridSizeX = gridSizeX * 3;
+const totalGridSizeY = gridSizeY * 3;
 
 // Tile positions within a single grid
 const TILE_POSITIONS: [number, number, number][] = [
-    [-TILE_SPACE, TILE_SPACE, 0],
-    [0, TILE_SPACE, 0],
-    [TILE_SPACE, TILE_SPACE, 0],
-    [-TILE_SPACE, 0, 0],
+    [-tileSpaceX, tileSpaceY, 0],
+    [0, tileSpaceY, 0],
+    [tileSpaceX, tileSpaceY, 0],
+    [-tileSpaceX, 0, 0],
     [0, 0, 0],
-    [TILE_SPACE, 0, 0],
-    [-TILE_SPACE, -TILE_SPACE, 0],
-    [0, -TILE_SPACE, 0],
-    [TILE_SPACE, -TILE_SPACE, 0],
+    [tileSpaceX, 0, 0],
+    [-tileSpaceX, -tileSpaceY, 0],
+    [0, -tileSpaceY, 0],
+    [tileSpaceX, -tileSpaceY, 0],
 ];
 
 // Clone group positions (3x3 grid of grids)
 const GROUP_POSITIONS: [number, number, number][] = [
-    [GRID_SIZE * -1, GRID_SIZE * 1, 0],
-    [0, GRID_SIZE, 0],
-    [GRID_SIZE, GRID_SIZE, 0],
-    [GRID_SIZE * -1, 0, 0],
+    [-gridSizeX, gridSizeY, 0],
+    [0, gridSizeY, 0],
+    [gridSizeX, gridSizeY, 0],
+    [-gridSizeX, 0, 0],
     [0, 0, 0],
-    [GRID_SIZE, 0, 0],
-    [GRID_SIZE * -1, GRID_SIZE * -1, 0],
-    [0, GRID_SIZE * -1, 0],
-    [GRID_SIZE, GRID_SIZE * -1, 0],
+    [gridSizeX, 0, 0],
+    [-gridSizeX, -gridSizeY, 0],
+    [0, -gridSizeY, 0],
+    [gridSizeX, -gridSizeY, 0],
 ];
 
 // Lerp function
@@ -51,21 +60,21 @@ interface InfiniteScrollViewProps {
         id: string;
         image?: string;
         title?: string;
-        subtitle?: string;
     }[];
 }
 
 const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
-    const containerRef = useRef<HTMLDivElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     const stateRef = useRef({
         scroll: {
-            ease: 0.05,
-            scale: 0.5,
+            ease: 0.05, // Easing only applies on release
+            scale: 0.02,
             current: { x: 0, y: 0 },
             target: { x: 0, y: 0 },
             last: { x: 0, y: 0 },
             position: { x: 0, y: 0 },
         },
+
         direction: { x: 1, y: 1 },
         isDown: false,
         startX: 0,
@@ -80,9 +89,9 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
     });
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        if (!canvasRef.current) return;
 
-        const container = containerRef.current;
+        const canvas = canvasRef.current;
         const state = stateRef.current;
 
         // Setup CSS3D renderer
@@ -90,16 +99,16 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.domElement.style.position = 'absolute';
         renderer.domElement.style.top = '0';
-        container.appendChild(renderer.domElement);
+        canvas.parentElement?.appendChild(renderer.domElement);
 
         // Setup camera
         const camera = new THREE.PerspectiveCamera(
             45,
             window.innerWidth / window.innerHeight,
             1,
-            5000
+            1000
         );
-        camera.position.z = 1500;
+        camera.position.z = 10;
 
         // Setup scene
         const scene = new THREE.Scene();
@@ -107,8 +116,8 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
         // Create CSS3D objects for each tile position
         const createCardElement = (index: number): HTMLDivElement => {
             const div = document.createElement('div');
-            div.style.width = `${TILE_SIZE}px`;
-            div.style.height = `${TILE_SIZE}px`;
+            div.style.width = `${cardWidth}px`;
+            div.style.height = `${cardHeight}px`;
 
             const project = projects[index % projects.length] || {
                 title: 'Project Title',
@@ -135,6 +144,7 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
                 const element = createCardElement(i);
                 const cssObject = new CSS3DObject(element);
                 cssObject.position.set(pos[0], pos[1], pos[2]);
+                cssObject.scale.set(CssScale, CssScale, CssScale);
                 obj.group.add(cssObject);
             });
         });
@@ -167,17 +177,17 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
                 obj.group.position.set(posX, posY, obj.pos[2]);
 
                 // Wrap horizontally
-                if (dir.x < 0 && posX - groupOff > viewportOff.x) {
-                    state.tileGroups[i].offset.x -= TOTAL_GRID_SIZE;
-                } else if (dir.x > 0 && posX + groupOff < -viewportOff.x) {
-                    state.tileGroups[i].offset.x += TOTAL_GRID_SIZE;
+                if (dir.x < 0 && posX - gridSizeX / 2 > viewportOff.x) {
+                    state.tileGroups[i].offset.x -= totalGridSizeX;
+                } else if (dir.x > 0 && posX + gridSizeX / 2 < -viewportOff.x) {
+                    state.tileGroups[i].offset.x += totalGridSizeX;
                 }
 
                 // Wrap vertically
-                if (dir.y < 0 && posY - groupOff > viewportOff.y) {
-                    state.tileGroups[i].offset.y -= TOTAL_GRID_SIZE;
-                } else if (dir.y > 0 && posY + groupOff < -viewportOff.y) {
-                    state.tileGroups[i].offset.y += TOTAL_GRID_SIZE;
+                if (dir.y < 0 && posY - gridSizeY / 2 > viewportOff.y) {
+                    state.tileGroups[i].offset.y -= totalGridSizeY;
+                } else if (dir.y > 0 && posY + gridSizeY / 2 < -viewportOff.y) {
+                    state.tileGroups[i].offset.y += totalGridSizeY;
                 }
             });
         };
@@ -192,14 +202,8 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
             camera.aspect = state.screen.width / state.screen.height;
             camera.updateProjectionMatrix();
 
-            // Mobile adjustments
-            if (state.screen.width < 768) {
-                camera.position.z = 2500;
-                state.scroll.scale = 2;
-            } else {
-                camera.position.z = 1500;
-                state.scroll.scale = 0.5;
-            }
+            camera.position.z = 10;
+            state.scroll.scale = 0.02;
 
             state.viewport = calculateViewport();
             setPositions();
@@ -207,6 +211,7 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
 
         // Touch/mouse handlers
         const handleTouchDown = (e: MouseEvent | TouchEvent) => {
+            e.preventDefault();
             state.isDown = true;
             state.scroll.position = {
                 x: state.scroll.current.x,
@@ -218,6 +223,7 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
         };
 
         const handleTouchMove = (e: MouseEvent | TouchEvent) => {
+            e.preventDefault();
             if (!state.isDown) return;
             const touch = 'touches' in e ? e.touches[0] : e;
             const distanceX = (state.startX - touch.clientX) * state.scroll.scale;
@@ -229,17 +235,28 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
             };
         };
 
-        const handleTouchUp = () => {
+        const handleTouchUp = (e: MouseEvent | TouchEvent) => {
+            e.preventDefault();
             state.isDown = false;
         };
 
         // Animation loop
         let animationId: number;
         const render = () => {
-            state.scroll.current = {
-                x: lerp(state.scroll.current.x, state.scroll.target.x, state.scroll.ease),
-                y: lerp(state.scroll.current.y, state.scroll.target.y, state.scroll.ease),
-            };
+            // Direct follow when touching, ease only on release
+            if (state.isDown) {
+                // Immediate 1:1 follow
+                state.scroll.current = {
+                    x: state.scroll.target.x,
+                    y: state.scroll.target.y,
+                };
+            } else {
+                // Apply easing only when finger is released
+                state.scroll.current = {
+                    x: lerp(state.scroll.current.x, state.scroll.target.x, state.scroll.ease),
+                    y: lerp(state.scroll.current.y, state.scroll.target.y, state.scroll.ease),
+                };
+            }
 
             // Update direction
             if (state.scroll.current.y > state.scroll.last.y) {
@@ -269,41 +286,51 @@ const InfiniteScrollView = ({ projects }: InfiniteScrollViewProps) => {
 
         // Add event listeners
         window.addEventListener('resize', handleResize);
-        container.addEventListener('mousedown', handleTouchDown);
-        container.addEventListener('mousemove', handleTouchMove);
-        container.addEventListener('mouseup', handleTouchUp);
-        container.addEventListener('touchstart', handleTouchDown);
-        container.addEventListener('touchmove', handleTouchMove);
-        container.addEventListener('touchend', handleTouchUp);
+        window.addEventListener('touchstart', handleTouchDown);
+        window.addEventListener('touchmove', handleTouchMove);
+        window.addEventListener('touchend', handleTouchUp);
 
         render();
 
         // Cleanup
         return () => {
             window.removeEventListener('resize', handleResize);
-            container.removeEventListener('mousedown', handleTouchDown);
-            container.removeEventListener('mousemove', handleTouchMove);
-            container.removeEventListener('mouseup', handleTouchUp);
-            container.removeEventListener('touchstart', handleTouchDown);
-            container.removeEventListener('touchmove', handleTouchMove);
-            container.removeEventListener('touchend', handleTouchUp);
+            window.removeEventListener('touchstart', handleTouchDown);
+            window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('touchend', handleTouchUp);
             cancelAnimationFrame(animationId);
-            container.removeChild(renderer.domElement);
+
+            scene.traverse((object) => {
+                if (object instanceof THREE.Mesh) {
+                    object.geometry.dispose();
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach((mat) => mat.dispose());
+                    } else {
+                        object.material.dispose();
+                    }
+                }
+            });
         };
     }, [projects]);
 
     return (
-        <div
-            ref={containerRef}
-            style={{
-                width: '100%',
-                height: '100vh',
-                position: 'relative',
-                touchAction: 'none',
-                overflow: 'hidden',
-                backgroundColor: '#F0F0F0',
-            }}
-        />
+        <div style={{
+            width: '100%',
+            height: '100vh',
+            position: 'relative',
+            touchAction: 'none'
+        }}>
+            <canvas
+                ref={canvasRef}
+                className="webgl"
+                style={{
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: '#F0F0F0',
+                }}
+            />
+        </div>
     );
 };
 

@@ -1,40 +1,30 @@
-import { StyleSheet, View, PanResponder } from 'react-native';
+import { StyleSheet, View, PanResponder, Dimensions } from 'react-native';
 import React, { useState, useRef, useEffect, use, useMemo } from 'react';
 import { InfiniteGrid } from "../../scripts/infiniteGrid";
 import DiscoverCard from '../molecules/projectCard';
 import getPositions from '../../scripts/placeCards';
-
-const canvasSize = { w: 1000, h: 1000 };
 
 const InfiniteGridComponent = (props: { projects, page, setPage, isVisible }) => {
     const [items, setItems] = useState([]);
     const gridRef = useRef(null); //store infinite grid object
     const lastPanRef = useRef({ x: 0, y: 0 });
 
-    // const data = useMemo(() =>
-    //     getPositions(
-    //         props.projects.length,
-    //         canvasSize.w,
-    //         canvasSize.h,
-    //         300,
-    //         300
-    //     ),
-    //     [props.projects.length]
-    // );
+    const canvasWidth = Dimensions.get('window').width;
+    const canvasHeight = Dimensions.get('window').height;
 
     const data = useMemo(() =>
         getPositions(
-            2,
-            canvasSize.w,
-            canvasSize.h,
-            300,
-            300
+            props.projects.length,
+            canvasWidth,
+            canvasHeight,
+            300, //this should be the size of the cards
+            300 //this should be the size of the cards
         ),
-        []
+        [props.projects.length]
     );
 
     // const originalSize = { w: 300 * props.projects.length, h: 300 * props.projects.length };
-    const originalSize = useMemo(() => ({ w: canvasSize.w, h: canvasSize.h }), [canvasSize.w, canvasSize.h]);
+    const originalSize = useMemo(() => ({ w: canvasWidth, h: canvasHeight }), [canvasWidth, canvasHeight]);
 
     const panResponderRef = useRef(
         PanResponder.create({
