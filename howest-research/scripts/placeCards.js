@@ -1,10 +1,13 @@
 const checkPosition = (x, y, width, height, positions, overlapThreshold) => {
     return !positions.some(placed => {
-        const dx = x - placed.x;
-        const dy = y - placed.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        return distance < (width + placed.width) / 2 - overlapThreshold && distance < (height + placed.height) / 2 - overlapThreshold;
+        // AABB (Axis-Aligned Bounding Box) collision detection
+        const isOverlapping = !(
+            x + width + overlapThreshold < placed.x ||
+            x - overlapThreshold > placed.x + placed.w ||
+            y + height + overlapThreshold < placed.y ||
+            y - overlapThreshold > placed.y + placed.h
+        );
+        return isOverlapping;
     });
 };
 
@@ -30,13 +33,12 @@ const getPosition = (cardWidth, cardHeight, containerWidth, containerHeight, pos
 
 const getPositions = (totalProjects, containerWidth, containerHeight, cardWidth, cardHeight) => {
     let positions = [];
-    const overlapThreshold = 300;
+    const overlapThreshold = 0;
 
     for (let i = 0; i < totalProjects; i++) {
         getPosition(cardWidth, cardHeight, containerWidth, containerHeight, positions, overlapThreshold)
     }
 
-    console.log('Final positions:', positions);
     return positions;
 };
 

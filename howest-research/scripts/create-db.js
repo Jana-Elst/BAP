@@ -2,6 +2,10 @@
 //It returns a new JSON file
 //Run node scripts/create-db to create the file
 
+/*
+TO DO remove projects with clusterId = null (1115)
+*/
+
 const fs = require('fs');
 const path = require('path');
 
