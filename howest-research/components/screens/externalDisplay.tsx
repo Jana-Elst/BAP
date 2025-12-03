@@ -52,8 +52,9 @@ export default function ExternalScreen(props: { page }) {
 
     } else {
         return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ flex: 1, backgroundColor: 'green', justifyContent: 'center', alignItems: 'center' }}>
                 <ProjectImage />
+                {/* <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>HOME SCREEN</Text> */}
             </View>
         );
     }
