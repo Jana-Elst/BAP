@@ -10,6 +10,7 @@ import { createRoot } from 'react-dom/client';
 import ProjectCard3D from './projectCard3D';
 import getPositions from '../../scripts/placeCards';
 import data from '../../assets/data/structured-data.json';
+import { getProjectInfo } from '../../scripts/getData';
 
 //---------------------------- CONSTANTS ----------------------------//
 const projects = data.projects;
@@ -41,7 +42,6 @@ let frameCardPositions: Map<number, { x: number; y: number; z: number }[]> = new
 const cardElementCache = new Map<number, HTMLDivElement>();
 
 // Create CSS3D objects for each tile position
-
 const createCardElement = (index: number): HTMLDivElement => {
     if (cardElementCache.has(index)) {
         return cardElementCache.get(index)!.cloneNode(true) as HTMLDivElement;
@@ -51,22 +51,18 @@ const createCardElement = (index: number): HTMLDivElement => {
     div.style.width = `${cardWidth}px`;
     div.style.height = `${cardHeight}px`;
     div.style.border = '3px solid red';           // ADD: Debug border
-    // div.style.backgroundColor = 'white';          // ADD: Background
     div.style.boxSizing = 'border-box';           // ADD: Include border in size
 
-    const project = projects[index % projects.length] || {
-        title: 'Project Title',
-        subtitle: 'Subtitle',
-        image: '',
-    };
+    const rawProject = projects[index % projects.length];
+    const project = getProjectInfo(rawProject.id);
 
     const root = createRoot(div);
     root.render(
         <ProjectCard3D
-            title={project.CCODE || 'Project Title'}
-            subtitle={project.subtitle || 'Subtitle'}
+            title={project.title || 'Project Title'}
+            subtitle={project.cluster.label || 'Subtitle'}
             imageSrc={project.image || ''}
-            imageAlt={project.title}
+            imageAlt={project.title || 'Project Image'}
         />
     );
 
@@ -99,37 +95,6 @@ const getFramePosition = (frameIndex: number, totalFrames: number, row: number) 
         wrappedFrameIndex // Which frame content to show
     };
 };
-
-// Helper to generate all frame positions for the grid
-// const generateFrameGrid = (totalFrames: number, visibleRows: number) => {
-//     const positions: { x: number; y: number; z: number; frameContentIndex: number }[] = [];
-
-//     const halfRows = Math.floor(visibleRows / 2);
-
-//     // Generate rows from top to bottom (e.g., +12 to -12 if visibleRows = 25)
-//     for (let row = halfRows; row >= -halfRows; row--) {
-//         const distanceFromMiddle = Math.abs(row);
-
-//         // Each row has totalFrames columns
-//         for (let col = 0; col < totalFrames; col++) {
-//             const frameWidth = canvasSize.w;
-//             const frameHeight = canvasSize.h;
-
-//             // Apply staircase offset and wrap
-//             const offsetCol = col + distanceFromMiddle;
-//             const wrappedFrameIndex = offsetCol % totalFrames;
-
-//             positions.push({
-//                 x: col * frameWidth,
-//                 y: row * frameHeight,
-//                 z: 0,
-//                 frameContentIndex: wrappedFrameIndex
-//             });
-//         }
-//     }
-
-//     return positions;
-// };
 
 const generateFrameGrid = (totalFrames: number, visibleRows: number, visibleCols: number) => {
     const positions: { x: number; y: number; z: number; frameContentIndex: number }[] = [];
@@ -174,6 +139,17 @@ const calculateViewport = (camera: THREE.PerspectiveCamera) => {
     const width = height * camera.aspect;
 
     return { height, width };
+};
+
+const createFrameBorder = (): HTMLDivElement => {
+    const div = document.createElement('div');
+    div.style.width = `${canvasSize.w}px`;
+    div.style.height = `${canvasSize.h}px`;
+    div.style.border = '5px solid blue';
+    div.style.boxSizing = 'border-box';
+    div.style.backgroundColor = 'rgba(0, 0, 255, 0.05)'; // Light blue background
+    div.style.pointerEvents = 'none'; // Don't block card clicks
+    return div;
 };
 
 //---------------------------- FUNCTION ----------------------------//
@@ -261,6 +237,11 @@ const InfiniteScrollView: React.FC<InfiniteScrollViewProps> = ({ projects }) => 
         frameGrid.forEach((framePos) => {
             const group = new THREE.Group();
             group.position.set(framePos.x, framePos.y, framePos.z);
+
+            const borderElement = createFrameBorder();
+            const borderObject = new CSS3DObject(borderElement);
+            borderObject.position.set(0, 0, -1); // Slightly behind cards
+            group.add(borderObject);
 
             // Get the card positions for THIS frame's content
             const frameContentIndex = framePos.frameContentIndex;

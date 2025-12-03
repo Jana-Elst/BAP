@@ -111,6 +111,7 @@ export const getProjectColor = (clusterID) => {
 };
 
 export const getProjectInfo = (projectID) => {
+    console.log('Getting info for project ID:', projectID);
     const project = data.projects.find(project => project.id === projectID);
     const projectName = project.CCODE;
 
