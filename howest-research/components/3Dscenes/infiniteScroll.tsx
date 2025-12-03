@@ -92,7 +92,7 @@ const calculateCardPositions = () => {
             // Center positions within the grid
             const centeredPositions = positions.map(pos => ({
                 x: pos.x - gridSize.w / 2 + cardWidth / 2,
-                y: -(pos.y - gridSize.h / 2 + cardHeight / 2), // Flip Y axis (CSS Y goes down, Three.js Y goes up)
+                y: pos.y - gridSize.h / 2 + cardHeight / 2,
                 z: pos.z || 0
             }));
 
@@ -105,8 +105,6 @@ const createHeroCanvas = (projects) => {
     const div = document.createElement('div');
     div.style.width = `${gridSize.w}px`;
     div.style.height = `${gridSize.h}px`;
-    div.style.border = '3px solid green';           // ADD: Debug border
-    div.style.boxSizing = 'border-box';             // ADD: Include border in size
     div.style.backgroundColor = '#f0f0f0'; // ADD: Visible background for debugging
     const root = createRoot(div);
 
@@ -125,8 +123,6 @@ const createCard3DObject = (project, position) => {
     const div = document.createElement('div');
     div.style.width = `${cardWidth}px`;
     div.style.height = `${cardHeight}px`;
-    div.style.border = '3px solid red';           // ADD: Debug border
-    div.style.boxSizing = 'border-box';           // ADD: Include border in size
     const root = createRoot(div);
 
     root.render(
