@@ -98,7 +98,7 @@ const calculateCardPositions = () => {
     }
 }
 
-const createHeroCanvas = () => {
+const createHeroCanvas = (projects) => {
     const div = document.createElement('div');
     div.style.width = `${gridSize.w}px`;
     div.style.height = `${gridSize.h}px`;
@@ -109,7 +109,7 @@ const createHeroCanvas = () => {
 
     root.render(
         <>
-            <InfiniteScrollHero />
+            <InfiniteScrollHero projects={projects} cardsPerCanvas={cardsPerCanvas} />
         </>
     );
 
@@ -197,10 +197,10 @@ const createCamera = () => {
     return camera;
 }
 
-const createScene = () => {
+const createScene = (projects) => {
     const scene = new THREE.Scene();
 
-    const heroCanvas = createHeroCanvas();
+    const heroCanvas = createHeroCanvas(projects);
     scene.add(heroCanvas);
 
     //add cards to scene
@@ -249,10 +249,11 @@ const InfiniteScrollView = ({ projects }) => {
         const canvas = canvasRef.current;
         const camera = createCamera();
         const rendererCCS3D = setupCSS3DRenderer(canvas);
-        const scene = createScene();
+        const scene = createScene(projects);
 
         //--- set positions infinite scroll
         const setPositions = () => {
+            //what should happen??
             const scrollX = state.scroll.current.x;
             const scrollY = state.scroll.current.y;
 
