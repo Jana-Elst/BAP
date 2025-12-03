@@ -41,6 +41,8 @@ const ProjectImage = () => {
     const widhtKeyword = 300;
     const heightKeyword = 300;
 
+    const offset= 100;
+
     const imageX = size.width / 2 - widthCluster / 2;
     const imageY = size.height / 2 - heightCluster / 2;
 
@@ -147,15 +149,26 @@ const ProjectImage = () => {
                                     height={heightCluster}
                                 />
                                 {boundingBox && (
-                                    <Oval
-                                        x={boundingBox.x}
-                                        y={boundingBox.y}
-                                        width={boundingBox.width}
-                                        height={boundingBox.height}
-                                        color="red"
-                                        style="stroke"
-                                        strokeWidth={2}
-                                    />
+                                    <Group>
+                                        <Oval
+                                            x={boundingBox.x}
+                                            y={boundingBox.y}
+                                            width={boundingBox.width}
+                                            height={boundingBox.height}
+                                            color="red"
+                                            style="stroke"
+                                            strokeWidth={2}
+                                        />
+                                        <Oval
+                                            x={boundingBox.x - offset / 2}
+                                            y={boundingBox.y - offset / 2}
+                                            width={boundingBox.width + offset}
+                                            height={boundingBox.height + offset}
+                                            color="red"
+                                            style="stroke"
+                                            strokeWidth={2}
+                                        />
+                                    </Group>
                                 )}
                             </Group>
                         );
