@@ -43,6 +43,7 @@ let cardPositions = []; //array with positions for all the cards, relative to th
 let cardObjects: CSS3DObject[] = []; //array with the 3D objects for all the cards
 let cardPositionsPerFrame = [];
 let absoluteCardPositions = [];
+let heroCanvas: CSS3DObject | null = null; // ADD: Reference to hero canvas
 
 let state = {
     scroll: {
@@ -104,7 +105,7 @@ const createHeroCanvas = (projects) => {
     div.style.height = `${gridSize.h}px`;
     div.style.border = '3px solid green';           // ADD: Debug border
     div.style.boxSizing = 'border-box';             // ADD: Include border in size
-    div.style.backgroundColor = 'rgba(0, 255, 0, 0.3)'; // ADD: Visible background for debugging
+    div.style.backgroundColor = '#f0f0f0'; // ADD: Visible background for debugging
     const root = createRoot(div);
 
     root.render(
@@ -200,14 +201,14 @@ const createCamera = () => {
 const createScene = (projects) => {
     const scene = new THREE.Scene();
 
-    const heroCanvas = createHeroCanvas(projects);
-    scene.add(heroCanvas);
-
     //add cards to scene
-    // const cardsFrameOne = cardObjects.slice(0, cardsPerCanvas);
-    // cardObjects.forEach(card => {
-    //     scene.add(card);
-    // });
+    const cardsFrameOne = cardObjects.slice(0, cardsPerCanvas);
+    cardObjects.forEach(card => {
+        scene.add(card);
+    });
+
+    heroCanvas = createHeroCanvas(projects);
+    scene.add(heroCanvas);
 
     console.log('scene created');
     return scene;
@@ -253,16 +254,36 @@ const InfiniteScrollView = ({ projects }) => {
 
         //--- set positions infinite scroll
         const setPositions = () => {
-            //what should happen??
             const scrollX = state.scroll.current.x;
             const scrollY = state.scroll.current.y;
 
-            const viewportOff = {
-                x: state.viewport.width / 2,
-                y: state.viewport.height / 2,
-            };
+            const totalWidth = gridSize.w * totalCanvasses;
 
-            console.log('scrollX:', scrollX, 'scrollY:', scrollY);
+            // Move hero canvas with scroll (wrapping like cards)
+            if (heroCanvas) {
+                let heroX = scrollX;
+                heroCanvas.position.set(heroX, scrollY, 0);
+            }
+
+            cardObjects.forEach((card, index) => {
+                const originalPos = absoluteCardPositions[index];
+
+                // Calculate the new X position based on scroll
+                let newX = originalPos.x + scrollX;
+
+                // Wrap the position for infinite scroll
+                newX = ((newX % totalWidth) + totalWidth) % totalWidth;
+
+                // Center the wrapped position around the viewport
+                if (newX > totalWidth / 2) {
+                    newX -= totalWidth;
+                }
+
+                // Update the card's position
+                card.position.x = newX;
+                card.position.y = originalPos.y + scrollY;
+                card.position.z = originalPos.z;
+            });
         };
 
         //--- event handlers
