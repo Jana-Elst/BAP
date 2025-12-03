@@ -22,20 +22,29 @@ const ProjectImage = () => {
     const image8 = useImage(aiArtificialIntelligence8);
     const image9 = useImage(mensEnWelzijn);
 
-    const images = useMemo(() =>
-        [image1, image2, image3, image4, image5, image6, image7, image8, image9]
+    const keywords = useMemo(() =>
+        [image1, image2, image3, image4, image5, image6, image7, image8]
     );
 
-    const [boundingBoxes, setBoundingBoxes] = useState([]);
+    const cluster = useMemo(() =>
+        [image9]
+    );
+
+    const [boundingBoxesKeywords, setBoundingBoxesKeywords] = useState([]);
+    const [boundingBoxCluster, setBoundingBoxCluster] = useState([]);
+
     const size = Dimensions.get('window');
 
-    const imageWidth = 500;
-    const imageHeight = 500;
+    const widthCluster = 500;
+    const heightCluster = 500;
 
-    const imageX = size.width / 2 - imageWidth / 2;
-    const imageY = size.height / 2 - imageHeight / 2;
+    const widhtKeyword = 300;
+    const heightKeyword = 300;
 
-    const getVisiblePixels = (image) => {
+    const imageX = size.width / 2 - widthCluster / 2;
+    const imageY = size.height / 2 - heightCluster / 2;
+
+    const getVisiblePixels = (image, imageWidth, imageHeight) => {
         if (!image) return undefined;
 
         // Get the original image dimensions
@@ -108,30 +117,62 @@ const ProjectImage = () => {
 
     useEffect(() => {
         // Only process when all images are loaded
-        const allLoaded = images.every(img => img !== null);
-        if (!allLoaded) return;
+        const allLoadedKeywords = keywords.every(img => img !== null);
+        const allLoadedCluster = cluster.every(img => img !== null);
+        if (!allLoadedKeywords || !allLoadedCluster) return;
 
         // Calculate all bounding boxes at once and set state once
-        const boxes = images.map(image => getVisiblePixels(image));
-        setBoundingBoxes(boxes);
-    }, [images, imageX, imageY]);
+        const boxesKeywords = keywords.map(image => getVisiblePixels(image, widhtKeyword, heightKeyword));
+        setBoundingBoxesKeywords(boxesKeywords);
+
+        const boxesCluster = cluster.map(image => getVisiblePixels(image, widthCluster, heightCluster));
+        setBoundingBoxCluster(boxesCluster);
+
+    }, [keywords, cluster, imageX, imageY]);
 
     return (
         <View style={styles.container}>
             <Text>TESTTTTT</Text>
             <Canvas style={{ width: size.width, height: size.height }}>
                 {
-                    images.map((image, index) => {
-                        const boundingBox = boundingBoxes[index];
-
+                    cluster.map((image, index) => {
+                        const boundingBox = boundingBoxCluster[index];
                         return (
                             <Group key={index}>
                                 <SkiaImage
                                     image={image}
                                     x={imageX}
                                     y={imageY}
-                                    width={imageWidth}
-                                    height={imageHeight}
+                                    width={widthCluster}
+                                    height={heightCluster}
+                                />
+                                {boundingBox && (
+                                    <Oval
+                                        x={boundingBox.x}
+                                        y={boundingBox.y}
+                                        width={boundingBox.width}
+                                        height={boundingBox.height}
+                                        color="red"
+                                        style="stroke"
+                                        strokeWidth={2}
+                                    />
+                                )}
+                            </Group>
+                        );
+                    })
+                }
+
+                {
+                    keywords.map((image, index) => {
+                        const boundingBox = boundingBoxesKeywords[index];
+                        return (
+                            <Group key={index}>
+                                <SkiaImage
+                                    image={image}
+                                    x={imageX}
+                                    y={imageY}
+                                    width={widhtKeyword}
+                                    height={heightKeyword}
                                 />
                                 {boundingBox && (
                                     <Oval
