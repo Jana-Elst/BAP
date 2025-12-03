@@ -4,7 +4,7 @@ import Footer from "../organisms/footer";
 import InfiniteGridComponent from '../organisms/infiniteGrid';
 import InfiniteScrollView from '../3Dscenes/infiniteScroll';
 
-const DiscoverScreen = (projects, page, setPage, isVisible) => {
+const DiscoverScreen = ({projects, page, setPage, isVisible}) => {
     return (
         <View style={styles.container}>
             <InfiniteScrollView
