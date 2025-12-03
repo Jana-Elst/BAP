@@ -3,6 +3,7 @@ import data from '../../assets/data/structured-data.json';
 import Scene3DWithLabels from '../3Dscenes/3DsceneNew';
 import { getKeywords } from '../../scripts/getData';
 import { LinearGradient } from 'expo-linear-gradient';
+import ProjectImage from '../organisms/projectImage';
 
 const keywords = data.keywords;
 const clusters = data.clusters;
@@ -52,9 +53,7 @@ export default function ExternalScreen(props: { page }) {
     } else {
         return (
             <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: 100 }}>
-                    This is the External Display!
-                </Text>
+                <ProjectImage />
             </View>
         );
     }
