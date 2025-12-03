@@ -1,6 +1,7 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import Scene3D from '../3Dscenes/3DsceneNew';
 import { StyledText } from "../atoms/styledComponents";
+import ProjectImage from "../organisms/projectImage";
 
 
 const ModelView = ({ width, height, project, setPage, page }) => {
@@ -30,14 +31,8 @@ const ModelView = ({ width, height, project, setPage, page }) => {
                         <StyledText style={styles.tagStyledText}>{keyword.label} {keyword.id}</StyledText>
                     </TouchableOpacity>
                 ))}
-            {/* <LinearGradient
-                                colors={['rgba(255, 255, 255, 1)', 'transparent']}
-                                style={styles.background}
-                            /> */}
-            <Scene3D
-                name="dom"
-                projectKeywords={projectKeywords}
-            />
+
+            <ProjectImage width={width} height={height} />
         </View>
     );
 }

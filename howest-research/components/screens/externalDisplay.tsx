@@ -1,12 +1,15 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import data from '../../assets/data/structured-data.json';
 import Scene3DWithLabels from '../3Dscenes/3DsceneNew';
 import { getKeywords } from '../../scripts/getData';
 import { LinearGradient } from 'expo-linear-gradient';
+import ProjectImage from '../organisms/projectImage';
 
 const keywords = data.keywords;
 const clusters = data.clusters;
 const projects = data.projects;
+
+const windowDimensions = Dimensions.get('window');
 
 export default function ExternalScreen(props: { page }) {
     if (props.page.page === 'detailResearch') {
@@ -52,9 +55,8 @@ export default function ExternalScreen(props: { page }) {
     } else {
         return (
             <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: 100 }}>
-                    This is the External Display!
-                </Text>
+                <ProjectImage width={windowDimensions.width} height={windowDimensions.height} />
+                {/* <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>HOME SCREEN</Text> */}
             </View>
         );
     }
