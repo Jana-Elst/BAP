@@ -10,6 +10,7 @@ import { createRoot } from 'react-dom/client';
 import { useEffect, useRef } from 'react';
 
 import ProjectCard3D from './projectCard3D';
+import InfiniteScrollHero from './infiniteScrollHero';  
 
 import getPositions from '../../scripts/placeCards';
 // import data from '../../assets/data/structured-data.json';
@@ -20,13 +21,13 @@ import { getProjectInfo } from '../../scripts/getData';
 
 const cardWidth = 320; // From ProjectCard3D
 const cardHeight = 380; // From ProjectCard3D
-const gridScale = 1;
+const gridScale = 1.3;
 const gridSize = {
     w: innerWidth * gridScale,
     h: innerHeight * gridScale
 };
 
-const cardsPerCanvas = 3;
+const cardsPerCanvas = 5;
 const layers = 10;
 
 const visibleRows = 5; // 2 above, 1 middle, 2 below
@@ -95,6 +96,26 @@ const calculateCardPositions = () => {
             cardPositions.push(...centeredPositions);
         }
     }
+}
+
+const createHeroCanvas = () => {
+    const div = document.createElement('div');
+    div.style.width = `${gridSize.w}px`;
+    div.style.height = `${gridSize.h}px`;
+    div.style.border = '3px solid green';           // ADD: Debug border
+    div.style.boxSizing = 'border-box';             // ADD: Include border in size
+    div.style.backgroundColor = 'rgba(0, 255, 0, 0.3)'; // ADD: Visible background for debugging
+    const root = createRoot(div);
+
+    root.render(
+        <>
+            <InfiniteScrollHero />
+        </>
+    );
+
+    const css3DObject = new CSS3DObject(div);
+    css3DObject.position.set(0, 0, 0);
+    return css3DObject;
 }
 
 const createCard3DObject = (project, position) => {
@@ -179,11 +200,14 @@ const createCamera = () => {
 const createScene = () => {
     const scene = new THREE.Scene();
 
+    const heroCanvas = createHeroCanvas();
+    scene.add(heroCanvas);
+
     //add cards to scene
     // const cardsFrameOne = cardObjects.slice(0, cardsPerCanvas);
-    cardObjects.forEach(card => {
-        scene.add(card);
-    });
+    // cardObjects.forEach(card => {
+    //     scene.add(card);
+    // });
 
     console.log('scene created');
     return scene;

@@ -1,0 +1,15 @@
+@font-face {
+    font-family: VAGRoundedStd-Bold;
+    src: url("/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: OpenSans-Semibold;
+    src: url("/fonts/OpenSans/OpenSans-Semibold.ttf") format("truetype");
+}
+
+/* body, div {
+    background-color: '#fff';
+    font-family: VAG-Rounded-Std-Bold;
+    color: pink;
+} */
