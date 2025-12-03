@@ -10,7 +10,7 @@ import { createRoot } from 'react-dom/client';
 import { useEffect, useRef } from 'react';
 
 import ProjectCard3D from './projectCard3D';
-import InfiniteScrollHero from './infiniteScrollHero';  
+import InfiniteScrollHero from './infiniteScrollHero';
 
 import getPositions from '../../scripts/placeCards';
 // import data from '../../assets/data/structured-data.json';
@@ -43,6 +43,8 @@ let cardPositions = []; //array with positions for all the cards, relative to th
 let cardObjects: CSS3DObject[] = []; //array with the 3D objects for all the cards
 let cardPositionsPerFrame = [];
 let absoluteCardPositions = [];
+// let absoluteCardPositionsX = [];
+// let absoluteCardPositionsY = [];
 let heroCanvas: CSS3DObject | null = null; // ADD: Reference to hero canvas
 
 let state = {
@@ -155,7 +157,12 @@ const createCardCSS3DObjects = (projects) => {
     console.log('Card CSS3DObjects created, count:', cardObjects.length);
 }
 
+
 const createAbsoluteCardPositions = () => {
+    // Calculate grid dimensions
+    const gridCols = Math.ceil(Math.sqrt(totalCanvasses));
+    const gridRows = Math.ceil(totalCanvasses / gridCols);
+
     const cardsPerFrame = [];
     for (let i = 0; i < totalCanvasses; i++) {
         const cardIndexStart = i * cardsPerCanvas;
@@ -166,18 +173,24 @@ const createAbsoluteCardPositions = () => {
 
     absoluteCardPositions = [];
     cardsPerFrame.forEach((cards, frameIndex) => {
-        const frameOffsetX = gridSize.w * frameIndex;
+        // Calculate 2D grid position for this frame
+        const col = frameIndex % gridCols;
+        const row = Math.floor(frameIndex / gridCols);
+
+        const frameOffsetX = gridSize.w * col;
+        const frameOffsetY = -gridSize.h * row; // Negative because Y goes up in Three.js
+
         cards.forEach((card) => {
             const absolutePosition = {
-                x: card.x + frameOffsetX,  // card.x, not card.position.x
-                y: card.y,                  // card.y, not card.position.y
-                z: card.z                   // card.z, not card.position.z
+                x: card.x + frameOffsetX,
+                y: card.y + frameOffsetY,
+                z: card.z
             };
-
-            console.log('Absolute position for card in frame', frameIndex, ':', absolutePosition, card);
             absoluteCardPositions.push(absolutePosition);
         });
     });
+
+    console.log('Grid layout:', gridCols, 'cols x', gridRows, 'rows');
 };
 
 //--- create a scene
@@ -257,32 +270,34 @@ const InfiniteScrollView = ({ projects }) => {
             const scrollX = state.scroll.current.x;
             const scrollY = state.scroll.current.y;
 
-            const totalWidth = gridSize.w * totalCanvasses;
+            const gridCols = Math.ceil(Math.sqrt(totalCanvasses));
+            const gridRows = Math.ceil(totalCanvasses / gridCols);
+            const totalWidth = gridSize.w * gridCols;
+            const totalHeight = gridSize.h * gridRows;
 
-            // Move hero canvas with scroll (wrapping like cards)
+            // Move hero canvas with scroll (no wrapping)
             if (heroCanvas) {
-                let heroX = scrollX;
-                heroCanvas.position.set(heroX, scrollY, 0);
+                heroCanvas.position.set(scrollX, scrollY, 0);
             }
 
             cardObjects.forEach((card, index) => {
                 const originalPos = absoluteCardPositions[index];
 
-                // Calculate the new X position based on scroll
                 let newX = originalPos.x + scrollX;
+                let newY = originalPos.y + scrollY;
 
-                // Wrap the position for infinite scroll
+                // Wrap X position
                 newX = ((newX % totalWidth) + totalWidth) % totalWidth;
+                if (newX > totalWidth / 2) newX -= totalWidth;
 
-                // Center the wrapped position around the viewport
-                if (newX > totalWidth / 2) {
-                    newX -= totalWidth;
-                }
+                // Wrap Y position
+                newY = ((newY % totalHeight) + totalHeight) % totalHeight;
+                if (newY > totalHeight / 2) newY -= totalHeight;
 
                 // Update the card's position
                 card.position.x = newX;
-                card.position.y = originalPos.y + scrollY;
-                card.position.z = originalPos.z;
+                card.position.y = newY;
+                // card.position.z = originalPos.z;
             });
         };
 
@@ -348,8 +363,17 @@ const InfiniteScrollView = ({ projects }) => {
             state.scroll.current.x += (state.scroll.target.x - state.scroll.current.x);
             state.scroll.current.y += (state.scroll.target.y - state.scroll.current.y);
 
-            // Update positions with wrapping
-            setPositions();
+            const deltaX = Math.abs(state.scroll.current.x - state.scroll.last.x);
+            const deltaY = Math.abs(state.scroll.current.y - state.scroll.last.y);
+
+            // Update positions with wrapping only if there is some movement
+            if (deltaX > 0.01 || deltaY > 0.01) {
+                setPositions();
+                rendererCCS3D.render(scene, camera);
+
+                state.scroll.last.x = state.scroll.current.x;
+                state.scroll.last.y = state.scroll.current.y;
+            }
 
             rendererCCS3D.render(scene, camera);
             animationId = requestAnimationFrame(render);
