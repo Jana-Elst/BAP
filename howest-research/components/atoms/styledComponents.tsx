@@ -2,47 +2,48 @@ import { Colors, Fonts } from "@/constants/theme";
 import { Text, StyleSheet } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 
-const StyledText = ({ children, style = null, hasGradient = false }) => {
+const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null }) => {
     if (hasGradient) {
         return (
             <LinearGradient
                 colors={[Colors.blue100, Colors.blue25, Colors.blue100]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
+                style={styleGradient}
             >
-                <Text style={[styles.paragraph, style]}> {children} </Text>
+                <Text style={[styles.paragraph, style]}>{children}</Text>
             </LinearGradient>)
     } else {
-        return <Text style={[styles.paragraph, style]}> {children} </Text>
+        return <Text style={[styles.paragraph, style]}>{children}</Text>
     }
 };
 
 const Title = ({ children, style = null }) => {
-    return <Text style={[styles.title, style]}> {children} </Text>
+    return <Text style={[styles.title, style]}>{children}</Text>
 };
 
 const SubTitle = ({ children, style = null }) => {
-    return <Text style={[styles.subTitle, style]}> {children} </Text>
+    return <Text style={[styles.subTitle, style]}>{children}</Text>
 };
 
 const Paragraph = ({ children, style = null }) => {
-    return <Text style={[styles.paragraph, style]}> {children} </Text>
+    return <Text style={[styles.paragraph, style]}>{children}</Text>
 };
 
 const SubTitleSmall = ({ children, style = null }) => {
-    return <Text style={[styles.subTitleSmall, style]}> {children} </Text>
+    return <Text style={[styles.subTitleSmall, style]}>{children}</Text>
 };
 
 const ParagraphSmall = ({ children, style = null }) => {
-    return <Text style={[styles.paragraphSmall, style]}> {children} </Text>
+    return <Text style={[styles.paragraphSmall, style]}>{children}</Text>
 };
 
 const ParagraphLarge = ({ children, style = null }) => {
-    return <Text style={[styles.paragraphLarge, style]}> {children} </Text>
+    return <Text style={[styles.paragraphLarge, style]}>{children}</Text>
 };
 
 const TitleXSmall = ({ children, style = null }) => {
-    return <Text style={[styles.TitleXSmall, style]}> {children} </Text>
+    return <Text style={[styles.TitleXSmall, style]}>{children}</Text>
 };
 
 export {
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 40,
-        lineHeight: 1.2,
+        // lineHeight: 1.2,
     },
 
     subTitle: {

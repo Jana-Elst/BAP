@@ -1,5 +1,6 @@
 import Touchable from "../atoms/touchable";
 import { useState } from "react";
+import { StyleSheet } from "react-native";
 
 const SearchButton = () => {
     const [isActive, setIsActive] = useState(false);
@@ -9,8 +10,27 @@ const SearchButton = () => {
     };
 
     return (
-        < Touchable onPress={() => { openSearch() }} icon={'search'}>Zoeken</Touchable>
+        < Touchable
+            onPress={() => { openSearch() }}
+            icon={'search'}
+            styleButton={styles.button}
+            styleGradient={styles.gradient}
+        >
+            Zoeken</Touchable>
     )
 }
+
+const styles = StyleSheet.create({
+
+    gradient: {
+        borderRadius: 100,
+    },
+
+    button: {
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 100,
+    },
+});
 
 export default SearchButton;
