@@ -13,24 +13,12 @@ const SearchButton = () => {
         < Touchable
             onPress={() => { openSearch() }}
             icon={'search'}
-            styleButton={styles.button}
-            styleGradient={styles.gradient}
         >
             Zoeken</Touchable>
     )
 }
 
 const styles = StyleSheet.create({
-
-    gradient: {
-        borderRadius: 100,
-    },
-
-    button: {
-        paddingHorizontal: 20,
-        paddingVertical: 12,
-        borderRadius: 100,
-    },
 });
 
 export default SearchButton;

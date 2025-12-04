@@ -23,7 +23,7 @@ const Card = ({ children, borderRadius = 30, onLayout = null, style = null }) =>
 
 const styles = StyleSheet.create({
     blurContainer: {
-        flex: 1,
+        overflow: 'hidden',
     },
 
     shadowContainer: {
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
 
     card: {
         borderWidth: 2,
-        borderColor: Colors.white
+        borderColor: Colors.white,
+        borderRadius: 30,
     }
 });
 

@@ -6,7 +6,7 @@ import FilterButton from '../molecules/filterButton';
 import Card from "../atoms/card";
 import Touchable from "../atoms/touchable";
 import FilterCard from '../molecules/filterCard';
-import { StyledText } from "../atoms/styledComponents";
+import { StyledText, SubTitleSmall, subTitleSmall } from "../atoms/styledComponents";
 
 import data from '../../assets/data/structured-data.json';
 import { getClusterName, getAllTransitionDomains, getFilteredProjects } from '@/scripts/getData';
@@ -76,7 +76,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                     <Pressable style={styles.backdrop} onPress={toggleOverlay} />
 
                     {/*-------------------- Filter button stays visible and clickable --------------------*/}
-                    <View style={[styles.buttonContainer,
+                    {/* <View style={[styles.buttonContainer,
                     {
                         top: buttonPosition.y,
                         left: buttonPosition.x,
@@ -88,43 +88,54 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                             isActive={visible}
                             activeFilters={activeFilters}
                         />
-                    </View>
+                    </View> */}
 
                     {/*-------------------- Overlay content --------------------*/}
                     <View style={styles.overlayContent}>
-                        <Card>
-
-                            {/*-------------------- List of all selected filters --------------------*/}
-                            <View>
-                                <FlashList
-                                    data={activeFilters}
-                                    horizontal={true}
-                                    renderItem={({ item, index }) => {
-                                        console.log('Rendering active filter item:', item);
-                                        return (
-                                            <Touchable onPress={() => handleSelect(item)} icon={'close'} iconPosition={'after'} isActive={true}>{item.label}</Touchable>
-                                        );
-                                    }}
-                                />
-
+                        <Card style={styles.card}>
+                            <View style={styles.header}>
+                                <Touchable onPress={toggleOverlay} isActive={activeFilters.length > 0 ? false : true} icon={'arrow-back-outline'} showIconOnly={true}></Touchable>
                                 {
-                                    activeFilters.length > 0 && (
+                                    activeFilters.length > 0 ?
                                         <>
-                                            <StyledText hasGradient={true}>{activeFilters.length}</StyledText>
-                                            <TouchableOpacity onPress={clearFilters}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
-                                        </>
-                                    )
+                                            <FlashList
+                                                data={activeFilters}
+                                                horizontal={true}
+                                                ItemSeparatorComponent={() => (
+                                                    <View style={{ width: 12 }} />
+                                                )}
+                                                renderItem={({ item, index }) => {
+                                                    console.log('Rendering active filter item:', item);
+                                                    return (
+                                                        <Touchable onPress={() => handleSelect(item)} icon={'close'} iconPosition={'after'} isActive={true}>{item.label}</Touchable>
+                                                    );
+                                                }}
+                                            />
+
+                                            {
+                                                activeFilters.length > 0 && (
+                                                    <>
+                                                        <StyledText hasGradient={true} style={styles.activeFilterCount} styleGradient={{ borderRadius: 100 }}>{activeFilters.length}</StyledText>
+                                                        <TouchableOpacity onPress={clearFilters}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
+                                                    </>
+                                                )
+                                            }
+                                        </> :
+                                        <StyledText>Geen actieve filters. Selecteer één of meerdere filters.</StyledText>
                                 }
                             </View>
 
                             {/*-------------------- Filters --------------------*/}
-                            <View>
+                            <View style={styles.filterContainer}>
                                 <View>
-                                    <StyledText>Transitiedomeinen</StyledText>
+                                    <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
                                     <StyledText>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
                                     <FlashList
                                         data={transitionDomains}
                                         horizontal={true}
+                                        ItemSeparatorComponent={() => (
+                                            <View style={{ width: 20 }} />
+                                        )}
                                         renderItem={({ item, index }) => {
                                             return (
                                                 <FilterCard project={item} style={styles.card} onPress={() => handleSelect(item)} isActive={activeFilters.includes(item)} />
@@ -136,11 +147,14 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                 </View>
 
                                 <View>
-                                    <StyledText>Clusters</StyledText>
+                                    <SubTitleSmall>Clusters</SubTitleSmall>
                                     <StyledText>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
                                     <FlashList
                                         data={clusters}
                                         horizontal={true}
+                                        ItemSeparatorComponent={() => (
+                                            <View style={{ width: 20 }} />
+                                        )}
                                         renderItem={({ item, index }) => {
                                             const cluster = getClusterName(item.id);
                                             return (
@@ -178,9 +192,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
 
-    buttonContainer: {
-        position: 'absolute',
-        zIndex: 10,
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 16,
     },
 
     overlayContent: {
@@ -192,9 +207,19 @@ const styles = StyleSheet.create({
         margin: 32,
     },
 
-    title: {
-        fontFamily: Fonts.rounded.light,
-        textAlign: 'center',
+    card: {
+        padding: 64,
+        gap: 28,
+    },
+
+    activeFilterCount: {
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 100,
+    },
+
+    filterContainer: {
+        gap: 28,
     },
 
     imageContainer: {

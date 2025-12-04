@@ -11,7 +11,7 @@ const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosit
             colors={isActive ? [Colors.blue100, Colors.blue25, Colors.blue100] : [Colors.white, Colors.white, Colors.white]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
-            style={styleGradient}
+            style={[styles.gradient, styleGradient]}
         >
             <TouchableOpacity onPress={onPress} style={[styles.content, styleButton, iconPosition === 'after' ? { flexDirection: 'row-reverse' } : null]}>
                 {icon && <Ionicons name={icon} size={24} color={Colors.black} />}
@@ -27,6 +27,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         gap: 12,
+
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 100,
+    },
+
+    gradient: {
+        borderRadius: 100,
     },
 });
 

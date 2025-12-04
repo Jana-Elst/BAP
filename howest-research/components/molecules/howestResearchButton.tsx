@@ -13,7 +13,6 @@ const HowestResearchButton = ({ onPress }) => {
             icon='information-circle-outline'
             iconPosition='after'
             styleButton={styles.button}
-            styleGradient={styles.gradient}
         >
             <Image
                 style={styles.image}
@@ -25,16 +24,9 @@ const HowestResearchButton = ({ onPress }) => {
 }
 
 const styles = StyleSheet.create({
-    gradient: {
-        borderRadius: 100,
-    },
-
     button: {
-        paddingHorizontal: 20,
-        paddingVertical: 16,
-        borderRadius: 100
+        paddingVertical: 16
     },
-
     image: {
         width: 180,
         height: 24,
