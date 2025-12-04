@@ -16,6 +16,7 @@ const LanguageToggle = () => {
             styleElement1={styles.element1}
             styleText2={!isActive ? { fontFamily: Fonts.rounded.bold } : { fontFamily: Fonts.rounded.light }}
             styleElement2={styles.element2}
+            styleGradient={styles.gradient}
         />
     )
 }
