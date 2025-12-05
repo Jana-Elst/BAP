@@ -117,7 +117,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                         <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
                                         <StyledText style={styles.filterDescription}>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
                                     </View>
-                                    <View style={{ flexDirection: 'row', gap: 20, paddingHorizontal: 64 }}>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, paddingHorizontal: 64 }}>
                                         {transitionDomains.map((item, index) => (
                                             <FilterCard
                                                 key={index}
@@ -152,7 +152,6 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                                 <FilterCard
                                                     filter={'cluster'}
                                                     project={cluster}
-                                                    style={styles.card}
                                                     onPress={() => handleSelect(cluster)}
                                                     isActive={activeFilters.includes(cluster)} />
                                             )
@@ -190,8 +189,6 @@ const styles = StyleSheet.create({
     modalContainer: {
         flex: 1,
     },
-
-
 
     header: {
         height: 56,

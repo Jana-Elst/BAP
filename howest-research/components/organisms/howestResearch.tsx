@@ -1,15 +1,16 @@
 //https://www.npmjs.com/package/react-native-qrcode-svg
 
-import { useState } from 'react';
-import { Modal, Pressable, View, StyleSheet } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { Image } from 'expo-image';
+import { useState } from 'react';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
-import HowestResearchButton from '../molecules/howestResearchButton';
 import Card from '../atoms/card';
-import { StyledText } from '../atoms/styledComponents';
-import AccordeonHowestResearch from '../molecules/accordeonHowestResearch';
 import CloseButton from '../atoms/closeButton';
+import { ParagraphLarge, ParagraphSmall, StyledText, SubTitleSmall } from '../atoms/styledComponents';
+import AccordeonHowestResearch from '../molecules/accordeonHowestResearch';
+import HowestResearchButton from '../molecules/howestResearchButton';
 
 const image = require('../../assets/images/logoHowestResearchRGB.png')
 
@@ -30,32 +31,38 @@ const HowestResearch = () => {
                 onRequestClose={toggleOverlay}
             >
                 <View style={styles.modalContainer}>
-                    <Pressable style={styles.backdrop} onPress={toggleOverlay} />
+                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
+                    <Pressable style={StyleSheet.absoluteFill} onPress={toggleOverlay} />
 
                     {/*-------------------- Overlay content --------------------*/}
                     <View style={styles.overlayContent}>
-                        <Card>
-                            <View>
-                                <Card>
+                        <Card style={{ flexDirection: 'row', gap: 40, padding: 64 }} fill={true} borderRadius={80}>
+                            <View style={{ flexDirection: 'column', gap: 18, width: '480' }}>
+                                <Card
+                                    isActive={true}
+                                    style={{ borderColor: 'transparent', alignItems: 'center', justifyContent: 'center' }}
+                                    fill={true}
+                                >
                                     <Image
                                         style={styles.image}
                                         source={image}
                                         contentFit="contain"
                                     />
                                 </Card>
-                                <Card>
-                                    <StyledText>Geïnteresseerd in één van onze onderzoeksprojecten?</StyledText>
-                                    <StyledText>Neem contact op</StyledText>
+                                <Card style={{ paddingHorizontal: 64, paddingVertical: 40, gap: 16, alignItems: 'center', borderWidth: 1 }}>
+                                    <ParagraphLarge style={{ textAlign: 'center' }}>Geïnteresseerd in één van onze onderzoeksprojecten?</ParagraphLarge>
+                                    <SubTitleSmall style={{ textAlign: 'center' }}>Neem contact op</SubTitleSmall>
                                     <QRCode
                                         value="www.howest.be/nl/onderzoek-aan-howest"
                                         backgroundColor='transparent'
+                                        size={275}
                                     />
-                                    <StyledText>www.howest.be/nl/onderzoek-aan-howest</StyledText>
+                                    <ParagraphSmall style={{ textAlign: 'center' }}>www.howest.be/nl/onderzoek-aan-howest</ParagraphSmall>
                                 </Card>
                             </View>
-                            <View>
-                                <View>
-                                    <StyledText>Innovatief en toekomstgericht onderzoek dat klaar is om ingezet te worden.</StyledText>
+                            <View style={{ flex: 1, gap: 32 }}>
+                                <View style={{ gap: 12 }}>
+                                    <SubTitleSmall>Innovatief en toekomstgericht onderzoek dat klaar is om ingezet te worden.</SubTitleSmall>
                                     <StyledText>Howest University of Applied Sciences is more than a place where young people come to learn. As a knowledge institution, one of our main tasks is to act as a research and service partner to organisations and businesses in West-Flanders – and of course beyond.</StyledText>
                                 </View>
                                 <AccordeonHowestResearch />
@@ -63,6 +70,7 @@ const HowestResearch = () => {
                         </Card>
 
                         <CloseButton onPress={toggleOverlay}>Sluit</CloseButton>
+
                     </View>
                 </View>
             </Modal >
@@ -79,21 +87,17 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
-    backdrop: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-
     overlayContent: {
         top: 0,
         left: 0,
         flex: 1,
         margin: 32,
+        gap: 20,
     },
 
     image: {
-        width: 200,
-        height: 60,
+        width: 380,
+        height: 55,
     },
 });
 
