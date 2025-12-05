@@ -129,7 +129,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                             <View style={styles.filterContainer}>
                                 <View>
                                     <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
-                                    <StyledText>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
+                                    <StyledText style={styles.filterDescription}>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
                                     <FlashList
                                         data={transitionDomains}
                                         horizontal={true}
@@ -138,7 +138,13 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                         )}
                                         renderItem={({ item, index }) => {
                                             return (
-                                                <FilterCard project={item} style={styles.card} onPress={() => handleSelect(item)} isActive={activeFilters.includes(item)} />
+                                                <FilterCard
+                                                    filter={'domain'}
+                                                    project={item}
+                                                    style={styles.card}
+                                                    onPress={() => handleSelect(item)}
+                                                    isActive={activeFilters.includes(item)}
+                                                />
                                             );
                                         }
 
@@ -148,9 +154,12 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
 
                                 <View>
                                     <SubTitleSmall>Clusters</SubTitleSmall>
-                                    <StyledText>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
+                                    <StyledText style={styles.filterDescription}>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
                                     <FlashList
-                                        data={clusters}
+                                        data={clusters.filter(item => {
+                                            const cluster = getClusterName(item.id);
+                                            return cluster.formattedName !== 'clusteroverschrijdend';
+                                        })}
                                         horizontal={true}
                                         ItemSeparatorComponent={() => (
                                             <View style={{ width: 20 }} />
@@ -158,7 +167,12 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                         renderItem={({ item, index }) => {
                                             const cluster = getClusterName(item.id);
                                             return (
-                                                <FilterCard project={cluster} style={styles.card} onPress={() => handleSelect(cluster)} isActive={activeFilters.includes(cluster)} />
+                                                <FilterCard
+                                                    filter={'cluster'}
+                                                    project={cluster}
+                                                    style={styles.card}
+                                                    onPress={() => handleSelect(cluster)}
+                                                    isActive={activeFilters.includes(cluster)} />
                                             )
                                         }
 
@@ -220,6 +234,10 @@ const styles = StyleSheet.create({
 
     filterContainer: {
         gap: 28,
+    },
+
+    filterDescription: {
+        marginBottom: 12,
     },
 
     imageContainer: {

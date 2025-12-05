@@ -2,24 +2,70 @@ import { Image } from 'expo-image';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { StyledText } from '../atoms/styledComponents';
 import { Colors, Fonts } from "@/constants/theme";
-
-import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
 import Card from "@/components/atoms/card";
 
-const FilterCard = ({ project, onPress, isActive }) => {
+import activeHealthCah from '../../assets/images/filters/activeHealthCah.png';
+import architectuurEnDesignCad from '../../assets/images/filters/architectuurEnDesignCad.png';
+import bedrijfEnOrganisatieCbo from '../../assets/images/filters/bedrijfEnOrganisatieCbo.png';
+import businessEnMediaCbm from '../../assets/images/filters/businessEnMediaCbm.png';
+import designTechnologyArtCdta from '../../assets/images/filters/designTechnologyArtCdta.png';
+import digitalArtsAndEntertainmentCdae from '../../assets/images/filters/digitalArtsAndEntertainmentCdae.png';
+import informaticaEnTechnologieCit from '../../assets/images/filters/informaticaEnTechnologieCit.png';
+import lifeSciencesCls from '../../assets/images/filters/lifeSciencesCls.png';
+import mensEnWelzijnCmw from '../../assets/images/filters/mensEnWelzijnCmw.png';
+import schoolOfEducationCse from '../../assets/images/filters/schoolOfEducationCse.png';
+import schoolOfNursingCsn from '../../assets/images/filters/schoolOfNursingCsn.png';
+import smartTechCst from '../../assets/images/filters/smartTechCst.png';
+import sociaalAgogischWerkCsaw from '../../assets/images/filters/sociaalAgogischWerkCsaw.png';
+
+import digitaal from '../../assets/images/filters/digitaal.png';
+import ecologisch from '../../assets/images/filters/ecologisch.png';
+import gezond from '../../assets/images/filters/gezond.png';
+import sociaal from '../../assets/images/filters/sociaal.png';
+import leren from '../../assets/images/filters/leren.png';
+
+const images = {
+    'activeHealthCah': activeHealthCah,
+    'architectuurEnDesignCad': architectuurEnDesignCad,
+    'bedrijfEnOrganisatieCbo': bedrijfEnOrganisatieCbo,
+    'businessEnMediaCbm': businessEnMediaCbm,
+    'designTechnologyArtCdta': designTechnologyArtCdta,
+    'digitalArtsAndEntertainmentCdae': digitalArtsAndEntertainmentCdae,
+    'informaticaEnTechnologieCit': informaticaEnTechnologieCit,
+    'lifeSciencesCls': lifeSciencesCls,
+    'mensEnWelzijnCmw': mensEnWelzijnCmw,
+    'schoolOfEducationCse': schoolOfEducationCse,
+    'schoolOfNursingCsn': schoolOfNursingCsn,
+    'smartTechCst': smartTechCst,
+    'sociaalAgogischWerkCsaw': sociaalAgogischWerkCsaw,
+    'digitaal': digitaal,
+    'ecologisch': ecologisch,
+    'gezond': gezond,
+    'sociaal': sociaal,
+    'leren': leren,
+}
+
+
+const FilterCard = ({ project, onPress, isActive, filter }) => {
     console.log('Rendering FilterCard for project:', project);
     return (
         <TouchableOpacity onPress={onPress} style={styles.container}>
-            <Card style={[styles.card, { backgroundColor: isActive ? Colors.blue100 : null }]}>
-                {/* <View> */}
-                    <View style={styles.imageContainer}>
-                        <Image
-                            style={styles.image}
-                            source={ImageProject1}
-                            contentFit="contain"
-                        />
-                    </View>
-                    <StyledText style={styles.text}>{project.label}</StyledText>
+            <Card style={[
+                styles.card,
+                isActive && { backgroundColor: Colors.blue100 },
+                filter === 'cluster' && { width: 170, height: 170, padding: 12 }
+            ]}>
+                <View style={styles.imageContainer}>
+                    <Image
+                        style={[styles.image, filter === 'cluster' && { width: 150, height: 100 }]}
+                        source={images[project.formattedName] || null}
+                        contentFit="contain"
+                    />
+                </View>
+
+                {filter === 'cluster' && (
+                    <StyledText style={styles.text}>{project.formattedName}</StyledText>
+                )}
                 {/* </View> */}
             </Card>
         </TouchableOpacity>
@@ -31,11 +77,8 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        width: 275,
-        height: 275,
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 16,
     },
 
     text: {
@@ -46,14 +89,13 @@ const styles = StyleSheet.create({
     imageContainer: {
         flex: 1,
         width: '100%',
-        padding: 16,
         justifyContent: 'center',
         alignItems: 'center',
     },
 
     image: {
-        width: '100%',
-        height: '100%',
+        width: 210,
+        height: 210,
     },
 });
 
