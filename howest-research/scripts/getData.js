@@ -74,6 +74,14 @@ const colors = [
     }
 ]
 
+const domainColors = {
+    'gezond': 'pink',
+    'digitaal': 'blue',
+    'ecologisch': 'green',
+    'sociaal': 'purple',
+    'leren': 'yellow',
+}
+
 export const getAllKeywords = (keywordIDs) => {
     const keywords = data.transitiedomeinen.filter(keyword => keywordIDs.includes(keyword.id));
     return keywords;
@@ -108,6 +116,11 @@ export const getClusterName = (clusterID) => {
 export const getProjectColor = (clusterID) => {
     const clusterColor = colors.find(color => color.clusterId === clusterID).color;
     return clusterColor;
+};
+
+export const getDomainColor = (domainName) => {
+    const domainColor = domainColors[domainName];
+    return domainColor;
 };
 
 export const getProjectInfo = (projectID) => {

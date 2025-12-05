@@ -35,7 +35,7 @@ const RadialGradientComponent = ({ width = 150, height = 342, rotate = '46.149de
                         gradientUnits="userSpaceOnUse"
                     >
                         <Stop offset="0" stopColor={Colors[color + '100']} stopOpacity="0.8" />
-                        <Stop offset="1" stopColor="rgb(255, 255, 255)" stopOpacity="0.5" />
+                        <Stop offset="1" stopColor={Colors[color + '100']} stopOpacity="0.3" />
                     </RadialGradient>
                 </Defs>
                 <Ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill="url(#grad)" />

@@ -1,22 +1,27 @@
-import { StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 import { Colors, Fonts } from "@/constants/theme";
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 
+import backgroundImage from '../../assets/images/textureCard.png';
+
 const Card = ({ children, borderRadius = 30, onLayout = null, style = null }) => {
     return (
-        <BlurView intensity={24} tint="light" style={[styles.blurContainer, { borderRadius: borderRadius }]}>
-            <View style={[styles.shadowContainer, { borderRadius: borderRadius }]}>
-                <LinearGradient
-                    style={[styles.card, style]}
-                    colors={['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0.6, y: 1 }}
-                    onLayout={onLayout}
-                >
-                    {children}
-                </LinearGradient>
-            </View>
+        <BlurView intensity={50} tint="light" style={[styles.blurContainer, { borderRadius: borderRadius }]}>
+            {/* <ImageBackground source={backgroundImage} resizeMode='repeat' imageStyle={{opacity: 0.4}}> */}
+                {/* <View style={styles.softLightOverlay} /> */}
+                <View style={[styles.shadowContainer, { borderRadius: borderRadius }]}>
+                    <LinearGradient
+                        style={[styles.card, style]}
+                        colors={['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)']}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0.6, y: 1 }}
+                        onLayout={onLayout}
+                    >
+                        {children}
+                    </LinearGradient>
+                </View>
+            {/* </ImageBackground> */}
         </BlurView>
     )
 }
@@ -24,6 +29,12 @@ const Card = ({ children, borderRadius = 30, onLayout = null, style = null }) =>
 const styles = StyleSheet.create({
     blurContainer: {
         overflow: 'hidden',
+    },
+
+    softLightOverlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#F0F0F0',
+        opacity: 0.5,
     },
 
     shadowContainer: {
