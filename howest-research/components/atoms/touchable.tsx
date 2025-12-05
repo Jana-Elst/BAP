@@ -1,9 +1,9 @@
 
-import { TouchableOpacity, StyleSheet } from "react-native";
-import { ParagraphLarge } from "./styledComponents";
-import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from "@/constants/theme";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { ParagraphLarge } from "./styledComponents";
 
 const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosition = 'before', showIconOnly = false, styleButton = null, styleGradient = null, styleText = null }) => {
     return (
@@ -15,7 +15,7 @@ const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosit
         >
             <TouchableOpacity onPress={onPress} style={[styles.content, styleButton, iconPosition === 'after' ? { flexDirection: 'row-reverse' } : null]}>
                 {icon && <Ionicons name={icon} size={24} color={Colors.black} />}
-                {showIconOnly && !isActive ? null : <ParagraphLarge style = {styleText}>{children}</ParagraphLarge>}
+                {(showIconOnly && !isActive) || !children ? null : <ParagraphLarge style={styleText}>{children}</ParagraphLarge>}
             </TouchableOpacity>
         </LinearGradient>
     )
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
 
     gradient: {
         borderRadius: 100,
+        alignSelf: 'flex-start',
     },
 });
 

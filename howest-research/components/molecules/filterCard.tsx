@@ -69,9 +69,9 @@ const FilterCard = ({ project, onPress, isActive, filter }) => {
     return (
         <TouchableOpacity onPress={onPress} style={styles.container}>
             <Card
+                isActive={isActive}
                 style={[
                     styles.card,
-                    isActive && { backgroundColor: Colors.blue100 },
                     filter === 'cluster' && { width: 170, height: 170, padding: 12 }
                 ]}
                 onLayout={handleLayout}>
@@ -89,8 +89,9 @@ const FilterCard = ({ project, onPress, isActive, filter }) => {
             </Card>
 
 
-            {filter === 'domain' && (
+            {filter === 'domain' && !isActive && (
                 <View style={styles.radialGradientContainer}>
+                    {/* background: var(--linear-fill-blue, linear-gradient(134deg, var(--colors-bleu-10, rgba(68, 200, 245, 0.10)) 10.11%, var(--colors-bleu-50, rgba(68, 200, 245, 0.50)) 92.52%)); */}
                     <RadialGradientComponent width={containerSize.width} height={containerSize.height} color={color} />
                 </View>
             )}
@@ -105,6 +106,8 @@ const styles = StyleSheet.create({
     card: {
         alignItems: 'center',
         justifyContent: 'space-between',
+        height: 210,
+        width: 210,
     },
 
     text: {

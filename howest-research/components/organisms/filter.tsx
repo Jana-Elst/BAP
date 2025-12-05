@@ -1,21 +1,21 @@
-import { useState, useRef } from 'react';
-import { View, StyleSheet, Modal, Pressable, TouchableOpacity, Text } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
+import { BlurView } from 'expo-blur';
+import { useRef, useState } from 'react';
+import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import FilterButton from '../molecules/filterButton';
 import Card from "../atoms/card";
+import { Paragraph, ParagraphLarge, StyledText, SubTitleSmall } from "../atoms/styledComponents";
 import Touchable from "../atoms/touchable";
+import FilterButton from '../molecules/filterButton';
 import FilterCard from '../molecules/filterCard';
-import { StyledText, SubTitleSmall, subTitleSmall } from "../atoms/styledComponents";
 
+import { Colors } from '@/constants/theme';
+import { getAllTransitionDomains, getClusterName, getFilteredProjects } from '@/scripts/getData';
 import data from '../../assets/data/structured-data.json';
-import { getClusterName, getAllTransitionDomains, getFilteredProjects } from '@/scripts/getData';
 
-import { Fonts } from "@/constants/theme";
 
 const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
     const [visible, setVisible] = useState(false);
-    const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, width: 0, height: 0 });
     const buttonRef = useRef(null);
 
     const transitionDomains = getAllTransitionDomains();
@@ -25,15 +25,6 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
         const filteredProjects = getFilteredProjects(activeFilters);
         setProjects(filteredProjects);
         setVisible(!visible);
-    };
-
-
-    const handleLayout = () => {
-        if (buttonRef.current) {
-            buttonRef.current.measureInWindow((x, y, width, height) => {
-                setButtonPosition({ x, y, width, height });
-            });
-        }
     };
 
     const handleSelect = (item) => {
@@ -59,10 +50,9 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
 
     return (
         <View style={styles.container}>
-            <View ref={buttonRef} onLayout={handleLayout}>
+            <View ref={buttonRef}>
                 <FilterButton
                     onPress={toggleOverlay}
-                    isActive={visible}
                     activeFilters={activeFilters}
                 />
             </View>
@@ -73,51 +63,46 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                 onRequestClose={toggleOverlay}
             >
                 <View style={styles.modalContainer}>
-                    <Pressable style={styles.backdrop} onPress={toggleOverlay} />
-
-                    {/*-------------------- Filter button stays visible and clickable --------------------*/}
-                    {/* <View style={[styles.buttonContainer,
-                    {
-                        top: buttonPosition.y,
-                        left: buttonPosition.x,
-                        width: buttonPosition.width,
-                        height: buttonPosition.height
-                    }]}>
-                        <FilterButton
-                            onPress={toggleOverlay}
-                            isActive={visible}
-                            activeFilters={activeFilters}
-                        />
-                    </View> */}
+                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
+                    <Pressable style={StyleSheet.absoluteFill} onPress={toggleOverlay} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={styles.overlayContent}>
-                        <Card style={styles.card}>
+                    <View pointerEvents="box-none" style={styles.overlayContent}>
+                        <Card style={styles.card} borderRadius={80}>
                             <View style={styles.header}>
-                                <Touchable onPress={toggleOverlay} isActive={activeFilters.length > 0 ? false : true} icon={'arrow-back-outline'} showIconOnly={true}></Touchable>
+                                <Touchable
+                                    onPress={toggleOverlay}
+                                    isActive={activeFilters.length > 0 ? false : true}
+                                    icon={'arrow-back-outline'}
+                                    showIconOnly={true}
+                                    styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
+                                </Touchable>
                                 {
                                     activeFilters.length > 0 ?
                                         <>
                                             <FlashList
                                                 data={activeFilters}
                                                 horizontal={true}
+                                                estimatedItemSize={100}
                                                 ItemSeparatorComponent={() => (
                                                     <View style={{ width: 12 }} />
                                                 )}
                                                 renderItem={({ item, index }) => {
-                                                    console.log('Rendering active filter item:', item);
                                                     return (
-                                                        <Touchable onPress={() => handleSelect(item)} icon={'close'} iconPosition={'after'} isActive={true}>{item.label}</Touchable>
+                                                        <Touchable
+                                                            onPress={() => handleSelect(item)}
+                                                            icon={'close'}
+                                                            iconPosition={'after'}
+                                                            isActive={true}
+                                                            styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
+                                                            styleGradient={{ alignSelf: 'center' }}><Paragraph>{item.label}</Paragraph></Touchable>
                                                     );
                                                 }}
                                             />
 
                                             {
                                                 activeFilters.length > 0 && (
-                                                    <>
-                                                        <StyledText hasGradient={true} style={styles.activeFilterCount} styleGradient={{ borderRadius: 100 }}>{activeFilters.length}</StyledText>
-                                                        <TouchableOpacity onPress={clearFilters}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
-                                                    </>
+                                                    <TouchableOpacity onPress={clearFilters}><StyledText style={{ borderBottomWidth: 2, borderBottomColor: Colors.black }}>Alle filters wissen</StyledText></TouchableOpacity>
                                                 )
                                             }
                                         </> :
@@ -128,39 +113,36 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                             {/*-------------------- Filters --------------------*/}
                             <View style={styles.filterContainer}>
                                 <View>
-                                    <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
-                                    <StyledText style={styles.filterDescription}>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
-                                    <FlashList
-                                        data={transitionDomains}
-                                        horizontal={true}
-                                        ItemSeparatorComponent={() => (
-                                            <View style={{ width: 20 }} />
-                                        )}
-                                        renderItem={({ item, index }) => {
-                                            return (
-                                                <FilterCard
-                                                    filter={'domain'}
-                                                    project={item}
-                                                    style={styles.card}
-                                                    onPress={() => handleSelect(item)}
-                                                    isActive={activeFilters.includes(item)}
-                                                />
-                                            );
-                                        }
-
-                                        }
-                                    />
+                                    <View style={{ paddingLeft: 64 }}>
+                                        <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
+                                        <StyledText style={styles.filterDescription}>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', gap: 20, paddingHorizontal: 64 }}>
+                                        {transitionDomains.map((item, index) => (
+                                            <FilterCard
+                                                key={index}
+                                                filter={'domain'}
+                                                project={item}
+                                                onPress={() => handleSelect(item)}
+                                                isActive={activeFilters.includes(item)}
+                                            />
+                                        ))}
+                                    </View>
                                 </View>
 
                                 <View>
-                                    <SubTitleSmall>Clusters</SubTitleSmall>
-                                    <StyledText style={styles.filterDescription}>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
+                                    <View style={{ paddingLeft: 64 }}>
+                                        <SubTitleSmall>Clusters</SubTitleSmall>
+                                        <StyledText style={styles.filterDescription}>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
+                                    </View>
                                     <FlashList
                                         data={clusters.filter(item => {
                                             const cluster = getClusterName(item.id);
                                             return cluster.formattedName !== 'clusteroverschrijdend';
                                         })}
                                         horizontal={true}
+                                        showsHorizontalScrollIndicator={false}
+                                        contentContainerStyle={{ paddingHorizontal: 64 }}
                                         ItemSeparatorComponent={() => (
                                             <View style={{ width: 20 }} />
                                         )}
@@ -182,8 +164,16 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                             </View>
 
                             {/*-------------------- Buttons footer --------------------*/}
-                            <TouchableOpacity onPress={clearFilters}><StyledText>Alle filters wissen</StyledText></TouchableOpacity>
-                            <Touchable onPress={toggleOverlay} isActive={true}>Pas Filters toe</Touchable>
+                            <View style={{ gap: 16, marginTop: 28, alignItems: 'center', justifyContent: 'center' }}>
+                                {
+                                    activeFilters.length > 0 ? (
+                                        <TouchableOpacity onPress={clearFilters}><ParagraphLarge style={{ borderBottomWidth: 2 }}>Alle filters wissen</ParagraphLarge></TouchableOpacity>
+                                    ) : (
+                                        <ParagraphLarge style={{ borderBottomWidth: 3, borderBottomColor: 'transparent' }}> </ParagraphLarge>
+                                    )
+                                }
+                                <Touchable onPress={toggleOverlay} isActive={activeFilters.length > 0 ? true : false} styleButton={{ paddingHorizontal: 20, paddingVertical: 16 }} styleGradient={{ alignSelf: 'center' }}>Pas filters toe</Touchable>
+                            </View>
                         </Card>
                     </View>
                 </View>
@@ -201,15 +191,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
 
-    backdrop: {
-        ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
+
 
     header: {
+        height: 56,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'flex-start',
         gap: 16,
+        paddingHorizontal: 64,
+        marginBottom: 8,
     },
 
     overlayContent: {
@@ -217,13 +208,14 @@ const styles = StyleSheet.create({
         left: 0,
         flex: 1,
         justifyContent: 'center',
-        // alignItems: 'center',
         margin: 32,
     },
 
     card: {
-        padding: 64,
+        paddingTop: 55,
+        paddingBottom: 34,
         gap: 28,
+        borderWidth: 3,
     },
 
     activeFilterCount: {
@@ -233,7 +225,7 @@ const styles = StyleSheet.create({
     },
 
     filterContainer: {
-        gap: 28,
+        gap: 32,
     },
 
     filterDescription: {

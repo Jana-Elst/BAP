@@ -2,12 +2,11 @@ import { View, StyleSheet } from "react-native";
 import Touchable from "../atoms/touchable";
 import { StyledText } from "../atoms/styledComponents";
 
-const FilterButton = ({ onPress, isActive, activeFilters }) => {
+const FilterButton = ({ onPress, activeFilters }) => {
     return (
         <View style={styles.container}>
             <Touchable
                 onPress={onPress}
-                isActive={isActive}
                 icon={'filter'}
             >
                 Filter</Touchable>
