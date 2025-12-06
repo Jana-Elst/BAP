@@ -1,7 +1,6 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { StyledText } from "../atoms/styledComponents";
 import ProjectImage from "../organisms/projectImage";
-import Images from '../../scripts/getImages';
 
 
 const ModelView = ({ width, height, project, setPage, page }) => {

@@ -1,70 +1,69 @@
 import { Canvas, Group, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
 import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Images from '../../scripts/getImages';
+import useGetImages from '../../scripts/getKeywordImages';
 
 import mensEnWelzijn from '../../assets/images/clusters/businessEnMediaCbm/0001.png';
 
 const keywordPositionsConfig = [
     {
         id: 1,
-        degrees: [0, 45],
-        positionWords: [],
+        degrees: [0],
+        rotationImages: [0],
     },
     {
         id: 2,
         degrees: [0, 45],
-        positionWords: [],
+        rotationImages: [0, 1],
     },
     {
         id: 3,
         degrees: [0, 45, 90],
-        positionWords: [],
+        rotationImages: [0, 1, 2],
     },
     {
         id: 4,
         degrees: [0, 45, 90, 135],
-        positionWords: [],
+        rotationImages: [0, 1, 2, 3],
     },
     {
         id: 5,
         degrees: [0, 45, 90, 135, 180],
-        positionWords: [],
+        rotationImages: [0, 1, 2, 3, 4],
     },
     {
         id: 6,
         degrees: [0, 45, 90, 135, 180, 225],
-        positionWords: [],
+        rotationImages: [0, 1, 2, 3, 4, 5],
     },
     {
         id: 7,
-        degrees: [0, 45, 90, 135, 180, 225, 270],
-        positionWords: [],
-    },
-    {
-        id: 8,
         degrees: [0, 45, 90, 135, 180, 225, 270, 315],
-        positionWords: [],
+        rotationImages: [0, 1, 2, 3, 4, 5, 6, 7],
     },
 
 ];
 
 const ProjectImage = ({ width, height, project, setPage, page }) => {
-    const { digitalSkillsMediaWijsheid } = Images();
-    console.log(digitalSkillsMediaWijsheid);
+    const keywordData = useMemo(() => project.keywords, [project.keywords]);
+    const keywordDataFormatted = useMemo(() => keywordData.map(keyword => keyword.formattedName), [keywordData]);
 
-    const keywordData = useMemo(() => project.keywords.slice(0, keywordPositionsConfig.length).map(keyword => keyword.formattedName), [project.keywords]);
+    const images = useGetImages(keywordDataFormatted);
+    const positions = useMemo(() => keywordPositionsConfig[keywordData.length - 1], [keywordData.length]);
 
-    const keywords = [digitalSkillsMediaWijsheid[0], digitalSkillsMediaWijsheid[1], digitalSkillsMediaWijsheid[2], digitalSkillsMediaWijsheid[3], digitalSkillsMediaWijsheid[4], digitalSkillsMediaWijsheid[5], digitalSkillsMediaWijsheid[6], digitalSkillsMediaWijsheid[7]];
+    const keywords = useMemo(() => {
+        let imagesFlat = [];
+        if (!images || images.length === 0) return [];
 
+        for (let i = 0; i < images.length; i++) {
+            const imageSet = images[i];
+            imagesFlat.push(imageSet[positions.rotationImages[0]]);
+        }
+
+        return imagesFlat;
+    }, [images]);
 
     const clusterImage = useImage(mensEnWelzijn);
-
-    if (keywords.length === 0) {
-        return null;
-    }
-
-    const positions = useMemo(() => keywordPositionsConfig[keywords.length - 1], [keywords.length]);
 
     const [boundingBoxesKeywords, setBoundingBoxesKeywords] = useState<(BoundingBox | undefined)[]>([]);
     const [boundingBoxCluster, setBoundingBoxCluster] = useState<(BoundingBox | undefined)[]>([]);
@@ -238,7 +237,7 @@ const ProjectImage = ({ width, height, project, setPage, page }) => {
         });
         setBoundingBoxesKeywords(boxesKeywords);
 
-    }, [keywords, keywordPositions]);
+    }, [keywordData, keywordPositions]);
 
     return (
         <View style={styles.container}>
