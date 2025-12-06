@@ -207,35 +207,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         return undefined;
     };
 
-    //----- Calculate the intersection point on the offset ellipse for a given angle -----//
-    const getEllipseIntersection = (degree: number, ellipseCenterX: number, ellipseCenterY: number, radiusX: number, radiusY: number) => {
-        const radians = (degree * Math.PI) / 180;
-        const x = ellipseCenterX + Math.cos(radians) * radiusX;
-        const y = ellipseCenterY + Math.sin(radians) * radiusY;
-        return { x, y };
-    };
-
-    //----- Get the keyword positions based on the offset ellipse -----//
-    const getKeywordPositions = (clusterPosition: any) => {
-        if (!clusterPosition) return [];
-
-        // The ellipse center is now the screen center (since cluster is centered)
-        const ellipseCenterX = centerX;
-        const ellipseCenterY = centerY;
-        const radiusX = (clusterPosition.width + offset) / 2;
-        const radiusY = (clusterPosition.height + offset) / 2;
-
-        return positions.degrees.map((degree) => {
-            const intersection = getEllipseIntersection(degree, ellipseCenterX, ellipseCenterY, radiusX, radiusY);
-            return {
-                x: intersection.x - widhtKeyword / 2,
-                y: intersection.y - heightKeyword / 2,
-                centerX: intersection.x,
-                centerY: intersection.y,
-            };
-        });
-    };
-
     const getClusterPosition = () => {
         const allLoadedCluster = clusterImage !== null;
         if (!allLoadedCluster) return;
@@ -254,6 +225,49 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         return { x, y, width, height, imageX, imageY };
     }
 
+    //----- Get the keyword positions based on the offset ellipse -----//
+    const getKeywordPositions = (clusterPosition: any) => {
+        if (!clusterPosition) return [];
+
+        const radiusX = (clusterPosition.width + offset) / 2;
+        const radiusY = (clusterPosition.height + offset) / 2;
+
+        return positions.degrees.map((degree) => {
+            const intersection = getEllipseIntersection(degree, centerX, centerY, radiusX, radiusY);
+            return {
+                x: intersection.x - widhtKeyword / 2,
+                y: intersection.y - heightKeyword / 2,
+                centerX: intersection.x,
+                centerY: intersection.y,
+            };
+        });
+    };
+
+    //----- Calculate the intersection point on the offset ellipse for a given angle -----//
+    const getEllipseIntersection = (degree: number, ellipseCenterX: number, ellipseCenterY: number, radiusX: number, radiusY: number) => {
+        const radians = (degree * Math.PI) / 180;
+
+        // For a line from center at angle θ intersecting an ellipse:
+        // We need to find the distance r from center where the line intersects the ellipse
+        // Formula: r = (a * b) / sqrt((b * cos(θ))² + (a * sin(θ))²)
+        // where a = radiusX (semi-major axis) and b = radiusY (semi-minor axis)
+
+        const cosTheta = Math.cos(radians);
+        const sinTheta = Math.sin(radians);
+
+        const denominator = Math.sqrt(
+            Math.pow(radiusY * cosTheta, 2) +
+            Math.pow(radiusX * sinTheta, 2)
+        );
+
+        const r = (radiusX * radiusY) / denominator;
+
+        const x = ellipseCenterX + r * cosTheta;
+        const y = ellipseCenterY + r * sinTheta;
+
+        return { x, y };
+    };
+
     const getBoundingBoxesKeywords = () => {
         const allLoadedKeywords = keywordImages.every(img => img !== null);
         if (!allLoadedKeywords || keywordPositions.length === 0) return;
@@ -265,11 +279,29 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
             const visibleInfo = getVisiblePixelsInfo(image, widhtKeyword, heightKeyword);
             if (!visibleInfo) return undefined;
 
+            // Calculate where the visible content currently would be
+            const visibleX = pos.x + visibleInfo.offsetX;
+            const visibleY = pos.y + visibleInfo.offsetY;
+            const visibleCenterX = visibleX + visibleInfo.boundingBox.width / 2;
+            const visibleCenterY = visibleY + visibleInfo.boundingBox.height / 2;
+
+            // Calculate how much we need to adjust to center on the intersection point
+            const diffX = pos.centerX - visibleCenterX;
+            const diffY = pos.centerY - visibleCenterY;
+
+            // Apply the adjustment to both the render position and bounding box
+            const finalRenderX = pos.x + diffX;
+            const finalRenderY = pos.y + diffY;
+            const finalBoundingX = visibleX + diffX;
+            const finalBoundingY = visibleY + diffY;
+
             return {
-                x: pos.x + visibleInfo.offsetX,
-                y: pos.y + visibleInfo.offsetY,
+                x: finalBoundingX,
+                y: finalBoundingY,
                 width: visibleInfo.boundingBox.width,
                 height: visibleInfo.boundingBox.height,
+                renderX: finalRenderX,
+                renderY: finalRenderY,
             };
         });
 
@@ -277,14 +309,16 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     };
 
     const clusterPosition = useMemo(() => getClusterPosition(), [clusterImage]);
+    console.log('clusterPosition', clusterPosition);
     const keywordPositions = useMemo(() => getKeywordPositions(clusterPosition), [clusterPosition]);
     const boundingBoxesKeywords = useMemo(() => getBoundingBoxesKeywords(), [keywordImages, keywordPositions]);
+    console.log('boundingBoxesKeywords', boundingBoxesKeywords);
 
     return (
         <View style={styles.container}>
             <Canvas style={{ width: screenWidth, height: screenHeight }}>
                 {/* Draw lines from center based on degrees */}
-                {positions.degrees.map((degree, index) => {
+                {/* {positions.degrees.map((degree, index) => {
                     const radians = (degree * Math.PI) / 180;
                     const lineLength = Math.min(screenWidth, screenHeight) / 2;
 
@@ -296,53 +330,42 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                             key={`line-${index}`}
                             p1={vec(centerX, centerY)}
                             p2={vec(endX, endY)}
-                            color="blue"
+                            color="black"
                             strokeWidth={2}
                         />
                     );
-                })}
+                })} */}
 
                 {/* Draw intersection points */}
-                {keywordPositions.map((pos, index) => {
+                {/* {clusterPosition && debugPos.degrees.map((degree, index) => {
+                    const intersection = getEllipseIntersection(
+                        degree,
+                        centerX,
+                        centerY,
+                        (clusterPosition.width + offset) / 2,
+                        (clusterPosition.height + offset) / 2
+                    );
                     return (
                         <Circle
                             key={`intersection-${index}`}
-                            cx={pos.x}
-                            cy={pos.y}
+                            cx={intersection.x}
+                            cy={intersection.y}
                             r={5}
-                            color="red"
+                            color="black"
                         />
                     );
-                })}
+                })} */}
 
                 {/* Draw keyword images at intersection points */}
                 {keywordImages.map((image, index) => {
                     const pos = keywordPositions[index];
                     const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
-                    // console.log('boundingBox', boundingBox);
 
                     if (!pos) return null;
 
-                    let renderX = pos.x;
-                    let renderY = pos.y;
-                    let debugBox = boundingBox;
-
-                    if (boundingBox) {
-                        const currentCenterX = boundingBox.x + boundingBox.width / 2;
-                        const currentCenterY = boundingBox.y + boundingBox.height / 2;
-
-                        const diffX = pos.centerX - currentCenterX;
-                        const diffY = pos.centerY - currentCenterY;
-
-                        renderX += diffX;
-                        renderY += diffY;
-
-                        debugBox = {
-                            ...boundingBox,
-                            x: boundingBox.x + diffX,
-                            y: boundingBox.y + diffY
-                        };
-                    }
+                    // Use pre-calculated render positions if available, otherwise fall back to pos
+                    const renderX = boundingBox?.renderX ?? pos.x;
+                    const renderY = boundingBox?.renderY ?? pos.y;
 
                     return (
                         <Group key={`keyword-${index}`}>
@@ -353,17 +376,17 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                 width={widhtKeyword}
                                 height={heightKeyword}
                             />
-                            {debugBox && (
+                            {/* {boundingBox && (
                                 <Rect
-                                    x={debugBox.x}
-                                    y={debugBox.y}
-                                    width={debugBox.width}
-                                    height={debugBox.height}
-                                    color="green"
+                                    x={boundingBox.x}
+                                    y={boundingBox.y}
+                                    width={boundingBox.width}
+                                    height={boundingBox.height}
+                                    color="black"
                                     style="stroke"
                                     strokeWidth={2}
                                 />
-                            )}
+                            )} */}
                         </Group>
                     );
                 })}
@@ -373,33 +396,33 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     <Group>
                         <SkiaImage
                             image={clusterImage}
-                            x={clusterPosition.x}
-                            y={clusterPosition.y}
-                            width={clusterPosition.width}
-                            height={clusterPosition.height}
+                            x={clusterPosition.imageX}
+                            y={clusterPosition.imageY}
+                            width={widthCluster}
+                            height={heightCluster}
                         />
                         {clusterPosition && (
                             <Group>
                                 {/* Inner ellipse around visible content */}
-                                <Oval
+                                {/* <Oval
                                     x={clusterPosition.x}
                                     y={clusterPosition.y}
                                     width={clusterPosition.width}
                                     height={clusterPosition.height}
-                                    color="red"
+                                    color="black"
                                     style="stroke"
                                     strokeWidth={2}
-                                />
+                                /> */}
                                 {/* Outer ellipse with offset */}
-                                <Oval
+                                {/* <Oval
                                     x={clusterPosition.x - offset / 2}
                                     y={clusterPosition.y - offset / 2}
                                     width={clusterPosition.width + offset}
                                     height={clusterPosition.height + offset}
-                                    color="red"
+                                    color="black"
                                     style="stroke"
                                     strokeWidth={2}
-                                />
+                                /> */}
                             </Group>
                         )}
                     </Group>
