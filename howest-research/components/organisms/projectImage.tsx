@@ -1,8 +1,11 @@
-import { Canvas, Circle, Group, Line, Oval, Rect, Image as SkiaImage, useImage, vec } from '@shopify/react-native-skia';
+import { Canvas, Group, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import useGetClusterImages from '../../scripts/getClusterImages';
 import useGetImages from '../../scripts/getKeywordImages';
+import { TapGestureHandler } from 'react-native-gesture-handler';
+import { useRef } from 'react';
+
 
 const keywordPositionsConfig = [
     {
@@ -314,11 +317,50 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     const boundingBoxesKeywords = useMemo(() => getBoundingBoxesKeywords(), [keywordImages, keywordPositions]);
     console.log('boundingBoxesKeywords', boundingBoxesKeywords);
 
+    //----- event listeners -----//
+    const canvasRef = useRef<View>(null);
+
+    const handleOpendetailKeyword = (keywordId: any) => {
+        console.log('keywordId', keywordId);
+        setPage({
+            page: 'detailKeyword',
+            id: keywordId,
+            previousPages: [
+                ...page.previousPages || [],
+                {
+                    page: page.page,
+                    id: page.id
+                }
+            ]
+        })
+    }
+
+    const handleTap = (event: any) => {
+        const { x, y } = event.nativeEvent;
+
+        // Check if touch is within any keyword bounding box
+        boundingBoxesKeywords?.forEach((box, index) => {
+            if (!box) return;
+
+            // Check if touch point is within the bounding box
+            if (
+                x >= box.x &&
+                x <= box.x + box.width &&
+                y >= box.y &&
+                y <= box.y + box.height
+            ) {
+                handleOpendetailKeyword(keywordData[index].id);
+            }
+        });
+    };
+
     return (
         <View style={styles.container}>
-            <Canvas style={{ width: screenWidth, height: screenHeight }}>
-                {/* Draw lines from center based on degrees */}
-                {/* {positions.degrees.map((degree, index) => {
+            <TapGestureHandler onHandlerStateChange={handleTap}>
+                <View ref={canvasRef} style={{ width: screenWidth, height: screenHeight }}>
+                    <Canvas style={{ width: screenWidth, height: screenHeight }}>
+                        {/* Draw lines from center based on degrees */}
+                        {/* {positions.degrees.map((degree, index) => {
                     const radians = (degree * Math.PI) / 180;
                     const lineLength = Math.min(screenWidth, screenHeight) / 2;
 
@@ -327,7 +369,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
 
                     return (
                         <Line
-                            key={`line-${index}`}
+                            key={`line - ${ index } `}
                             p1={vec(centerX, centerY)}
                             p2={vec(endX, endY)}
                             color="black"
@@ -336,8 +378,8 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     );
                 })} */}
 
-                {/* Draw intersection points */}
-                {/* {clusterPosition && debugPos.degrees.map((degree, index) => {
+                        {/* Draw intersection points */}
+                        {/* {clusterPosition && debugPos.degrees.map((degree, index) => {
                     const intersection = getEllipseIntersection(
                         degree,
                         centerX,
@@ -347,7 +389,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     );
                     return (
                         <Circle
-                            key={`intersection-${index}`}
+                            key={`intersection - ${ index } `}
                             cx={intersection.x}
                             cy={intersection.y}
                             r={5}
@@ -356,27 +398,27 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     );
                 })} */}
 
-                {/* Draw keyword images at intersection points */}
-                {keywordImages.map((image, index) => {
-                    const pos = keywordPositions[index];
-                    const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
+                        {/* Draw keyword images at intersection points */}
+                        {keywordImages.map((image, index) => {
+                            const pos = keywordPositions[index];
+                            const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
 
-                    if (!pos) return null;
+                            if (!pos) return null;
 
-                    // Use pre-calculated render positions if available, otherwise fall back to pos
-                    const renderX = boundingBox?.renderX ?? pos.x;
-                    const renderY = boundingBox?.renderY ?? pos.y;
+                            // Use pre-calculated render positions if available, otherwise fall back to pos
+                            const renderX = boundingBox?.renderX ?? pos.x;
+                            const renderY = boundingBox?.renderY ?? pos.y;
 
-                    return (
-                        <Group key={`keyword-${index}`}>
-                            <SkiaImage
-                                image={image}
-                                x={renderX}
-                                y={renderY}
-                                width={widhtKeyword}
-                                height={heightKeyword}
-                            />
-                            {/* {boundingBox && (
+                            return (
+                                <Group key={`keyword-${index}`}>
+                                    <SkiaImage
+                                        image={image}
+                                        x={renderX}
+                                        y={renderY}
+                                        width={widhtKeyword}
+                                        height={heightKeyword}
+                                    />
+                                    {/* {boundingBox && (
                                 <Rect
                                     x={boundingBox.x}
                                     y={boundingBox.y}
@@ -387,24 +429,24 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                     strokeWidth={2}
                                 />
                             )} */}
-                        </Group>
-                    );
-                })}
+                                </Group>
+                            );
+                        })}
 
-                {/* Draw cluster image and bounding boxes */}
-                {clusterPosition && (
-                    <Group>
-                        <SkiaImage
-                            image={clusterImage}
-                            x={clusterPosition.imageX}
-                            y={clusterPosition.imageY}
-                            width={widthCluster}
-                            height={heightCluster}
-                        />
+                        {/* Draw cluster image and bounding boxes */}
                         {clusterPosition && (
                             <Group>
-                                {/* Inner ellipse around visible content */}
-                                {/* <Oval
+                                <SkiaImage
+                                    image={clusterImage}
+                                    x={clusterPosition.imageX}
+                                    y={clusterPosition.imageY}
+                                    width={widthCluster}
+                                    height={heightCluster}
+                                />
+                                {clusterPosition && (
+                                    <Group>
+                                        {/* Inner ellipse around visible content */}
+                                        {/* <Oval
                                     x={clusterPosition.x}
                                     y={clusterPosition.y}
                                     width={clusterPosition.width}
@@ -413,8 +455,8 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                     style="stroke"
                                     strokeWidth={2}
                                 /> */}
-                                {/* Outer ellipse with offset */}
-                                {/* <Oval
+                                        {/* Outer ellipse with offset */}
+                                        {/* <Oval
                                     x={clusterPosition.x - offset / 2}
                                     y={clusterPosition.y - offset / 2}
                                     width={clusterPosition.width + offset}
@@ -423,13 +465,14 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                     style="stroke"
                                     strokeWidth={2}
                                 /> */}
+                                    </Group>
+                                )}
                             </Group>
                         )}
-                    </Group>
-                )
-                }
-            </Canvas>
-        </View>
+                    </Canvas>
+                </View>
+            </TapGestureHandler >
+        </View >
     );
 }
 

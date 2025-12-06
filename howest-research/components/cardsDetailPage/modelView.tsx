@@ -4,22 +4,6 @@ import ProjectImage from "../organisms/projectImage";
 
 
 const ModelView = ({ width, height, project, setPage, page }) => {
-    const projectKeywords = project ? project.keywords : [];
-
-    const handleOpendetailKeyword = (keywordId) => {
-        setPage({
-            page: 'detailKeyword',
-            id: keywordId,
-            previousPages: [
-                ...page.previousPages || [],
-                {
-                    page: page.page,
-                    id: page.id
-                }
-            ]
-        })
-    }
-
     return (
         <View style={styles.container3D}>
             {/* {projectKeywords
