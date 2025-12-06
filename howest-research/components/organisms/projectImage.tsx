@@ -352,6 +352,15 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                 handleOpendetailKeyword(keywordData[index].id);
             }
         });
+
+        if (
+            x >= clusterPosition.x &&
+            x <= clusterPosition.x + clusterPosition.width &&
+            y >= clusterPosition.y &&
+            y <= clusterPosition.y + clusterPosition.height
+        ) {
+            handleOpendetailKeyword(clusterData.id);
+        }
     };
 
     return (
