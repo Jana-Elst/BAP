@@ -1,13 +1,17 @@
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { StyledText } from "../atoms/styledComponents";
-import Card from "../atoms/card";
 
-const Info = ({project}) => {
+const Info = ({ project }) => {
+    const abstract = project.abstract.replace(/<p>]+>/g, '');
+    const abstractSplitted = abstract.split('</p>');
+
     return (
         <View style={styles.card}>
             <View>
                 <StyledText>Dit is een korte teaser van ongeveer 8 woorden.</StyledText>
-                <StyledText>{project.abstract}</StyledText>
+                {abstractSplitted.map((item, index) => (
+                    <StyledText key={index}>{item}</StyledText>
+                ))}
                 <StyledText>LOGOS</StyledText>
             </View>
 
@@ -29,9 +33,6 @@ const Info = ({project}) => {
 const styles = StyleSheet.create({
     card: {
         flex: 1,
-        marginHorizontal: 16,
-        backgroundColor: 'yellow'
-
     }
 });
 

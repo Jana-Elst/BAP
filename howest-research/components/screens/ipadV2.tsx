@@ -2,11 +2,11 @@ import { BlurView } from 'expo-blur';
 import React, { useState } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import data from '../../assets/data/structured-data.json';
+import BackButton from '../atoms/backButton';
 import CloseButton from '../atoms/closeButton';
 import DetailKeyword from '../pages/detailKeyword';
 import DetailPage from '../pages/detailPage';
 import HomeScreen from '../pages/homeScreen';
-import Touchable from '../atoms/touchable';
 
 export default function Ipad({ page, setPage }) {
     console.log('page', page)
@@ -46,31 +46,23 @@ export default function Ipad({ page, setPage }) {
     return (
         <View style={styles.container}>
             <HomeScreen page={page} setPage={setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
-            {/* <DiscoverScreen projects={projects} page={page} setPage={setPage} isVisible={isVisible} /> */}
 
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
                 visible={visible}
                 transparent={true}
-                onRequestClose={() => handleClosePopUp(setPage, page)}
+                onRequestClose={handleClosePopUp}
             >
                 <View style={{ flex: 1 }}>
                     <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
-                    <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
+                    <Pressable style={StyleSheet.absoluteFill} onPress={handleClosePopUp} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={{ flex: 1, gap: 24 }}>
+                    <View style={{ flex: 1 }}>
                         <View style={{ flexDirection: 'row' }} fill={true} borderRadius={80}>
                             {
                                 page.previousPages.length > 1 &&
-                                <Touchable
-                                    onPress={handleBack}
-                                    icon={'arrow-back-outline'}
-                                    isActive={true}
-                                    showIconOnly={true}
-                                    styleGradient={{position: 'absolute', left: 48, top: 78, zIndex: 1}}
-                                    styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
-                                </Touchable>
+                                <BackButton onPress={handleBack}>Terug</BackButton>
                             }
 
                             {
@@ -87,7 +79,7 @@ export default function Ipad({ page, setPage }) {
                             }
                         </View>
 
-                        <CloseButton onPress={() => handleClosePopUp(setPage, page)}>Sluit</CloseButton>
+                        <CloseButton onPress={handleClosePopUp}>Sluit</CloseButton>
                     </View>
                 </View>
             </Modal >
@@ -96,45 +88,4 @@ export default function Ipad({ page, setPage }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-
-    homeScreen: {
-        flex: 1,
-        justifyContent: 'space-between',
-    },
-
-    projectListContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: -1,
-    },
-
-    projectList: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: 16,
-        padding: 16,
-    },
-
-    cardWrapper: {
-        backgroundColor: 'yellow',
-        position: 'absolute',
-        top: 50,
-        left: '50%',
-    },
-
-    overlay: {
-        width: '100%',
-        height: '100%',
-    },
-
-    overlayContent: {
-        // backgroundColor: 'green',
-        flex: 1,
-    }
 });

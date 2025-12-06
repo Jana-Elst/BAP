@@ -8,14 +8,16 @@ import Carousel, {
 } from "react-native-reanimated-carousel";
 
 
+import Card from "../atoms/card";
 import Images from "../cardsDetailPage/images";
 import Info from "../cardsDetailPage/info";
 import ModelView from "../cardsDetailPage/modelView";
 import QRCode from "../cardsDetailPage/qrCode";
 
-import { Colors, Fonts } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 import { getProjectInfo } from "@/scripts/getData";
-import { StyledText, Title, TitleXSmall } from "../atoms/styledComponents";
+import { Title, TitleXSmall } from "../atoms/styledComponents";
+
 
 const renderItems = [
     "model", "info", "images", "qrCode"
@@ -23,6 +25,7 @@ const renderItems = [
 
 const windowWidth = Dimensions.get("window").width;
 const cardWidth = 866;
+const cardHeight = 741;
 const gap = 32;
 
 
@@ -46,14 +49,14 @@ const DetailPage = ({ page, setPage }) => {
     console.log('PROJECT', project.transitionDomain);
 
     return (
-        <View>
+        <View style={{ gap: 14, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Carousel
                 ref={ref}
                 onProgressChange={progress}
                 loop={false}
                 style={{
                     width: windowWidth,
-                    height: 741,
+                    height: cardHeight,
                     justifyContent: "center",
                 }}
 
@@ -61,7 +64,7 @@ const DetailPage = ({ page, setPage }) => {
                 data={[...renderItems]}
                 renderItem={({ item, index, animationValue }) => {
                     return (
-                        <View style={[{ flex: 1 }, styles.card]}>
+                        <Card style={[styles.card, { width: cardWidth, alignSelf: 'center' }]} fill={true}>
                             <View style={styles.header}>
                                 <Title style={styles.title}>{project.title}</Title>
                                 <TitleXSmall style={styles.subtitle}>{project.transitionDomain}</TitleXSmall>
@@ -76,7 +79,7 @@ const DetailPage = ({ page, setPage }) => {
                                                     null
                                 }
                             </View>
-                        </View>
+                        </Card>
                     );
                 }}
 
@@ -97,8 +100,9 @@ const DetailPage = ({ page, setPage }) => {
             <Pagination.Basic
                 progress={progress}
                 data={[...renderItems]}
-                dotStyle={{ backgroundColor: "rgba(0,0,0,0.2)", borderRadius: 50 }}
-                containerStyle={{ gap: 5, marginTop: 10 }}
+                dotStyle={{ backgroundColor: "rgba(255, 255, 255, 0.50)", borderRadius: 50, width: 12, height: 12 }}
+                activeDotStyle={{ backgroundColor: "white", borderRadius: 50, width: 12, height: 12 }}
+                containerStyle={{ gap: 8, marginTop: 0 }}
                 onPress={onPressPagination}
             />
         </View >
@@ -109,29 +113,19 @@ const DetailPage = ({ page, setPage }) => {
 const styles = StyleSheet.create({
     card: {
         padding: 64,
-        borderColor: Colors.blue100,
-        borderWidth: 2,
-        borderRadius: 16,
-        backgroundColor: Colors.white,
     },
 
     header: {
         flexDirection: 'row',
-        gap: 8,
+        gap: 18,
         alignItems: 'baseline',
-        backgroundColor: 'green'
     },
 
     title: {
-        fontFamily: Fonts.rounded.bold,
-        fontSize: 48,
         color: Colors.blue100,
-        backgroundColor: 'yellow'
     },
 
     subtitle: {
-        fontFamily: Fonts.rounded.bold,
-        fontSize: 24,
         color: Colors.blue80,
     }
 });

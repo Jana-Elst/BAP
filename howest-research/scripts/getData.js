@@ -1,4 +1,3 @@
-import { Color } from 'three';
 import data from '../assets/data/structured-data.json';
 
 const colors = [
@@ -9,7 +8,7 @@ const colors = [
     },
     {
         clusterId: 2,
-        domainId: 9,
+        domainId: null,
         color: 'blue',
     },
     {
@@ -98,11 +97,15 @@ export const getKeywords = (keywordIDs) => {
     return filteredKeywords;
 }
 
-export const getTransitionDomain = (keywords) => {
-    const keywordIDs = keywords.map(keyword => keyword.id);
-    const allKeywords = getAllKeywords(keywordIDs);
-    const transitionDomain = allKeywords.find(keyword => keyword.transitiedomeinCategoryID === 2);
-    return transitionDomain;
+export const getTransitionDomain = (clusterId) => {
+    const transitionDomainId = colors.find(color => color.clusterId === clusterId).domainId;
+
+    if (transitionDomainId === null) {
+        return '';
+    }
+
+    const transitionDomain = data.transitiedomeinen.find(domain => domain.id === transitionDomainId);
+    return transitionDomain.label;
 };
 
 export const getClusterName = (clusterID) => {
@@ -125,13 +128,13 @@ export const getDomainColor = (domainName) => {
 
 export const getProjectInfo = (projectID) => {
     const project = data.projects.find(project => project.id === projectID);
-    const projectName = project.CCODE;
+    // console.log('project transitieDomeinen', project.CCODE, project.transitiedomeinen);
 
     return {
         id: project.id,
-        title: projectName,
+        title: project.CCODE,
         cluster: getClusterName(project.clusterId),
-        transitionDomain: getTransitionDomain(project.keywords),
+        transitionDomain: getTransitionDomain(project.clusterId),
         keywords: getKeywords(project.keywords),
         color: getProjectColor(project.clusterId),
         abstract: project.teaserAbstractForWebsite,
