@@ -35,24 +35,31 @@ clusters.forEach(cluster => {
     // Generate image array
     imageArrays += `    const ${varName}Images = [\n`;
     images.forEach((_, index) => {
-        imageArrays += `        useImage(${varName}${index + 1}),\n`;
+        imageArrays += `        ${varName}${index + 1},\n`;
     });
     imageArrays += `    ];\n\n`;
 
-    // Generate condition
-    conditions += `    if (clusterData && clusterData.includes("${cluster}")) {\n`;
-    conditions += `        clusterList.push(${varName}Images);\n`;
-    conditions += `    }\n\n`;
+    // Generate condition - using map logic for 1-to-1 mapping
+    conditions += `        if (clusterName === "${cluster}") return ${varName}Images;\n`;
 });
 
 // Generate the complete file content
 const fileContent = `// filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getClusterImages.js
-import { useImage } from "@shopify/react-native-skia";
+// Auto-generated file. Do not edit manually.
+
 ${imports}
 const useGetClusterImages = (clusterData) => {
-${imageArrays}    const clusterList = [];
+${imageArrays}
 
-${conditions}    return clusterList;
+    if (!clusterData) return [];
+
+    // Map 1-to-1 based on input array
+    // If input is a single string, wrap in array to handle both cases if needed, but assuming array based on previous usage
+    const inputList = Array.isArray(clusterData) ? clusterData : [clusterData];
+
+    return inputList.map(clusterName => {
+${conditions}        return null;
+    });
 }
 
 export default useGetClusterImages;

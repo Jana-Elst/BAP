@@ -1,9 +1,8 @@
-import { Canvas, Group, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
+import { Canvas, Group, Line, Oval, Rect, Image as SkiaImage, useImage, vec } from '@shopify/react-native-skia';
 import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import useGetClusterImages from '../../scripts/getClusterImages';
 import useGetImages from '../../scripts/getKeywordImages';
-
-import mensEnWelzijn from '../../assets/images/clusters/businessEnMediaCbm/0001.png';
 
 const keywordPositionsConfig = [
     {
@@ -28,7 +27,7 @@ const keywordPositionsConfig = [
     },
     {
         id: 5,
-        degrees: [0, 45, 90, 135, 180],
+        degrees: [0, 72, 144, 216, 288],
         rotationImages: [0, 1, 2, 3, 4],
     },
     {
@@ -44,43 +43,71 @@ const keywordPositionsConfig = [
 
 ];
 
-const ProjectImage = ({ width, height, project, setPage, page }) => {
+const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page }) => {
     const keywordData = useMemo(() => project.keywords, [project.keywords]);
     const keywordDataFormatted = useMemo(() => keywordData.map(keyword => keyword.formattedName), [keywordData]);
+    const clusterData = useMemo(() => project.cluster, [project.cluster]);
 
-    const images = useGetImages(keywordDataFormatted);
+    const keywordImageSources = useGetImages(keywordDataFormatted);
+    const clusterImageSources = useGetClusterImages(clusterData.formattedName);
     const positions = useMemo(() => keywordPositionsConfig[keywordData.length - 1], [keywordData.length]);
 
-    const keywords = useMemo(() => {
-        let imagesFlat = [];
-        if (!images || images.length === 0) return [];
-
-        for (let i = 0; i < images.length; i++) {
-            const imageSet = images[i];
-            imagesFlat.push(imageSet[positions.rotationImages[0]]);
+    const selectedImageSources = useMemo(() => {
+        let sources = [];
+        // Max 8 keywords supported by positions config
+        for (let i = 0; i < 8; i++) {
+            if (i < keywordData.length && keywordImageSources && keywordImageSources[i] && positions && positions.rotationImages) {
+                const rotationIndex = positions.rotationImages[i];
+                // Check if the rotation index is within bounds of the source array
+                if (keywordImageSources[i] && rotationIndex !== undefined && rotationIndex < keywordImageSources[i].length) {
+                    sources.push(keywordImageSources[i][rotationIndex]);
+                } else {
+                    sources.push(null);
+                }
+            } else {
+                sources.push(null);
+            }
         }
+        return sources;
+    }, [keywordImageSources, positions, keywordData.length]);
 
-        return imagesFlat;
-    }, [images]);
+    // Always call useImage 8 times. Pass null if no source selected.
+    const image1 = useImage(selectedImageSources[0]);
+    const image2 = useImage(selectedImageSources[1]);
+    const image3 = useImage(selectedImageSources[2]);
+    const image4 = useImage(selectedImageSources[3]);
+    const image5 = useImage(selectedImageSources[4]);
+    const image6 = useImage(selectedImageSources[5]);
+    const image7 = useImage(selectedImageSources[6]);
+    const image8 = useImage(selectedImageSources[7]);
 
-    const clusterImage = useImage(mensEnWelzijn);
+    const keywords = useMemo(() => {
+        return [image1, image2, image3, image4, image5, image6, image7, image8].filter(img => img !== null);
+    }, [image1, image2, image3, image4, image5, image6, image7, image8]);
+
+    const clusterImageSource = useMemo(() => {
+        if (!clusterImageSources || clusterImageSources.length === 0) return null;
+        // Assuming we pick the first image of the cluster set for now, or apply similar rotation logic if needed
+        return clusterImageSources[0] ? clusterImageSources[0][0] : null;
+    }, [clusterImageSources]);
+
+    const clusterImage = useImage(clusterImageSource);
+
 
     const [boundingBoxesKeywords, setBoundingBoxesKeywords] = useState<(BoundingBox | undefined)[]>([]);
     const [boundingBoxCluster, setBoundingBoxCluster] = useState<(BoundingBox | undefined)[]>([]);
     const [clusterImagePosition, setClusterImagePosition] = useState({ x: 0, y: 0 });
 
-    const size = { width, height };
+    const widthCluster = width;
+    const heightCluster = height;
 
-    const widthCluster = Math.max(size.width / 2, size.height / 2);
-    const heightCluster = Math.max(size.width / 2, size.height / 2);
+    const widhtKeyword = widthCluster / 2;
+    const heightKeyword = heightCluster / 2;
 
-    const widhtKeyword = widthCluster / 3 * 2;
-    const heightKeyword = heightCluster / 3 * 2;
+    const offset = widthCluster / 7.5;
 
-    const offset = widthCluster / 4;
-
-    const centerX = size.width / 2;
-    const centerY = size.height / 2;
+    const centerX = screenWidth / 2;
+    const centerY = screenHeight / 2;
 
     // Get visible pixels info including offset within the image
     const getVisiblePixelsInfo = (image: any, imageWidth: number, imageHeight: number): VisiblePixelsResult | undefined => {
@@ -241,11 +268,11 @@ const ProjectImage = ({ width, height, project, setPage, page }) => {
 
     return (
         <View style={styles.container}>
-            <Canvas style={{ width: size.width, height: size.height }}>
+            <Canvas style={{ width: screenWidth, height: screenHeight }}>
                 {/* Draw lines from center based on degrees */}
-                {/* {positions.degrees.map((degree, index) => {
+                {positions.degrees.map((degree, index) => {
                     const radians = (degree * Math.PI) / 180;
-                    const lineLength = Math.min(size.width, size.height) / 2;
+                    const lineLength = Math.min(screenWidth, screenHeight) / 2;
 
                     const endX = centerX + Math.cos(radians) * lineLength;
                     const endY = centerY + Math.sin(radians) * lineLength;
@@ -259,35 +286,57 @@ const ProjectImage = ({ width, height, project, setPage, page }) => {
                             strokeWidth={2}
                         />
                     );
-                })} */}
+                })}
 
                 {/* Draw keyword images at intersection points */}
                 {keywords.map((image, index) => {
                     const pos = keywordPositions[index];
                     const boundingBox = boundingBoxesKeywords[index];
+                    // console.log('boundingBox', boundingBox);
 
                     if (!pos) return null;
+
+                    let renderX = pos.x;
+                    let renderY = pos.y;
+                    let debugBox = boundingBox;
+
+                    if (boundingBox) {
+                        const currentCenterX = boundingBox.x + boundingBox.width / 2;
+                        const currentCenterY = boundingBox.y + boundingBox.height / 2;
+
+                        const diffX = pos.centerX - currentCenterX;
+                        const diffY = pos.centerY - currentCenterY;
+
+                        renderX += diffX;
+                        renderY += diffY;
+
+                        debugBox = {
+                            ...boundingBox,
+                            x: boundingBox.x + diffX,
+                            y: boundingBox.y + diffY
+                        };
+                    }
 
                     return (
                         <Group key={`keyword-${index}`}>
                             <SkiaImage
                                 image={image}
-                                x={pos.x}
-                                y={pos.y}
+                                x={renderX}
+                                y={renderY}
                                 width={widhtKeyword}
                                 height={heightKeyword}
                             />
-                            {/* {boundingBox && (
+                            {debugBox && (
                                 <Rect
-                                    x={boundingBox.x}
-                                    y={boundingBox.y}
-                                    width={boundingBox.width}
-                                    height={boundingBox.height}
+                                    x={debugBox.x}
+                                    y={debugBox.y}
+                                    width={debugBox.width}
+                                    height={debugBox.height}
                                     color="green"
                                     style="stroke"
                                     strokeWidth={2}
                                 />
-                            )} */}
+                            )}
                         </Group>
                     );
                 })}
@@ -302,28 +351,28 @@ const ProjectImage = ({ width, height, project, setPage, page }) => {
                             width={widthCluster}
                             height={heightCluster}
                         />
-                        {boundingBoxCluster && (
+                        {boundingBoxCluster[0] && (
                             <Group>
                                 {/* Inner ellipse around visible content */}
-                                {/* <Oval
-                                        x={boundingBox.x}
-                                        y={boundingBox.y}
-                                        width={boundingBox.width}
-                                        height={boundingBox.height}
-                                        color="red"
-                                        style="stroke"
-                                        strokeWidth={2}
-                                    /> */}
+                                <Oval
+                                    x={boundingBoxCluster[0].x}
+                                    y={boundingBoxCluster[0].y}
+                                    width={boundingBoxCluster[0].width}
+                                    height={boundingBoxCluster[0].height}
+                                    color="red"
+                                    style="stroke"
+                                    strokeWidth={2}
+                                />
                                 {/* Outer ellipse with offset */}
-                                {/* <Oval
-                                        x={boundingBox.x - offset / 2}
-                                        y={boundingBox.y - offset / 2}
-                                        width={boundingBox.width + offset}
-                                        height={boundingBox.height + offset}
-                                        color="red"
-                                        style="stroke"
-                                        strokeWidth={2}
-                                    /> */}
+                                <Oval
+                                    x={boundingBoxCluster[0].x - offset / 2}
+                                    y={boundingBoxCluster[0].y - offset / 2}
+                                    width={boundingBoxCluster[0].width + offset}
+                                    height={boundingBoxCluster[0].height + offset}
+                                    color="red"
+                                    style="stroke"
+                                    strokeWidth={2}
+                                />
                             </Group>
                         )}
                     </Group>

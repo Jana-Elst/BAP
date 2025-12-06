@@ -22,14 +22,14 @@ const ModelView = ({ width, height, project, setPage, page }) => {
 
     return (
         <View style={styles.container3D}>
-            {projectKeywords
+            {/* {projectKeywords
                 .map(keyword => (
                     <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.id)} key={keyword.id} style={styles.tag}>
                         <StyledText style={styles.tagStyledText}>{keyword.label} {keyword.id}</StyledText>
                     </TouchableOpacity>
-                ))}
+                ))} */}
 
-            <ProjectImage width={width} height={height} project={project} setPage={setPage} page={page} />
+            <ProjectImage screenWidth={width} screenHeight={height} width={800} height={800} project={project} setPage={setPage} page={page} />
         </View>
     );
 }

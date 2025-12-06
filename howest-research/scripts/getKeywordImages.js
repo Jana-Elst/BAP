@@ -1,5 +1,6 @@
-// filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getImages.js
-import { useImage } from "@shopify/react-native-skia";
+// filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
+// Auto-generated file. Do not edit manually.
+
 import digitalSkillsMediawijsheid1 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0001.png";
 import digitalSkillsMediawijsheid2 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0002.png";
 import digitalSkillsMediawijsheid3 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0003.png";
@@ -41,6 +42,46 @@ import digitalSkillsMediawijsheid38 from "../assets/images/keywordsEnThemas/digi
 import digitalSkillsMediawijsheid39 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0039.png";
 import digitalSkillsMediawijsheid40 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0040.png";
 
+import marketingCommunicatie1 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0001.png";
+import marketingCommunicatie2 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0002.png";
+import marketingCommunicatie3 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0003.png";
+import marketingCommunicatie4 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0004.png";
+import marketingCommunicatie5 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0005.png";
+import marketingCommunicatie6 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0006.png";
+import marketingCommunicatie7 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0007.png";
+import marketingCommunicatie8 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0008.png";
+import marketingCommunicatie9 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0009.png";
+import marketingCommunicatie10 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0010.png";
+import marketingCommunicatie11 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0011.png";
+import marketingCommunicatie12 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0012.png";
+import marketingCommunicatie13 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0013.png";
+import marketingCommunicatie14 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0014.png";
+import marketingCommunicatie15 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0015.png";
+import marketingCommunicatie16 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0016 .png";
+import marketingCommunicatie17 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0017.png";
+import marketingCommunicatie18 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0018.png";
+import marketingCommunicatie19 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0019.png";
+import marketingCommunicatie20 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0020.png";
+import marketingCommunicatie21 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0021.png";
+import marketingCommunicatie22 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0022.png";
+import marketingCommunicatie23 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0023.png";
+import marketingCommunicatie24 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0024.png";
+import marketingCommunicatie25 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0025.png";
+import marketingCommunicatie26 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0026.png";
+import marketingCommunicatie27 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0027.png";
+import marketingCommunicatie28 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0028.png";
+import marketingCommunicatie29 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0029.png";
+import marketingCommunicatie30 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0030.png";
+import marketingCommunicatie31 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0031.png";
+import marketingCommunicatie32 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0032.png";
+import marketingCommunicatie33 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0033.png";
+import marketingCommunicatie34 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0034.png";
+import marketingCommunicatie35 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0035.png";
+import marketingCommunicatie36 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0036.png";
+import marketingCommunicatie37 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0037.png";
+import marketingCommunicatie38 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0038.png";
+import marketingCommunicatie39 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0039.png";
+import marketingCommunicatie40 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0040.png";
 
 import onderwijsEnVorming1 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0001.png";
 import onderwijsEnVorming2 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0002.png";
@@ -166,205 +207,238 @@ import stemSteam39 from "../assets/images/keywordsEnThemas/stemSteam/0039.png";
 import stemSteam40 from "../assets/images/keywordsEnThemas/stemSteam/0040.png";
 
 
-const useGetImages = (keywordData) => {
+const useGetKeywordImages = (keywordData) => {
     const digitalSkillsMediawijsheidImages = [
-        useImage(digitalSkillsMediawijsheid1),
-        useImage(digitalSkillsMediawijsheid2),
-        useImage(digitalSkillsMediawijsheid3),
-        useImage(digitalSkillsMediawijsheid4),
-        useImage(digitalSkillsMediawijsheid5),
-        useImage(digitalSkillsMediawijsheid6),
-        useImage(digitalSkillsMediawijsheid7),
-        useImage(digitalSkillsMediawijsheid8),
-        useImage(digitalSkillsMediawijsheid9),
-        useImage(digitalSkillsMediawijsheid10),
-        useImage(digitalSkillsMediawijsheid11),
-        useImage(digitalSkillsMediawijsheid12),
-        useImage(digitalSkillsMediawijsheid13),
-        useImage(digitalSkillsMediawijsheid14),
-        useImage(digitalSkillsMediawijsheid15),
-        useImage(digitalSkillsMediawijsheid16),
-        useImage(digitalSkillsMediawijsheid17),
-        useImage(digitalSkillsMediawijsheid18),
-        useImage(digitalSkillsMediawijsheid19),
-        useImage(digitalSkillsMediawijsheid20),
-        useImage(digitalSkillsMediawijsheid21),
-        useImage(digitalSkillsMediawijsheid22),
-        useImage(digitalSkillsMediawijsheid23),
-        useImage(digitalSkillsMediawijsheid24),
-        useImage(digitalSkillsMediawijsheid25),
-        useImage(digitalSkillsMediawijsheid26),
-        useImage(digitalSkillsMediawijsheid27),
-        useImage(digitalSkillsMediawijsheid28),
-        useImage(digitalSkillsMediawijsheid29),
-        useImage(digitalSkillsMediawijsheid30),
-        useImage(digitalSkillsMediawijsheid31),
-        useImage(digitalSkillsMediawijsheid32),
-        useImage(digitalSkillsMediawijsheid33),
-        useImage(digitalSkillsMediawijsheid34),
-        useImage(digitalSkillsMediawijsheid35),
-        useImage(digitalSkillsMediawijsheid36),
-        useImage(digitalSkillsMediawijsheid37),
-        useImage(digitalSkillsMediawijsheid38),
-        useImage(digitalSkillsMediawijsheid39),
-        useImage(digitalSkillsMediawijsheid40),
+        digitalSkillsMediawijsheid1,
+        digitalSkillsMediawijsheid2,
+        digitalSkillsMediawijsheid3,
+        digitalSkillsMediawijsheid4,
+        digitalSkillsMediawijsheid5,
+        digitalSkillsMediawijsheid6,
+        digitalSkillsMediawijsheid7,
+        digitalSkillsMediawijsheid8,
+        digitalSkillsMediawijsheid9,
+        digitalSkillsMediawijsheid10,
+        digitalSkillsMediawijsheid11,
+        digitalSkillsMediawijsheid12,
+        digitalSkillsMediawijsheid13,
+        digitalSkillsMediawijsheid14,
+        digitalSkillsMediawijsheid15,
+        digitalSkillsMediawijsheid16,
+        digitalSkillsMediawijsheid17,
+        digitalSkillsMediawijsheid18,
+        digitalSkillsMediawijsheid19,
+        digitalSkillsMediawijsheid20,
+        digitalSkillsMediawijsheid21,
+        digitalSkillsMediawijsheid22,
+        digitalSkillsMediawijsheid23,
+        digitalSkillsMediawijsheid24,
+        digitalSkillsMediawijsheid25,
+        digitalSkillsMediawijsheid26,
+        digitalSkillsMediawijsheid27,
+        digitalSkillsMediawijsheid28,
+        digitalSkillsMediawijsheid29,
+        digitalSkillsMediawijsheid30,
+        digitalSkillsMediawijsheid31,
+        digitalSkillsMediawijsheid32,
+        digitalSkillsMediawijsheid33,
+        digitalSkillsMediawijsheid34,
+        digitalSkillsMediawijsheid35,
+        digitalSkillsMediawijsheid36,
+        digitalSkillsMediawijsheid37,
+        digitalSkillsMediawijsheid38,
+        digitalSkillsMediawijsheid39,
+        digitalSkillsMediawijsheid40,
     ];
 
     const marketingCommunicatieImages = [
+        marketingCommunicatie1,
+        marketingCommunicatie2,
+        marketingCommunicatie3,
+        marketingCommunicatie4,
+        marketingCommunicatie5,
+        marketingCommunicatie6,
+        marketingCommunicatie7,
+        marketingCommunicatie8,
+        marketingCommunicatie9,
+        marketingCommunicatie10,
+        marketingCommunicatie11,
+        marketingCommunicatie12,
+        marketingCommunicatie13,
+        marketingCommunicatie14,
+        marketingCommunicatie15,
+        marketingCommunicatie16,
+        marketingCommunicatie17,
+        marketingCommunicatie18,
+        marketingCommunicatie19,
+        marketingCommunicatie20,
+        marketingCommunicatie21,
+        marketingCommunicatie22,
+        marketingCommunicatie23,
+        marketingCommunicatie24,
+        marketingCommunicatie25,
+        marketingCommunicatie26,
+        marketingCommunicatie27,
+        marketingCommunicatie28,
+        marketingCommunicatie29,
+        marketingCommunicatie30,
+        marketingCommunicatie31,
+        marketingCommunicatie32,
+        marketingCommunicatie33,
+        marketingCommunicatie34,
+        marketingCommunicatie35,
+        marketingCommunicatie36,
+        marketingCommunicatie37,
+        marketingCommunicatie38,
+        marketingCommunicatie39,
+        marketingCommunicatie40,
     ];
 
     const onderwijsEnVormingImages = [
-        useImage(onderwijsEnVorming1),
-        useImage(onderwijsEnVorming2),
-        useImage(onderwijsEnVorming3),
-        useImage(onderwijsEnVorming4),
-        useImage(onderwijsEnVorming5),
-        useImage(onderwijsEnVorming6),
-        useImage(onderwijsEnVorming7),
-        useImage(onderwijsEnVorming8),
-        useImage(onderwijsEnVorming9),
-        useImage(onderwijsEnVorming10),
-        useImage(onderwijsEnVorming11),
-        useImage(onderwijsEnVorming12),
-        useImage(onderwijsEnVorming13),
-        useImage(onderwijsEnVorming14),
-        useImage(onderwijsEnVorming15),
-        useImage(onderwijsEnVorming16),
-        useImage(onderwijsEnVorming17),
-        useImage(onderwijsEnVorming18),
-        useImage(onderwijsEnVorming19),
-        useImage(onderwijsEnVorming20),
-        useImage(onderwijsEnVorming21),
-        useImage(onderwijsEnVorming22),
-        useImage(onderwijsEnVorming23),
-        useImage(onderwijsEnVorming24),
-        useImage(onderwijsEnVorming25),
-        useImage(onderwijsEnVorming26),
-        useImage(onderwijsEnVorming27),
-        useImage(onderwijsEnVorming28),
-        useImage(onderwijsEnVorming29),
-        useImage(onderwijsEnVorming30),
-        useImage(onderwijsEnVorming31),
-        useImage(onderwijsEnVorming32),
-        useImage(onderwijsEnVorming33),
-        useImage(onderwijsEnVorming34),
-        useImage(onderwijsEnVorming35),
-        useImage(onderwijsEnVorming36),
-        useImage(onderwijsEnVorming37),
-        useImage(onderwijsEnVorming38),
-        useImage(onderwijsEnVorming39),
-        useImage(onderwijsEnVorming40),
+        onderwijsEnVorming1,
+        onderwijsEnVorming2,
+        onderwijsEnVorming3,
+        onderwijsEnVorming4,
+        onderwijsEnVorming5,
+        onderwijsEnVorming6,
+        onderwijsEnVorming7,
+        onderwijsEnVorming8,
+        onderwijsEnVorming9,
+        onderwijsEnVorming10,
+        onderwijsEnVorming11,
+        onderwijsEnVorming12,
+        onderwijsEnVorming13,
+        onderwijsEnVorming14,
+        onderwijsEnVorming15,
+        onderwijsEnVorming16,
+        onderwijsEnVorming17,
+        onderwijsEnVorming18,
+        onderwijsEnVorming19,
+        onderwijsEnVorming20,
+        onderwijsEnVorming21,
+        onderwijsEnVorming22,
+        onderwijsEnVorming23,
+        onderwijsEnVorming24,
+        onderwijsEnVorming25,
+        onderwijsEnVorming26,
+        onderwijsEnVorming27,
+        onderwijsEnVorming28,
+        onderwijsEnVorming29,
+        onderwijsEnVorming30,
+        onderwijsEnVorming31,
+        onderwijsEnVorming32,
+        onderwijsEnVorming33,
+        onderwijsEnVorming34,
+        onderwijsEnVorming35,
+        onderwijsEnVorming36,
+        onderwijsEnVorming37,
+        onderwijsEnVorming38,
+        onderwijsEnVorming39,
+        onderwijsEnVorming40,
     ];
 
     const socialCreativityImages = [
-        useImage(socialCreativity1),
-        useImage(socialCreativity2),
-        useImage(socialCreativity3),
-        useImage(socialCreativity4),
-        useImage(socialCreativity5),
-        useImage(socialCreativity6),
-        useImage(socialCreativity7),
-        useImage(socialCreativity8),
-        useImage(socialCreativity9),
-        useImage(socialCreativity10),
-        useImage(socialCreativity11),
-        useImage(socialCreativity12),
-        useImage(socialCreativity13),
-        useImage(socialCreativity14),
-        useImage(socialCreativity15),
-        useImage(socialCreativity16),
-        useImage(socialCreativity17),
-        useImage(socialCreativity18),
-        useImage(socialCreativity19),
-        useImage(socialCreativity20),
-        useImage(socialCreativity21),
-        useImage(socialCreativity22),
-        useImage(socialCreativity23),
-        useImage(socialCreativity24),
-        useImage(socialCreativity25),
-        useImage(socialCreativity26),
-        useImage(socialCreativity27),
-        useImage(socialCreativity28),
-        useImage(socialCreativity29),
-        useImage(socialCreativity30),
-        useImage(socialCreativity31),
-        useImage(socialCreativity32),
-        useImage(socialCreativity33),
-        useImage(socialCreativity34),
-        useImage(socialCreativity35),
-        useImage(socialCreativity36),
-        useImage(socialCreativity37),
-        useImage(socialCreativity38),
-        useImage(socialCreativity39),
-        useImage(socialCreativity40),
+        socialCreativity1,
+        socialCreativity2,
+        socialCreativity3,
+        socialCreativity4,
+        socialCreativity5,
+        socialCreativity6,
+        socialCreativity7,
+        socialCreativity8,
+        socialCreativity9,
+        socialCreativity10,
+        socialCreativity11,
+        socialCreativity12,
+        socialCreativity13,
+        socialCreativity14,
+        socialCreativity15,
+        socialCreativity16,
+        socialCreativity17,
+        socialCreativity18,
+        socialCreativity19,
+        socialCreativity20,
+        socialCreativity21,
+        socialCreativity22,
+        socialCreativity23,
+        socialCreativity24,
+        socialCreativity25,
+        socialCreativity26,
+        socialCreativity27,
+        socialCreativity28,
+        socialCreativity29,
+        socialCreativity30,
+        socialCreativity31,
+        socialCreativity32,
+        socialCreativity33,
+        socialCreativity34,
+        socialCreativity35,
+        socialCreativity36,
+        socialCreativity37,
+        socialCreativity38,
+        socialCreativity39,
+        socialCreativity40,
     ];
 
     const stemSteamImages = [
-        useImage(stemSteam1),
-        useImage(stemSteam2),
-        useImage(stemSteam3),
-        useImage(stemSteam4),
-        useImage(stemSteam5),
-        useImage(stemSteam6),
-        useImage(stemSteam7),
-        useImage(stemSteam8),
-        useImage(stemSteam9),
-        useImage(stemSteam10),
-        useImage(stemSteam11),
-        useImage(stemSteam12),
-        useImage(stemSteam13),
-        useImage(stemSteam14),
-        useImage(stemSteam15),
-        useImage(stemSteam16),
-        useImage(stemSteam17),
-        useImage(stemSteam18),
-        useImage(stemSteam19),
-        useImage(stemSteam20),
-        useImage(stemSteam21),
-        useImage(stemSteam22),
-        useImage(stemSteam23),
-        useImage(stemSteam24),
-        useImage(stemSteam25),
-        useImage(stemSteam26),
-        useImage(stemSteam27),
-        useImage(stemSteam28),
-        useImage(stemSteam29),
-        useImage(stemSteam30),
-        useImage(stemSteam31),
-        useImage(stemSteam32),
-        useImage(stemSteam33),
-        useImage(stemSteam34),
-        useImage(stemSteam35),
-        useImage(stemSteam36),
-        useImage(stemSteam37),
-        useImage(stemSteam38),
-        useImage(stemSteam39),
-        useImage(stemSteam40),
+        stemSteam1,
+        stemSteam2,
+        stemSteam3,
+        stemSteam4,
+        stemSteam5,
+        stemSteam6,
+        stemSteam7,
+        stemSteam8,
+        stemSteam9,
+        stemSteam10,
+        stemSteam11,
+        stemSteam12,
+        stemSteam13,
+        stemSteam14,
+        stemSteam15,
+        stemSteam16,
+        stemSteam17,
+        stemSteam18,
+        stemSteam19,
+        stemSteam20,
+        stemSteam21,
+        stemSteam22,
+        stemSteam23,
+        stemSteam24,
+        stemSteam25,
+        stemSteam26,
+        stemSteam27,
+        stemSteam28,
+        stemSteam29,
+        stemSteam30,
+        stemSteam31,
+        stemSteam32,
+        stemSteam33,
+        stemSteam34,
+        stemSteam35,
+        stemSteam36,
+        stemSteam37,
+        stemSteam38,
+        stemSteam39,
+        stemSteam40,
     ];
 
-    let keywordList = [];
 
-    if (keywordData && keywordData.includes("digitalSkillsMediawijsheid")) {
-        keywordList.push(digitalSkillsMediawijsheidImages);
-    }
 
-    if (keywordData && keywordData.includes("marketingCommunicatie")) {
-        keywordList.push(marketingCommunicatieImages);
-    }
+    if (!keywordData) return [];
 
-    if (keywordData && keywordData.includes("onderwijsEnVorming")) {
-        keywordList.push(onderwijsEnVormingImages);
-    }
+    // Map 1-to-1 based on input array
+    // If input is a single string, wrap in array to handle both cases if needed, but assuming array based on previous usage
+    const inputList = Array.isArray(keywordData) ? keywordData : [keywordData];
 
-    if (keywordData && keywordData.includes("socialCreativity")) {
-        keywordList.push(socialCreativityImages);
-    }
-
-    if (keywordData && keywordData.includes("stemSteam")) {
-        keywordList.push(stemSteamImages);
-    }
-
-    return keywordList;
+    return inputList.map(keywordName => {
+        if (keywordName === "digitalSkillsMediawijsheid") return digitalSkillsMediawijsheidImages;
+        if (keywordName === "marketingCommunicatie") return marketingCommunicatieImages;
+        if (keywordName === "onderwijsEnVorming") return onderwijsEnVormingImages;
+        if (keywordName === "socialCreativity") return socialCreativityImages;
+        if (keywordName === "stemSteam") return stemSteamImages;
+        return null;
+    });
 }
 
-export default useGetImages;
+export default useGetKeywordImages;

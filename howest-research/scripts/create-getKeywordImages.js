@@ -36,30 +36,37 @@ categories.forEach(category => {
     // Generate image array
     imageArrays += `    const ${varName}Images = [\n`;
     images.forEach((_, index) => {
-        imageArrays += `        useImage(${varName}${index + 1}),\n`;
+        imageArrays += `        ${varName}${index + 1},\n`;
     });
     imageArrays += `    ];\n\n`;
 
-    // Generate condition
-    conditions += `    if (keywordData && keywordData.includes("${category}")) {\n`;
-    conditions += `        keywordList.push(${varName}Images);\n`;
-    conditions += `    }\n\n`;
+    // Generate condition - using map logic for 1-to-1 mapping
+    conditions += `        if (keywordName === "${category}") return ${varName}Images;\n`;
 });
 
 // Generate the complete file content
-const fileContent = `// filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getImages.js
-import { useImage } from "@shopify/react-native-skia";
-${imports}
-const useGetImages = (keywordData) => {
-${imageArrays}    const keywordList = [];
+const fileContent = `// filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
+// Auto-generated file. Do not edit manually.
 
-${conditions}    return keywordList;
+${imports}
+const useGetKeywordImages = (keywordData) => {
+${imageArrays}
+
+    if (!keywordData) return [];
+
+    // Map 1-to-1 based on input array
+    // If input is a single string, wrap in array to handle both cases if needed, but assuming array based on previous usage
+    const inputList = Array.isArray(keywordData) ? keywordData : [keywordData];
+
+    return inputList.map(keywordName => {
+${conditions}        return null;
+    });
 }
 
-export default useGetImages;
+export default useGetKeywordImages;
 `;
 
 // Write to file
 fs.writeFileSync(OUTPUT_FILE, fileContent, 'utf8');
-console.log(`✅ Generated getImages.js with ${categories.length} categories`);
+console.log(`✅ Generated getKeywordImages.js with ${categories.length} categories`);
 console.log(`📁 Categories: ${categories.join(', ')}`);
