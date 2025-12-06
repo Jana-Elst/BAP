@@ -1,5 +1,5 @@
-import { Canvas, Circle, Group, Line, Oval, Rect, Image as SkiaImage, useImage, vec } from '@shopify/react-native-skia';
-import { useMemo } from 'react';
+import { Canvas, Group, Line, Oval, Rect, Image as SkiaImage, useImage, vec } from '@shopify/react-native-skia';
+import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import useGetClusterImages from '../../scripts/getClusterImages';
 import useGetImages from '../../scripts/getKeywordImages';
@@ -40,6 +40,7 @@ const keywordPositionsConfig = [
         degrees: [0, 45, 90, 135, 180, 225, 270, 315],
         rotationImages: [0, 1, 2, 3, 4, 5, 6, 7],
     },
+
 ];
 
 const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page }) => {
@@ -60,7 +61,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         for (let i = 0; i < 8; i++) {
             if (i < keywordData.length && keywordImageSources && keywordImageSources[i] && positions && positions.rotationImages) {
                 const rotationIndex = positions.rotationImages[i];
-
+                
                 if (keywordImageSources[i] && rotationIndex !== undefined && rotationIndex < keywordImageSources[i].length) {
                     sources.push(keywordImageSources[i][rotationIndex]);
                 } else {
@@ -83,41 +84,23 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     const image7 = useImage(selectedImageSources[6]);
     const image8 = useImage(selectedImageSources[7]);
 
-    const keywordImages = useMemo(() => {
+    const keywords = useMemo(() => {
         return [image1, image2, image3, image4, image5, image6, image7, image8].filter(img => img !== null);
     }, [[image1, image2, image3, image4, image5, image6, image7, image8]]);
 
-    //cluster
+    //clluster
     const clusterImageSource = useMemo(() => {
-        if (!clusterImageSources || clusterImageSources.length === 0) {
-            console.log('No cluster image sources available');
-            return null;
-        }
-
-        // clusterImageSources is an array of arrays
-        // clusterImageSources[0] is the first cluster's images array
-        const firstClusterImages = clusterImageSources[0];
-        if (!firstClusterImages || firstClusterImages.length === 0) {
-            console.log('First cluster has no images');
-            return null;
-        }
-
-        // Use the first image from the cluster (index 0)
-        return firstClusterImages[0];
+        if (!clusterImageSources || clusterImageSources.length === 0) return null;
+        return clusterImageSources[0] ? clusterImageSources[0][1] : null;
     }, [clusterImageSources]);
 
-    // useImage is async internally - it returns null while loading, then the SkImage when ready
-    // No need for await - just check if it's null before using
     const clusterImage = useImage(clusterImageSource);
 
-    // Log when cluster image actually loads
-    if (clusterImage) {
-        console.log('Cluster image LOADED successfully!', clusterImage);
-    } else if (clusterImageSource) {
-        console.log('Waiting for cluster image to load... source:', clusterImageSource);
-    }
-
     //----- set bounding boxes & sizes -----//
+    const [boundingBoxesKeywords, setBoundingBoxesKeywords] = useState<(BoundingBox | undefined)[]>([]);
+    const [boundingBoxCluster, setBoundingBoxCluster] = useState<(BoundingBox | undefined)[]>([]);
+    const [clusterImagePosition, setClusterImagePosition] = useState({ x: 0, y: 0 });
+
     const widthCluster = width;
     const heightCluster = height;
 
@@ -129,6 +112,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     const centerX = screenWidth / 2;
     const centerY = screenHeight / 2;
 
+    //----- get visible pixels info -----//
     const getVisiblePixelsInfo = (image: any, imageWidth: number, imageHeight: number): VisiblePixelsResult | undefined => {
         if (!image) return undefined;
 
@@ -216,14 +200,15 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     };
 
     //----- Get the keyword positions based on the offset ellipse -----//
-    const getKeywordPositions = (clusterPosition: any) => {
-        if (!clusterPosition) return [];
+    const getKeywordPositions = () => {
+        const clusterBox = boundingBoxCluster[0];
+        if (!clusterBox) return [];
 
         // The ellipse center is now the screen center (since cluster is centered)
         const ellipseCenterX = centerX;
         const ellipseCenterY = centerY;
-        const radiusX = (clusterPosition.width + offset) / 2;
-        const radiusY = (clusterPosition.height + offset) / 2;
+        const radiusX = (clusterBox.width + offset) / 2;
+        const radiusY = (clusterBox.height + offset) / 2;
 
         return positions.degrees.map((degree) => {
             const intersection = getEllipseIntersection(degree, ellipseCenterX, ellipseCenterY, radiusX, radiusY);
@@ -236,29 +221,37 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         });
     };
 
-    const getClusterPosition = () => {
+    // Calculate cluster position so visible content is centered
+    useEffect(() => {
         const allLoadedCluster = clusterImage !== null;
         if (!allLoadedCluster) return;
 
         const visibleInfo = getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
-        if (!visibleInfo) return;
 
-        const imageX = centerX - visibleInfo.boundingBox.width / 2 - visibleInfo.offsetX;
-        const imageY = centerY - visibleInfo.boundingBox.height / 2 - visibleInfo.offsetY;
+        if (visibleInfo) {
+            // Calculate where the image should be placed so visible content is centered
+            const imageX = centerX - visibleInfo.boundingBox.width / 2 - visibleInfo.offsetX;
+            const imageY = centerY - visibleInfo.boundingBox.height / 2 - visibleInfo.offsetY;
 
-        const x = centerX - visibleInfo.boundingBox.width / 2;
-        const y = centerY - visibleInfo.boundingBox.height / 2;
-        const width = visibleInfo.boundingBox.width;
-        const height = visibleInfo.boundingBox.height;
+            setClusterImagePosition({ x: imageX, y: imageY });
 
-        return { x, y, width, height, imageX, imageY };
-    }
+            // Set the bounding box with correct screen position
+            setBoundingBoxCluster([{
+                x: centerX - visibleInfo.boundingBox.width / 2,
+                y: centerY - visibleInfo.boundingBox.height / 2,
+                width: visibleInfo.boundingBox.width,
+                height: visibleInfo.boundingBox.height,
+            }]);
+        }
+    }, [clusterImage, centerX, centerY]);
 
-    const getBoundingBoxesKeywords = () => {
-        const allLoadedKeywords = keywordImages.every(img => img !== null);
+    // Calculate keyword positions around the cluster and their bounding boxes
+    const keywordPositions = getKeywordPositions();
+    useEffect(() => {
+        const allLoadedKeywords = keywords.every(img => img !== null);
         if (!allLoadedKeywords || keywordPositions.length === 0) return;
 
-        const boxesKeywords = keywordImages.map((image, index) => {
+        const boxesKeywords = keywords.map((image, index) => {
             const pos = keywordPositions[index];
             if (!pos) return undefined;
 
@@ -272,13 +265,9 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                 height: visibleInfo.boundingBox.height,
             };
         });
+        setBoundingBoxesKeywords(boxesKeywords);
 
-        return boxesKeywords;
-    };
-
-    const clusterPosition = useMemo(() => getClusterPosition(), [clusterImage]);
-    const keywordPositions = useMemo(() => getKeywordPositions(clusterPosition), [clusterPosition]);
-    const boundingBoxesKeywords = useMemo(() => getBoundingBoxesKeywords(), [keywordImages, keywordPositions]);
+    }, [keywordData, keywordPositions]);
 
     return (
         <View style={styles.container}>
@@ -302,23 +291,10 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     );
                 })}
 
-                {/* Draw intersection points */}
-                {keywordPositions.map((pos, index) => {
-                    return (
-                        <Circle
-                            key={`intersection-${index}`}
-                            cx={pos.x}
-                            cy={pos.y}
-                            r={5}
-                            color="red"
-                        />
-                    );
-                })}
-
                 {/* Draw keyword images at intersection points */}
-                {keywordImages.map((image, index) => {
+                {keywords.map((image, index) => {
                     const pos = keywordPositions[index];
-                    const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
+                    const boundingBox = boundingBoxesKeywords[index];
                     // console.log('boundingBox', boundingBox);
 
                     if (!pos) return null;
@@ -369,33 +345,33 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                 })}
 
                 {/* Draw cluster image and bounding boxes */}
-                {clusterPosition && (
+                {clusterImage && (
                     <Group>
                         <SkiaImage
                             image={clusterImage}
-                            x={clusterPosition.x}
-                            y={clusterPosition.y}
-                            width={clusterPosition.width}
-                            height={clusterPosition.height}
+                            x={clusterImagePosition.x}
+                            y={clusterImagePosition.y}
+                            width={widthCluster}
+                            height={heightCluster}
                         />
-                        {clusterPosition && (
+                        {boundingBoxCluster[0] && (
                             <Group>
                                 {/* Inner ellipse around visible content */}
                                 <Oval
-                                    x={clusterPosition.x}
-                                    y={clusterPosition.y}
-                                    width={clusterPosition.width}
-                                    height={clusterPosition.height}
+                                    x={boundingBoxCluster[0].x}
+                                    y={boundingBoxCluster[0].y}
+                                    width={boundingBoxCluster[0].width}
+                                    height={boundingBoxCluster[0].height}
                                     color="red"
                                     style="stroke"
                                     strokeWidth={2}
                                 />
                                 {/* Outer ellipse with offset */}
                                 <Oval
-                                    x={clusterPosition.x - offset / 2}
-                                    y={clusterPosition.y - offset / 2}
-                                    width={clusterPosition.width + offset}
-                                    height={clusterPosition.height + offset}
+                                    x={boundingBoxCluster[0].x - offset / 2}
+                                    y={boundingBoxCluster[0].y - offset / 2}
+                                    width={boundingBoxCluster[0].width + offset}
+                                    height={boundingBoxCluster[0].height + offset}
                                     color="red"
                                     style="stroke"
                                     strokeWidth={2}
@@ -408,14 +384,14 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
             </Canvas>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        // backgroundColor: 'green',
+        backgroundColor: 'green',
     },
 });
 
