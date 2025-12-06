@@ -1,26 +1,21 @@
 import * as React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
+import { useRef } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
     ICarouselInstance,
     Pagination,
 } from "react-native-reanimated-carousel";
-import { useSharedValue } from "react-native-reanimated";
-import { useRef } from "react";
 
-import { BlurView as _BlurView } from "expo-blur";
-import { parallaxLayout } from "../../app/carrousel/parallax";
 
-import Card from "../atoms/card";
-
-import ModelView from "../cardsDetailPage/modelView";
-import Info from "../cardsDetailPage/info";
 import Images from "../cardsDetailPage/images";
+import Info from "../cardsDetailPage/info";
+import ModelView from "../cardsDetailPage/modelView";
 import QRCode from "../cardsDetailPage/qrCode";
 
-import data from '../../assets/data/structured-data.json';
-import { getKeywords, getProjectInfo, getTransitionDomain } from "@/scripts/getData";
-import { StyledText } from "../atoms/styledComponents";
-import { Fonts, Colors } from "@/constants/theme";
+import { Colors, Fonts } from "@/constants/theme";
+import { getProjectInfo } from "@/scripts/getData";
+import { StyledText, Title, TitleXSmall } from "../atoms/styledComponents";
 
 const renderItems = [
     "model", "info", "images", "qrCode"
@@ -30,24 +25,25 @@ const windowWidth = Dimensions.get("window").width;
 const cardWidth = 866;
 const gap = 32;
 
-const ref = useRef<ICarouselInstance>(null);
-const progress = useSharedValue<number>(0);
 
-const onPressPagination = (index: number) => {
-    ref.current?.scrollTo({
-        /**
-         * Calculate the difference between the current index and the target index
-         * to ensure that the carousel scrolls to the nearest index
-         */
-        count: index - progress.value,
-        animated: true,
-    });
-};
 
 const DetailPage = ({ page, setPage }) => {
-    console.log('Project', page.id);
+    const ref = useRef<ICarouselInstance>(null);
+    const progress = useSharedValue<number>(0);
+
+    const onPressPagination = (index: number) => {
+        ref.current?.scrollTo({
+            /**
+             * Calculate the difference between the current index and the target index
+             * to ensure that the carousel scrolls to the nearest index
+             */
+            count: index - progress.value,
+            animated: true,
+        });
+    };
+
     const project = getProjectInfo(page.id);
-    console.log('PROJECT DETAIL PAGE', project);
+    console.log('PROJECT', project.transitionDomain);
 
     return (
         <View>
@@ -59,7 +55,6 @@ const DetailPage = ({ page, setPage }) => {
                     width: windowWidth,
                     height: 741,
                     justifyContent: "center",
-                    // alignItems: "center",
                 }}
 
                 width={cardWidth + gap}
@@ -68,8 +63,8 @@ const DetailPage = ({ page, setPage }) => {
                     return (
                         <View style={[{ flex: 1 }, styles.card]}>
                             <View style={styles.header}>
-                                <StyledText style={styles.title}>{project.title}</StyledText>
-                                <StyledText style={styles.subtitle}>TransitieDomein</StyledText>
+                                <Title style={styles.title}>{project.title}</Title>
+                                <TitleXSmall style={styles.subtitle}>{project.transitionDomain}</TitleXSmall>
                             </View>
 
                             <View style={{ flex: 1 }}>

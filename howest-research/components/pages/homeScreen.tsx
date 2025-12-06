@@ -1,8 +1,7 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import ViewToggle from "../molecules/viewToggle";
 import Header from "../organisms/header";
 import ProjectList from "../organisms/projectsList";
-import data from '../../assets/data/structured-data.json';
 import { useState } from 'react';
 import DiscoverScreen from './discoverScreen';
 

@@ -83,7 +83,7 @@ const domainColors = {
 }
 
 export const getAllKeywords = (keywordIDs) => {
-    const keywords = data.transitiedomeinen.filter(keyword => keywordIDs.includes(keyword.id));
+    const keywords = data.keywords.filter(keyword => keywordIDs.includes(keyword.id));
     return keywords;
 };
 
@@ -94,7 +94,7 @@ export const getAllTransitionDomains = () => {
 
 export const getKeywords = (keywordIDs) => {
     const allKeywords = getAllKeywords(keywordIDs);
-    const filteredKeywords = allKeywords.filter(keyword => keyword.transitiedomeinCategoryID !== 2);
+    const filteredKeywords = allKeywords.filter(keyword => keyword.keywordCategoryIDs !== 3);
     return filteredKeywords;
 }
 

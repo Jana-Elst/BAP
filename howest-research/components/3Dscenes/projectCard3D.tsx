@@ -1,33 +1,44 @@
 import { Image } from 'expo-image';
 
-interface ProjectCard3DProps {
-    title: string;
-    subtitle: string;
-    // imageSrc: string;
-    imageAlt?: string;
-}
-
 const ProjectCard3D = ({
-    title = 'TITLE',
-    subtitle = 'SUBTITLE',
-    // imageSrc = Image,
-    imageAlt = 'ALT TEXT',
-}: ProjectCard3DProps) => {
+    page,
+    setPage,
+    setVisible,
+    project,
+}) => {
     const imageSrc = require('../../assets/images/visualizationsProjects/composition.png');;
 
+    const handleOpenDetail = () => {
+        setPage({
+            page: 'detailResearch',
+            id: project.id,
+            previousPages: [
+                ...(page.previousPages || []),
+                {
+                    page: page.page,
+                    id: page.id
+                }
+            ]
+        })
+        setVisible(true);
+    }
+
+    // If project data is missing for any reason (render timing, incomplete data), do not render the card.
+    if (!project) return null;
+
     return (
-        <div style={styles.container}>
+        <div style={styles.container} onClick={handleOpenDetail}>
             <div style={styles.card}>
                 <div style={styles.texture}></div>
 
                 <div style={styles.header}>
-                    <p style={styles.headerTitle}>{title}</p>
-                    <p style={styles.headerSubtitle}>{subtitle}</p>
+                    <p style={styles.headerTitle}>{project.title}</p>
+                    <p style={styles.headerSubtitle}>{project.cluster.label}</p>
                 </div>
                 <div style={styles.imageContainer}>
                     <Image
                         source={imageSrc}
-                        alt={imageAlt}
+                        alt={project.title}
                         style={styles.image}
                         contentFit="cover"
                     />

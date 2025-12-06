@@ -12,17 +12,12 @@ export default function DetailPage(props: { page, setPage }) {
     const clusters = data.clusters;
     const projects = data.projects;
 
-    console.log('detail', props.page);
-
     const project = projects.find(p => p.id === props.page.id);
 
     const keywordIDs = project.transitiedomeinen;
-    console.log('KEYWORD IDS', keywordIDs);
     const projectKeywords = getKeywords(keywordIDs);
-    console.log('PROJECT KEYS', projectKeywords);
 
     const handleOpendetailKeyword = (keywordId) => {
-        console.log('KEYWORD ID', keywordId);
         props.setPage({
             page: 'detailKeyword',
             id: keywordId,

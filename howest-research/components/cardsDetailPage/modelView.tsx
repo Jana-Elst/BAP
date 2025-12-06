@@ -6,10 +6,8 @@ import ProjectImage from "../organisms/projectImage";
 
 const ModelView = ({ width, height, project, setPage, page }) => {
     const projectKeywords = project ? project.keywords : [];
-    console.log('PROJECT KEYWORDS IN MODELVIEW', project);
 
     const handleOpendetailKeyword = (keywordId) => {
-        console.log('KEYWORD ID', keywordId);
         setPage({
             page: 'detailKeyword',
             id: keywordId,
