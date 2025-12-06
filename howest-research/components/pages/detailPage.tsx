@@ -12,7 +12,7 @@ import Card from "../atoms/card";
 import Images from "../cardsDetailPage/images";
 import Info from "../cardsDetailPage/info";
 import ModelView from "../cardsDetailPage/modelView";
-import QRCode from "../cardsDetailPage/qrCode";
+import QrCode from "../cardsDetailPage/qrCode";
 
 import { Colors } from "@/constants/theme";
 import { getProjectInfo } from "@/scripts/getData";
@@ -70,12 +70,12 @@ const DetailPage = ({ page, setPage }) => {
                                 <TitleXSmall style={styles.subtitle}>{project.transitionDomain}</TitleXSmall>
                             </View>
 
-                            <View style={{ flex: 1, backgroundColor: 'pink' }}>
+                            <View style={{ flex: 1}}>
                                 {
                                     item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                         item === "info" ? <Info project={project} /> :
-                                            item === "images" ? <Images /> :
-                                                item === "qrCode" ? <QRCode /> :
+                                            item === "images" ? <Images project={project} /> :
+                                                item === "qrCode" ? <QrCode /> :
                                                     null
                                 }
                             </View>
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 18,
         alignItems: 'baseline',
-        backgroundColor: 'green',
     },
 
     title: {

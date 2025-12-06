@@ -46,6 +46,10 @@ const TitleXSmall = ({ children, style = null }) => {
     return <Text style={[styles.TitleXSmall, style]}>{children}</Text>
 };
 
+const ParagraphBold = ({ children, style = null }) => {
+    return <Text style={[styles.paragraphBold, style]}>{children}</Text>
+};
+
 export {
     StyledText,
     Title,
@@ -54,7 +58,8 @@ export {
     SubTitleSmall,
     ParagraphSmall,
     ParagraphLarge,
-    TitleXSmall
+    TitleXSmall,
+    ParagraphBold
 };
 
 const styles = StyleSheet.create({
@@ -71,9 +76,9 @@ const styles = StyleSheet.create({
     },
 
     subTitle: {
-        fontFamily: Fonts.rounded.bold,
-        fontSize: 30,
-        // lineHeight: 1.2,
+        fontFamily: Fonts.sans.semiBold,
+        fontSize: 28,
+        // lineHeight: ,
     },
 
     subTitleSmall: {
@@ -97,6 +102,12 @@ const styles = StyleSheet.create({
     TitleXSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 24,
+        // lineHeight: 1.4,
+    },
+
+    paragraphBold: {
+        fontFamily: Fonts.sans.bold,
+        fontSize: 20,
         // lineHeight: 1.4,
     }
 });

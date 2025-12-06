@@ -81,6 +81,21 @@ const domainColors = {
     'leren': 'yellow',
 }
 
+const months = [
+    'Januari',
+    'Februari',
+    'Maart',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Augustus',
+    'September',
+    'Oktober',
+    'November',
+    'December',
+]
+
 export const getAllKeywords = (keywordIDs) => {
     const keywords = data.keywords.filter(keyword => keywordIDs.includes(keyword.id));
     return keywords;
@@ -126,6 +141,20 @@ export const getDomainColor = (domainName) => {
     return domainColor;
 };
 
+export const getEmail = (name) => {
+    const nameSplitted = name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('.');
+    return nameSplitted + '@howest.be';
+};
+
+export const getYearAndMonth = (date) => {
+    const timeSplitted = date.split(' ')[0];
+    const dateSplitted = timeSplitted.split('/');
+
+    const month = months[dateSplitted[1] - 1];
+    console.log('dateSplitted', dateSplitted);
+    return month + ' ' + dateSplitted[2];
+}
+
 export const getProjectInfo = (projectID) => {
     const project = data.projects.find(project => project.id === projectID);
     // console.log('project transitieDomeinen', project.CCODE, project.transitiedomeinen);
@@ -139,14 +168,23 @@ export const getProjectInfo = (projectID) => {
         color: getProjectColor(project.clusterId),
         abstract: project.teaserAbstractForWebsite,
         researchGroup: getResearchGroup(project.researchGroupId),
-        contactPerson: project.dossierManagerFullName,
-        startDate: project.startDate,
-        endDate: project.endDate,
+        contactPerson: project.dossierManagerFullName.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+        contactPersonEmail: getEmail(project.dossierManagerFullName),
+        startDate: getYearAndMonth(project.startDate),
+        endDate: getYearAndMonth(project.endDate),
+        images: project.pictureCommunication,
     }
 };
 
 export const getResearchGroup = (researchGroupId) => {
     const researchGroup = data.onderzoeksgroepen.find(group => group.id === researchGroupId);
+
+    if (researchGroup) {
+        return {
+            ...researchGroup,
+            label: researchGroup.label?.replace('Onderzoeksgroep ', '')
+        };
+    }
     return researchGroup;
 }
 
