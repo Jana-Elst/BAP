@@ -3,11 +3,11 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
-const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isActive = false, fill = false }) => {
+const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isActive = false, fill = false, containerStyle = null }) => {
     const flexStyle = fill ? { flex: 1 } : {};
 
     return (
-        <BlurView intensity={50} tint="light" style={[styles.blurContainer, { borderRadius: borderRadius }, flexStyle]}>
+        <BlurView intensity={50} tint="light" style={[styles.blurContainer, { borderRadius: borderRadius }, containerStyle, flexStyle]}>
             {/* <ImageBackground source={backgroundImage} resizeMode='repeat' imageStyle={{opacity: 0.4}}> */}
             {/* <View style={styles.softLightOverlay} /> */}
             <View style={[styles.shadowContainer, { borderRadius: borderRadius }, flexStyle]}>
@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
 
     card: {
         borderWidth: 2,
-        // borderColor: Colors.white,
     }
 });
 

@@ -16,7 +16,7 @@ import QRCode from "../cardsDetailPage/qrCode";
 
 import { Colors } from "@/constants/theme";
 import { getProjectInfo } from "@/scripts/getData";
-import { Title, TitleXSmall } from "../atoms/styledComponents";
+import { StyledText, Title, TitleXSmall } from "../atoms/styledComponents";
 
 
 const renderItems = [
@@ -64,13 +64,13 @@ const DetailPage = ({ page, setPage }) => {
                 data={[...renderItems]}
                 renderItem={({ item, index, animationValue }) => {
                     return (
-                        <Card style={[styles.card, { width: cardWidth, alignSelf: 'center' }]} fill={true}>
+                        <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }}>
                             <View style={styles.header}>
                                 <Title style={styles.title}>{project.title}</Title>
                                 <TitleXSmall style={styles.subtitle}>{project.transitionDomain}</TitleXSmall>
                             </View>
 
-                            <View style={{ flex: 1 }}>
+                            <View style={{ flex: 1, backgroundColor: 'pink' }}>
                                 {
                                     item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                         item === "info" ? <Info project={project} /> :
@@ -83,17 +83,6 @@ const DetailPage = ({ page, setPage }) => {
                     );
                 }}
 
-                // customAnimation={parallaxLayout(
-                //     {
-                //         size: Dimensions.get("window").width,
-                //         vertical: false,
-                //     },
-                //     {
-                //         parallaxScrollingScale: 1,
-                //         parallaxAdjacentItemScale: 0.5,
-                //         parallaxScrollingOffset: 40,
-                //     },
-                // )}
                 scrollAnimationDuration={600}
             />
 
@@ -119,6 +108,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 18,
         alignItems: 'baseline',
+        backgroundColor: 'green',
     },
 
     title: {
