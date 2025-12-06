@@ -1,3 +1,5 @@
+//https://www.npmjs.com/package/react-native-base64
+
 import { View, StyleSheet } from "react-native";
 import { StyledText } from "../atoms/styledComponents";
 import Card from "../atoms/card";
