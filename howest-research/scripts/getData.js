@@ -151,13 +151,11 @@ export const getYearAndMonth = (date) => {
     const dateSplitted = timeSplitted.split('/');
 
     const month = months[dateSplitted[1] - 1];
-    console.log('dateSplitted', dateSplitted);
     return month + ' ' + dateSplitted[2];
 }
 
 export const getProjectInfo = (projectID) => {
     const project = data.projects.find(project => project.id === projectID);
-    // console.log('project transitieDomeinen', project.CCODE, project.transitiedomeinen);
 
     return {
         id: project.id,

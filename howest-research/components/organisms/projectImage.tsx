@@ -1,15 +1,9 @@
+import { Canvas, Group, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
 import { useEffect, useMemo, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Canvas, Image as SkiaImage, useImage, Rect, Group, Oval, Line, vec } from '@shopify/react-native-skia';
-import mensEnWelzijn from '../../assets/images/keywords/mensEnWelzijn/image-static.png';
-import aiArtificialIntelligence1 from '../../assets/images/keywords/aiArtificialIntelligence/0001.png';
-import aiArtificialIntelligence2 from '../../assets/images/keywords/aiArtificialIntelligence/0002.png';
-import aiArtificialIntelligence3 from '../../assets/images/keywords/aiArtificialIntelligence/0003.png';
-import aiArtificialIntelligence4 from '../../assets/images/keywords/aiArtificialIntelligence/0004.png';
-import aiArtificialIntelligence5 from '../../assets/images/keywords/aiArtificialIntelligence/0005.png';
-import aiArtificialIntelligence6 from '../../assets/images/keywords/aiArtificialIntelligence/0006.png';
-import aiArtificialIntelligence7 from '../../assets/images/keywords/aiArtificialIntelligence/0007.png';
-import aiArtificialIntelligence8 from '../../assets/images/keywords/aiArtificialIntelligence/0008.png';
+import { StyleSheet, View } from 'react-native';
+import Images from '../../scripts/getImages';
+
+import mensEnWelzijn from '../../assets/images/clusters/businessEnMediaCbm/0001.png';
 
 const keywordPositionsConfig = [
     {
@@ -55,23 +49,20 @@ const keywordPositionsConfig = [
 
 ];
 
-const ProjectImage = ({ width, height }) => {
-    const image1 = useImage(aiArtificialIntelligence1);
-    const image2 = useImage(aiArtificialIntelligence2);
-    const image3 = useImage(aiArtificialIntelligence3);
-    const image4 = useImage(aiArtificialIntelligence4);
-    const image5 = useImage(aiArtificialIntelligence5);
-    const image6 = useImage(aiArtificialIntelligence6);
-    const image7 = useImage(aiArtificialIntelligence7);
-    const image8 = useImage(aiArtificialIntelligence8);
-    const image9 = useImage(mensEnWelzijn);
+const ProjectImage = ({ width, height, project, setPage, page }) => {
+    const { digitalSkillsMediaWijsheid } = Images();
+    console.log(digitalSkillsMediaWijsheid);
 
-    const keywords = useMemo(() =>
-        [image1, image2, image3, image4, image5, image6, image7, image8]);
+    const keywordData = useMemo(() => project.keywords.slice(0, keywordPositionsConfig.length).map(keyword => keyword.formattedName), [project.keywords]);
 
-    const cluster = useMemo(() =>
-        [image9]
-    );
+    const keywords = [digitalSkillsMediaWijsheid[0], digitalSkillsMediaWijsheid[1], digitalSkillsMediaWijsheid[2], digitalSkillsMediaWijsheid[3], digitalSkillsMediaWijsheid[4], digitalSkillsMediaWijsheid[5], digitalSkillsMediaWijsheid[6], digitalSkillsMediaWijsheid[7]];
+
+
+    const clusterImage = useImage(mensEnWelzijn);
+
+    if (keywords.length === 0) {
+        return null;
+    }
 
     const positions = useMemo(() => keywordPositionsConfig[keywords.length - 1], [keywords.length]);
 
@@ -84,8 +75,8 @@ const ProjectImage = ({ width, height }) => {
     const widthCluster = Math.max(size.width / 2, size.height / 2);
     const heightCluster = Math.max(size.width / 2, size.height / 2);
 
-    const widhtKeyword = widthCluster/3*2;
-    const heightKeyword = heightCluster/3*2;
+    const widhtKeyword = widthCluster / 3 * 2;
+    const heightKeyword = heightCluster / 3 * 2;
 
     const offset = widthCluster / 4;
 
@@ -203,10 +194,9 @@ const ProjectImage = ({ width, height }) => {
 
     // Calculate cluster position so visible content is centered
     useEffect(() => {
-        const allLoadedCluster = cluster.every(img => img !== null);
+        const allLoadedCluster = clusterImage !== null;
         if (!allLoadedCluster) return;
 
-        const clusterImage = cluster[0];
         const visibleInfo = getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
 
         if (visibleInfo) {
@@ -224,7 +214,7 @@ const ProjectImage = ({ width, height }) => {
                 height: visibleInfo.boundingBox.height,
             }]);
         }
-    }, [cluster, centerX, centerY]);
+    }, [clusterImage, centerX, centerY]);
 
     // Calculate keyword positions around the cluster and their bounding boxes
     const keywordPositions = getKeywordPositions();
@@ -304,21 +294,19 @@ const ProjectImage = ({ width, height }) => {
                 })}
 
                 {/* Draw cluster image and bounding boxes */}
-                {cluster.map((image, index) => {
-                    const boundingBox = boundingBoxCluster[index];
-                    return (
-                        <Group key={`cluster-${index}`}>
-                            <SkiaImage
-                                image={image}
-                                x={clusterImagePosition.x}
-                                y={clusterImagePosition.y}
-                                width={widthCluster}
-                                height={heightCluster}
-                            />
-                            {boundingBox && (
-                                <Group>
-                                    {/* Inner ellipse around visible content */}
-                                    {/* <Oval
+                {clusterImage && (
+                    <Group>
+                        <SkiaImage
+                            image={clusterImage}
+                            x={clusterImagePosition.x}
+                            y={clusterImagePosition.y}
+                            width={widthCluster}
+                            height={heightCluster}
+                        />
+                        {boundingBoxCluster && (
+                            <Group>
+                                {/* Inner ellipse around visible content */}
+                                {/* <Oval
                                         x={boundingBox.x}
                                         y={boundingBox.y}
                                         width={boundingBox.width}
@@ -327,8 +315,8 @@ const ProjectImage = ({ width, height }) => {
                                         style="stroke"
                                         strokeWidth={2}
                                     /> */}
-                                    {/* Outer ellipse with offset */}
-                                    {/* <Oval
+                                {/* Outer ellipse with offset */}
+                                {/* <Oval
                                         x={boundingBox.x - offset / 2}
                                         y={boundingBox.y - offset / 2}
                                         width={boundingBox.width + offset}
@@ -337,11 +325,11 @@ const ProjectImage = ({ width, height }) => {
                                         style="stroke"
                                         strokeWidth={2}
                                     /> */}
-                                </Group>
-                            )}
-                        </Group>
-                    );
-                })}
+                            </Group>
+                        )}
+                    </Group>
+                )
+                }
             </Canvas>
         </View>
     );

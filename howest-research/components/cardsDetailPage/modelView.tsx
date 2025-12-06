@@ -1,7 +1,7 @@
 import { View, StyleSheet, TouchableOpacity } from "react-native";
-import Scene3D from '../3Dscenes/3DsceneNew';
 import { StyledText } from "../atoms/styledComponents";
 import ProjectImage from "../organisms/projectImage";
+import Images from '../../scripts/getImages';
 
 
 const ModelView = ({ width, height, project, setPage, page }) => {
@@ -30,7 +30,7 @@ const ModelView = ({ width, height, project, setPage, page }) => {
                     </TouchableOpacity>
                 ))}
 
-            <ProjectImage width={width} height={height} />
+            <ProjectImage width={width} height={height} project={project} setPage={setPage} page={page} />
         </View>
     );
 }

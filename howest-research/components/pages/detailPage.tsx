@@ -46,7 +46,6 @@ const DetailPage = ({ page, setPage }) => {
     };
 
     const project = getProjectInfo(page.id);
-    console.log('PROJECT', project.transitionDomain);
 
     return (
         <View style={{ gap: 14, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -74,7 +73,7 @@ const DetailPage = ({ page, setPage }) => {
                                 {
                                     item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                         item === "info" ? <Info project={project} /> :
-                                            item === "images" ? <Images project={project} /> :
+                                            // item === "images" ? <Images project={project} /> :
                                                 item === "qrCode" ? <QrCode /> :
                                                     null
                                 }
