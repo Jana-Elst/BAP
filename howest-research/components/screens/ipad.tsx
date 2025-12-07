@@ -105,29 +105,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    projectListContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: -1,
-    },
-
-    projectList: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: 16,
-        padding: 16,
-    },
-
-    cardWrapper: {
-        backgroundColor: 'yellow',
-        position: 'absolute',
-        top: 50,
-        left: '50%',
-    },
-
     overlay: {
         width: '100%',
         height: '100%',

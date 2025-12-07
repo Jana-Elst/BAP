@@ -1,10 +1,9 @@
 import { Canvas, Group, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { TapGestureHandler } from 'react-native-gesture-handler';
 import useGetClusterImages from '../../scripts/getClusterImages';
 import useGetImages from '../../scripts/getKeywordImages';
-import { TapGestureHandler } from 'react-native-gesture-handler';
-import { useRef } from 'react';
 
 
 const keywordPositionsConfig = [
@@ -320,11 +319,17 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     //----- event listeners -----//
     const canvasRef = useRef<View>(null);
 
-    const handleOpendetailKeyword = (keywordId: any) => {
-        console.log('keywordId', keywordId);
+    const handleOpendetailKeyword = (keyword: any, index: number) => {
+        console.log('keyword index:', index);
+        console.log('BBBOX:', boundingBoxesKeywords[index]);
         setPage({
             page: 'detailKeyword',
-            id: keywordId,
+            id: keyword.id,
+            info: {
+                keyword: keyword,
+                keywordImageSource: selectedImageSources[index],
+                boundingBoxKeyword: boundingBoxesKeywords[index],
+            },
             previousPages: [
                 ...page.previousPages || [],
                 {
@@ -349,18 +354,20 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                 y >= box.y &&
                 y <= box.y + box.height
             ) {
-                handleOpendetailKeyword(keywordData[index].id);
+                handleOpendetailKeyword(keywordData[index], index);
             }
         });
 
-        if (
-            x >= clusterPosition.x &&
-            x <= clusterPosition.x + clusterPosition.width &&
-            y >= clusterPosition.y &&
-            y <= clusterPosition.y + clusterPosition.height
-        ) {
-            handleOpendetailKeyword(clusterData.id);
-        }
+
+        // TODO: Add cluster click handler if needed
+        // if (
+        //     x >= clusterPosition.x &&
+        //     x <= clusterPosition.x + clusterPosition.width &&
+        //     y >= clusterPosition.y &&
+        //     y <= clusterPosition.y + clusterPosition.height
+        // ) {
+        //     // Handle cluster click
+        // }
     };
 
     return (

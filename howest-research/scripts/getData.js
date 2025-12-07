@@ -109,7 +109,8 @@ export const getAllTransitionDomains = () => {
 export const getKeywords = (keywordIDs) => {
     const allKeywords = getAllKeywords(keywordIDs);
     const filteredKeywords = allKeywords.filter(keyword => keyword.keywordCategoryIDs !== 3);
-    return filteredKeywords;
+    const keywordsUpperCase = filteredKeywords.map(keyword => ({ ...keyword, label: keyword.label.charAt(0).toUpperCase() + keyword.label.slice(1) }));
+    return keywordsUpperCase;
 }
 
 export const getTransitionDomain = (clusterId) => {
@@ -170,7 +171,7 @@ export const getProjectInfo = (projectID) => {
         contactPersonEmail: getEmail(project.dossierManagerFullName),
         startDate: getYearAndMonth(project.startDate),
         endDate: getYearAndMonth(project.endDate),
-        images: project.pictureCommunication,
+        // images: project.pictureCommunication,
     }
 };
 
@@ -187,10 +188,15 @@ export const getResearchGroup = (researchGroupId) => {
 }
 
 export const getProjectsByKeyword = (keywordID) => {
-    const projects = data.projects.filter(project =>
-        project.keywords?.includes(keywordID)
-    );
-    return projects;
+    console.log('keywordID', keywordID);
+    const projectsInfo = data.projects
+        .filter(project => project.keywords.includes(keywordID))
+        .map(project => {
+            const projectInfo = getProjectInfo(project.id);
+            console.log('projectInfo', projectInfo.title);
+            return projectInfo;
+        });
+    return projectsInfo;
 };
 
 export const getFilteredProjects = (activeFilters) => {

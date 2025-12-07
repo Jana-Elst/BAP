@@ -10,6 +10,7 @@ import { getProjectInfo } from '@/scripts/getData';
 import Card from "@/components/atoms/card";
 
 const ProjectCard = ({ project, page, setPage, setVisible }) => {
+    console.log(project.label);
     const projectInfo = getProjectInfo(project.id);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
