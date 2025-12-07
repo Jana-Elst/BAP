@@ -68,7 +68,7 @@ const keywordPositionsConfig = [
     },
 ];
 
-const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page }) => {
+const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false }) => {
     //----- get data from project -----//
     const keywordData = useMemo(() => project.keywords, [project.keywords]);
     const keywordDataFormatted = useMemo(() => keywordData.map(keyword => keyword.formattedName), [keywordData]);
@@ -300,11 +300,8 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
 
         return positions.keyWordLabelPositionsOffset.map((offsetPos, index) => {
             const degree = positions.degrees[index];
-            const offset = 0;
-            const xLeft = boundingBoxesCluster.x - boundingBoxesCluster.width / 2;
-            const xRight = boundingBoxesCluster.x + boundingBoxesCluster.width / 2;
 
-            const yTop = boundingBoxesCluster.height / 2;
+            const yTop = boundingBoxCenterY - boundingBoxesCluster.height / 2;
             const yBottom = boundingBoxCenterY + boundingBoxesCluster.height / 2;
             const gap = 8;
             const heightLabel = 40;
@@ -315,12 +312,13 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                 degree,
                 boundingBoxCenterX,
                 boundingBoxCenterY,
-                boundingBoxesCluster.width / 2 + offset,
-                boundingBoxesCluster.height / 2 + offset
+                boundingBoxesCluster.width / 2,
+                boundingBoxesCluster.height / 2
             );
             console.log(`Intersection point for label ${index}:`, intersection);
             const result = {
                 x: intersection.x,
+                // y: intersection.y <= boundingBoxCenterY ? yTop : yBottom,
                 y: intersection.y <= boundingBoxCenterY ? yTop - (offsetPos * (heightLabel + gap)) + 16 : yBottom + (offsetPos * (heightLabel + gap)) - 16,
             };
 
@@ -486,7 +484,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
             <TapGestureHandler onHandlerStateChange={handleTap}>
                 <View ref={canvasRef} style={{ width: screenWidth, height: screenHeight }}>
                     <Canvas style={{ width: screenWidth, height: screenHeight }}>
-                        {keywordData.map((keyword, index) => {
+                        {showKeywords && keywordData.map((keyword, index) => {
                             const pos = keywordPositions[index];
                             if (!pos || !keyWordLabelPositions || !keyWordLabelPositions[index]) return null;
 
@@ -615,7 +613,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                         y={boundingBoxesCluster.y}
                                         width={boundingBoxesCluster.width}
                                         height={boundingBoxesCluster.height}
-                                        color="black"
+                                        color="transparent"
                                         style="stroke"
                                         strokeWidth={2}
                                     />
@@ -631,7 +629,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                             cx={keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0}
                                             cy={keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0}
                                             r={10}
-                                            color="red"
+                                            color="transparent"
                                         />))
                                 }
                             </Group>
@@ -639,7 +637,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     </Canvas>
                     <View style={{ position: 'absolute', top: 0, left: 0 }}>
                         {
-                            keywordData.map((keyword, index) => (
+                            showKeywords && keywordData.map((keyword, index) => (
                                 <>
                                     <Touchable
                                         onPress={() => handleOpendetailKeyword(keyword, index)}
