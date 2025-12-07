@@ -1,4 +1,8 @@
-import data from '../assets/data/structured-data.json';
+// import data from '../assets/data/structured-data.json';
+
+import fs from 'fs';
+import path, { format } from 'path';
+const data = JSON.parse(fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../assets/data/structured-data.json'), 'utf8'));
 
 const colors = [
     {
@@ -114,6 +118,7 @@ export const getKeywords = (keywordIDs) => {
 }
 
 export const getTransitionDomain = (clusterId) => {
+    console.log('clusterId', clusterId);
     const transitionDomainId = colors.find(color => color.clusterId === clusterId).domainId;
 
     if (transitionDomainId === null) {
@@ -161,6 +166,7 @@ export const getProjectInfo = (projectID) => {
     return {
         id: project.id,
         title: project.CCODE,
+        formattedName: project.formattedName,
         cluster: getClusterName(project.clusterId),
         transitionDomain: getTransitionDomain(project.clusterId),
         keywords: getKeywords(project.keywords),
