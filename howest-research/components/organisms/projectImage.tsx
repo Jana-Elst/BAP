@@ -58,7 +58,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     //----- get images from data -----//
     const keywordImageSources = useGetImages(keywordDataFormatted);
     const clusterImageSources = useGetClusterImages(clusterData.formattedName);
-    const positions = useMemo(() => keywordPositionsConfig[keywordData.length - 1], [keywordData.length]);
+    const positions = useMemo(() => keywordPositionsConfig[keywordData.length], [keywordData.length]);
 
     //----- select correct images -----//
     //keywords
@@ -317,10 +317,8 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     };
 
     const clusterPosition = useMemo(() => getClusterPosition(), [clusterImage]);
-    console.log('clusterPosition', clusterPosition);
     const keywordPositions = useMemo(() => getKeywordPositions(clusterPosition), [clusterPosition]);
     const boundingBoxesKeywords = useMemo(() => getBoundingBoxesKeywords(), [keywordImages, keywordPositions]);
-    console.log('boundingBoxesKeywords', boundingBoxesKeywords);
 
     //----- event listeners -----//
     const canvasRef = useRef<View>(null);

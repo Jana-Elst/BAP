@@ -61,24 +61,25 @@ export default function Ipad({ page, setPage }) {
                     <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={{ flex: 1, gap: 24 }}>
-                        <View style={{ flexDirection: 'row' }} fill={true} borderRadius={80}>
-                            {
-                                page.previousPages.length > 1 &&
-                                <Touchable
-                                    onPress={handleBack}
-                                    icon={'arrow-back-outline'}
-                                    isActive={true}
-                                    showIconOnly={true}
-                                    styleGradient={{position: 'absolute', left: 48, top: 78, zIndex: 1}}
-                                    styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
-                                </Touchable>
-                            }
+                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32 }}>
+                        {
+                            page.previousPages.length > 1 &&
+                            <Touchable
+                                onPress={handleBack}
+                                icon={'arrow-back-outline'}
+                                isActive={true}
+                                showIconOnly={true}
+                                styleGradient={{ position: 'absolute', left: 48, top: 78, zIndex: 1 }}
+                                styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
+                            </Touchable>
+                        }
 
+                        <View style={{ flexDirection: 'row' }} fill={true} borderRadius={80}>
                             {
                                 page.page === 'detailResearch' &&
                                 (
-                                    <DetailPage page={page} setPage={setPage} />
+                                    
+                                        <DetailPage page={page} setPage={setPage} />
                                 )
                             }
                             {

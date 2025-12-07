@@ -48,7 +48,7 @@ const DetailPage = ({ page, setPage }) => {
     const project = getProjectInfo(page.id);
 
     return (
-        <View style={{ gap: 14, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{gap: 16, flex: 1, paddingBottom: 8}}>
             <Carousel
                 ref={ref}
                 onProgressChange={progress}
