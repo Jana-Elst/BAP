@@ -15,6 +15,7 @@ const ProjectCard3D = ({
             previousPages: [
                 ...(page.previousPages || []),
                 {
+                    info: page.info,
                     page: page.page,
                     id: page.id
                 }

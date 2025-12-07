@@ -26,6 +26,7 @@ const ProjectCard = ({ project, page, setPage, setVisible }) => {
             previousPages: [
                 ...(page.previousPages || []),
                 {
+                    info: page.info,
                     page: page.page,
                     id: page.id
                 }

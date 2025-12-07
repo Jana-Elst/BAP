@@ -30,6 +30,7 @@ export default function Ipad({ page, setPage }) {
             page: page.previousPages[0].page,
             id: null,
             previousPages: [],
+            info: {}
         })
         isVisible(page.previousPages[0].page);
     }
@@ -38,7 +39,8 @@ export default function Ipad({ page, setPage }) {
         setPage({
             page: page.previousPages[page.previousPages.length - 1].page,
             id: page.previousPages[page.previousPages.length - 1].id,
-            previousPages: page.previousPages.slice(0, -1)
+            previousPages: page.previousPages.slice(0, -1),
+            info: page.previousPages[page.previousPages.length - 1].info
         })
         isVisible(page.previousPages[page.previousPages.length - 1].page);
     }

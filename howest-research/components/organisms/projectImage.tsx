@@ -326,8 +326,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     const canvasRef = useRef<View>(null);
 
     const handleOpendetailKeyword = (keyword: any, index: number) => {
-        console.log('keyword index:', index);
-        console.log('BBBOX:', boundingBoxesKeywords[index]);
         setPage({
             page: 'detailKeyword',
             id: keyword.id,
@@ -340,7 +338,8 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                 ...page.previousPages || [],
                 {
                     page: page.page,
-                    id: page.id
+                    id: page.id,
+                    info: page.info,
                 }
             ]
         })
