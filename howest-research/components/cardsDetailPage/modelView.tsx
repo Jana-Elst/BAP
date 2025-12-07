@@ -5,7 +5,7 @@ import ProjectImage from "../organisms/projectImage";
 
 const ModelView = ({ width, height, project, setPage, page }) => {
     return (
-        <View style={styles.container3D}>
+        <View style={styles.containerVis}>
             {/* {projectKeywords
                 .map(keyword => (
                     <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.id)} key={keyword.id} style={styles.tag}>
@@ -19,12 +19,7 @@ const ModelView = ({ width, height, project, setPage, page }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'green',
-    },
-
-    container3D: {
+    containerVis: {
         flex: 1,
         height: '100%',
         width: '100%',

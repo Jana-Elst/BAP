@@ -2,9 +2,11 @@
 const { createCanvas } = require('canvas');
 const fs = require('fs');
 const path = require('path');
+const { getProjectInfo } = require('./getData');
 
 // Sample projects data structure (adjust based on your actual data)
 const data = require('../assets/data/structured-data.json'); // Adjust path to your projects data
+const { get } = require('http');
 const projects = data.projects; // Adjust path to your projects data
 
 const OUTPUT_DIR = path.join(__dirname, '../assets/images/visualizationsProjects');
@@ -21,7 +23,7 @@ if (!fs.existsSync(OUTPUT_DIR)) {
  * @param {string} projectCode - Project code for filename
  * @param {string} clusterLabel - Cluster label for context
  */
-function generateProjectImage(keywords, projectCode, clusterLabel) {
+const generateProjectImage = (projectInfo) => {
     const canvas = createCanvas(IMAGE_SIZE, IMAGE_SIZE);
     const ctx = canvas.getContext('2d');
 
@@ -71,11 +73,9 @@ async function createAllProjectImages() {
     console.log(`Creating images for ${projects.length} projects...`);
 
     projects.forEach(project => {
-        const keywords = project.keywords || project.Keywords || [];
-        const projectCode = project.CCODE || project.code;
-        const clusterLabel = project.clusterLabel || 'Unknown';
+        const projectInfo = getProjectInfo(project.id);
 
-        generateProjectImage(keywords, projectCode, clusterLabel);
+        generateProjectImage(projectInfo);
     });
 
     console.log(`✓ All images created in ${OUTPUT_DIR}`);
