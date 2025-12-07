@@ -89,12 +89,13 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
 
     //----- event listeners -----//
     const handleOpendetailKeyword = (keyword: any, index: number) => {
+        console.log('keywordImageSources[index]:', keywordImageSources[index]);
         setPage({
             page: 'detailKeyword',
             id: keyword.id,
             info: {
                 keyword: keyword,
-                keywordImageSource: selectedImageSources[index],
+                keywordImageSource: keywordImageSources[index],
                 boundingBoxKeyword: boundingBoxesKeywords[index],
             },
             previousPages: [

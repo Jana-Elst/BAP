@@ -10,11 +10,11 @@ import Card from "../atoms/card";
 import ProjectCardLarge from '../molecules/projectCardLarge';
 
 const DetailKeyword = ({ page, setPage, setVisible }) => {
+    console.log("DetailKeyword page:", page.id);
     const filteredProjects = getProjectsByKeyword(page.id);
-    const keywordImage = useImage(page.info.keywordImageSource);
+    const keywordImage = page.info.keywordImageSource;
 
     const visibleInfo = getVisiblePixelsInfo(keywordImage, 180, 180);
-    console.log("visibleInfo:", visibleInfo);
 
     // Calculate how to position the full image so visible pixels fill the canvas
     const imageScale = visibleInfo ? visibleInfo.boundingBox.width / visibleInfo.sourceRect.width : 1;
@@ -22,22 +22,24 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
     const imageY = visibleInfo ? -visibleInfo.sourceRect.y * imageScale : 0;
     const imageWidth = keywordImage ? keywordImage.width() * imageScale : 0;
     const imageHeight = keywordImage ? keywordImage.height() * imageScale : 0;
+    const xPos = imageX + (180 - visibleInfo!.boundingBox.width) / 2;
+    const yPos = imageY + (180 - visibleInfo!.boundingBox.height) / 2;
 
-    console.log("imageScale:", imageScale, "imageX:", imageX, "imageY:", imageY);
+    // console.log("imageScale:", imageScale, "imageX:", imageX, "imageY:", imageY);
 
     const Header = () => {
         return (
             <View style={{ flexDirection: 'row', gap: 32, alignItems: 'center', marginBottom: 44 }}>
                 {keywordImage && visibleInfo && (
                     <Canvas style={{
-                        width: visibleInfo.boundingBox.width,
-                        height: visibleInfo.boundingBox.height,
-                        overflow: 'hidden'
+                        width: 180,
+                        height: 180,
+                        overflow: 'hidden',
                     }}>
                         <SkiaImage
                             image={keywordImage}
-                            x={imageX}
-                            y={imageY}
+                            x={xPos}
+                            y={yPos}
                             width={imageWidth}
                             height={imageHeight}
                         />
