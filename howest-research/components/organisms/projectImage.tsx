@@ -8,6 +8,11 @@ import useGetImages from '../../scripts/getKeywordImages';
 
 const keywordPositionsConfig = [
     {
+        id: 0,
+        degrees: [],
+        rotationImages: [],
+    },
+    {
         id: 1,
         degrees: [0],
         rotationImages: [0],
@@ -234,6 +239,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         const radiusX = (clusterPosition.width + offset) / 2;
         const radiusY = (clusterPosition.height + offset) / 2;
 
+        if (!positions) return [];
         return positions.degrees.map((degree) => {
             const intersection = getEllipseIntersection(degree, centerX, centerY, radiusX, radiusY);
             return {
