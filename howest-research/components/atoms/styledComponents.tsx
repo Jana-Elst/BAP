@@ -38,6 +38,10 @@ const ParagraphSmall = ({ children, style = null }) => {
     return <Text style={[styles.paragraphSmall, style]}>{children}</Text>
 };
 
+const ParagraphXSmall = ({ children, style = null }) => {
+    return <Text style={[styles.paragraphXSmall, style]}>{children}</Text>
+};
+
 const ParagraphLarge = ({ children, style = null }) => {
     return <Text style={[styles.paragraphLarge, style]}>{children}</Text>
 };
@@ -57,6 +61,7 @@ export {
     Paragraph,
     SubTitleSmall,
     ParagraphSmall,
+    ParagraphXSmall,
     ParagraphLarge,
     TitleXSmall,
     ParagraphBold
@@ -90,6 +95,12 @@ const styles = StyleSheet.create({
     paragraphSmall: {
         fontFamily: Fonts.sans.regular,
         fontSize: 18,
+        // lineHeight: 1.4,
+    },
+
+    paragraphXSmall: {
+        fontFamily: Fonts.sans.regular,
+        fontSize: 16,
         // lineHeight: 1.4,
     },
 

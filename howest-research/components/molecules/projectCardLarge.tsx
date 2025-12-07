@@ -1,13 +1,13 @@
+import { Colors, Fonts } from "@/constants/theme";
 import { Image } from 'expo-image';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { StyledText } from '../atoms/styledComponents';
-import { Colors, Fonts } from "@/constants/theme";
+import { ParagraphSmall, ParagraphXSmall, StyledText } from '../atoms/styledComponents';
 
+import Card from "@/components/atoms/card";
+import { getProjectInfo } from '@/scripts/getData';
+import React, { useState } from 'react';
 import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
 import RadialGradientComponent from '../atoms/radialGradient';
-import { useState } from 'react';
-import { getProjectInfo } from '@/scripts/getData';
-import Card from "@/components/atoms/card";
 
 const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     const projectInfo = getProjectInfo(project.id);
@@ -36,12 +36,12 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     return (
         <TouchableOpacity onPress={handleOpenDetail} style={styles.container}>
             <Card onLayout={handleLayout} style={styles.card}>
-                <View style={styles.content}>
+                <View style={{ gap: 16, flex: 1, paddingVertical: 20}}>
                     <View>
-                        <StyledText style={styles.title}> {projectInfo.title}</StyledText>
-                        <StyledText style={styles.subtitle}>{projectInfo.cluster.label}</StyledText>
+                        <StyledText style={{ fontFamily: Fonts.rounded.light, fontSize: 22 }}>{projectInfo.title}</StyledText>
+                        <ParagraphXSmall>{projectInfo.cluster.label}</ParagraphXSmall>
                     </View>
-                    <StyledText>Dit is een korte beschrijving van slechts 1 zinnetje. Kan ook meer zijn, geen idee...</StyledText>
+                    <ParagraphSmall>Dit is een korte beschrijving van slechts 1 zinnetje. Kan ook meer zijn, geen idee...</ParagraphSmall>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image
@@ -75,29 +75,16 @@ const styles = StyleSheet.create({
 
     card: {
         flexDirection: 'row-reverse',
-        padding: 16,
+        padding: 12,
         borderRadius: 30,
-        gap: 16,
-    },
-
-    content: {
-        flex: 1,
-    },
-
-    title: {
-        fontFamily: Fonts.rounded.light,
-        textAlign: 'center',
-    },
-
-    subtitle: {
-        fontFamily: Fonts.rounded.light,
-        textAlign: 'center',
+        gap: 12,
     },
 
     imageContainer: {
         borderWidth: 2,
         borderColor: Colors.white,
         padding: 16,
+        paddingRight: 20,
         borderRadius: 30,
 
         width: 200,
