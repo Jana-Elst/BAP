@@ -13,7 +13,7 @@ const ModelView = ({ width, height, project, setPage, page }) => {
                     </TouchableOpacity>
                 ))} */}
 
-            <ProjectImage screenWidth={width} screenHeight={height} width={800} height={800} project={project} setPage={setPage} page={page} />
+            <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} />
         </View>
     );
 }

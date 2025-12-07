@@ -65,7 +65,8 @@ const DetailPage = ({ page, setPage }) => {
                     return (
                         <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }}>
                             <View style={styles.header}>
-                                <Title style={styles.title}>{project.title}</Title>
+                                {/* <Title style={styles.title}>{project.title}</Title> */}
+                                <Title style={styles.title}>Dit is een heel lange titel en nog langer</Title>
                                 <TitleXSmall style={styles.subtitle}>{project.transitionDomain}</TitleXSmall>
                             </View>
 

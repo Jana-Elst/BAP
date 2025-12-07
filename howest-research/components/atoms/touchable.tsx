@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { ParagraphLarge } from "./styledComponents";
 
-const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosition = 'before', showIconOnly = false, styleButton = null, styleGradient = null, styleText = null }) => {
+const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosition = 'before', showIconOnly = false, styleButton = null, styleGradient = null, styleText = null, iconColor=null }) => {
     return (
         <LinearGradient
             colors={isActive ? [Colors.blue100, Colors.blue25, Colors.blue100] : [Colors.white, Colors.white, Colors.white]}
@@ -14,7 +14,7 @@ const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosit
             style={[styles.gradient, styleGradient]}
         >
             <TouchableOpacity onPress={onPress} style={[styles.content, styleButton, iconPosition === 'after' ? { flexDirection: 'row-reverse' } : null]}>
-                {icon && <Ionicons name={icon} size={24} color={Colors.black} />}
+                {icon && <Ionicons name={icon} size={24} color={iconColor || Colors.black} />}
                 {(showIconOnly && !isActive) || !children ? null : <ParagraphLarge style={styleText}>{children}</ParagraphLarge>}
             </TouchableOpacity>
         </LinearGradient>
