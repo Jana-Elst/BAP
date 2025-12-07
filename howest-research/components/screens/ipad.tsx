@@ -101,6 +101,7 @@ export default function Ipad({ page, setPage }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        zIndex: 1,
     },
 
     homeScreen: {

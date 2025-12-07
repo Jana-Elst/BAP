@@ -1,62 +1,48 @@
 import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import data from '../../assets/data/structured-data.json';
-import Scene3DWithLabels from '../3Dscenes/3DsceneNew';
-import { getKeywords } from '../../scripts/getData';
-import { LinearGradient } from 'expo-linear-gradient';
+import { getProjectInfo } from '../../scripts/getData';
 import ProjectImage from '../organisms/projectImage';
 
-const keywords = data.keywords;
-const clusters = data.clusters;
-const projects = data.projects;
-
 const windowDimensions = Dimensions.get('window');
+console.log('Window dimensions:', windowDimensions);
 
-export default function ExternalScreen(props: { page }) {
-    if (props.page.page === 'detailResearch') {
-        const project = projects.find(p => p.id === props.page.id);
+export default function ExternalScreen({ screen, page, setPage }) {
+    console.log('ExternalScreen:', screen);
+    const externalScreen = Object.values(screen)[0];
+    console.log('ExternalScreen screen prop:', externalScreen);
+    
+    const externalScreenWidth = externalScreen.width
+    const externalScreenHeight = externalScreen.height;
 
-        const keywordIDs = project.keywords;
-        const projectKeywords = getKeywords(keywordIDs);
+    console.log('External screen dimensions:', externalScreenWidth, externalScreenHeight);
 
+    if (page.page === 'detailResearch') {
+        const projectInfo = getProjectInfo(page.id);
+
+        return (
+            <View style={{ flex: 1 }}>
+                <ProjectImage
+                    screenWidth={externalScreenWidth}
+                    screenHeight={externalScreenHeight}
+                    width={externalScreenWidth}
+                    height={externalScreenHeight}
+                    project={projectInfo}
+                    setPage={setPage}
+                    page={page}
+                />
+            </View>
+        );
+    } else if (page.page === 'detailKeyword') {
+        const keyword = data.keywords.find(k => k.id === page.id);
         return (
             <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <View>
-                    <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{project.CCODE}</Text>
-                    <Text style={{ color: 'white', fontSize: 48 }}>
-                        {clusters.find(c => c.Id === project.clusterId)?.label}
-                    </Text>
-                    {projectKeywords
-                        .map((keyword) => (
-                            <Text key={keyword.id} style={{ color: 'white', fontSize: 24 }}>{keyword.label}</Text>
-                        ))
-                    }
-                </View>
-
-                <View style={{ flex: 1, width: '100%', height: '100%' }}>
-                    {/* <LinearGradient
-                        colors={['rgba(255, 255, 255, 1)', 'transparent']}
-                        style={styles.background}
-                    /> */}
-                    <Scene3DWithLabels
-                        name="dom"
-                        projectKeywords={projectKeywords}
-                    />
-                </View>
-            </View >
-        );
-    } else if (props.page.page === 'detailKeyword') {
-        const keyword = keywords.find(k => k.id === props.page.id);
-        return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
                 <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>{keyword.label}</Text>
             </View>
         )
-
     } else {
         return (
             <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <ProjectImage width={windowDimensions.width} height={windowDimensions.height} />
-                {/* <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>HOME SCREEN</Text> */}
+                <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>HOME SCREEN</Text>
             </View>
         );
     }
