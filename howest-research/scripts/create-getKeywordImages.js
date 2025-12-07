@@ -59,7 +59,7 @@ ${imageArrays}
     const inputList = Array.isArray(keywordData) ? keywordData : [keywordData];
 
     return inputList.map(keywordName => {
-${conditions}        return null;
+${conditions}        return placeholderImages;
     });
 }
 

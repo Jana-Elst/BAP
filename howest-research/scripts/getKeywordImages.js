@@ -1,210 +1,251 @@
 // filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
 // Auto-generated file. Do not edit manually.
 
-import digitalSkillsMediawijsheid1 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0001.png";
-import digitalSkillsMediawijsheid2 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0002.png";
-import digitalSkillsMediawijsheid3 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0003.png";
-import digitalSkillsMediawijsheid4 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0004.png";
-import digitalSkillsMediawijsheid5 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0005.png";
-import digitalSkillsMediawijsheid6 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0006.png";
-import digitalSkillsMediawijsheid7 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0007.png";
-import digitalSkillsMediawijsheid8 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0008.png";
-import digitalSkillsMediawijsheid9 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0009.png";
-import digitalSkillsMediawijsheid10 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0010.png";
-import digitalSkillsMediawijsheid11 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0011.png";
-import digitalSkillsMediawijsheid12 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0012.png";
-import digitalSkillsMediawijsheid13 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0013.png";
-import digitalSkillsMediawijsheid14 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0014.png";
-import digitalSkillsMediawijsheid15 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0015.png";
-import digitalSkillsMediawijsheid16 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0016.png";
-import digitalSkillsMediawijsheid17 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0017.png";
-import digitalSkillsMediawijsheid18 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0018.png";
-import digitalSkillsMediawijsheid19 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0019.png";
-import digitalSkillsMediawijsheid20 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0020.png";
-import digitalSkillsMediawijsheid21 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0021.png";
-import digitalSkillsMediawijsheid22 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0022.png";
-import digitalSkillsMediawijsheid23 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0023.png";
-import digitalSkillsMediawijsheid24 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0024.png";
-import digitalSkillsMediawijsheid25 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0025.png";
-import digitalSkillsMediawijsheid26 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0026.png";
-import digitalSkillsMediawijsheid27 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0027.png";
-import digitalSkillsMediawijsheid28 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0028.png";
-import digitalSkillsMediawijsheid29 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0029.png";
-import digitalSkillsMediawijsheid30 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0030.png";
-import digitalSkillsMediawijsheid31 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0031.png";
-import digitalSkillsMediawijsheid32 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0032.png";
-import digitalSkillsMediawijsheid33 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0033.png";
-import digitalSkillsMediawijsheid34 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0034.png";
-import digitalSkillsMediawijsheid35 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0035.png";
-import digitalSkillsMediawijsheid36 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0036.png";
-import digitalSkillsMediawijsheid37 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0037.png";
-import digitalSkillsMediawijsheid38 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0038.png";
-import digitalSkillsMediawijsheid39 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0039.png";
-import digitalSkillsMediawijsheid40 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0040.png";
+import digitalSkillsMediawijsheid1 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0001.webp";
+import digitalSkillsMediawijsheid2 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0002.webp";
+import digitalSkillsMediawijsheid3 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0003.webp";
+import digitalSkillsMediawijsheid4 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0004.webp";
+import digitalSkillsMediawijsheid5 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0005.webp";
+import digitalSkillsMediawijsheid6 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0006.webp";
+import digitalSkillsMediawijsheid7 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0007.webp";
+import digitalSkillsMediawijsheid8 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0008.webp";
+import digitalSkillsMediawijsheid9 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0009.webp";
+import digitalSkillsMediawijsheid10 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0010.webp";
+import digitalSkillsMediawijsheid11 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0011.webp";
+import digitalSkillsMediawijsheid12 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0012.webp";
+import digitalSkillsMediawijsheid13 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0013.webp";
+import digitalSkillsMediawijsheid14 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0014.webp";
+import digitalSkillsMediawijsheid15 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0015.webp";
+import digitalSkillsMediawijsheid16 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0016.webp";
+import digitalSkillsMediawijsheid17 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0017.webp";
+import digitalSkillsMediawijsheid18 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0018.webp";
+import digitalSkillsMediawijsheid19 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0019.webp";
+import digitalSkillsMediawijsheid20 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0020.webp";
+import digitalSkillsMediawijsheid21 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0021.webp";
+import digitalSkillsMediawijsheid22 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0022.webp";
+import digitalSkillsMediawijsheid23 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0023.webp";
+import digitalSkillsMediawijsheid24 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0024.webp";
+import digitalSkillsMediawijsheid25 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0025.webp";
+import digitalSkillsMediawijsheid26 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0026.webp";
+import digitalSkillsMediawijsheid27 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0027.webp";
+import digitalSkillsMediawijsheid28 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0028.webp";
+import digitalSkillsMediawijsheid29 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0029.webp";
+import digitalSkillsMediawijsheid30 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0030.webp";
+import digitalSkillsMediawijsheid31 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0031.webp";
+import digitalSkillsMediawijsheid32 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0032.webp";
+import digitalSkillsMediawijsheid33 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0033.webp";
+import digitalSkillsMediawijsheid34 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0034.webp";
+import digitalSkillsMediawijsheid35 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0035.webp";
+import digitalSkillsMediawijsheid36 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0036.webp";
+import digitalSkillsMediawijsheid37 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0037.webp";
+import digitalSkillsMediawijsheid38 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0038.webp";
+import digitalSkillsMediawijsheid39 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0039.webp";
+import digitalSkillsMediawijsheid40 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0040.webp";
 
-import marketingCommunicatie1 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0001.png";
-import marketingCommunicatie2 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0002.png";
-import marketingCommunicatie3 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0003.png";
-import marketingCommunicatie4 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0004.png";
-import marketingCommunicatie5 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0005.png";
-import marketingCommunicatie6 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0006.png";
-import marketingCommunicatie7 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0007.png";
-import marketingCommunicatie8 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0008.png";
-import marketingCommunicatie9 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0009.png";
-import marketingCommunicatie10 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0010.png";
-import marketingCommunicatie11 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0011.png";
-import marketingCommunicatie12 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0012.png";
-import marketingCommunicatie13 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0013.png";
-import marketingCommunicatie14 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0014.png";
-import marketingCommunicatie15 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0015.png";
-import marketingCommunicatie16 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0016 .png";
-import marketingCommunicatie17 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0017.png";
-import marketingCommunicatie18 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0018.png";
-import marketingCommunicatie19 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0019.png";
-import marketingCommunicatie20 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0020.png";
-import marketingCommunicatie21 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0021.png";
-import marketingCommunicatie22 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0022.png";
-import marketingCommunicatie23 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0023.png";
-import marketingCommunicatie24 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0024.png";
-import marketingCommunicatie25 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0025.png";
-import marketingCommunicatie26 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0026.png";
-import marketingCommunicatie27 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0027.png";
-import marketingCommunicatie28 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0028.png";
-import marketingCommunicatie29 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0029.png";
-import marketingCommunicatie30 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0030.png";
-import marketingCommunicatie31 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0031.png";
-import marketingCommunicatie32 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0032.png";
-import marketingCommunicatie33 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0033.png";
-import marketingCommunicatie34 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0034.png";
-import marketingCommunicatie35 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0035.png";
-import marketingCommunicatie36 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0036.png";
-import marketingCommunicatie37 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0037.png";
-import marketingCommunicatie38 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0038.png";
-import marketingCommunicatie39 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0039.png";
-import marketingCommunicatie40 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0040.png";
+import marketingCommunicatie1 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0001.webp";
+import marketingCommunicatie2 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0002.webp";
+import marketingCommunicatie3 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0003.webp";
+import marketingCommunicatie4 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0004.webp";
+import marketingCommunicatie5 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0005.webp";
+import marketingCommunicatie6 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0006.webp";
+import marketingCommunicatie7 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0007.webp";
+import marketingCommunicatie8 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0008.webp";
+import marketingCommunicatie9 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0009.webp";
+import marketingCommunicatie10 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0010.webp";
+import marketingCommunicatie11 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0011.webp";
+import marketingCommunicatie12 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0012.webp";
+import marketingCommunicatie13 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0013.webp";
+import marketingCommunicatie14 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0014.webp";
+import marketingCommunicatie15 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0015.webp";
+import marketingCommunicatie16 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0016.webp";
+import marketingCommunicatie17 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0017.webp";
+import marketingCommunicatie18 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0018.webp";
+import marketingCommunicatie19 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0019.webp";
+import marketingCommunicatie20 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0020.webp";
+import marketingCommunicatie21 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0021.webp";
+import marketingCommunicatie22 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0022.webp";
+import marketingCommunicatie23 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0023.webp";
+import marketingCommunicatie24 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0024.webp";
+import marketingCommunicatie25 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0025.webp";
+import marketingCommunicatie26 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0026.webp";
+import marketingCommunicatie27 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0027.webp";
+import marketingCommunicatie28 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0028.webp";
+import marketingCommunicatie29 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0029.webp";
+import marketingCommunicatie30 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0030.webp";
+import marketingCommunicatie31 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0031.webp";
+import marketingCommunicatie32 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0032.webp";
+import marketingCommunicatie33 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0033.webp";
+import marketingCommunicatie34 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0034.webp";
+import marketingCommunicatie35 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0035.webp";
+import marketingCommunicatie36 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0036.webp";
+import marketingCommunicatie37 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0037.webp";
+import marketingCommunicatie38 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0038.webp";
+import marketingCommunicatie39 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0039.webp";
+import marketingCommunicatie40 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0040.webp";
 
-import onderwijsEnVorming1 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0001.png";
-import onderwijsEnVorming2 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0002.png";
-import onderwijsEnVorming3 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0003.png";
-import onderwijsEnVorming4 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0004.png";
-import onderwijsEnVorming5 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0005.png";
-import onderwijsEnVorming6 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0006.png";
-import onderwijsEnVorming7 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0007.png";
-import onderwijsEnVorming8 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0008.png";
-import onderwijsEnVorming9 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0009.png";
-import onderwijsEnVorming10 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0010.png";
-import onderwijsEnVorming11 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0011.png";
-import onderwijsEnVorming12 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0012.png";
-import onderwijsEnVorming13 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0013.png";
-import onderwijsEnVorming14 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0014.png";
-import onderwijsEnVorming15 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0015.png";
-import onderwijsEnVorming16 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0016.png";
-import onderwijsEnVorming17 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0017.png";
-import onderwijsEnVorming18 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0018.png";
-import onderwijsEnVorming19 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0019.png";
-import onderwijsEnVorming20 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0020.png";
-import onderwijsEnVorming21 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0021.png";
-import onderwijsEnVorming22 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0022.png";
-import onderwijsEnVorming23 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0023.png";
-import onderwijsEnVorming24 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0024.png";
-import onderwijsEnVorming25 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0025.png";
-import onderwijsEnVorming26 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0026.png";
-import onderwijsEnVorming27 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0027.png";
-import onderwijsEnVorming28 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0028.png";
-import onderwijsEnVorming29 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0029.png";
-import onderwijsEnVorming30 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0030.png";
-import onderwijsEnVorming31 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0031.png";
-import onderwijsEnVorming32 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0032.png";
-import onderwijsEnVorming33 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0033.png";
-import onderwijsEnVorming34 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0034.png";
-import onderwijsEnVorming35 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0035.png";
-import onderwijsEnVorming36 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0036.png";
-import onderwijsEnVorming37 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0037.png";
-import onderwijsEnVorming38 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0038.png";
-import onderwijsEnVorming39 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0039.png";
-import onderwijsEnVorming40 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0040.png";
+import onderwijsEnVorming1 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0001.webp";
+import onderwijsEnVorming2 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0002.webp";
+import onderwijsEnVorming3 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0003.webp";
+import onderwijsEnVorming4 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0004.webp";
+import onderwijsEnVorming5 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0005.webp";
+import onderwijsEnVorming6 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0006.webp";
+import onderwijsEnVorming7 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0007.webp";
+import onderwijsEnVorming8 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0008.webp";
+import onderwijsEnVorming9 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0009.webp";
+import onderwijsEnVorming10 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0010.webp";
+import onderwijsEnVorming11 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0011.webp";
+import onderwijsEnVorming12 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0012.webp";
+import onderwijsEnVorming13 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0013.webp";
+import onderwijsEnVorming14 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0014.webp";
+import onderwijsEnVorming15 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0015.webp";
+import onderwijsEnVorming16 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0016.webp";
+import onderwijsEnVorming17 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0017.webp";
+import onderwijsEnVorming18 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0018.webp";
+import onderwijsEnVorming19 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0019.webp";
+import onderwijsEnVorming20 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0020.webp";
+import onderwijsEnVorming21 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0021.webp";
+import onderwijsEnVorming22 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0022.webp";
+import onderwijsEnVorming23 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0023.webp";
+import onderwijsEnVorming24 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0024.webp";
+import onderwijsEnVorming25 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0025.webp";
+import onderwijsEnVorming26 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0026.webp";
+import onderwijsEnVorming27 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0027.webp";
+import onderwijsEnVorming28 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0028.webp";
+import onderwijsEnVorming29 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0029.webp";
+import onderwijsEnVorming30 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0030.webp";
+import onderwijsEnVorming31 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0031.webp";
+import onderwijsEnVorming32 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0032.webp";
+import onderwijsEnVorming33 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0033.webp";
+import onderwijsEnVorming34 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0034.webp";
+import onderwijsEnVorming35 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0035.webp";
+import onderwijsEnVorming36 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0036.webp";
+import onderwijsEnVorming37 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0037.webp";
+import onderwijsEnVorming38 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0038.webp";
+import onderwijsEnVorming39 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0039.webp";
+import onderwijsEnVorming40 from "../assets/images/keywordsEnThemas/onderwijsEnVorming/0040.webp";
 
-import socialCreativity1 from "../assets/images/keywordsEnThemas/socialCreativity/0001.png";
-import socialCreativity2 from "../assets/images/keywordsEnThemas/socialCreativity/0002.png";
-import socialCreativity3 from "../assets/images/keywordsEnThemas/socialCreativity/0003.png";
-import socialCreativity4 from "../assets/images/keywordsEnThemas/socialCreativity/0004.png";
-import socialCreativity5 from "../assets/images/keywordsEnThemas/socialCreativity/0005.png";
-import socialCreativity6 from "../assets/images/keywordsEnThemas/socialCreativity/0006.png";
-import socialCreativity7 from "../assets/images/keywordsEnThemas/socialCreativity/0007.png";
-import socialCreativity8 from "../assets/images/keywordsEnThemas/socialCreativity/0008.png";
-import socialCreativity9 from "../assets/images/keywordsEnThemas/socialCreativity/0009.png";
-import socialCreativity10 from "../assets/images/keywordsEnThemas/socialCreativity/0010.png";
-import socialCreativity11 from "../assets/images/keywordsEnThemas/socialCreativity/0011.png";
-import socialCreativity12 from "../assets/images/keywordsEnThemas/socialCreativity/0012.png";
-import socialCreativity13 from "../assets/images/keywordsEnThemas/socialCreativity/0013.png";
-import socialCreativity14 from "../assets/images/keywordsEnThemas/socialCreativity/0014.png";
-import socialCreativity15 from "../assets/images/keywordsEnThemas/socialCreativity/0015.png";
-import socialCreativity16 from "../assets/images/keywordsEnThemas/socialCreativity/0016.png";
-import socialCreativity17 from "../assets/images/keywordsEnThemas/socialCreativity/0017.png";
-import socialCreativity18 from "../assets/images/keywordsEnThemas/socialCreativity/0018.png";
-import socialCreativity19 from "../assets/images/keywordsEnThemas/socialCreativity/0019.png";
-import socialCreativity20 from "../assets/images/keywordsEnThemas/socialCreativity/0020.png";
-import socialCreativity21 from "../assets/images/keywordsEnThemas/socialCreativity/0021.png";
-import socialCreativity22 from "../assets/images/keywordsEnThemas/socialCreativity/0022.png";
-import socialCreativity23 from "../assets/images/keywordsEnThemas/socialCreativity/0023.png";
-import socialCreativity24 from "../assets/images/keywordsEnThemas/socialCreativity/0024.png";
-import socialCreativity25 from "../assets/images/keywordsEnThemas/socialCreativity/0025.png";
-import socialCreativity26 from "../assets/images/keywordsEnThemas/socialCreativity/0026.png";
-import socialCreativity27 from "../assets/images/keywordsEnThemas/socialCreativity/0027.png";
-import socialCreativity28 from "../assets/images/keywordsEnThemas/socialCreativity/0028.png";
-import socialCreativity29 from "../assets/images/keywordsEnThemas/socialCreativity/0029.png";
-import socialCreativity30 from "../assets/images/keywordsEnThemas/socialCreativity/0030.png";
-import socialCreativity31 from "../assets/images/keywordsEnThemas/socialCreativity/0031.png";
-import socialCreativity32 from "../assets/images/keywordsEnThemas/socialCreativity/0032.png";
-import socialCreativity33 from "../assets/images/keywordsEnThemas/socialCreativity/0033.png";
-import socialCreativity34 from "../assets/images/keywordsEnThemas/socialCreativity/0034.png";
-import socialCreativity35 from "../assets/images/keywordsEnThemas/socialCreativity/0035.png";
-import socialCreativity36 from "../assets/images/keywordsEnThemas/socialCreativity/0036.png";
-import socialCreativity37 from "../assets/images/keywordsEnThemas/socialCreativity/0037.png";
-import socialCreativity38 from "../assets/images/keywordsEnThemas/socialCreativity/0038.png";
-import socialCreativity39 from "../assets/images/keywordsEnThemas/socialCreativity/0039.png";
-import socialCreativity40 from "../assets/images/keywordsEnThemas/socialCreativity/0040.png";
+import placeholder1 from "../assets/images/keywordsEnThemas/placeholder/0001.webp";
+import placeholder2 from "../assets/images/keywordsEnThemas/placeholder/0002.webp";
+import placeholder3 from "../assets/images/keywordsEnThemas/placeholder/0003.webp";
+import placeholder4 from "../assets/images/keywordsEnThemas/placeholder/0004.webp";
+import placeholder5 from "../assets/images/keywordsEnThemas/placeholder/0005.webp";
+import placeholder6 from "../assets/images/keywordsEnThemas/placeholder/0006.webp";
+import placeholder7 from "../assets/images/keywordsEnThemas/placeholder/0007.webp";
+import placeholder8 from "../assets/images/keywordsEnThemas/placeholder/0008.webp";
+import placeholder9 from "../assets/images/keywordsEnThemas/placeholder/0009.webp";
+import placeholder10 from "../assets/images/keywordsEnThemas/placeholder/0010.webp";
+import placeholder11 from "../assets/images/keywordsEnThemas/placeholder/0011.webp";
+import placeholder12 from "../assets/images/keywordsEnThemas/placeholder/0012.webp";
+import placeholder13 from "../assets/images/keywordsEnThemas/placeholder/0013.webp";
+import placeholder14 from "../assets/images/keywordsEnThemas/placeholder/0014.webp";
+import placeholder15 from "../assets/images/keywordsEnThemas/placeholder/0015.webp";
+import placeholder16 from "../assets/images/keywordsEnThemas/placeholder/0016.webp";
+import placeholder17 from "../assets/images/keywordsEnThemas/placeholder/0017.webp";
+import placeholder18 from "../assets/images/keywordsEnThemas/placeholder/0018.webp";
+import placeholder19 from "../assets/images/keywordsEnThemas/placeholder/0019.webp";
+import placeholder20 from "../assets/images/keywordsEnThemas/placeholder/0020.webp";
+import placeholder21 from "../assets/images/keywordsEnThemas/placeholder/0021.webp";
+import placeholder22 from "../assets/images/keywordsEnThemas/placeholder/0022.webp";
+import placeholder23 from "../assets/images/keywordsEnThemas/placeholder/0023.webp";
+import placeholder24 from "../assets/images/keywordsEnThemas/placeholder/0024.webp";
+import placeholder25 from "../assets/images/keywordsEnThemas/placeholder/0025.webp";
+import placeholder26 from "../assets/images/keywordsEnThemas/placeholder/0026.webp";
+import placeholder27 from "../assets/images/keywordsEnThemas/placeholder/0027.webp";
+import placeholder28 from "../assets/images/keywordsEnThemas/placeholder/0028.webp";
+import placeholder29 from "../assets/images/keywordsEnThemas/placeholder/0029.webp";
+import placeholder30 from "../assets/images/keywordsEnThemas/placeholder/0030.webp";
+import placeholder31 from "../assets/images/keywordsEnThemas/placeholder/0031.webp";
+import placeholder32 from "../assets/images/keywordsEnThemas/placeholder/0032.webp";
+import placeholder33 from "../assets/images/keywordsEnThemas/placeholder/0033.webp";
+import placeholder34 from "../assets/images/keywordsEnThemas/placeholder/0034.webp";
+import placeholder35 from "../assets/images/keywordsEnThemas/placeholder/0035.webp";
+import placeholder36 from "../assets/images/keywordsEnThemas/placeholder/0036.webp";
+import placeholder37 from "../assets/images/keywordsEnThemas/placeholder/0037.webp";
+import placeholder38 from "../assets/images/keywordsEnThemas/placeholder/0038.webp";
+import placeholder39 from "../assets/images/keywordsEnThemas/placeholder/0039.webp";
+import placeholder40 from "../assets/images/keywordsEnThemas/placeholder/0040.webp";
 
-import stemSteam1 from "../assets/images/keywordsEnThemas/stemSteam/0001.png";
-import stemSteam2 from "../assets/images/keywordsEnThemas/stemSteam/0002.png";
-import stemSteam3 from "../assets/images/keywordsEnThemas/stemSteam/0003.png";
-import stemSteam4 from "../assets/images/keywordsEnThemas/stemSteam/0004.png";
-import stemSteam5 from "../assets/images/keywordsEnThemas/stemSteam/0005.png";
-import stemSteam6 from "../assets/images/keywordsEnThemas/stemSteam/0006.png";
-import stemSteam7 from "../assets/images/keywordsEnThemas/stemSteam/0007.png";
-import stemSteam8 from "../assets/images/keywordsEnThemas/stemSteam/0008.png";
-import stemSteam9 from "../assets/images/keywordsEnThemas/stemSteam/0009.png";
-import stemSteam10 from "../assets/images/keywordsEnThemas/stemSteam/0010.png";
-import stemSteam11 from "../assets/images/keywordsEnThemas/stemSteam/0011.png";
-import stemSteam12 from "../assets/images/keywordsEnThemas/stemSteam/0012.png";
-import stemSteam13 from "../assets/images/keywordsEnThemas/stemSteam/0013.png";
-import stemSteam14 from "../assets/images/keywordsEnThemas/stemSteam/0014.png";
-import stemSteam15 from "../assets/images/keywordsEnThemas/stemSteam/0015.png";
-import stemSteam16 from "../assets/images/keywordsEnThemas/stemSteam/0016.png";
-import stemSteam17 from "../assets/images/keywordsEnThemas/stemSteam/0017.png";
-import stemSteam18 from "../assets/images/keywordsEnThemas/stemSteam/0018.png";
-import stemSteam19 from "../assets/images/keywordsEnThemas/stemSteam/0019.png";
-import stemSteam20 from "../assets/images/keywordsEnThemas/stemSteam/0020.png";
-import stemSteam21 from "../assets/images/keywordsEnThemas/stemSteam/0021.png";
-import stemSteam22 from "../assets/images/keywordsEnThemas/stemSteam/0022.png";
-import stemSteam23 from "../assets/images/keywordsEnThemas/stemSteam/0023.png";
-import stemSteam24 from "../assets/images/keywordsEnThemas/stemSteam/0024.png";
-import stemSteam25 from "../assets/images/keywordsEnThemas/stemSteam/0025.png";
-import stemSteam26 from "../assets/images/keywordsEnThemas/stemSteam/0026.png";
-import stemSteam27 from "../assets/images/keywordsEnThemas/stemSteam/0027.png";
-import stemSteam28 from "../assets/images/keywordsEnThemas/stemSteam/0028.png";
-import stemSteam29 from "../assets/images/keywordsEnThemas/stemSteam/0029.png";
-import stemSteam30 from "../assets/images/keywordsEnThemas/stemSteam/0030.png";
-import stemSteam31 from "../assets/images/keywordsEnThemas/stemSteam/0031.png";
-import stemSteam32 from "../assets/images/keywordsEnThemas/stemSteam/0032.png";
-import stemSteam33 from "../assets/images/keywordsEnThemas/stemSteam/0033.png";
-import stemSteam34 from "../assets/images/keywordsEnThemas/stemSteam/0034.png";
-import stemSteam35 from "../assets/images/keywordsEnThemas/stemSteam/0035.png";
-import stemSteam36 from "../assets/images/keywordsEnThemas/stemSteam/0036.png";
-import stemSteam37 from "../assets/images/keywordsEnThemas/stemSteam/0037.png";
-import stemSteam38 from "../assets/images/keywordsEnThemas/stemSteam/0038.png";
-import stemSteam39 from "../assets/images/keywordsEnThemas/stemSteam/0039.png";
-import stemSteam40 from "../assets/images/keywordsEnThemas/stemSteam/0040.png";
+import socialCreativity1 from "../assets/images/keywordsEnThemas/socialCreativity/0001.webp";
+import socialCreativity2 from "../assets/images/keywordsEnThemas/socialCreativity/0002.webp";
+import socialCreativity3 from "../assets/images/keywordsEnThemas/socialCreativity/0003.webp";
+import socialCreativity4 from "../assets/images/keywordsEnThemas/socialCreativity/0004.webp";
+import socialCreativity5 from "../assets/images/keywordsEnThemas/socialCreativity/0005.webp";
+import socialCreativity6 from "../assets/images/keywordsEnThemas/socialCreativity/0006.webp";
+import socialCreativity7 from "../assets/images/keywordsEnThemas/socialCreativity/0007.webp";
+import socialCreativity8 from "../assets/images/keywordsEnThemas/socialCreativity/0008.webp";
+import socialCreativity9 from "../assets/images/keywordsEnThemas/socialCreativity/0009.webp";
+import socialCreativity10 from "../assets/images/keywordsEnThemas/socialCreativity/0010.webp";
+import socialCreativity11 from "../assets/images/keywordsEnThemas/socialCreativity/0011.webp";
+import socialCreativity12 from "../assets/images/keywordsEnThemas/socialCreativity/0012.webp";
+import socialCreativity13 from "../assets/images/keywordsEnThemas/socialCreativity/0013.webp";
+import socialCreativity14 from "../assets/images/keywordsEnThemas/socialCreativity/0014.webp";
+import socialCreativity15 from "../assets/images/keywordsEnThemas/socialCreativity/0015.webp";
+import socialCreativity16 from "../assets/images/keywordsEnThemas/socialCreativity/0016.webp";
+import socialCreativity17 from "../assets/images/keywordsEnThemas/socialCreativity/0017.webp";
+import socialCreativity18 from "../assets/images/keywordsEnThemas/socialCreativity/0018.webp";
+import socialCreativity19 from "../assets/images/keywordsEnThemas/socialCreativity/0019.webp";
+import socialCreativity20 from "../assets/images/keywordsEnThemas/socialCreativity/0020.webp";
+import socialCreativity21 from "../assets/images/keywordsEnThemas/socialCreativity/0021.webp";
+import socialCreativity22 from "../assets/images/keywordsEnThemas/socialCreativity/0022.webp";
+import socialCreativity23 from "../assets/images/keywordsEnThemas/socialCreativity/0023.webp";
+import socialCreativity24 from "../assets/images/keywordsEnThemas/socialCreativity/0024.webp";
+import socialCreativity25 from "../assets/images/keywordsEnThemas/socialCreativity/0025.webp";
+import socialCreativity26 from "../assets/images/keywordsEnThemas/socialCreativity/0026.webp";
+import socialCreativity27 from "../assets/images/keywordsEnThemas/socialCreativity/0027.webp";
+import socialCreativity28 from "../assets/images/keywordsEnThemas/socialCreativity/0028.webp";
+import socialCreativity29 from "../assets/images/keywordsEnThemas/socialCreativity/0029.webp";
+import socialCreativity30 from "../assets/images/keywordsEnThemas/socialCreativity/0030.webp";
+import socialCreativity31 from "../assets/images/keywordsEnThemas/socialCreativity/0031.webp";
+import socialCreativity32 from "../assets/images/keywordsEnThemas/socialCreativity/0032.webp";
+import socialCreativity33 from "../assets/images/keywordsEnThemas/socialCreativity/0033.webp";
+import socialCreativity34 from "../assets/images/keywordsEnThemas/socialCreativity/0034.webp";
+import socialCreativity35 from "../assets/images/keywordsEnThemas/socialCreativity/0035.webp";
+import socialCreativity36 from "../assets/images/keywordsEnThemas/socialCreativity/0036.webp";
+import socialCreativity37 from "../assets/images/keywordsEnThemas/socialCreativity/0037.webp";
+import socialCreativity38 from "../assets/images/keywordsEnThemas/socialCreativity/0038.webp";
+import socialCreativity39 from "../assets/images/keywordsEnThemas/socialCreativity/0039.webp";
+import socialCreativity40 from "../assets/images/keywordsEnThemas/socialCreativity/0040.webp";
+
+import stemSteam1 from "../assets/images/keywordsEnThemas/stemSteam/0001.webp";
+import stemSteam2 from "../assets/images/keywordsEnThemas/stemSteam/0002.webp";
+import stemSteam3 from "../assets/images/keywordsEnThemas/stemSteam/0003.webp";
+import stemSteam4 from "../assets/images/keywordsEnThemas/stemSteam/0004.webp";
+import stemSteam5 from "../assets/images/keywordsEnThemas/stemSteam/0005.webp";
+import stemSteam6 from "../assets/images/keywordsEnThemas/stemSteam/0006.webp";
+import stemSteam7 from "../assets/images/keywordsEnThemas/stemSteam/0007.webp";
+import stemSteam8 from "../assets/images/keywordsEnThemas/stemSteam/0008.webp";
+import stemSteam9 from "../assets/images/keywordsEnThemas/stemSteam/0009.webp";
+import stemSteam10 from "../assets/images/keywordsEnThemas/stemSteam/0010.webp";
+import stemSteam11 from "../assets/images/keywordsEnThemas/stemSteam/0011.webp";
+import stemSteam12 from "../assets/images/keywordsEnThemas/stemSteam/0012.webp";
+import stemSteam13 from "../assets/images/keywordsEnThemas/stemSteam/0013.webp";
+import stemSteam14 from "../assets/images/keywordsEnThemas/stemSteam/0014.webp";
+import stemSteam15 from "../assets/images/keywordsEnThemas/stemSteam/0015.webp";
+import stemSteam16 from "../assets/images/keywordsEnThemas/stemSteam/0016.webp";
+import stemSteam17 from "../assets/images/keywordsEnThemas/stemSteam/0017.webp";
+import stemSteam18 from "../assets/images/keywordsEnThemas/stemSteam/0018.webp";
+import stemSteam19 from "../assets/images/keywordsEnThemas/stemSteam/0019.webp";
+import stemSteam20 from "../assets/images/keywordsEnThemas/stemSteam/0020.webp";
+import stemSteam21 from "../assets/images/keywordsEnThemas/stemSteam/0021.webp";
+import stemSteam22 from "../assets/images/keywordsEnThemas/stemSteam/0022.webp";
+import stemSteam23 from "../assets/images/keywordsEnThemas/stemSteam/0023.webp";
+import stemSteam24 from "../assets/images/keywordsEnThemas/stemSteam/0024.webp";
+import stemSteam25 from "../assets/images/keywordsEnThemas/stemSteam/0025.webp";
+import stemSteam26 from "../assets/images/keywordsEnThemas/stemSteam/0026.webp";
+import stemSteam27 from "../assets/images/keywordsEnThemas/stemSteam/0027.webp";
+import stemSteam28 from "../assets/images/keywordsEnThemas/stemSteam/0028.webp";
+import stemSteam29 from "../assets/images/keywordsEnThemas/stemSteam/0029.webp";
+import stemSteam30 from "../assets/images/keywordsEnThemas/stemSteam/0030.webp";
+import stemSteam31 from "../assets/images/keywordsEnThemas/stemSteam/0031.webp";
+import stemSteam32 from "../assets/images/keywordsEnThemas/stemSteam/0032.webp";
+import stemSteam33 from "../assets/images/keywordsEnThemas/stemSteam/0033.webp";
+import stemSteam34 from "../assets/images/keywordsEnThemas/stemSteam/0034.webp";
+import stemSteam35 from "../assets/images/keywordsEnThemas/stemSteam/0035.webp";
+import stemSteam36 from "../assets/images/keywordsEnThemas/stemSteam/0036.webp";
+import stemSteam37 from "../assets/images/keywordsEnThemas/stemSteam/0037.webp";
+import stemSteam38 from "../assets/images/keywordsEnThemas/stemSteam/0038.webp";
+import stemSteam39 from "../assets/images/keywordsEnThemas/stemSteam/0039.webp";
+import stemSteam40 from "../assets/images/keywordsEnThemas/stemSteam/0040.webp";
 
 
 const useGetKeywordImages = (keywordData) => {
@@ -337,6 +378,49 @@ const useGetKeywordImages = (keywordData) => {
         onderwijsEnVorming40,
     ];
 
+    const placeholderImages = [
+        placeholder1,
+        placeholder2,
+        placeholder3,
+        placeholder4,
+        placeholder5,
+        placeholder6,
+        placeholder7,
+        placeholder8,
+        placeholder9,
+        placeholder10,
+        placeholder11,
+        placeholder12,
+        placeholder13,
+        placeholder14,
+        placeholder15,
+        placeholder16,
+        placeholder17,
+        placeholder18,
+        placeholder19,
+        placeholder20,
+        placeholder21,
+        placeholder22,
+        placeholder23,
+        placeholder24,
+        placeholder25,
+        placeholder26,
+        placeholder27,
+        placeholder28,
+        placeholder29,
+        placeholder30,
+        placeholder31,
+        placeholder32,
+        placeholder33,
+        placeholder34,
+        placeholder35,
+        placeholder36,
+        placeholder37,
+        placeholder38,
+        placeholder39,
+        placeholder40,
+    ];
+
     const socialCreativityImages = [
         socialCreativity1,
         socialCreativity2,
@@ -435,9 +519,10 @@ const useGetKeywordImages = (keywordData) => {
         if (keywordName === "digitalSkillsMediawijsheid") return digitalSkillsMediawijsheidImages;
         if (keywordName === "marketingCommunicatie") return marketingCommunicatieImages;
         if (keywordName === "onderwijsEnVorming") return onderwijsEnVormingImages;
+        if (keywordName === "placeholder") return placeholderImages;
         if (keywordName === "socialCreativity") return socialCreativityImages;
         if (keywordName === "stemSteam") return stemSteamImages;
-        return null;
+        return placeholderImages;
     });
 }
 

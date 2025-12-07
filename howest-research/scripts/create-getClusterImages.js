@@ -58,7 +58,7 @@ ${imageArrays}
     const inputList = Array.isArray(clusterData) ? clusterData : [clusterData];
 
     return inputList.map(clusterName => {
-${conditions}        return null;
+${conditions}        return clusteroverschrijdendImages;
     });
 }
 
