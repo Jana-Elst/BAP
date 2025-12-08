@@ -10,6 +10,7 @@ import { getProjectInfo } from '@/scripts/getData';
 import Card from "@/components/atoms/card";
 
 const ProjectCard = ({ project, page, setPage, setVisible }) => {
+    console.log(project.label);
     const projectInfo = getProjectInfo(project.id);
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
 
@@ -19,13 +20,13 @@ const ProjectCard = ({ project, page, setPage, setVisible }) => {
     };
 
     const handleOpenDetail = () => {
-        console.log('DETAIL', page.page, page.id);
         setPage({
             page: 'detailResearch',
             id: project.id,
             previousPages: [
                 ...(page.previousPages || []),
                 {
+                    info: page.info,
                     page: page.page,
                     id: page.id
                 }

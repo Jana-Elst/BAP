@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        // backgroundColor: 'green',
-        padding: 16,
+        padding: 32,
     },
 
     image: {
@@ -35,6 +34,7 @@ const styles = StyleSheet.create({
 
     rightSection: {
         flexDirection: 'row',
+        gap: 16,
     },
 
     filter: {

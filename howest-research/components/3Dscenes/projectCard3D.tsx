@@ -1,40 +1,57 @@
 import { Image } from 'expo-image';
-
-interface ProjectCard3DProps {
-    title: string;
-    subtitle: string;
-    // imageSrc: string;
-    imageAlt?: string;
-}
+import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
+import '../../styles/style.css'
 
 const ProjectCard3D = ({
-    title = 'TITLE',
-    subtitle = 'SUBTITLE',
-    // imageSrc = Image,
-    imageAlt = 'ALT TEXT',
-}: ProjectCard3DProps) => {
-    const imageSrc = require('../../assets/images/visualizationsProjects/composition.png');;
+    page,
+    setPage,
+    setVisible,
+    project,
+}) => {
+
+    console.log('project', project.formattedName);
+    const imageSrc = useGetKeywordImages(project.formattedName);
+    const color = project.color;
+    console.log('color', color);
+
+    const handleOpenDetail = () => {
+        setPage({
+            page: 'detailResearch',
+            id: project.id,
+            previousPages: [
+                ...(page.previousPages || []),
+                {
+                    info: page.info,
+                    page: page.page,
+                    id: page.id
+                }
+            ]
+        })
+        setVisible(true);
+    }
+
+    // If project data is missing for any reason (render timing, incomplete data), do not render the card.
+    if (!project) return null;
 
     return (
-        <div style={styles.container}>
+        <div style={styles.container} onClick={handleOpenDetail}>
             <div style={styles.card}>
                 <div style={styles.texture}></div>
 
                 <div style={styles.header}>
-                    <p style={styles.headerTitle}>{title}</p>
-                    <p style={styles.headerSubtitle}>{subtitle}</p>
+                    <p style={styles.headerTitle}>{project.title}</p>
+                    <p style={styles.headerSubtitle}>{project.cluster.label}</p>
                 </div>
                 <div style={styles.imageContainer}>
                     <Image
                         source={imageSrc}
-                        alt={imageAlt}
+                        alt={project.title}
                         style={styles.image}
                         contentFit="cover"
                     />
                 </div>
             </div>
-            <div style={styles.gradient}></div>
-        </div>
+            <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>        </div>
     );
 };
 
@@ -86,7 +103,6 @@ const styles: { [key: string]: React.CSSProperties } = {
         transform: 'rotate(-46.149deg)',
         flexShrink: 0,
         borderRadius: '326.486px',
-        background: 'radial-gradient(65.35% 66.61% at 50% 50%, #998EBD 0%, rgba(153, 142, 189, 0.00) 100%)',
     },
     header: {
         display: 'flex',
@@ -96,9 +112,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     headerTitle: {
         margin: 0,
         padding: 0,
-        color: '#000',
+        color: 'black',
         textAlign: 'center',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontFamily: 'VAGRoundedStd-Bold, sans-serif',
         fontSize: '22px',
         lineHeight: '120%',
         letterSpacing: '1.1px',
@@ -109,7 +125,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         padding: 0,
         color: '#606060',
         textAlign: 'center',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontFamily: ' OpenSans-Semibold, sans-serif',
         fontSize: '16px',
     },
     imageContainer: {

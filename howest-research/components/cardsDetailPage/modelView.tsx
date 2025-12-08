@@ -1,49 +1,25 @@
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import Scene3D from '../3Dscenes/3DsceneNew';
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { StyledText } from "../atoms/styledComponents";
 import ProjectImage from "../organisms/projectImage";
 
 
 const ModelView = ({ width, height, project, setPage, page }) => {
-    const projectKeywords = project ? project.keywords : [];
-    console.log('PROJECT KEYWORDS IN MODELVIEW', project);
-
-    const handleOpendetailKeyword = (keywordId) => {
-        console.log('KEYWORD ID', keywordId);
-        setPage({
-            page: 'detailKeyword',
-            id: keywordId,
-            previousPages: [
-                ...page.previousPages || [],
-                {
-                    page: page.page,
-                    id: page.id
-                }
-            ]
-        })
-    }
-
     return (
-        <View style={styles.container3D}>
-            {projectKeywords
+        <View style={styles.containerVis}>
+            {/* {projectKeywords
                 .map(keyword => (
                     <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.id)} key={keyword.id} style={styles.tag}>
                         <StyledText style={styles.tagStyledText}>{keyword.label} {keyword.id}</StyledText>
                     </TouchableOpacity>
-                ))}
+                ))} */}
 
-            <ProjectImage width={width} height={height} />
+            <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} showKeywords={true} />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'green',
-    },
-
-    container3D: {
+    containerVis: {
         flex: 1,
         height: '100%',
         width: '100%',

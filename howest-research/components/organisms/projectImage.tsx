@@ -1,351 +1,351 @@
-import { useEffect, useMemo, useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { Canvas, Image as SkiaImage, useImage, Rect, Group, Oval, Line, vec } from '@shopify/react-native-skia';
-import mensEnWelzijn from '../../assets/images/keywords/mensEnWelzijn/image-static.png';
-import aiArtificialIntelligence1 from '../../assets/images/keywords/aiArtificialIntelligence/0001.png';
-import aiArtificialIntelligence2 from '../../assets/images/keywords/aiArtificialIntelligence/0002.png';
-import aiArtificialIntelligence3 from '../../assets/images/keywords/aiArtificialIntelligence/0003.png';
-import aiArtificialIntelligence4 from '../../assets/images/keywords/aiArtificialIntelligence/0004.png';
-import aiArtificialIntelligence5 from '../../assets/images/keywords/aiArtificialIntelligence/0005.png';
-import aiArtificialIntelligence6 from '../../assets/images/keywords/aiArtificialIntelligence/0006.png';
-import aiArtificialIntelligence7 from '../../assets/images/keywords/aiArtificialIntelligence/0007.png';
-import aiArtificialIntelligence8 from '../../assets/images/keywords/aiArtificialIntelligence/0008.png';
+import { Colors } from '@/constants/theme';
+import { Canvas, Group, Oval, Rect, Line, vec, Circle, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
+import { useMemo, useRef } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
+import { TapGestureHandler } from 'react-native-gesture-handler';
+import { useComposition } from '../../scripts/createProjectImageCompositions';
+import { StyledText } from '../atoms/styledComponents';
+import Touchable from '../atoms/touchable';
 
-const keywordPositionsConfig = [
-    {
-        id: 1,
-        degrees: [0, 45],
-        positionWords: [],
-    },
-    {
-        id: 2,
-        degrees: [0, 45],
-        positionWords: [],
-    },
-    {
-        id: 3,
-        degrees: [0, 45, 90],
-        positionWords: [],
-    },
-    {
-        id: 4,
-        degrees: [0, 45, 90, 135],
-        positionWords: [],
-    },
-    {
-        id: 5,
-        degrees: [0, 45, 90, 135, 180],
-        positionWords: [],
-    },
-    {
-        id: 6,
-        degrees: [0, 45, 90, 135, 180, 225],
-        positionWords: [],
-    },
-    {
-        id: 7,
-        degrees: [0, 45, 90, 135, 180, 225, 270],
-        positionWords: [],
-    },
-    {
-        id: 8,
-        degrees: [0, 45, 90, 135, 180, 225, 270, 315],
-        positionWords: [],
-    },
 
-];
+const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false }) => {
+    const canvasRef = useRef<View>(null);
+    const positionData = useComposition(project, width, height, screenWidth, screenHeight);
 
-const ProjectImage = ({ width, height }) => {
-    const image1 = useImage(aiArtificialIntelligence1);
-    const image2 = useImage(aiArtificialIntelligence2);
-    const image3 = useImage(aiArtificialIntelligence3);
-    const image4 = useImage(aiArtificialIntelligence4);
-    const image5 = useImage(aiArtificialIntelligence5);
-    const image6 = useImage(aiArtificialIntelligence6);
-    const image7 = useImage(aiArtificialIntelligence7);
-    const image8 = useImage(aiArtificialIntelligence8);
-    const image9 = useImage(mensEnWelzijn);
+    // Return loading state while images load
+    if (positionData.isLoading) {
+        return (
+            <View>
+                <Text>Loading visualization...</Text>
+            </View>
+        );
+    }
 
-    const keywords = useMemo(() =>
-        [image1, image2, image3, image4, image5, image6, image7, image8]);
+    // Destructure all needed data
+    const {
+        keywordData = [],
+        keywordPositions = [],
+        clusterPosition,
+        boundingBoxesKeywords = [],
+        boundingBoxesCluster,
+        keywordImageSources = [],
+        clusterImageSources = [],
+        keywordImages = [],
+        clusterImage,
+        positions = { degrees: [] },
+        centerX = screenWidth / 2,
+        centerY = screenHeight / 2,
+        offset = 0,
+        widthCluster = width,
+        heightCluster = height,
+        widhtKeyword = width / 2,
+        heightKeyword = height / 2,
+        getEllipseIntersection,
+    } = positionData;
 
-    const cluster = useMemo(() =>
-        [image9]
-    );
+    const getKeywordLabelPositions = () => {
+        if (!positions) {
+            console.log('No positions available');
+            return [];
+        }
+        if (!positions.keyWordLabelPositionsOffset) {
+            console.log('No keyWordLabelPositionsOffset');
+            return [];
+        }
+        if (!boundingBoxesCluster) {
+            console.log('No boundingBoxesCluster');
+            return [];
+        }
 
-    const positions = useMemo(() => keywordPositionsConfig[keywords.length - 1], [keywords.length]);
+        // Use the bounding box center as ellipse center
+        const boundingBoxCenterX = boundingBoxesCluster.x + boundingBoxesCluster.width / 2;
+        const boundingBoxCenterY = boundingBoxesCluster.y + boundingBoxesCluster.height / 2;
 
-    const [boundingBoxesKeywords, setBoundingBoxesKeywords] = useState<(BoundingBox | undefined)[]>([]);
-    const [boundingBoxCluster, setBoundingBoxCluster] = useState<(BoundingBox | undefined)[]>([]);
-    const [clusterImagePosition, setClusterImagePosition] = useState({ x: 0, y: 0 });
+        return positions.keyWordLabelPositionsOffset.map((offsetPos, index) => {
+            const degree = positions.degrees[index];
 
-    const size = { width, height };
+            const yTop = boundingBoxCenterY - boundingBoxesCluster.height / 2;
+            const yBottom = boundingBoxCenterY + boundingBoxesCluster.height / 2;
+            const gap = 8;
+            const heightLabel = 40;
 
-    const widthCluster = Math.max(size.width / 2, size.height / 2);
-    const heightCluster = Math.max(size.width / 2, size.height / 2);
+            const intersection = getEllipseIntersection(
+                degree,
+                boundingBoxCenterX,
+                boundingBoxCenterY,
+                boundingBoxesCluster.width / 2,
+                boundingBoxesCluster.height / 2
+            );
+            const result = {
+                x: intersection.x,
+                y: intersection.y <= boundingBoxCenterY ? yTop - (offsetPos * (heightLabel + gap)) + 16 : yBottom + (offsetPos * (heightLabel + gap)) - 16,
+            };
 
-    const widhtKeyword = widthCluster/3*2;
-    const heightKeyword = heightCluster/3*2;
-
-    const offset = widthCluster / 4;
-
-    const centerX = size.width / 2;
-    const centerY = size.height / 2;
-
-    // Get visible pixels info including offset within the image
-    const getVisiblePixelsInfo = (image: any, imageWidth: number, imageHeight: number): VisiblePixelsResult | undefined => {
-        if (!image) return undefined;
-
-        const originalWidth = image.width();
-        const originalHeight = image.height();
-
-        const pixels = image.readPixels(0, 0, {
-            width: originalWidth,
-            height: originalHeight,
-            colorType: 4,
-            alphaType: 2,
+            return result;
         });
+    };
 
-        if (!pixels) return undefined;
+    const keyWordLabelPositions = getKeywordLabelPositions();
 
-        let minX = originalWidth;
-        let minY = originalHeight;
-        let maxX = 0;
-        let maxY = 0;
-
-        for (let y = 0; y < originalHeight; y++) {
-            for (let x = 0; x < originalWidth; x++) {
-                const index = (y * originalWidth + x) * 4;
-                const alpha = pixels[index + 3];
-
-                if (alpha > 0) {
-                    minX = Math.min(minX, x);
-                    minY = Math.min(minY, y);
-                    maxX = Math.max(maxX, x);
-                    maxY = Math.max(maxY, y);
+    //----- event listeners -----//
+    const handleOpendetailKeyword = (keyword: any, index: number) => {
+        console.log('keywordImageSources[index]:', keywordImageSources[index]);
+        setPage({
+            page: 'detailKeyword',
+            id: keyword.id,
+            info: {
+                keyword: keyword,
+                keywordImageSource: keywordImageSources[index],
+                boundingBoxKeyword: boundingBoxesKeywords[index],
+            },
+            previousPages: [
+                ...page.previousPages || [],
+                {
+                    page: page.page,
+                    id: page.id,
+                    info: page.info,
                 }
+            ]
+        })
+    }
+
+    const handleTap = (event: any) => {
+        const { x, y } = event.nativeEvent;
+
+        // Check if touch is within any keyword bounding box
+        boundingBoxesKeywords?.forEach((box, index) => {
+            if (!box) return;
+
+            // Check if touch point is within the bounding box
+            if (
+                x >= box.x &&
+                x <= box.x + box.width &&
+                y >= box.y &&
+                y <= box.y + box.height
+            ) {
+                handleOpendetailKeyword(keywordData[index], index);
             }
-        }
-
-        if (maxX >= minX && maxY >= minY) {
-            const imageAspect = originalWidth / originalHeight;
-            const containerAspect = imageWidth / imageHeight;
-
-            let renderedWidth: number;
-            let renderedHeight: number;
-            let containerOffsetX = 0;
-            let containerOffsetY = 0;
-
-            if (imageAspect > containerAspect) {
-                renderedWidth = imageWidth;
-                renderedHeight = imageWidth / imageAspect;
-                containerOffsetY = (imageHeight - renderedHeight) / 2;
-            } else {
-                renderedHeight = imageHeight;
-                renderedWidth = imageHeight * imageAspect;
-                containerOffsetX = (imageWidth - renderedWidth) / 2;
-            }
-
-            const scaleX = renderedWidth / originalWidth;
-            const scaleY = renderedHeight / originalHeight;
-
-            // Calculate the offset of visible content from top-left of container
-            //make sure the element is centered
-            const visibleOffsetX = containerOffsetX + minX * scaleX;
-            const visibleOffsetY = containerOffsetY + minY * scaleY;
-            const visibleWidth = (maxX - minX + 1) * scaleX;
-            const visibleHeight = (maxY - minY + 1) * scaleY;
-
-            return {
-                boundingBox: {
-                    x: 0, // Will be set later based on image position
-                    y: 0,
-                    width: visibleWidth,
-                    height: visibleHeight,
-                },
-                offsetX: visibleOffsetX,
-                offsetY: visibleOffsetY,
-            };
-        }
-
-        return undefined;
-    };
-
-    // Calculate the intersection point on the offset ellipse for a given angle
-    const getEllipseIntersection = (degree: number, ellipseCenterX: number, ellipseCenterY: number, radiusX: number, radiusY: number) => {
-        const radians = (degree * Math.PI) / 180;
-        const x = ellipseCenterX + Math.cos(radians) * radiusX;
-        const y = ellipseCenterY + Math.sin(radians) * radiusY;
-        return { x, y };
-    };
-
-    // Get the keyword positions based on the offset ellipse
-    const getKeywordPositions = () => {
-        const clusterBox = boundingBoxCluster[0];
-        if (!clusterBox) return [];
-
-        // The ellipse center is now the screen center (since cluster is centered)
-        const ellipseCenterX = centerX;
-        const ellipseCenterY = centerY;
-        const radiusX = (clusterBox.width + offset) / 2;
-        const radiusY = (clusterBox.height + offset) / 2;
-
-        return positions.degrees.map((degree) => {
-            const intersection = getEllipseIntersection(degree, ellipseCenterX, ellipseCenterY, radiusX, radiusY);
-            return {
-                x: intersection.x - widhtKeyword / 2,
-                y: intersection.y - heightKeyword / 2,
-                centerX: intersection.x,
-                centerY: intersection.y,
-            };
         });
+
+
+        // TODO: Add cluster click handler if needed
+        // if (
+        //     x >= clusterPosition.x &&
+        //     x <= clusterPosition.x + clusterPosition.width &&
+        //     y >= clusterPosition.y &&
+        //     y <= clusterPosition.y + clusterPosition.height
+        // ) {
+        //     // Handle cluster click
+        // }
     };
 
-    // Calculate cluster position so visible content is centered
-    useEffect(() => {
-        const allLoadedCluster = cluster.every(img => img !== null);
-        if (!allLoadedCluster) return;
+    const CanvasContent = () => {
+        return (
+            <Canvas style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: screenWidth,
+                height: screenHeight,
+            }}>
 
-        const clusterImage = cluster[0];
-        const visibleInfo = getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
+                {(showKeywords && positionData) && keywordData.map((keyword, index) => {
+                    const pos = keywordPositions[index];
+                    if (!pos || !keyWordLabelPositions || !keyWordLabelPositions[index]) return null;
 
-        if (visibleInfo) {
-            // Calculate where the image should be placed so visible content is centered
-            const imageX = centerX - visibleInfo.boundingBox.width / 2 - visibleInfo.offsetX;
-            const imageY = centerY - visibleInfo.boundingBox.height / 2 - visibleInfo.offsetY;
+                    return (
+                        <Line
+                            key={`line - ${index}`}
+                            p1={vec(pos.centerX, pos.centerY)}
+                            p2={vec(keyWordLabelPositions[index].x, keyWordLabelPositions[index].y)}
+                            color={Colors.white}
+                            strokeWidth={2}
+                        />
+                    );
+                })}
 
-            setClusterImagePosition({ x: imageX, y: imageY });
-
-            // Set the bounding box with correct screen position
-            setBoundingBoxCluster([{
-                x: centerX - visibleInfo.boundingBox.width / 2,
-                y: centerY - visibleInfo.boundingBox.height / 2,
-                width: visibleInfo.boundingBox.width,
-                height: visibleInfo.boundingBox.height,
-            }]);
-        }
-    }, [cluster, centerX, centerY]);
-
-    // Calculate keyword positions around the cluster and their bounding boxes
-    const keywordPositions = getKeywordPositions();
-    useEffect(() => {
-        const allLoadedKeywords = keywords.every(img => img !== null);
-        if (!allLoadedKeywords || keywordPositions.length === 0) return;
-
-        const boxesKeywords = keywords.map((image, index) => {
-            const pos = keywordPositions[index];
-            if (!pos) return undefined;
-
-            const visibleInfo = getVisiblePixelsInfo(image, widhtKeyword, heightKeyword);
-            if (!visibleInfo) return undefined;
-
-            return {
-                x: pos.x + visibleInfo.offsetX,
-                y: pos.y + visibleInfo.offsetY,
-                width: visibleInfo.boundingBox.width,
-                height: visibleInfo.boundingBox.height,
-            };
-        });
-        setBoundingBoxesKeywords(boxesKeywords);
-
-    }, [keywords, keywordPositions]);
-
-    return (
-        <View style={styles.container}>
-            <Canvas style={{ width: size.width, height: size.height }}>
                 {/* Draw lines from center based on degrees */}
-                {/* {positions.degrees.map((degree, index) => {
+                {positions.degrees.map((degree, index) => {
                     const radians = (degree * Math.PI) / 180;
-                    const lineLength = Math.min(size.width, size.height) / 2;
+                    const lineLength = Math.min(screenWidth, screenHeight) / 2;
 
                     const endX = centerX + Math.cos(radians) * lineLength;
                     const endY = centerY + Math.sin(radians) * lineLength;
 
                     return (
                         <Line
-                            key={`line-${index}`}
+                            key={`line - ${index} `}
                             p1={vec(centerX, centerY)}
                             p2={vec(endX, endY)}
-                            color="blue"
+                            color="transparent"
                             strokeWidth={2}
                         />
                     );
-                })} */}
+                })}
+
+                {/* Draw intersection points */}
+                {clusterPosition && positions.degrees.map((degree, index) => {
+                    const intersection = getEllipseIntersection(
+                        degree,
+                        centerX,
+                        centerY,
+                        (clusterPosition.width + offset) / 2,
+                        (clusterPosition.height + offset) / 2
+                    );
+                    return (
+                        <Circle
+                            key={`intersection - ${index} `}
+                            cx={intersection.x}
+                            cy={intersection.y}
+                            r={5}
+                            color="transparent"
+                        />
+                    );
+                })}
 
                 {/* Draw keyword images at intersection points */}
-                {keywords.map((image, index) => {
+                {keywordImages.map((image, index) => {
                     const pos = keywordPositions[index];
-                    const boundingBox = boundingBoxesKeywords[index];
+                    const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
 
                     if (!pos) return null;
+
+                    // Use pre-calculated render positions if available, otherwise fall back to pos
+                    const renderX = boundingBox?.renderX ?? pos.x;
+                    const renderY = boundingBox?.renderY ?? pos.y;
 
                     return (
                         <Group key={`keyword-${index}`}>
                             <SkiaImage
                                 image={image}
-                                x={pos.x}
-                                y={pos.y}
+                                x={renderX}
+                                y={renderY}
                                 width={widhtKeyword}
                                 height={heightKeyword}
                             />
-                            {/* {boundingBox && (
+                            {boundingBox && (
                                 <Rect
                                     x={boundingBox.x}
                                     y={boundingBox.y}
                                     width={boundingBox.width}
                                     height={boundingBox.height}
-                                    color="green"
+                                    color="transparent"
                                     style="stroke"
                                     strokeWidth={2}
                                 />
-                            )} */}
+                            )}
                         </Group>
                     );
                 })}
 
                 {/* Draw cluster image and bounding boxes */}
-                {cluster.map((image, index) => {
-                    const boundingBox = boundingBoxCluster[index];
-                    return (
-                        <Group key={`cluster-${index}`}>
-                            <SkiaImage
-                                image={image}
-                                x={clusterImagePosition.x}
-                                y={clusterImagePosition.y}
-                                width={widthCluster}
-                                height={heightCluster}
+                {clusterPosition && (
+                    <Group>
+                        <SkiaImage
+                            image={clusterImage}
+                            x={clusterPosition.imageX}
+                            y={clusterPosition.imageY}
+                            width={widthCluster}
+                            height={heightCluster}
+                        />
+                        {clusterPosition && (
+                            <Group>
+                                {/* Inner ellipse around visible content */}
+                                <Oval
+                                    x={clusterPosition.x}
+                                    y={clusterPosition.y}
+                                    width={clusterPosition.width}
+                                    height={clusterPosition.height}
+                                    color="transparent"
+                                    style="stroke"
+                                    strokeWidth={2}
+                                />
+                                {/* Outer ellipse with offset */}
+                                <Oval
+                                    x={clusterPosition.x - offset / 2}
+                                    y={clusterPosition.y - offset / 2}
+                                    width={clusterPosition.width + offset}
+                                    height={clusterPosition.height + offset}
+                                    color="transparent"
+                                    style="stroke"
+                                    strokeWidth={2}
+                                />
+                            </Group>
+                        )}
+                        {boundingBoxesCluster && (
+                            <Oval
+                                x={boundingBoxesCluster.x}
+                                y={boundingBoxesCluster.y}
+                                width={boundingBoxesCluster.width}
+                                height={boundingBoxesCluster.height}
+                                color="transparent"
+                                style="stroke"
+                                strokeWidth={2}
                             />
-                            {boundingBox && (
-                                <Group>
-                                    {/* Inner ellipse around visible content */}
-                                    {/* <Oval
-                                        x={boundingBox.x}
-                                        y={boundingBox.y}
-                                        width={boundingBox.width}
-                                        height={boundingBox.height}
-                                        color="red"
-                                        style="stroke"
-                                        strokeWidth={2}
-                                    /> */}
-                                    {/* Outer ellipse with offset */}
-                                    {/* <Oval
-                                        x={boundingBox.x - offset / 2}
-                                        y={boundingBox.y - offset / 2}
-                                        width={boundingBox.width + offset}
-                                        height={boundingBox.height + offset}
-                                        color="red"
-                                        style="stroke"
-                                        strokeWidth={2}
-                                    /> */}
-                                </Group>
-                            )}
-                        </Group>
-                    );
-                })}
-            </Canvas>
-        </View>
-    );
-};
+                        )}
+
+
+                        {/* Draw points label */}
+                        {
+
+                            keywordData.map((keyword, index) => (
+                                <Circle
+                                    key={`intersection - ${index} `}
+                                    cx={keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0}
+                                    cy={keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0}
+                                    r={10}
+                                    color="transparent"
+                                />))
+                        }
+                    </Group>
+                )}
+            </Canvas>)
+    }
+
+    if (showKeywords) {
+        return (
+            <View style={styles.container}>
+                <TapGestureHandler onHandlerStateChange={handleTap}>
+                    <View
+                        ref={canvasRef} 
+                        style={{ width: screenWidth, height: screenHeight }}>
+                        <CanvasContent />
+                        <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                            {
+                                (showKeywords && positionData) && keywordData.map((keyword, index) => (
+                                    <View key={keyword.id}>
+                                        <Touchable
+                                            onPress={() => handleOpendetailKeyword(keyword, index)}
+                                            key={keyword.id}
+                                            styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
+                                            icon={'arrow-forward-outline'}
+                                            iconPosition={'after'}
+                                            iconColor={Colors.blueText}
+                                            styleGradient={{
+                                                position: 'absolute',
+                                                top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
+                                                left: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0,
+                                                transform: [{ translateX: '-50%' }, { translateY: '-50%' }]
+                                            }}
+                                        >
+                                            <StyledText>{keyword.label}</StyledText>
+                                        </Touchable>
+                                    </View>
+                                ))
+                            }
+                        </View>
+                    </View>
+                </TapGestureHandler >
+            </View >
+        );
+    } else {
+        return (
+            <View style={styles.container}>
+                <CanvasContent />
+            </View>
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     container: {

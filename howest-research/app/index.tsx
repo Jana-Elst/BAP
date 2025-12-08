@@ -29,7 +29,7 @@ export default function HomeScreen() {
           fallbackInMainScreen
           screen={Object.keys(screens)[0]}
         >
-          <ExternalScreen page={page} />
+          <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>
 
         <Ipad page={page} setPage={setPage} />

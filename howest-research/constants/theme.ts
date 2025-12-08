@@ -14,6 +14,8 @@ const blue50 = '#ADDAF6';
 const blue25 = '#D4EDFB';
 const blue10 = '#EFF8FE';
 
+const blueText = '#00A3DA';
+
 const pink100 = '#E6007E';
 const pink80 = '#EF5592';
 const pink50 = '#F693B9';
@@ -47,6 +49,8 @@ export const Colors = {
     blue50: blue50,
     blue25: blue25,
     blue10: blue10,
+
+    blueText: blueText,
 
     pink100: pink100,
     pink80: pink80,

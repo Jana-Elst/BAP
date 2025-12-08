@@ -3,18 +3,17 @@
 'use dom';
 
 //---------------------------- IMPORTS ----------------------------//
-import * as THREE from 'three';
-import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import { createRoot } from 'react-dom/client';
+import * as THREE from 'three';
+import { CSS3DObject, CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 
 import { useEffect, useRef } from 'react';
 
-import ProjectCard3D from './projectCard3D';
 import InfiniteScrollHero from './infiniteScrollHero';
+import ProjectCard3D from './projectCard3D';
 
-import getPositions from '../../scripts/placeCards';
-// import data from '../../assets/data/structured-data.json';
 import { getProjectInfo } from '../../scripts/getData';
+import getPositions from '../../scripts/placeCards';
 
 //---------------------------- CONSTANTS ----------------------------//
 // const projects = data.projects;
@@ -101,7 +100,7 @@ const calculateCardPositions = () => {
     }
 }
 
-const createHeroCanvas = (projects) => {
+const createHeroCanvas = (projects, page, setPage, setVisible) => {
     const div = document.createElement('div');
     div.style.width = `${gridSize.w}px`;
     div.style.height = `${gridSize.h}px`;
@@ -110,7 +109,7 @@ const createHeroCanvas = (projects) => {
 
     root.render(
         <>
-            <InfiniteScrollHero projects={projects} cardsPerCanvas={cardsPerCanvas} />
+            <InfiniteScrollHero projects={projects} cardsPerCanvas={cardsPerCanvas} page={page} setPage={setPage} setVisible={setVisible} />
         </>
     );
 
@@ -119,7 +118,7 @@ const createHeroCanvas = (projects) => {
     return css3DObject;
 }
 
-const createCard3DObject = (project, position) => {
+const createCard3DObject = (project, position, page, setPage, setVisible) => {
     const div = document.createElement('div');
     div.style.width = `${cardWidth}px`;
     div.style.height = `${cardHeight}px`;
@@ -127,10 +126,10 @@ const createCard3DObject = (project, position) => {
 
     root.render(
         <ProjectCard3D
-            title={project.title || 'Project Title'}
-            subtitle={project.cluster.label || 'Subtitle'}
-            imageSrc={project.image || ''}
-            imageAlt={project.title || 'Project Image'}
+            page={page}
+            setPage={setPage}
+            setVisible={setVisible}
+            project={project}
         />
     );
 
@@ -139,13 +138,13 @@ const createCard3DObject = (project, position) => {
     return css3DObject;
 }
 
-const createCardCSS3DObjects = (projects) => {
+const createCardCSS3DObjects = (projects, page, setPage, setVisible) => {
     if (cardObjects.length === 0) {
         projects.forEach((project, index) => {
             // console.log('Creating card for project ID:', project.id);
             const projectInfo = getProjectInfo(project.id);
             const position = absoluteCardPositions[index];
-            const cardObject = createCard3DObject(projectInfo, position);
+            const cardObject = createCard3DObject(projectInfo, position, page, setPage, setVisible);
             cardObjects.push(cardObject);
         });
     }
@@ -207,7 +206,7 @@ const createCamera = () => {
     return camera;
 }
 
-const createScene = (projects) => {
+const createScene = (projects, page, setPage, setVisible) => {
     const scene = new THREE.Scene();
 
     //add cards to scene
@@ -216,7 +215,7 @@ const createScene = (projects) => {
         scene.add(card);
     });
 
-    heroCanvas = createHeroCanvas(projects);
+    heroCanvas = createHeroCanvas(projects, page, setPage, setVisible);
     scene.add(heroCanvas);
 
     console.log('scene created');
@@ -238,7 +237,7 @@ const createFrameBorder = (): HTMLDivElement => {
 
 
 //---------------------------- FUNCTION ----------------------------//
-const InfiniteScrollView = ({ projects }) => {
+const InfiniteScrollView = ({ projects, page, setPage, setVisible }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -254,12 +253,12 @@ const InfiniteScrollView = ({ projects }) => {
         calculateCardPositions();
         createAbsoluteCardPositions();
 
-        createCardCSS3DObjects(projects);
+        createCardCSS3DObjects(projects, page, setPage, setVisible);
 
         const canvas = canvasRef.current;
         const camera = createCamera();
         const rendererCCS3D = setupCSS3DRenderer(canvas);
-        const scene = createScene(projects);
+        const scene = createScene(projects, page, setPage, setVisible);
 
         //--- set positions infinite scroll
         const setPositions = () => {
@@ -318,7 +317,6 @@ const InfiniteScrollView = ({ projects }) => {
         };
 
         const handleTouchDown = (e: MouseEvent | TouchEvent) => {
-            e.preventDefault();
             state.isDown = true;
             state.scroll.position = {
                 x: state.scroll.current.x,
@@ -330,7 +328,6 @@ const InfiniteScrollView = ({ projects }) => {
         };
 
         const handleTouchMove = (e: MouseEvent | TouchEvent) => {
-            e.preventDefault();
             if (!state.isDown) return;
             const touch = 'touches' in e ? e.touches[0] : e;
             const distanceX = (state.startX - touch.clientX) * state.scroll.scale;
@@ -343,7 +340,6 @@ const InfiniteScrollView = ({ projects }) => {
         };
 
         const handleTouchUp = (e: MouseEvent | TouchEvent) => {
-            e.preventDefault();
             state.isDown = false;
         };
 
@@ -408,7 +404,7 @@ const InfiniteScrollView = ({ projects }) => {
     //---------------------------- HTML ----------------------------//
     return (
         <div style={{
-            width: '100%',
+            width: '100vw',
             height: '100vh',
             position: 'relative',
             touchAction: 'none'

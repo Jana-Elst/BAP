@@ -1,5 +1,8 @@
-import { Color } from 'three';
 import data from '../assets/data/structured-data.json';
+
+// import fs from 'fs';
+// import path, { format } from 'path';
+// const data = JSON.parse(fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../assets/data/structured-data.json'), 'utf8'));
 
 const colors = [
     {
@@ -9,7 +12,7 @@ const colors = [
     },
     {
         clusterId: 2,
-        domainId: 9,
+        domainId: null,
         color: 'blue',
     },
     {
@@ -74,8 +77,31 @@ const colors = [
     }
 ]
 
+const domainColors = {
+    'gezond': 'pink',
+    'digitaal': 'blue',
+    'ecologisch': 'green',
+    'sociaal': 'purple',
+    'leren': 'yellow',
+}
+
+const months = [
+    'Januari',
+    'Februari',
+    'Maart',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Augustus',
+    'September',
+    'Oktober',
+    'November',
+    'December',
+]
+
 export const getAllKeywords = (keywordIDs) => {
-    const keywords = data.transitiedomeinen.filter(keyword => keywordIDs.includes(keyword.id));
+    const keywords = data.keywords.filter(keyword => keywordIDs.includes(keyword.id));
     return keywords;
 };
 
@@ -86,15 +112,20 @@ export const getAllTransitionDomains = () => {
 
 export const getKeywords = (keywordIDs) => {
     const allKeywords = getAllKeywords(keywordIDs);
-    const filteredKeywords = allKeywords.filter(keyword => keyword.transitiedomeinCategoryID !== 2);
-    return filteredKeywords;
+    const filteredKeywords = allKeywords.filter(keyword => keyword.keywordCategoryIDs !== 3);
+    const keywordsUpperCase = filteredKeywords.map(keyword => ({ ...keyword, label: keyword.label.charAt(0).toUpperCase() + keyword.label.slice(1) }));
+    return keywordsUpperCase;
 }
 
-export const getTransitionDomain = (keywords) => {
-    const keywordIDs = keywords.map(keyword => keyword.id);
-    const allKeywords = getAllKeywords(keywordIDs);
-    const transitionDomain = allKeywords.find(keyword => keyword.transitiedomeinCategoryID === 2);
-    return transitionDomain;
+export const getTransitionDomain = (clusterId) => {
+    const transitionDomainId = colors.find(color => color.clusterId === clusterId).domainId;
+
+    if (transitionDomainId === null) {
+        return '';
+    }
+
+    const transitionDomain = data.transitiedomeinen.find(domain => domain.id === transitionDomainId);
+    return transitionDomain.label;
 };
 
 export const getClusterName = (clusterID) => {
@@ -110,35 +141,66 @@ export const getProjectColor = (clusterID) => {
     return clusterColor;
 };
 
+export const getDomainColor = (domainName) => {
+    const domainColor = domainColors[domainName];
+    return domainColor;
+};
+
+export const getEmail = (name) => {
+    const nameSplitted = name.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('.');
+    return nameSplitted + '@howest.be';
+};
+
+export const getYearAndMonth = (date) => {
+    const timeSplitted = date.split(' ')[0];
+    const dateSplitted = timeSplitted.split('/');
+
+    const month = months[dateSplitted[1] - 1];
+    return month + ' ' + dateSplitted[2];
+}
+
 export const getProjectInfo = (projectID) => {
     const project = data.projects.find(project => project.id === projectID);
-    const projectName = project.CCODE;
 
     return {
         id: project.id,
-        title: projectName,
+        title: project.CCODE,
+        formattedName: project.formattedName,
         cluster: getClusterName(project.clusterId),
-        transitionDomain: getTransitionDomain(project.keywords),
+        transitionDomain: getTransitionDomain(project.clusterId),
         keywords: getKeywords(project.keywords),
         color: getProjectColor(project.clusterId),
         abstract: project.teaserAbstractForWebsite,
         researchGroup: getResearchGroup(project.researchGroupId),
-        contactPerson: project.dossierManagerFullName,
-        startDate: project.startDate,
-        endDate: project.endDate,
+        contactPerson: project.dossierManagerFullName.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+        contactPersonEmail: getEmail(project.dossierManagerFullName),
+        startDate: getYearAndMonth(project.startDate),
+        endDate: getYearAndMonth(project.endDate),
+        // images: project.pictureCommunication,
     }
 };
 
 export const getResearchGroup = (researchGroupId) => {
     const researchGroup = data.onderzoeksgroepen.find(group => group.id === researchGroupId);
+
+    if (researchGroup) {
+        return {
+            ...researchGroup,
+            label: researchGroup.label?.replace('Onderzoeksgroep ', '')
+        };
+    }
     return researchGroup;
 }
 
 export const getProjectsByKeyword = (keywordID) => {
-    const projects = data.projects.filter(project =>
-        project.keywords?.includes(keywordID)
-    );
-    return projects;
+    console.log('keywordID', keywordID);
+    const projectsInfo = data.projects
+        .filter(project => project.keywords.includes(keywordID))
+        .map(project => {
+            const projectInfo = getProjectInfo(project.id);
+            return projectInfo;
+        });
+    return projectsInfo;
 };
 
 export const getFilteredProjects = (activeFilters) => {

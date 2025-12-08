@@ -137,6 +137,7 @@ const createDB = () => {
             transitiedomeinen: transitiedomeinenEntry ? [...new Set(transitiedomeinenEntry.map(t => transitiedomeinen.find(td => td.label === t.KeywordLabel)?.id).filter(id => id !== undefined))] : [],
             dossierManagerFullName: project.DossierManagerFullName,
             CCODE: project.CCODE,
+            formattedName: formattedName(project.CCODE),
             UCODE: project.UCODE,
             CDESC: project.CDESC,
             UDESC: project.UDESC,

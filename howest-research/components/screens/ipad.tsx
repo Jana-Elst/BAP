@@ -1,13 +1,12 @@
+import { BlurView } from 'expo-blur';
 import React, { useState } from 'react';
-import { StyleSheet, View, Modal } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import data from '../../assets/data/structured-data.json';
-import HomeScreen from '../pages/homeScreen';
 import CloseButton from '../atoms/closeButton';
-import BackButton from '../atoms/backButton';
-import Card from '../atoms/card';
-import { StyledText } from '../atoms/styledComponents';
-import DetailPage from '../pages/detailPage';
 import DetailKeyword from '../pages/detailKeyword';
+import DetailPage from '../pages/detailPage';
+import HomeScreen from '../pages/homeScreen';
+import Touchable from '../atoms/touchable';
 
 export default function Ipad({ page, setPage }) {
     console.log('page', page)
@@ -31,6 +30,7 @@ export default function Ipad({ page, setPage }) {
             page: page.previousPages[0].page,
             id: null,
             previousPages: [],
+            info: {}
         })
         isVisible(page.previousPages[0].page);
     }
@@ -39,7 +39,8 @@ export default function Ipad({ page, setPage }) {
         setPage({
             page: page.previousPages[page.previousPages.length - 1].page,
             id: page.previousPages[page.previousPages.length - 1].id,
-            previousPages: page.previousPages.slice(0, -1)
+            previousPages: page.previousPages.slice(0, -1),
+            info: page.previousPages[page.previousPages.length - 1].info
         })
         isVisible(page.previousPages[page.previousPages.length - 1].page);
     }
@@ -52,31 +53,47 @@ export default function Ipad({ page, setPage }) {
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
                 visible={visible}
+                transparent={true}
                 onRequestClose={() => handleClosePopUp(setPage, page)}
-                style={styles.overlay}
             >
-                <View style={styles.overlayContent}>
-                    {
-                        page.previousPages.length > 1 &&
-                        <BackButton onPress={handleBack}>Terug</BackButton>
-                    }
+                <View style={{ flex: 1 }}>
+                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
+                    <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
 
-                    {
-                        page.page === 'detailResearch' &&
-                        (
-                            <DetailPage page={page} setPage={setPage} />
-                        )
-                    }
-                    {
-                        page.page === 'detailKeyword' &&
-                        (
-                            <DetailKeyword page={page} setPage={setPage} setVisible={setVisible} />
-                        )
-                    }
+                    {/*-------------------- Overlay content --------------------*/}
+                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32 }}>
+                        {
+                            page.previousPages.length > 1 &&
+                            <Touchable
+                                onPress={handleBack}
+                                icon={'arrow-back-outline'}
+                                isActive={true}
+                                showIconOnly={true}
+                                styleGradient={{ position: 'absolute', left: 48, top: 78, zIndex: 1 }}
+                                styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
+                            </Touchable>
+                        }
 
-                    <CloseButton onPress={() => handleClosePopUp(setPage, page)}>Sluit</CloseButton>
+                        <View style={{ flexDirection: 'row' }} fill={true} borderRadius={80}>
+                            {
+                                page.page === 'detailResearch' &&
+                                (
+                                    
+                                        <DetailPage page={page} setPage={setPage} />
+                                )
+                            }
+                            {
+                                page.page === 'detailKeyword' &&
+                                (
+                                    <DetailKeyword page={page} setPage={setPage} setVisible={setVisible} />
+                                )
+                            }
+                        </View>
+
+                        <CloseButton onPress={() => handleClosePopUp(setPage, page)}>Sluit</CloseButton>
+                    </View>
                 </View>
-            </Modal>
+            </Modal >
         </View >
     );
 }
@@ -84,34 +101,12 @@ export default function Ipad({ page, setPage }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        zIndex: 1,
     },
 
     homeScreen: {
         flex: 1,
         justifyContent: 'space-between',
-    },
-
-    projectListContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: -1,
-    },
-
-    projectList: {
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-        gap: 16,
-        padding: 16,
-    },
-
-    cardWrapper: {
-        backgroundColor: 'yellow',
-        position: 'absolute',
-        top: 50,
-        left: '50%',
     },
 
     overlay: {
