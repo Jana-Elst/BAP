@@ -1,5 +1,6 @@
-import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 import { Image } from 'expo-image';
+import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
+import '../../styles/style.css'
 
 const ProjectCard3D = ({
     page,
@@ -10,6 +11,8 @@ const ProjectCard3D = ({
 
     console.log('project', project.formattedName);
     const imageSrc = useGetKeywordImages(project.formattedName);
+    const color = project.color;
+    console.log('color', color);
 
     const handleOpenDetail = () => {
         setPage({
@@ -48,8 +51,7 @@ const ProjectCard3D = ({
                     />
                 </div>
             </div>
-            <div style={styles.gradient}></div>
-        </div>
+            <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>        </div>
     );
 };
 
@@ -101,7 +103,6 @@ const styles: { [key: string]: React.CSSProperties } = {
         transform: 'rotate(-46.149deg)',
         flexShrink: 0,
         borderRadius: '326.486px',
-        background: 'radial-gradient(65.35% 66.61% at 50% 50%, #998EBD 0%, rgba(153, 142, 189, 0.00) 100%)',
     },
     header: {
         display: 'flex',
@@ -111,9 +112,9 @@ const styles: { [key: string]: React.CSSProperties } = {
     headerTitle: {
         margin: 0,
         padding: 0,
-        color: '#000',
+        color: 'black',
         textAlign: 'center',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontFamily: 'VAGRoundedStd-Bold, sans-serif',
         fontSize: '22px',
         lineHeight: '120%',
         letterSpacing: '1.1px',
@@ -124,7 +125,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         padding: 0,
         color: '#606060',
         textAlign: 'center',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        fontFamily: ' OpenSans-Semibold, sans-serif',
         fontSize: '16px',
     },
     imageContainer: {

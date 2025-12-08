@@ -1,0 +1,46 @@
+:root {
+    --white: #ffffff;
+    --black: #000000;
+
+    --blue-100: #44C8F5;
+    --blue-80: #7CC9EE;
+    --blue-50: #ADDAF6;
+    --blue-25: #D4EDFB;
+    --blue-10: #EFF8FE;
+
+    --blue-text: #00A3DA;
+
+    --pink-100: #E6007E;
+    --pink-80: #EF5592;
+    --pink-50: #F693B9;
+    --pink-25: #F8C6D9;
+    --pink-10: #FCE8EF;
+
+    --yellow-100: #FFFF00;
+    --yellow-80: #FFEF37;
+    --yellow-50: #FFF58A;
+    --yellow-25: #FFFBC2;
+    --yellow-10: #FFFFE6;
+
+    --green-100: #009A93;
+    --green-80: #05A59B;
+    --green-50: #76C1BA;
+    --green-25: #BADEDB;
+    --green-10: #E3F1EF;
+
+    --purple-100: #998EBD;
+    --purple-80: #ABA0C8;
+    --purple-50: #C8BFDD;
+    --purple-25: #E1DCEB;
+    --purple-10: #F2F1F8;
+}
+
+@font-face {
+    font-family: VAGRoundedStd-Bold;
+    src: url("/fonts/VAGRoundedStd/VAGRoundedStd-Bold.otf") format("opentype");
+}
+
+@font-face {
+    font-family: OpenSans-Semibold;
+    src: url("/fonts/OpenSans/OpenSans-Semibold.ttf") format("truetype");
+}
