@@ -73,6 +73,14 @@ const keywordPositionsConfig = [
     },
 ];
 
+const colorOffsets = {
+    pink: 16,
+    blue: 0,
+    yellow: 32,
+    purple: 8,
+    green: 24,
+};
+
 //----------------------------- helper functions -----------------------------//
 //----- Get Positions & Bounding boxes -----//
 //get cluster position based on visible pixels
@@ -357,31 +365,11 @@ export const useComposition = async (project, width, height, sWidth, sHeight) =>
         if (!image || !positions) return null;
 
         const rotationIndex = positions.rotationImages?.[index] || 0;
-        return image[rotationIndex];
+        console.log('rotationIndex', rotationIndex, offset, image[rotationIndex]);
+        return image[rotationIndex + offset];
     });
 
     console.log('🔵 7. keywordSources', keywordSources);
-
-    // Load keyword images
-    // const keywordImage0 = await keywordSources[0] ? loadImage(keywordSources[0]) : null;
-    // const keywordImage1 = await keywordSources[1] ? loadImage(keywordSources[1]) : null;
-    // const keywordImage2 = await keywordSources[2] ? loadImage(keywordSources[2]) : null;
-    // const keywordImage3 = await keywordSources[3] ? loadImage(keywordSources[3]) : null;
-    // const keywordImage4 = await keywordSources[4] ? loadImage(keywordSources[4]) : null;
-    // const keywordImage5 = await keywordSources[5] ? loadImage(keywordSources[5]) : null;
-    // const keywordImage6 = await keywordSources[6] ? loadImage(keywordSources[6]) : null;
-    // const keywordImage7 = await keywordSources[7] ? loadImage(keywordSources[7]) : null;
-
-    // keywordImages = [
-    //     keywordImage0,
-    //     keywordImage1,
-    //     keywordImage2,
-    //     keywordImage3,
-    //     keywordImage4,
-    //     keywordImage5,
-    //     keywordImage6,
-    //     keywordImage7,
-    // ];
 
     const loadedKeywordImages = await Promise.all(
         keywordSources.map(async (src) => {

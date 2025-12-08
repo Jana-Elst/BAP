@@ -344,12 +344,6 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         const image = keywordImagesSources[index];
         if (!image || !positions) return null;
 
-        const color = project.color;
-        console.log('data.color', color);
-        const offset = colorOffsets[color] || 0;
-        console.log('offset', offset);
-
-        console.log('image', image);
         const rotationIndex = positions.rotationImages?.[index] || 0;
         console.log('rotationIndex', rotationIndex, offset, image[rotationIndex]);
         return image[rotationIndex + offset];
