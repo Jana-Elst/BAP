@@ -6,12 +6,15 @@ import { ParagraphSmall, ParagraphXSmall, StyledText } from '../atoms/styledComp
 import Card from "@/components/atoms/card";
 import { getProjectInfo } from '@/scripts/getData';
 import React, { useState } from 'react';
-import ImageProject1 from '../../assets/images/visualizationsProjects/composition.png';
 import RadialGradientComponent from '../atoms/radialGradient';
+import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 
 const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     const projectInfo = getProjectInfo(project.id);
     const [containerSize, setContainerSize] = useState({ width: 250, height: 250 });
+    const imageSrc = useGetKeywordImages(project.formattedName);
+    console.log('imageSrc', imageSrc);
+
 
     const handleLayout = (event) => {
         // const { width, height } = event.nativeEvent.layout;
@@ -47,7 +50,7 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
                 <View style={styles.imageContainer}>
                     <Image
                         style={styles.image}
-                        source={ImageProject1}
+                        source={imageSrc}
                         contentFit="contain"
                     />
                 </View>
