@@ -338,6 +338,7 @@ export const useComposition = async (project, width, height, sWidth, sHeight) =>
 
     //----- get data from project -----//
     const keywordData = project.keywords;
+    const projectColor = project.color;
     const keywordFormatted = keywordData.map(keyword => keyword.formattedName);
     const clusterData = project.cluster;
 
@@ -359,13 +360,12 @@ export const useComposition = async (project, width, height, sWidth, sHeight) =>
 
     //----- get correct keyword & cluster images based on rotation from config -----//
     //keywords
-    //TO FIX: offset based on color
     const keywordSources = keywordData.map((data, index) => {
         const image = keywordImagesSources[index];
+        const offset = colorOffsets[projectColor]
         if (!image || !positions) return null;
 
         const rotationIndex = positions.rotationImages?.[index] || 0;
-        console.log('rotationIndex', rotationIndex, offset, image[rotationIndex]);
         return image[rotationIndex + offset];
     });
 

@@ -48,7 +48,7 @@ const generateProjectImage = async (projectInfo) => {
 
     //get data for composition
     const composition = await useComposition(projectInfo, 600, 600, 600, 600);
-    console.log('composition for', projectInfo.formattedName, composition);
+    // console.log('composition for', projectInfo.formattedName, composition);
 
     const {
         clusterPosition,
@@ -160,6 +160,9 @@ async function createAllProjectImages() {
         // Wait for one image to finish before starting the next
         await generateProjectImage(projectInfo);
     }
+
+    // const projectInfo = getProjectInfo(projects[0].id);
+    // await generateProjectImage(projectInfo);
 
     console.log(`✓ All images created in ${OUTPUT_DIR}`);
 }
