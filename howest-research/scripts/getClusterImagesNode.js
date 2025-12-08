@@ -569,8 +569,13 @@ const clusterImagePaths = {
     ]
 };
 
-function useGetClusterImages(clusterName) {
-    return clusterImagePaths[clusterName] || [];
-}
+export function useGetClusterImages(clusterName) {
+    console.log("Fetching images for cluster:", clusterName);
+    console.log("Available clusters:", Object.keys(clusterImagePaths));
 
-module.exports = { useGetClusterImages };
+    let path = clusterImagePaths[clusterName];
+    if (!path) {
+        path = clusterImagePaths["clusteroverschrijdend"];
+    }
+    return path
+}

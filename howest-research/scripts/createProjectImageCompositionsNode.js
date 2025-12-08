@@ -1,10 +1,9 @@
 //----------------------------- IMPORTS -----------------------------//
-// const { useGetClusterImages } = require('./getClusterImagesNode.js');
-import { useGetClusterImages } from './getClusterImagesNode.js';
-import { useGetImages } from './getKeywordImagesNode.js';
-import { Image as SkiaImage, Canvas } from 'skia-canvas';
 import fs from 'fs';
 import path from 'path';
+import { Canvas, loadImage } from 'skia-canvas';
+import { useGetClusterImages } from './getClusterImagesNode.js';
+import { useGetImages } from './getKeywordImagesNode.js';
 
 //----------------------------- VARIABLES -----------------------------//
 let centerX
@@ -91,8 +90,7 @@ const getClusterPosition = async () => {
     const allLoadedCluster = clusterImage !== null;
     if (!allLoadedCluster) return;
 
-    // const visibleInfo = getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
-    const visibleInfo = await getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
+    const visibleInfo = getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
 
     if (!visibleInfo) return;
 
@@ -128,9 +126,15 @@ const getKeywordPositions = (clusterPosition, positions) => {
 
 //
 const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
-    const boxesKeywords = keywordImages.map((image, index) => {
+    console.log('Calculating bounding boxes for keywords...');
+    console.log('Keyword Positions:', keywordPositions);
+    console.log('Keyword Data:', keywordData.length);
+    const boxesKeywords = keywordData.map((data, index) => {
         const pos = keywordPositions[index];
         if (!pos) return undefined;
+
+        const image = keywordImages[index]; 
+        if (!image) return undefined;       
 
         const visibleInfo = getVisiblePixelsInfo(image, widhtKeyword, heightKeyword);
         if (!visibleInfo) return undefined;
@@ -192,63 +196,31 @@ const getBoundingBoxCluster = (boundingBoxesKeywords) => {
     };
 };
 
-//ONLY FOR NODE
-const loadSkiaImage = async (filePath) => {
-    if (!filePath) return null;
-    const resolved = path.isAbsolute(filePath) ? filePath : path.resolve(__dirname, '..', filePath);
-    try {
-        const buffer = await fs.promises.readFile(resolved);
-        const img = new SkiaImage();
-        await img.load(buffer);
-        return img;
-    } catch (e) {
-        console.warn(`Could not load image ${resolved}: ${e.message}`);
-        return null;
-    }
-};
 
 //----- xxx -----//
-//change for NODE
-const getVisiblePixelsInfo = async (imageOrPath, imageWidth, imageHeight) => {
-    if (!imageOrPath) return undefined;
+const getVisiblePixelsInfo = (image, imageWidth, imageHeight) => {
+    if (image instanceof Promise) {
+        console.error("❌ Error: getVisiblePixelsInfo received a Promise, not an Image.");
+        return undefined;
+    }
 
-    const image = typeof imageOrPath === 'string' ? await loadSkiaImage(imageOrPath) : imageOrPath;
-    if (!image) return undefined;
+    const originalWidth = image.width;
+    const originalHeight = image.height;
 
-    //--- Using app
-    // const getVisiblePixelsInfo = (image, imageWidth, imageHeight) => {
-    // if (!image) return undefined;
+    // ... (rest of your logic remains exactly the same) ...
 
-    // console.log('Analyzing visible pixels for image:', image);
+    const tempCanvas = new Canvas(originalWidth, originalHeight);
+    const tempCtx = tempCanvas.getContext("2d");
 
-    // const originalWidth = image.width();
-    // const originalHeight = image.height();
+    tempCtx.clearRect(0, 0, originalWidth, originalHeight);
 
-    // const pixels = image.readPixels(0, 0, {
-    //     width: originalWidth,
-    //     height: originalHeight,
-    //     colorType: 4,
-    //     alphaType: 2,
-    // });
+    // This is where it was crashing because 'image' was a Promise
+    tempCtx.drawImage(image, 0, 0);
 
-    // if (!pixels) return undefined;
-
-    //--using NODE
-    // Width/height may be properties or functions depending on image object
-    const originalWidth = typeof image.width === 'function' ? image.width() : image.width;
-    const originalHeight = typeof image.height === 'function' ? image.height() : image.height;
-
-    if (!originalWidth || !originalHeight) return undefined;
-
-    // Draw image onto a Canvas and read pixels via getImageData
-    const tmpCanvas = new Canvas(originalWidth, originalHeight);
-    const tmpCtx = tmpCanvas.getContext('2d');
-    tmpCtx.clearRect(0, 0, originalWidth, originalHeight);
-    tmpCtx.drawImage(image, 0, 0, originalWidth, originalHeight);
-    const imgData = tmpCtx.getImageData(0, 0, originalWidth, originalHeight);
-    if (!imgData || !imgData.data) return undefined;
+    const imgData = tempCtx.getImageData(0, 0, originalWidth, originalHeight);
     const pixels = imgData.data;
-    //STOP USING NODE
+
+    if (!pixels) return undefined;
 
     let minX = originalWidth;
     let minY = originalHeight;
@@ -354,24 +326,30 @@ export const useComposition = async (project, width, height, sWidth, sHeight) =>
     widhtKeyword = widthCluster / 2;
     heightKeyword = heightCluster / 2;
 
+    console.log('🟢 Generating composition for project:', project.formattedName);
+    console.log('🟢 with dimensions:', width, height, 'and screen size:', sWidth, sHeight);
+    console.log('🟢 Calculated parameters - centerX:', centerX, 'centerY:', centerY, 'widthCluster:', widthCluster, 'heightCluster:', heightCluster, 'offset:', offset, 'widhtKeyword:', widhtKeyword, 'heightKeyword:', heightKeyword);
+
     //----- get data from project -----//
     const keywordData = project.keywords;
     const keywordFormatted = keywordData.map(keyword => keyword.formattedName);
     const clusterData = project.cluster;
 
-    // console.log('🔵 1. keywordData', keywordData);
-    // console.log('🔵 2. keywordFormatted', keywordFormatted);
-    // console.log('🔵 3. clusterData', clusterData);
+    console.log('🔵 1. keywordData', keywordData);
+    console.log('🔵 2. keywordFormatted', keywordFormatted);
+    console.log('🔵 3. clusterData', clusterData);
 
     //----- get images from project -----//
     const keywordImagesSources = useGetImages(keywordFormatted);
     const clusterImagesSources = useGetClusterImages(clusterData.formattedName);
     // console.log('🔵 4. keywordImages', keywordImagesSources);
     // console.log('🔵 5. clusterImages', clusterImagesSources);
+    console.log('🔵 4. keywordImages');
+    console.log('🔵 5. clusterImages');
 
     //----- get correct positions from keywordPositionsConfig -----//
     const positions = keywordPositionsConfig[keywordData.length];
-    // console.log('🔵 6. positions', positions);
+    console.log('🔵 6. positions', positions);
 
     //----- get correct keyword & cluster images based on rotation from config -----//
     //keywords
@@ -384,42 +362,57 @@ export const useComposition = async (project, width, height, sWidth, sHeight) =>
         return image[rotationIndex];
     });
 
-    // console.log('🔵 7. keywordSources', keywordSources);
+    console.log('🔵 7. keywordSources', keywordSources);
 
-    // Load keyword images (Skia) for Node so later logic gets actual Image objects
-    const keywordImage0 = await loadSkiaImage(keywordSources[0] || null);
-    const keywordImage1 = await loadSkiaImage(keywordSources[1] || null);
-    const keywordImage2 = await loadSkiaImage(keywordSources[2] || null);
-    const keywordImage3 = await loadSkiaImage(keywordSources[3] || null);
-    const keywordImage4 = await loadSkiaImage(keywordSources[4] || null);
-    const keywordImage5 = await loadSkiaImage(keywordSources[5] || null);
-    const keywordImage6 = await loadSkiaImage(keywordSources[6] || null);
-    const keywordImage7 = await loadSkiaImage(keywordSources[7] || null);
+    // Load keyword images
+    // const keywordImage0 = await keywordSources[0] ? loadImage(keywordSources[0]) : null;
+    // const keywordImage1 = await keywordSources[1] ? loadImage(keywordSources[1]) : null;
+    // const keywordImage2 = await keywordSources[2] ? loadImage(keywordSources[2]) : null;
+    // const keywordImage3 = await keywordSources[3] ? loadImage(keywordSources[3]) : null;
+    // const keywordImage4 = await keywordSources[4] ? loadImage(keywordSources[4]) : null;
+    // const keywordImage5 = await keywordSources[5] ? loadImage(keywordSources[5]) : null;
+    // const keywordImage6 = await keywordSources[6] ? loadImage(keywordSources[6]) : null;
+    // const keywordImage7 = await keywordSources[7] ? loadImage(keywordSources[7]) : null;
 
-    keywordImages = [
-        keywordImage0,
-        keywordImage1,
-        keywordImage2,
-        keywordImage3,
-        keywordImage4,
-        keywordImage5,
-        keywordImage6,
-        keywordImage7,
-    ];
+    // keywordImages = [
+    //     keywordImage0,
+    //     keywordImage1,
+    //     keywordImage2,
+    //     keywordImage3,
+    //     keywordImage4,
+    //     keywordImage5,
+    //     keywordImage6,
+    //     keywordImage7,
+    // ];
+
+    const loadedKeywordImages = await Promise.all(
+        keywordSources.map(async (src) => {
+            if (!src) return null;
+            try {
+                return await loadImage(src);
+            } catch (error) {
+                console.error("Failed to load:", src);
+                return null;
+            }
+        })
+    );
+
+    // Pad the array to 8 items with nulls (to match your previous manual code)
+    keywordImages = [...loadedKeywordImages];
+    while (keywordImages.length < 8) {
+        keywordImages.push(null);
+    }
+
+    console.log('🔵 8. keywordImages loaded', keywordImages);
 
     //clusters
-    const clusterSource = clusterImagesSources[0]?.[0]; // Get first image from first cluster
-    clusterImage = await loadSkiaImage(clusterSource) || null;
+    const clusterSource = clusterImagesSources[0]; // Get first image from first cluster
+    clusterImage = await loadImage(clusterSource) || null;
 
     const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
     const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
 
-    // console.log('Checking image loading status...');
-    // console.log('Cluster Image Loaded:', !!clusterImage);
-    // console.log('Required Keyword Images Loaded:', requiredKeywordImages.map(img => img !== null));
-
-    // console.log('🔵 8. keywordImages loaded', keywordImages);
-    // console.log('🔵 9. clusterImage loaded', clusterImage);
+    console.log('🔵 9. clusterImage loaded', clusterImage);
 
     //----- return loading state if images not loaded -----//
     if (!allImagesLoaded) {
@@ -451,24 +444,19 @@ export const useComposition = async (project, width, height, sWidth, sHeight) =>
     console.log('✅ All images loaded! Performing calculations...');
 
     //----- Calculations -----//
-    //---CHANGE
-    // -- if using the app
-    // const clusterPosition = getClusterPosition();
-    // // console.log('🔵 10. clusterPosition', clusterPosition);
-    // const keywordPositions = getKeywordPositions(clusterPosition, positions);
-    // // console.log('🔵 11. keywordPositions', keywordPositions);
-    // const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, keywordData);
-    // // console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
-    // const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
-    // // console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
-
-    //--- node
     const clusterPosition = await getClusterPosition();
-    const keywordPositions = getKeywordPositions(clusterPosition, positions);
-    const boundingBoxesKeywords = await getBoundingBoxesKeywords(keywordPositions, keywordData);
-    const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
+    console.log('🔵 10. clusterPosition', clusterPosition);
 
-    // console.log('Composition data ready.', boundingBoxesCluster, boundingBoxesKeywords);
+    const keywordPositions = getKeywordPositions(clusterPosition, positions);
+    console.log('🔵 11. keywordPositions', keywordPositions);
+
+    const boundingBoxesKeywords = await getBoundingBoxesKeywords(keywordPositions, keywordData);
+    console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
+
+    const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
+    console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
+
+    // console.log('🟢 Composition data ready.', boundingBoxesCluster, boundingBoxesKeywords);
     return {
         clusterPosition,
         keywordPositions,

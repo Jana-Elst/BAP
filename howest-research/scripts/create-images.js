@@ -1,69 +1,55 @@
 //This file is used to create all the images for the different projects
-const { createCanvas } = require('canvas');
-const fs = require('fs');
-const path = require('path');
-const { getProjectInfo } = require('./getData');
+import fs from 'fs';
+import path from 'path';
+import { Canvas, loadImage } from 'skia-canvas';
+import { fileURLToPath } from 'url';
+import { getProjectInfo } from './getData.js';
+import { useComposition } from './createProjectImageCompositionsNode.js';
 
-// Sample projects data structure (adjust based on your actual data)
-const data = require('../assets/data/structured-data.json'); // Adjust path to your projects data
-const { get } = require('http');
-const projects = data.projects; // Adjust path to your projects data
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = path.join(__dirname, '../assets/images/visualizationsProjects');
-const IMAGE_SIZE = 400;
+const DATA_PATH = path.join(__dirname, '../assets/data/structured-data.json');
+const IMAGE_SIZE = 300;
+const IMAGE_PATH = path.join(__dirname, '../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0001.webp');
+
+const data = JSON.parse(fs.readFileSync(DATA_PATH, 'utf-8'));
+const projects = data.projects;
 
 // Ensure output directory exists
 if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 
-/**
- * Generates word cloud style image from keywords
- * @param {Array<string>} keywords - Array of keywords
- * @param {string} projectCode - Project code for filename
- * @param {string} clusterLabel - Cluster label for context
- */
-const generateProjectImage = (projectInfo) => {
-    const canvas = createCanvas(IMAGE_SIZE, IMAGE_SIZE);
-    const ctx = canvas.getContext('2d');
+const generateProjectImage = async (projectInfo) => {
+    let canvas = new Canvas(IMAGE_SIZE, IMAGE_SIZE),
+        ctx = canvas.getContext("2d"),
+        [x, y] = [IMAGE_SIZE / 2, IMAGE_SIZE / 2]
 
     // Background
-    ctx.fillStyle = '#f5f5f5';
-    ctx.fillRect(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+    ctx.fillStyle = 'red'
+    ctx.fillRect(0, 0, x, y)
+    ctx.fillStyle = 'green'
+    ctx.fillRect(x, y, x, y)
 
-    // Draw keywords in a grid/cloud pattern
-    const keywordList = keywords || [];
-    const maxKeywords = 15; // Limit keywords to prevent overcrowding
-    const displayKeywords = keywordList.slice(0, maxKeywords);
+    // // load the webp at runtime instead of importing it
+    // const img = await loadImage(IMAGE_PATH);
+    // // draw the loaded image (adjust position/size as needed)
+    // ctx.drawImage(img, 50, 50, IMAGE_SIZE - 100, IMAGE_SIZE - 100);
 
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    //get data for composition
+    const composition = await useComposition(projectInfo, 150, 150, 300, 300);
+    console.log('composition for', projectInfo.formattedName, composition);
 
-    // Draw keywords with varying sizes
-    displayKeywords.forEach((keyword, index) => {
-        const fontSize = 20 + Math.random() * 30;
-        ctx.font = `${fontSize}px Arial`;
-        ctx.fillStyle = `hsl(${(index * 137.5) % 360}, 70%, 50%)`;
-
-        // Random but controlled positioning
-        const x = 50 + (index % 3) * 120 + Math.random() * 40;
-        const y = 80 + Math.floor(index / 3) * 60 + Math.random() * 20;
-
-        ctx.fillText(keyword, x, y);
-    });
-
-    // Add project code at bottom
-    ctx.font = 'bold 16px Arial';
-    ctx.fillStyle = '#333';
-    ctx.fillText(projectCode, IMAGE_SIZE / 2, IMAGE_SIZE - 30);
+    //create composition on canvas
 
     // Save image
-    const filename = `${projectCode.replace(/[^a-z0-9]/gi, '_')}.png`;
+    const filename = `${projectInfo.formattedName}.png`;
     const filepath = path.join(OUTPUT_DIR, filename);
-    const buffer = canvas.toBuffer('image/png');
+    const buffer = await canvas.toBuffer('image/png');
     fs.writeFileSync(filepath, buffer);
 
-    console.log(`Generated image for ${projectCode}: ${filename}`);
+    console.log(`Generated image for ${projectInfo.formattedName}`);
 }
 
 /**
@@ -72,11 +58,16 @@ const generateProjectImage = (projectInfo) => {
 async function createAllProjectImages() {
     console.log(`Creating images for ${projects.length} projects...`);
 
-    projects.forEach(project => {
-        const projectInfo = getProjectInfo(project.id);
+    // for (const project of projects) {
+    //     const projectInfo = getProjectInfo(project.id);
 
-        generateProjectImage(projectInfo);
-    });
+    //     // Wait for one image to finish before starting the next
+    //     await generateProjectImage(projectInfo);
+    // }
+
+    const project = projects[0];
+    const projectInfo = getProjectInfo(project.id);
+    await generateProjectImage(projectInfo);
 
     console.log(`✓ All images created in ${OUTPUT_DIR}`);
 }
