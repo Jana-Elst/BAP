@@ -1,8 +1,8 @@
-// import data from '../assets/data/structured-data.json';
+import data from '../assets/data/structured-data.json';
 
-import fs from 'fs';
-import path, { format } from 'path';
-const data = JSON.parse(fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../assets/data/structured-data.json'), 'utf8'));
+// import fs from 'fs';
+// import path, { format } from 'path';
+// const data = JSON.parse(fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../assets/data/structured-data.json'), 'utf8'));
 
 const colors = [
     {

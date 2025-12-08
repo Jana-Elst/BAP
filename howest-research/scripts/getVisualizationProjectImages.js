@@ -294,6 +294,9 @@ const imageMap = {
  * @param {string} imageName - The name of the file without extension.
  * @returns {string|null} The imported image path or null if not found.
  */
-export const getVisualizationProjectImage = (imageName) => {
+const getVisualizationProjectImage = (imageName) => {
+    console.log('imageName', imageName);
     return imageMap[imageName] || null;
 };
+
+export default getVisualizationProjectImage;

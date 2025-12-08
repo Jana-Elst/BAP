@@ -1,3 +1,4 @@
+import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 import { Image } from 'expo-image';
 
 const ProjectCard3D = ({
@@ -6,7 +7,9 @@ const ProjectCard3D = ({
     setVisible,
     project,
 }) => {
-    const imageSrc = require('../../assets/images/visualizationsProjects/composition.png');;
+
+    console.log('project', project.formattedName);
+    const imageSrc = useGetKeywordImages(project.formattedName);
 
     const handleOpenDetail = () => {
         setPage({
