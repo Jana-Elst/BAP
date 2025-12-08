@@ -30,11 +30,16 @@ const fileContent = `// Auto-generated file. Do not edit manually.
 
 const clusterImagePaths = ${JSON.stringify(clusterMap, null, 4)};
 
-function getClusterImages(clusterName) {
-    return clusterImagePaths[clusterName] || [];
-}
+export function useGetClusterImages(clusterName) {
+    console.log("Fetching images for cluster:", clusterName);
+    console.log("Available clusters:", Object.keys(clusterImagePaths));
 
-module.exports = { getClusterImages };
+    let path = clusterImagePaths[clusterName];
+    if (!path) {
+        path = clusterImagePaths["clusteroverschrijdend"];
+    }
+    return path
+}
 `;
 
 // Write to file

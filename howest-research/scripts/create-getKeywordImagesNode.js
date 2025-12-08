@@ -35,14 +35,13 @@ const keywordImagePaths = ${JSON.stringify(keywordMap, null, 4)};
  * If input is a string, returns the array for that keyword.
  * If input is an array, returns an array of arrays (one per keyword).
  */
-function getKeywordImages(keywordData) {
+export function useGetImages(keywordData) {
     if (!keywordData) return [];
-    const inputList = Array.isArray(keywordData) ? keywordData : [keywordData];
-    const result = inputList.map(keywordName => keywordImagePaths[keywordName] || []);
-    return Array.isArray(keywordData) ? result : result[0];
+    console.log("Fetching images for keywords:", keywordData);
+    
+    const keywordPaths = keywordData.map(keyword => keywordImagePaths[keyword] || keywordImagePaths["placeholder"]);
+    return keywordPaths;
 }
-
-module.exports = { getKeywordImages };
 `;
 
 // Write to file
