@@ -2,11 +2,12 @@ import { Text, View, StyleSheet, Dimensions } from 'react-native';
 import data from '../../assets/data/structured-data.json';
 import { getProjectInfo } from '../../scripts/getData';
 import ProjectImage from '../organisms/projectImage';
+import HomeScreenHologram from '../HologramVisualisations/homeScreenHologram';
 
 const windowDimensions = Dimensions.get('window');
 console.log('Window dimensions:', windowDimensions);
 
-export default function ExternalScreen({ screen, page, setPage }) {
+const ExternalScreen = ({ screen, page, setPage }) => {
     console.log('ExternalScreen:', screen);
     const externalScreen = Object.values(screen)[0];
     console.log('ExternalScreen screen prop:', externalScreen);
@@ -41,9 +42,7 @@ export default function ExternalScreen({ screen, page, setPage }) {
         )
     } else {
         return (
-            <View style={{ flex: 1, backgroundColor: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>HOME SCREEN</Text>
-            </View>
+            <HomeScreenHologram />
         );
     }
 }
@@ -63,3 +62,5 @@ const styles = StyleSheet.create({
         height: '100%',
     },
 });
+
+export default ExternalScreen;
