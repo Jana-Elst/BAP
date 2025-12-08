@@ -27,6 +27,7 @@ categories.forEach(category => {
 });
 
 const fileContent = `// Auto-generated file. Do not edit manually.
+// Generated on: ${new Date().toLocaleString()}
 
 const keywordImagePaths = ${JSON.stringify(keywordMap, null, 4)};
 

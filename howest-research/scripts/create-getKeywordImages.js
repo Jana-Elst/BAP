@@ -47,6 +47,7 @@ categories.forEach(category => {
 // Generate the complete file content
 const fileContent = `// filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
 // Auto-generated file. Do not edit manually.
+// Generated on: ${new Date().toLocaleString()}
 
 ${imports}
 const useGetKeywordImages = (keywordData) => {

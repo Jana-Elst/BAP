@@ -27,6 +27,7 @@ clusters.forEach(cluster => {
 });
 
 const fileContent = `// Auto-generated file. Do not edit manually.
+// Generated on: ${new Date().toLocaleString()}
 
 const clusterImagePaths = ${JSON.stringify(clusterMap, null, 4)};
 
