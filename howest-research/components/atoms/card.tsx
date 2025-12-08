@@ -3,7 +3,7 @@ import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
-const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isActive = false, fill = false, containerStyle = null }) => {
+const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isActive = false, fill = false, containerStyle = null, gradientColors = ['rgba(68, 200, 245, 0.10)', 'rgba(68, 200, 245, 0.50)'] }) => {
     const flexStyle = fill ? { flex: 1 } : {};
 
     return (
@@ -13,7 +13,7 @@ const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isAc
             <View style={[styles.shadowContainer, { borderRadius: borderRadius }, flexStyle]}>
                 <LinearGradient
                     style={[styles.card, { borderRadius: borderRadius }, { borderColor: isActive ? Colors.blue100 : Colors.white }, style, flexStyle]}
-                    colors={!isActive ? ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)'] : ['rgba(68, 200, 245, 0.10)', 'rgba(68, 200, 245, 0.50)']}
+                    colors={!isActive ? ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)'] : gradientColors}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0.6, y: 1 }}
                     onLayout={onLayout}

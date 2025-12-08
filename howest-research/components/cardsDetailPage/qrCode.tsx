@@ -12,7 +12,12 @@ const image = require('../../assets/images/logoHowestResearchRGB.png')
 const QrCode = ({ project }) => {
     return (
         <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1, alignItems: 'center' }}>
-            <Card style={{ borderColor: 'transparent', paddingHorizontal: 24, paddingVertical: 40, maxWidth: '372', gap: 24, justifyContent: 'center', alignItems: 'center' }} fill={false} isActive={true}>
+            <Card 
+            style={{ borderColor: 'transparent', paddingHorizontal: 24, paddingVertical: 40, maxWidth: '372', gap: 24, justifyContent: 'center', alignItems: 'center' }}
+            fill={false}
+            isActive={true}
+                gradientColors={[Colors[project.color + '10'], Colors[project.color + '80']]}
+            >
                 <Image
                     style={{ width: 230, height: 34 }}
                     source={image}

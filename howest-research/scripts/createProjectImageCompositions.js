@@ -73,6 +73,14 @@ const keywordPositionsConfig = [
     },
 ];
 
+const colorOffsets = {
+    pink: 16,
+    blue: 0,
+    yellow: 32,
+    purple: 8,
+    green: 24,
+};
+
 //----------------------------- helper functions -----------------------------//
 //----- Get Positions & Bounding boxes -----//
 //get cluster position based on visible pixels
@@ -332,13 +340,19 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
 
     //----- get correct keyword & cluster images based on rotation from config -----//
     //keywords
-    //TO FIX: offset based on color
     const keywordSources = keywordData.map((data, index) => {
         const image = keywordImagesSources[index];
         if (!image || !positions) return null;
 
+        const color = project.color;
+        console.log('data.color', color);
+        const offset = colorOffsets[color] || 0;
+        console.log('offset', offset);
+
+        console.log('image', image);
         const rotationIndex = positions.rotationImages?.[index] || 0;
-        return image[rotationIndex];
+        console.log('rotationIndex', rotationIndex, offset, image[rotationIndex]);
+        return image[rotationIndex + offset];
     });
 
     console.log('🔵 7. keywordSources', keywordSources);

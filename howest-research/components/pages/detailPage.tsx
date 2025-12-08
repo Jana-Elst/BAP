@@ -17,6 +17,7 @@ import QrCode from "../cardsDetailPage/qrCode";
 import { Colors } from "@/constants/theme";
 import { getProjectInfo } from "@/scripts/getData";
 import { StyledText, Title, TitleXSmall } from "../atoms/styledComponents";
+import { color } from "@rneui/base";
 
 
 const renderItems = [
@@ -46,6 +47,7 @@ const DetailPage = ({ page, setPage }) => {
     };
 
     const project = getProjectInfo(page.id);
+    console.log("PROJECT DETAIL PAGE:", project.color);
 
     return (
         <View style={{gap: 16, flex: 1, paddingBottom: 8}}>
@@ -65,9 +67,9 @@ const DetailPage = ({ page, setPage }) => {
                     return (
                         <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }}>
                             <View style={styles.header}>
-                                <Title style={styles.title}>{project.title}</Title>
+                                <Title style={{ color: Colors[project.color + '100'] }}>{project.title}</Title>
                                 {/* <Title style={styles.title}>Dit is een heel lange titel en nog langer</Title> */}
-                                <TitleXSmall style={styles.subtitle}>{project.transitionDomain}</TitleXSmall>
+                                <TitleXSmall style={{ color: Colors[project.color + '80'] }}>{project.transitionDomain}</TitleXSmall>
                             </View>
 
                             <View style={{ flex: 1}}>
@@ -75,7 +77,7 @@ const DetailPage = ({ page, setPage }) => {
                                     item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                         item === "info" ? <Info project={project} /> :
                                             // item === "images" ? <Images project={project} /> :
-                                                item === "qrCode" ? <QrCode /> :
+                                                item === "qrCode" ? <QrCode project={project}/> :
                                                     null
                                 }
                             </View>
@@ -109,14 +111,6 @@ const styles = StyleSheet.create({
         gap: 18,
         alignItems: 'baseline',
     },
-
-    title: {
-        color: Colors.blue100,
-    },
-
-    subtitle: {
-        color: Colors.blue80,
-    }
 });
 
 export default DetailPage;
