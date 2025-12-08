@@ -1,14 +1,43 @@
-import { Text } from 'react-native';
-import useGetClusterImages from '../../scripts/getClusterImages';
 
+import {
+        Canvas,
+        Image,
+        useAnimatedImageValue
+} from "@shopify/react-native-skia";
 
-const HomeScreenHologram = () => {
-    const images = useGetClusterImages('clusteroverschrijdendImages');
-    console.log('HomeScreenHologram images:', images);
+const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number; screenHeight: number }) => {
+        console.log('HomeScreenHologram screenWidth:', screenWidth);
+        console.log('HomeScreenHologram screenHeight:', screenHeight);
 
-            return (
-                    <Text style={{ color: 'white', fontSize: 72, fontWeight: 'bold' }}>HOME SCREEN</Text>
-            );
+        const intro = useAnimatedImageValue(
+                require('../../assets/images/clusters/clusteroverschrijdend_intro.webp')
+        );
+        const loop = useAnimatedImageValue(
+                require('../../assets/images/clusters/clusteroverschrijdend_loop.webp')
+        );
+        const outro = useAnimatedImageValue(
+                require('../../assets/images/clusters/clusteroverschrijdend_outro.webp')
+        );
+
+        return (
+                <Canvas
+                        style={{
+                                width: screenWidth,
+                                height: screenHeight,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                        }}
+                >
+                        <Image
+                                image={intro}
+                                x={0}
+                                y={0}
+                                width={screenWidth}
+                                height={screenHeight}
+                                fit="contain"
+                        />
+                </Canvas>
+        );
 }
 
 export default HomeScreenHologram;

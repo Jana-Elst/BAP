@@ -42,7 +42,10 @@ const ExternalScreen = ({ screen, page, setPage }) => {
         )
     } else {
         return (
-            <HomeScreenHologram />
+            <HomeScreenHologram
+                screenWidth={externalScreenWidth}
+                screenHeight={externalScreenHeight}
+            />
         );
     }
 }

@@ -63,7 +63,6 @@ const FilterCard = ({ project, onPress, isActive, filter }) => {
     const handleLayout = (event) => {
         const { width, height } = event.nativeEvent.layout;
         setContainerSize({ width, height });
-        console.log('Container size:', width, height);
     };
 
     return (

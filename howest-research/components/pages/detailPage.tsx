@@ -47,7 +47,6 @@ const DetailPage = ({ page, setPage }) => {
     };
 
     const project = getProjectInfo(page.id);
-    console.log("PROJECT DETAIL PAGE:", project.color);
 
     return (
         <View style={{gap: 16, flex: 1, paddingBottom: 8}}>

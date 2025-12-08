@@ -9,8 +9,6 @@ import HomeScreen from '../pages/homeScreen';
 import Touchable from '../atoms/touchable';
 
 export default function Ipad({ page, setPage }) {
-    console.log('page', page)
-
     const [visible, setVisible] = useState(false);
     const [activeFilters, setActiveFilters] = useState([]);
     const [projects, setProjects] = useState(data.projects);

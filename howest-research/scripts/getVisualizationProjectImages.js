@@ -295,7 +295,6 @@ const imageMap = {
  * @returns {string|null} The imported image path or null if not found.
  */
 const getVisualizationProjectImage = (imageName) => {
-    console.log('imageName', imageName);
     return imageMap[imageName] || null;
 };
 

@@ -9,10 +9,8 @@ const ProjectCard3D = ({
     project,
 }) => {
 
-    console.log('project', project.formattedName);
     const imageSrc = useGetKeywordImages(project.formattedName);
     const color = project.color;
-    console.log('color', color);
 
     const handleOpenDetail = () => {
         setPage({

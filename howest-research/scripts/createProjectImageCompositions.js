@@ -105,7 +105,6 @@ const getClusterPosition = () => {
 
 //get keyword positions based on cluster position
 const getKeywordPositions = (clusterPosition: any, positions: any) => {
-    console.log('getKeywordPositions - clusterPosition:', clusterPosition);
     if (!clusterPosition) return [];
 
     const radiusX = (clusterPosition.width + offset) / 2;
@@ -125,13 +124,6 @@ const getKeywordPositions = (clusterPosition: any, positions: any) => {
 
 //
 const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
-    // console.log('getBoundingBoxesKeywords - keywordPositions:', keywordPositions);
-    // console.log('getBoundingBoxesKeywords - keywordImages:', keywordImages);
-    // const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
-    // const allLoadedKeywords = requiredKeywordImages.every(img => img !== null);
-    // console.log('getBoundingBoxesKeywords - allLoadedKeywords:', allLoadedKeywords);
-    // if (!allLoadedKeywords) return;
-
     const boxesKeywords = keywordImages.map((image, index) => {
         const pos = keywordPositions[index];
         if (!pos) return undefined;
@@ -169,7 +161,6 @@ const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
 };
 
 const getBoundingBoxCluster = (boundingBoxesKeywords) => {
-    console.log('getBoundingBoxCluster - boundingBoxesKeywords:', boundingBoxesKeywords);
     if (!boundingBoxesKeywords || boundingBoxesKeywords.length === 0) return;
 
     let minX = screenWidth;
@@ -177,16 +168,12 @@ const getBoundingBoxCluster = (boundingBoxesKeywords) => {
     let maxX = 0;
     let maxY = 0;
 
-    console.log('getBoundingBoxCluster - Initial minX, minY, maxX, maxY:', minX, minY, maxX, maxY);
     boundingBoxesKeywords.forEach((boundingBoxKeyword) => {
         if (!boundingBoxKeyword) return;
-        console.log('getBoundingBoxCluster - boundingBoxKeyword:', boundingBoxKeyword.x, boundingBoxKeyword.y, boundingBoxKeyword.width, boundingBoxKeyword.height);
 
         // Find the minimum top-left corner
         minX = Math.min(minX, boundingBoxKeyword.x);
         minY = Math.min(minY, boundingBoxKeyword.y);
-
-        console.log('getBoundingBoxCluster - minX, minY:', minX, minY);
 
         // Find the maximum bottom-right corner
         maxX = Math.max(maxX, boundingBoxKeyword.x + boundingBoxKeyword.width);
@@ -378,10 +365,6 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
 
     const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
     const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
-
-    console.log('Checking image loading status...');
-    console.log('Cluster Image Loaded:', !!clusterImage);
-    console.log('Required Keyword Images Loaded:', requiredKeywordImages.map(img => img !== null));
 
     console.log('🔵 8. keywordImages loaded', keywordImages);
     console.log('🔵 9. clusterImage loaded', clusterImage);

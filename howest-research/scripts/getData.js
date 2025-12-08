@@ -193,7 +193,6 @@ export const getResearchGroup = (researchGroupId) => {
 }
 
 export const getProjectsByKeyword = (keywordID) => {
-    console.log('keywordID', keywordID);
     const projectsInfo = data.projects
         .filter(project => project.keywords.includes(keywordID))
         .map(project => {
@@ -204,7 +203,6 @@ export const getProjectsByKeyword = (keywordID) => {
 };
 
 export const getFilteredProjects = (activeFilters) => {
-    console.log('Active Filters:', activeFilters);
     let filteredProjects = data.projects;
 
     const selectedTransitionDomains = activeFilters.filter(filter => filter.transitiedomeinCategoryID === 2);
@@ -217,7 +215,6 @@ export const getFilteredProjects = (activeFilters) => {
         const allowedClusterIds = colors
             .filter(colors => selectedTransitionDomainIDs.includes(colors.domainId))
             .map(colors => colors.clusterId);
-        console.log('Allowed Cluster IDs:', allowedClusterIds);
         filteredProjects = filteredProjects.filter(project => {
             return allowedClusterIds.includes(project.clusterId);
         });
@@ -225,7 +222,6 @@ export const getFilteredProjects = (activeFilters) => {
 
     if (selectedClusters.length > 0) {
         const selectedClusterIDs = selectedClusters.map(cluster => cluster.id);
-        console.log('selectedClusterIDs:', selectedClusterIDs);
 
         filteredProjects = filteredProjects.filter(project => {
             if (!project.clusterId) return false;
