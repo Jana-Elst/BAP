@@ -15,12 +15,6 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     const imageSrc = useGetKeywordImages(project.formattedName);
     console.log('imageSrc', imageSrc);
 
-
-    const handleLayout = (event) => {
-        // const { width, height } = event.nativeEvent.layout;
-        // setContainerSize({ width, height });
-    };
-
     const handleOpenDetail = () => {
         setPage({
             page: 'detailResearch',
@@ -39,7 +33,7 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
 
     return (
         <TouchableOpacity onPress={handleOpenDetail} style={styles.container}>
-            <Card onLayout={handleLayout} style={styles.card}>
+            <Card style={styles.card}> 
                 <View style={{ gap: 16, flex: 1, paddingVertical: 20}}>
                     <View>
                         <StyledText style={{ fontFamily: Fonts.rounded.light, fontSize: 22 }}>{projectInfo.title}</StyledText>
