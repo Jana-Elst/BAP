@@ -1,6 +1,4 @@
 //----------------------------- IMPORTS -----------------------------//
-import fs from 'fs';
-import path from 'path';
 import { Canvas, loadImage } from 'skia-canvas';
 import { useGetClusterImages } from './getClusterImagesNode.js';
 import { useGetImages } from './getKeywordImagesNode.js';
