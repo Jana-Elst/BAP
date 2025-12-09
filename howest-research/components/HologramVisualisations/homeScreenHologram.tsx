@@ -4,53 +4,20 @@
 import {
         Canvas,
         Image,
-        SkImage,
-        useAnimatedImage
+        SkImage
 } from "@shopify/react-native-skia";
 import { useFrameCallback, useSharedValue } from "react-native-reanimated";
+import { useWebpAnimations } from "../../scripts/getWebpAnimations";
 
 const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number; screenHeight: number }) => {
-        const clusterOverschrijdendIntro = useAnimatedImage(require('../../assets/images/clusters/clusteroverschrijdend_intro.webp'));
-        const clusterOverschrijdendLoop = useAnimatedImage(require('../../assets/images/clusters/clusteroverschrijdend_loop.webp'));
-        const clusterOverschrijdendOutro = useAnimatedImage(require('../../assets/images/clusters/clusteroverschrijdend_outro.webp'));
-
-        const activeHealthCahIntro = useAnimatedImage(require('../../assets/images/clusters/activeHealthCah_intro.webp'));
-        const activeHealthCahLoop = useAnimatedImage(require('../../assets/images/clusters/activeHealthCah_loop.webp'));
-        const activeHealthCahOutro = useAnimatedImage(require('../../assets/images/clusters/activeHealthCah_outro.webp'));
-
-        const architectuurEnDesignCadIntro = useAnimatedImage(require('../../assets/images/clusters/architectuurEnDesignCad_intro.webp'));
-        const architectuurEnDesignCadLoop = useAnimatedImage(require('../../assets/images/clusters/architectuurEnDesignCad_loop.webp'));
-        const architectuurEnDesignCadOutro = useAnimatedImage(require('../../assets/images/clusters/architectuurEnDesignCad_outro.webp'));
-
-        const bedrijfEnOrganisatieCboIntro = useAnimatedImage(require('../../assets/images/clusters/bedrijfEnOrganisatieCbo_intro.webp'));
-        const bedrijfEnOrganisatieCboLoop = useAnimatedImage(require('../../assets/images/clusters/bedrijfEnOrganisatieCbo_loop.webp'));
-        const bedrijfEnOrganisatieCboOutro = useAnimatedImage(require('../../assets/images/clusters/bedrijfEnOrganisatieCbo_outro.webp'));
-
-        // Define a strict map to lookup animations by constructed key
-        const animationMap: Record<string, ReturnType<typeof useAnimatedImage>> = {
-                'clusterOverschrijdendIntro': clusterOverschrijdendIntro,
-                'clusterOverschrijdendLoop': clusterOverschrijdendLoop,
-                'clusterOverschrijdendOutro': clusterOverschrijdendOutro,
-
-                'activeHealthCahIntro': activeHealthCahIntro,
-                'activeHealthCahLoop': activeHealthCahLoop,
-                'activeHealthCahOutro': activeHealthCahOutro,
-
-                'architectuurEnDesignCadIntro': architectuurEnDesignCadIntro,
-                'architectuurEnDesignCadLoop': architectuurEnDesignCadLoop,
-                'architectuurEnDesignCadOutro': architectuurEnDesignCadOutro,
-
-                'bedrijfEnOrganisatieCboIntro': bedrijfEnOrganisatieCboIntro,
-                'bedrijfEnOrganisatieCboLoop': bedrijfEnOrganisatieCboLoop,
-                'bedrijfEnOrganisatieCboOutro': bedrijfEnOrganisatieCboOutro,
-        };
+        const { animationMap, projects } = useWebpAnimations();
 
         const animationParts = ['Intro', 'Loop', 'Loop', 'Outro', 'break'];
-        // const animationParts = ['Intro', 'Loop', 'Outro', 'break'];
+        const projectsLoop = projects
+                .filter(p => p !== 'clusteroverschrijdend')
+                .flatMap(project => ['clusteroverschrijdend', project]);
 
-
-        const projects = ['clusterOverschrijdend', 'activeHealthCah', 'clusterOverschrijdend', 'architectuurEnDesignCad', 'clusterOverschrijdend', 'bedrijfEnOrganisatieCbo'];
-        // const projects = ['activeHealthCah', 'activeHealthCah'];
+        console.log('projectsLoop', projectsLoop);
 
         const currentProject = useSharedValue(0);
         const nextProject = useSharedValue(1);
@@ -94,7 +61,7 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                         return;
                 }
 
-                const activeAnimation = animationMap[projects[currentProject.value] + part];
+                const activeAnimation = animationMap[projectsLoop[currentProject.value] + part];
 
                 //--- Normal Frame Processing ---//
                 if (lastTimestamp.value === -1) {
@@ -145,7 +112,7 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                                 prevProject.value = currentProject.value;
                                 currentProject.value = nextProject.value;
 
-                                if (nextProject.value === projects.length - 1) {
+                                if (nextProject.value === projectsLoop.length - 1) {
                                         nextProject.value = 0;
                                 } else {
                                         nextProject.value += 1;
