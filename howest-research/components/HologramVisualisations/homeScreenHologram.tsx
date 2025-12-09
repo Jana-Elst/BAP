@@ -22,6 +22,10 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
         const architectuurEnDesignCadLoop = useAnimatedImage(require('../../assets/images/clusters/architectuurEnDesignCad_loop.webp'));
         const architectuurEnDesignCadOutro = useAnimatedImage(require('../../assets/images/clusters/architectuurEnDesignCad_outro.webp'));
 
+        const bedrijfEnOrganisatieCboIntro = useAnimatedImage(require('../../assets/images/clusters/bedrijfEnOrganisatieCbo_intro.webp'));
+        const bedrijfEnOrganisatieCboLoop = useAnimatedImage(require('../../assets/images/clusters/bedrijfEnOrganisatieCbo_loop.webp'));
+        const bedrijfEnOrganisatieCboOutro = useAnimatedImage(require('../../assets/images/clusters/bedrijfEnOrganisatieCbo_outro.webp'));
+
         // Define a strict map to lookup animations by constructed key
         const animationMap: Record<string, ReturnType<typeof useAnimatedImage>> = {
                 'clusterOverschrijdendIntro': clusterOverschrijdendIntro,
@@ -35,33 +39,44 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                 'architectuurEnDesignCadIntro': architectuurEnDesignCadIntro,
                 'architectuurEnDesignCadLoop': architectuurEnDesignCadLoop,
                 'architectuurEnDesignCadOutro': architectuurEnDesignCadOutro,
+
+                'bedrijfEnOrganisatieCboIntro': bedrijfEnOrganisatieCboIntro,
+                'bedrijfEnOrganisatieCboLoop': bedrijfEnOrganisatieCboLoop,
+                'bedrijfEnOrganisatieCboOutro': bedrijfEnOrganisatieCboOutro,
         };
 
-        const animationParts = ['Intro', 'Loop', 'Loop', 'Outro', 'Brake'];
-        const currentProject = useSharedValue('clusterOverschrijdend');
-        const nextProject = useSharedValue('activeHealthCah');
-        const prevProject = useSharedValue('architectuurEnDesignCad');
+        const animationParts = ['Intro', 'Loop', 'Loop', 'Outro', 'break'];
+        // const animationParts = ['Intro', 'Loop', 'Outro', 'break'];
+
+
+        const projects = ['clusterOverschrijdend', 'activeHealthCah', 'clusterOverschrijdend', 'architectuurEnDesignCad', 'bedrijfEnOrganisatieCbo'];
+        // const projects = ['activeHealthCah', 'activeHealthCah'];
+
+        const currentProject = useSharedValue(0);
+        const nextProject = useSharedValue(1);
+        const prevProject = useSharedValue(2);
+
 
         const currentAnimationIndex = useSharedValue(0);
         const currentFrameIndex = useSharedValue(0);
         const lastTimestamp = useSharedValue(-1);
-        const brakeStartTime = useSharedValue(-1);
+        const breakStartTime = useSharedValue(-1);
         const currentImage = useSharedValue<SkImage | null>(null);
 
-        const brakeLength = 3000; // 3 seconds
+        const breakLength = 1500; // 3 seconds
 
 
         useFrameCallback((frameInfo) => {
                 const part = animationParts[currentAnimationIndex.value];
-
                 const { timestamp } = frameInfo;
-                if (part === 'Brake') {
-                        if (brakeStartTime.value === -1) {
-                                brakeStartTime.value = timestamp;
+
+                if (part === 'break') {
+                        if (breakStartTime.value === -1) {
+                                breakStartTime.value = timestamp;
                         }
 
-                        if (timestamp - brakeStartTime.value >= brakeLength) {
-                                brakeStartTime.value = -1;
+                        if (timestamp - breakStartTime.value >= breakLength) {
+                                breakStartTime.value = -1;
                                 currentAnimationIndex.value += 1;
                                 lastTimestamp.value = -1;
 
@@ -72,7 +87,7 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                         return;
                 }
 
-                const activeAnimation = animationMap[currentProject.value + part];
+                const activeAnimation = animationMap[projects[currentProject.value] + part];
 
                 //--- Normal Frame Processing ---//
                 if (lastTimestamp.value === -1) {
@@ -81,7 +96,7 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
 
                 //Get frame info
                 let currentFrameDuration = activeAnimation?.currentFrameDuration();
-                let totalFrames = activeAnimation?.getFrameCount();
+                let totalFrames = (activeAnimation?.getFrameCount());
 
                 // Check if it's time for next frame
                 if (currentFrameDuration && timestamp - lastTimestamp.value < currentFrameDuration) {
@@ -116,17 +131,22 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                         }
 
                         //switch to next project
-                        if (currentAnimationIndex.value === 2) {
+                        if (currentAnimationIndex.value === 3) {
                                 console.log('switching to next project');
                                 console.log('currentProject', prevProject.value, currentProject.value, nextProject.value);
 
                                 prevProject.value = currentProject.value;
                                 currentProject.value = nextProject.value;
-                                nextProject.value = prevProject.value;
-                        }
 
-                        currentFrameIndex.value = 0;
+                                if (nextProject.value === projects.length - 1) {
+                                        nextProject.value = 0;
+                                } else {
+                                        nextProject.value += 1;
+                                }
+                        }
                 }
+
+                console.log('currentFrameIndex', currentFrameIndex.value);
         });
 
         return (
