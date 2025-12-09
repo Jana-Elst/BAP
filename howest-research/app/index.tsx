@@ -19,6 +19,7 @@ export default function HomeScreen() {
   const screens = useExternalDisplay();
   const screenIds = Object.keys(screens);
   const screenCount = screenIds.length;  //if total screen count is 1 --> external screen is connected!
+  console.log('screens', screens);
 
   //-------------------- External screen connected --------------------//
   if (screenCount > 0) {
@@ -28,6 +29,7 @@ export default function HomeScreen() {
           mainScreenStyle={styles.container}
           fallbackInMainScreen
           screen={Object.keys(screens)[0]}
+          style={{ flex: 1 }}
         >
           <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>

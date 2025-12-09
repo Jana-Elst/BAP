@@ -37,9 +37,9 @@ async function createAnimation(folderPath) {
     // Loop: 37-44 (indices 36-43)
     // Outro: 45-80 (indices 44-79)
     const parts = [
-        { suffix: 'intro', start: 0, end: 36, loop: 1 },
+        { suffix: 'intro', start: 0, end: 36, loop: 0 },
         { suffix: 'loop', start: 36, end: 44, loop: 0 },
-        { suffix: 'outro', start: 44, end: 80, loop: 1 },
+        { suffix: 'outro', start: 44, end: 80, loop: 0 },
     ];
 
     for (const part of parts) {
