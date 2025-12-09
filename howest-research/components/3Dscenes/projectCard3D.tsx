@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
-import '../../styles/style.css'
+import '../../styles/style.css';
 
 const ProjectCard3D = ({
     page,

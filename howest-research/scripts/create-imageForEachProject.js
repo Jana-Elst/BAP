@@ -47,7 +47,7 @@ const generateProjectImage = async (projectInfo) => {
         ctx = canvas.getContext("2d")
 
     //get data for composition
-    const composition = await useComposition(projectInfo, 600, 600, 600, 600);
+    const composition = await useComposition(projectInfo, 750, 750, 600, 600);
     // console.log('composition for', projectInfo.formattedName, composition);
 
     const {
