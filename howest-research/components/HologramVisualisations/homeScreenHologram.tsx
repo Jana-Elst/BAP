@@ -37,34 +37,51 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                 'architectuurEnDesignCadOutro': architectuurEnDesignCadOutro,
         };
 
-        const animationParts = ['Intro', 'Loop', 'Loop', 'Outro'];
+        const animationParts = ['Intro', 'Loop', 'Loop', 'Outro', 'Brake'];
         const currentProject = useSharedValue('clusterOverschrijdend');
         const nextProject = useSharedValue('activeHealthCah');
+        const prevProject = useSharedValue('architectuurEnDesignCad');
 
         const currentAnimationIndex = useSharedValue(0);
         const currentFrameIndex = useSharedValue(0);
         const lastTimestamp = useSharedValue(-1);
+        const brakeStartTime = useSharedValue(-1);
         const currentImage = useSharedValue<SkImage | null>(null);
 
-        const brakeLenght = 3000; // 3 seconds
+        const brakeLength = 3000; // 3 seconds
 
 
         useFrameCallback((frameInfo) => {
                 const part = animationParts[currentAnimationIndex.value];
+
+                const { timestamp } = frameInfo;
+                if (part === 'Brake') {
+                        if (brakeStartTime.value === -1) {
+                                brakeStartTime.value = timestamp;
+                        }
+
+                        if (timestamp - brakeStartTime.value >= brakeLength) {
+                                brakeStartTime.value = -1;
+                                currentAnimationIndex.value += 1;
+                                lastTimestamp.value = -1;
+
+                                if (currentAnimationIndex.value >= animationParts.length) {
+                                        currentAnimationIndex.value = 0;
+                                }
+                        }
+                        return;
+                }
+
                 const activeAnimation = animationMap[currentProject.value + part];
 
                 //--- Normal Frame Processing ---//
-                const { timestamp } = frameInfo;
                 if (lastTimestamp.value === -1) {
                         lastTimestamp.value = timestamp;
                 }
 
-                // // // Get frame info
+                //Get frame info
                 let currentFrameDuration = activeAnimation?.currentFrameDuration();
                 let totalFrames = activeAnimation?.getFrameCount();
-
-                console.log('Current frame duration:', currentFrameDuration);
-                console.log('Total frames:', totalFrames);
 
                 // Check if it's time for next frame
                 if (currentFrameDuration && timestamp - lastTimestamp.value < currentFrameDuration) {
@@ -98,8 +115,17 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                                 currentAnimationIndex.value = 0;
                         }
 
+                        //switch to next project
+                        if (currentAnimationIndex.value === 2) {
+                                console.log('switching to next project');
+                                console.log('currentProject', prevProject.value, currentProject.value, nextProject.value);
+
+                                prevProject.value = currentProject.value;
+                                currentProject.value = nextProject.value;
+                                nextProject.value = prevProject.value;
+                        }
+
                         currentFrameIndex.value = 0;
-                        console.log('currentAnimationIndex', currentAnimationIndex.value);
                 }
         });
 
