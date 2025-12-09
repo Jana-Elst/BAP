@@ -1,6 +1,6 @@
 // filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getClusterImages.js
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/9/2025, 6:27:32 PM
+// Generated on: 12/9/2025, 8:15:37 PM
 
 import activeHealthCah1 from "../assets/images/clusters/activeHealthCah/0001.webp";
 import activeHealthCah2 from "../assets/images/clusters/activeHealthCah/0002.webp";

@@ -49,7 +49,7 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
         // const animationParts = ['Intro', 'Loop', 'Outro', 'break'];
 
 
-        const projects = ['clusterOverschrijdend', 'activeHealthCah', 'clusterOverschrijdend', 'architectuurEnDesignCad', 'bedrijfEnOrganisatieCbo'];
+        const projects = ['clusterOverschrijdend', 'activeHealthCah', 'clusterOverschrijdend', 'architectuurEnDesignCad', 'clusterOverschrijdend', 'bedrijfEnOrganisatieCbo'];
         // const projects = ['activeHealthCah', 'activeHealthCah'];
 
         const currentProject = useSharedValue(0);
@@ -61,14 +61,21 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
         const currentFrameIndex = useSharedValue(0);
         const lastTimestamp = useSharedValue(-1);
         const breakStartTime = useSharedValue(-1);
+        const floatY = useSharedValue(0);
+        const floatX = useSharedValue(0);
         const currentImage = useSharedValue<SkImage | null>(null);
 
-        const breakLength = 1500; // 3 seconds
+        const breakLength = 1000; // 3 seconds
 
 
         useFrameCallback((frameInfo) => {
                 const part = animationParts[currentAnimationIndex.value];
                 const { timestamp } = frameInfo;
+
+                // --- Floating Effect Calculation --- //
+                // Continuous circular/spiral motion
+                floatX.value = Math.sin(timestamp * 0.002) * 20;
+                floatY.value = Math.cos(timestamp * 0.004) * 10;
 
                 if (part === 'break') {
                         if (breakStartTime.value === -1) {
@@ -158,8 +165,8 @@ const HomeScreenHologram = ({ screenWidth, screenHeight }: { screenWidth: number
                 >
                         <Image
                                 image={currentImage}
-                                x={0}
-                                y={0}
+                                x={floatX}
+                                y={floatY}
                                 width={screenWidth}
                                 height={screenHeight}
                                 fit="contain"
