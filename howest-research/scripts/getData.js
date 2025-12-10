@@ -130,10 +130,15 @@ export const getTransitionDomain = (clusterId) => {
 
 export const getClusterName = (clusterID) => {
     const cluster = data.clusters.find(cluster => cluster.id === clusterID);
-    if (cluster && cluster.label) {
-        cluster.label = cluster.label.replace(/\s*\([^)]*\)/g, '').trim();
+
+    if (cluster) {
+        const clusterCopy = { ...cluster }; // Create a copy
+        if (clusterCopy.label) {
+            clusterCopy.label = clusterCopy.label.replace(/\s*\([^)]*\)/g, '').trim();
+        }
+        return clusterCopy;
     }
-    return cluster
+    return cluster;
 };
 
 export const getProjectColor = (clusterID) => {
