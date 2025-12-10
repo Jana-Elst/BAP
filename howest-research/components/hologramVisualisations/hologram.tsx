@@ -38,8 +38,9 @@ const FloatingKeywordImage = ({
 
     useEffect(() => {
         const random = Math.floor(Math.random() * 2000);
+        progress.value = 0;
         progress.value = withTiming(1, { duration: random, easing: Easing.out(Easing.cubic) });
-    }, []);
+    }, [page.page]);
 
     const offsetX = useDerivedValue(() => {
         return Math.sin(time.value * 0.002 + index * 1000) * 5;
@@ -51,18 +52,18 @@ const FloatingKeywordImage = ({
 
     const x = useDerivedValue(() => {
         let currentX;
-        if (page.page !== 'detailKeyword') {
+        if (page.page === 'detailKeyword') {
             currentX = renderX + offsetX.value;
         } else {
             currentX = renderXInitial + (renderX - renderXInitial) * progress.value;
         }
 
         return currentX + offsetX.value;
-    }, [renderX, renderXInitial]);
+    }, [renderX, renderXInitial, page.page]);
 
     const y = useDerivedValue(() => {
         let currentY;
-        if (page.page !== 'detailKeyword') {
+        if (page.page === 'detailKeyword') {
             currentY = renderY + offsetY.value;
         } else {
             currentY = renderYInitial + (renderY - renderYInitial) * progress.value;
