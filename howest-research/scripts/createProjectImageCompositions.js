@@ -122,6 +122,19 @@ const getKeywordPositions = (clusterPosition: any, positions: any) => {
     });
 };
 
+const getKeywordInitialPositions = (positions) => {
+    if (!positions) return [];
+    return positions.degrees.map((degree) => {
+        const intersection = getEllipseIntersection(degree, centerX, centerY, 1920, 1080);
+        return {
+            x: intersection.x - widhtKeyword / 2,
+            y: intersection.y - heightKeyword / 2,
+            centerX: intersection.x,
+            centerY: intersection.y,
+        };
+    });
+};
+
 //
 const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
     const boxesKeywords = keywordImages.map((image, index) => {
@@ -292,6 +305,17 @@ const getEllipseIntersection = (degree: number, ellipseCenterX: number, ellipseC
     return { x, y };
 };
 
+const getRectIntersection = (degree, rectCenterX, rectCenterY, width , height) => {
+    const radians = (degree * Math.PI) / 180;
+    const cosTheta = Math.cos(radians);
+    const sinTheta = Math.sin(radians);
+
+    const x = rectCenterX + width / 2 * cosTheta;
+    const y = rectCenterY + height / 2 * sinTheta;
+
+    return { x, y };
+}
+
 //----------------------------- export function -----------------------------//
 export const useComposition = (project, width, height, sWidth, sHeight) => {
     //----- constants -----//
@@ -379,7 +403,9 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         return {
             clusterPosition: undefined,
             keywordPositions: [],
+            keywordInitialPositions: [],
             boundingBoxesKeywords: undefined,
+            boundingBoxesKeywordsInitial: undefined,
             boundingBoxesCluster: undefined,
             keyWordLabelPositions: [],
             keywordImageSources: keywordImages,
@@ -406,8 +432,10 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     const clusterPosition = getClusterPosition();
     console.log('🔵 10. clusterPosition', clusterPosition);
     const keywordPositions = getKeywordPositions(clusterPosition, positions);
+    const keywordInitialPositions = getKeywordInitialPositions(positions);
     console.log('🔵 11. keywordPositions', keywordPositions);
     const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, keywordData);
+    const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, keywordData);
     console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
     const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
     console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
@@ -416,7 +444,9 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     return {
         clusterPosition,
         keywordPositions,
+        keywordInitialPositions,
         boundingBoxesKeywords,
+        boundingBoxesKeywordsInitial,
         boundingBoxesCluster: boundingBoxesCluster,
         keywordImageSources: keywordImages,
         clusterImageSources: [clusterSource],

@@ -4,13 +4,69 @@
 import { getProjectInfo } from "@/scripts/getData";
 import {
     Canvas,
-    Group,
     Image
 } from "@shopify/react-native-skia";
-import React from "react";
-import { useFrameCallback, useSharedValue } from "react-native-reanimated";
+import React, { useEffect } from "react";
+import { Easing, useDerivedValue, useFrameCallback, useSharedValue, withTiming } from "react-native-reanimated";
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { useWebpAnimations } from "../../scripts/getWebpAnimations";
+
+const FloatingKeywordImage = ({
+    image,
+    renderX,
+    renderY,
+    renderXInitial,
+    renderYInitial,
+    width,
+    height,
+    index,
+    time,
+}: {
+    image: any;
+    renderX: number;
+    renderY: number;
+    renderXInitial: number;
+    renderYInitial: number;
+    width: number;
+    height: number;
+    index: number;
+    time: any;
+}) => {
+    const progress = useSharedValue(0);
+
+    useEffect(() => {
+        const random = Math.floor(Math.random() * 2000);
+        progress.value = withTiming(1, { duration: random, easing: Easing.out(Easing.cubic) });
+    }, []);
+
+    const offsetX = useDerivedValue(() => {
+        return Math.sin(time.value * 0.002 + index * 500) * 5;
+    }, [index]);
+
+    const offsetY = useDerivedValue(() => {
+        return Math.cos(time.value * 0.003 + index * 500) * 5;
+    }, [index]);
+
+    const x = useDerivedValue(() => {
+        const currentX = renderXInitial + (renderX - renderXInitial) * progress.value;
+        return currentX + offsetX.value;
+    }, [renderX, renderXInitial]);
+
+    const y = useDerivedValue(() => {
+        const currentY = renderYInitial + (renderY - renderYInitial) * progress.value;
+        return currentY + offsetY.value;
+    }, [renderY, renderYInitial]);
+
+    return (
+        <Image
+            image={image}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+        />
+    );
+};
 
 const Hologram = ({ screenWidth, screenHeight, setPage, page }: { screenWidth: number; screenHeight: number }) => {
     //--- General ---//
@@ -20,7 +76,9 @@ const Hologram = ({ screenWidth, screenHeight, setPage, page }: { screenWidth: n
     const {
         keywordImages = [],
         keywordPositions = [],
+        keywordInitialPositions = [],
         boundingBoxesKeywords,
+        boundingBoxesKeywordsInitial,
         clusterPosition,
         clusterImage,
         widhtKeyword = screenWidth / 2,
@@ -61,11 +119,13 @@ const Hologram = ({ screenWidth, screenHeight, setPage, page }: { screenWidth: n
 
     const isLoading = useSharedValue(false);
     const isDetail = useSharedValue(true);
+    const globalTimestamp = useSharedValue(0);
 
     //--- Let's animate! ---//
     useFrameCallback((frameInfo) => {
         //general
         const { timestamp } = frameInfo;
+        globalTimestamp.value = timestamp;
         const part = animationParts.value[currentAnimationIndex.value];
 
         // --- Floating Effect Calculation --- //
@@ -203,6 +263,7 @@ const Hologram = ({ screenWidth, screenHeight, setPage, page }: { screenWidth: n
                 keywordImages.map((image, index) => {
                     const pos = keywordPositions[index];
                     const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
+                    const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
 
                     if (!pos) return null;
 
@@ -210,16 +271,22 @@ const Hologram = ({ screenWidth, screenHeight, setPage, page }: { screenWidth: n
                     const renderX = boundingBox?.renderX ?? pos.x;
                     const renderY = boundingBox?.renderY ?? pos.y;
 
+                    const renderXInitial = boundingBoxInitial?.renderX ?? pos.x;
+                    const renderYInitial = boundingBoxInitial?.renderY ?? pos.y;
+
                     return (
-                        <Group key={`keyword-${index}`}>
-                            <Image
-                                image={image}
-                                x={renderX}
-                                y={renderY}
-                                width={widhtKeyword}
-                                height={heightKeyword}
-                            />
-                        </Group>
+                        <FloatingKeywordImage
+                            key={`keyword-${index}`}
+                            image={image}
+                            renderX={renderX}
+                            renderY={renderY}
+                            renderXInitial={renderXInitial}
+                            renderYInitial={renderYInitial}
+                            width={widhtKeyword}
+                            height={heightKeyword}
+                            index={index}
+                            time={globalTimestamp}
+                        />
                     );
                 })
             )}
