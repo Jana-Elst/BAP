@@ -6,10 +6,80 @@ import {
     Canvas,
     Image
 } from "@shopify/react-native-skia";
-import React, { useRef } from "react";
-import { useFrameCallback, useSharedValue } from "react-native-reanimated";
+import React, { useEffect, useRef } from "react";
+import { Easing, useDerivedValue, useFrameCallback, useSharedValue, withTiming } from "react-native-reanimated";
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { useWebpAnimations } from "../../scripts/getWebpAnimations";
+
+const FloatingKeywordImage = ({
+    image,
+    renderX,
+    renderY,
+    renderXInitial,
+    renderYInitial,
+    width,
+    height,
+    index,
+    time,
+    page
+}: {
+    image: any;
+    renderX: number;
+    renderY: number;
+    renderXInitial: number;
+    renderYInitial: number;
+    width: number;
+    height: number;
+    index: number;
+    time: any;
+    page: any;
+}) => {
+    const progress = useSharedValue(0);
+
+    useEffect(() => {
+        const random = Math.floor(Math.random() * 2000);
+        progress.value = withTiming(1, { duration: random, easing: Easing.out(Easing.cubic) });
+    }, []);
+
+    const offsetX = useDerivedValue(() => {
+        return Math.sin(time.value * 0.002 + index * 1000) * 5;
+    }, [index]);
+
+    const offsetY = useDerivedValue(() => {
+        return Math.cos(time.value * 0.003 + index * 1000) * 5;
+    }, [index]);
+
+    const x = useDerivedValue(() => {
+        let currentX;
+        if (page.page !== 'detailKeyword') {
+            currentX = renderX + offsetX.value;
+        } else {
+            currentX = renderXInitial + (renderX - renderXInitial) * progress.value;
+        }
+
+        return currentX + offsetX.value;
+    }, [renderX, renderXInitial]);
+
+    const y = useDerivedValue(() => {
+        let currentY;
+        if (page.page !== 'detailKeyword') {
+            currentY = renderY + offsetY.value;
+        } else {
+            currentY = renderYInitial + (renderY - renderYInitial) * progress.value;
+        }
+        return currentY + offsetY.value;
+    }, [renderY, renderYInitial, page.page]);
+
+    return (
+        <Image
+            image={image}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+        />
+    );
+}
 
 const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; screenHeight: number; page: any }) => {
     //--- General ---//
@@ -181,7 +251,22 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
         }
     });
 
-    //----
+    //---- Transition logic ----//
+    useEffect(() => {
+        if (page.page === 'detailKeyword') {
+            scalingCluster.value = withTiming(0, {
+                duration: 1000,
+                easing: Easing.inOut(Easing.quad)
+            });
+            opacityCluster.value = withTiming(0, {
+                duration: 1000,
+                easing: Easing.inOut(Easing.quad)
+            });
+        } else {
+            scalingCluster.value = withTiming(1, { duration: 1000 });
+            opacityCluster.value = withTiming(1, { duration: 1000 });
+        }
+    }, [page.page, positionData.isLoading]);
 
 
     return (
@@ -214,23 +299,35 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
 
                         if (page.info.keyword.id === activeProjectData.project.keywords[index].id) {
                             return (
-                                <Image
-                                    image={image}
-                                    x={renderX}
-                                    y={renderY}
+                                <FloatingKeywordImage
+                                    page={page}
+                                    key={`keyword-${index}`} // Note: 'index' here might be undefined if not scoped correctly
+                                    image={image} // Note: 'image' here might be undefined if not scoped correctly
+                                    renderX={renderX}
+                                    renderY={renderY}
+                                    renderXInitial={renderXInitial}
+                                    renderYInitial={renderYInitial}
                                     width={widhtKeyword}
                                     height={heightKeyword}
+                                    index={index}
+                                    time={globalTimestamp}
                                 />
                             );
                         }
                     } else {
                         return (
-                            <Image
-                                image={image}
-                                x={renderX}
-                                y={renderY}
+                            <FloatingKeywordImage
+                                page={page}
+                                key={`keyword-${index}`} // Note: 'index' here might be undefined if not scoped correctly
+                                image={image} // Note: 'image' here might be undefined if not scoped correctly
+                                renderX={renderX}
+                                renderY={renderY}
+                                renderXInitial={renderXInitial}
+                                renderYInitial={renderYInitial}
                                 width={widhtKeyword}
                                 height={heightKeyword}
+                                index={index}
+                                time={globalTimestamp}
                             />
                         );
                     }
