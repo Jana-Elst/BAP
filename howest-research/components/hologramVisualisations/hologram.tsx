@@ -318,7 +318,6 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
             style={{
                 width: screenWidth,
                 height: screenHeight,
-                backgroundColor: 'green'
             }}
         >
             {activeProjectData.project ? (
