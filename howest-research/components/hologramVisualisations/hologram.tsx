@@ -146,6 +146,15 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
     const scalingCluster = useSharedValue(1);
     const opacityCluster = useSharedValue(1);
 
+    console.log('boundingBoxesKeywordsInitial KKKKK', activeProjectData.positionData.boundingBoxesKeywordsInitial);
+    const actualPositionKeywords = useSharedValue(
+        activeProjectData.positionData.boundingBoxesKeywordsInitial ?
+            activeProjectData.positionData.boundingBoxesKeywordsInitial.flatMap((box) => {
+                if (!box) return [0, 0];
+                return [box.renderX, box.renderY];
+            }) : []
+    );
+
     const isLoading = useSharedValue(false);
     const isDetail = useSharedValue(true);
     const globalTimestamp = useSharedValue(0);
@@ -254,6 +263,39 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
 
     //---- Transition logic ----//
     useEffect(() => {
+        if (page.page === 'detailResearch' && isLoading.value === false) {
+            console.log('--- Debugging Transition Logic ---');
+            console.log('page.page:', page.page);
+            console.log('boundingBoxesKeywords:', activeProjectData.positionData.boundingBoxesKeywords);
+            console.log('activeProjectData:', activeProjectData);
+            if (activeProjectData?.positionData) {
+                console.log('positionData keys:', Object.keys(activeProjectData.positionData));
+            } else {
+                console.log('positionData is undefined or null');
+            }
+
+            // const targetValues = boundingBoxesKeywords?.map((box) => ({
+            //     renderX: box.renderX,
+            //     renderY: box.renderY
+            // })) || [];
+
+            const targetValues =
+                activeProjectData.positionData.boundingBoxesKeywords ?
+                    activeProjectData.positionData.boundingBoxesKeywords.flatMap((box) => {
+                        if (!box) return [0, 0];
+                        return [box.renderX, box.renderY];
+                    }) : []
+
+            console.log('Animating to targetValues:', targetValues);
+
+            actualPositionKeywords.value = withTiming(
+                targetValues,
+                {
+                    duration: 1000,
+                    easing: Easing.inOut(Easing.quad)
+                }
+            )
+        }
         if (page.page === 'detailKeyword') {
             scalingCluster.value = withTiming(0, {
                 duration: 1000,
@@ -263,6 +305,7 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
                 duration: 1000,
                 easing: Easing.inOut(Easing.quad)
             });
+
         } else {
             scalingCluster.value = withTiming(1, { duration: 1000 });
             opacityCluster.value = withTiming(1, { duration: 1000 });
@@ -280,7 +323,9 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
         >
             {activeProjectData.project ? (
                 keywordImages.map((image, index) => {
-                    const pos = keywordPositions[index];
+                    // const pos = keywordPositions[index];
+                    const pos = activeProjectData.positionData.keywordPositions[index];
+                    console.log('pos', pos);
 
                     const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
                     const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
@@ -332,6 +377,14 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
                             />
                         );
                     }
+
+                    // return (<Image
+                    //     image={image}
+                    //     x={renderX}
+                    //     y={renderY}
+                    //     width={widhtKeyword}
+                    //     height={heightKeyword}
+                    // />);
                 })
             ) : (
                 console.log('NO KEYWORDS', activeProjectData.project)
