@@ -1,5 +1,5 @@
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/10/2025, 9:47:11 AM
+// Generated on: 12/10/2025, 5:42:17 PM
 
 import img_0 from '../assets/images/visualizationsProjects/5GPilotHealthCare.png';
 import img_1 from '../assets/images/visualizationsProjects/5GPilotZeevaart.png';
@@ -295,7 +295,7 @@ const imageMap = {
  * @returns {string|null} The imported image path or null if not found.
  */
 const getVisualizationProjectImage = (imageName) => {
-    // console.log('imageName', imageName);
+    console.log('imageName', imageName);
     return imageMap[imageName] || null;
 };
 

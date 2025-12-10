@@ -1,6 +1,6 @@
 // filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/10/2025, 9:41:46 AM
+// Generated on: 12/10/2025, 5:44:46 PM
 
 import G1 from "../assets/images/keywordsEnThemas/5G/0001.webp";
 import G2 from "../assets/images/keywordsEnThemas/5G/0002.webp";
@@ -165,6 +165,47 @@ import bigDataAndAnalytics37 from "../assets/images/keywordsEnThemas/bigDataAndA
 import bigDataAndAnalytics38 from "../assets/images/keywordsEnThemas/bigDataAndAnalytics/0038.webp";
 import bigDataAndAnalytics39 from "../assets/images/keywordsEnThemas/bigDataAndAnalytics/0039.webp";
 import bigDataAndAnalytics40 from "../assets/images/keywordsEnThemas/bigDataAndAnalytics/0040.webp";
+
+import blendedLearning1 from "../assets/images/keywordsEnThemas/blendedLearning/0001.webp";
+import blendedLearning2 from "../assets/images/keywordsEnThemas/blendedLearning/0002.webp";
+import blendedLearning3 from "../assets/images/keywordsEnThemas/blendedLearning/0003.webp";
+import blendedLearning4 from "../assets/images/keywordsEnThemas/blendedLearning/0004.webp";
+import blendedLearning5 from "../assets/images/keywordsEnThemas/blendedLearning/0005.webp";
+import blendedLearning6 from "../assets/images/keywordsEnThemas/blendedLearning/0006.webp";
+import blendedLearning7 from "../assets/images/keywordsEnThemas/blendedLearning/0007.webp";
+import blendedLearning8 from "../assets/images/keywordsEnThemas/blendedLearning/0008.webp";
+import blendedLearning9 from "../assets/images/keywordsEnThemas/blendedLearning/0009.webp";
+import blendedLearning10 from "../assets/images/keywordsEnThemas/blendedLearning/0010.webp";
+import blendedLearning11 from "../assets/images/keywordsEnThemas/blendedLearning/0011.webp";
+import blendedLearning12 from "../assets/images/keywordsEnThemas/blendedLearning/0012.webp";
+import blendedLearning13 from "../assets/images/keywordsEnThemas/blendedLearning/0013.webp";
+import blendedLearning14 from "../assets/images/keywordsEnThemas/blendedLearning/0014.webp";
+import blendedLearning15 from "../assets/images/keywordsEnThemas/blendedLearning/0015.webp";
+import blendedLearning16 from "../assets/images/keywordsEnThemas/blendedLearning/0016.webp";
+import blendedLearning17 from "../assets/images/keywordsEnThemas/blendedLearning/0017.webp";
+import blendedLearning18 from "../assets/images/keywordsEnThemas/blendedLearning/0018.webp";
+import blendedLearning19 from "../assets/images/keywordsEnThemas/blendedLearning/0019.webp";
+import blendedLearning20 from "../assets/images/keywordsEnThemas/blendedLearning/0020.webp";
+import blendedLearning21 from "../assets/images/keywordsEnThemas/blendedLearning/0021.webp";
+import blendedLearning22 from "../assets/images/keywordsEnThemas/blendedLearning/0022.webp";
+import blendedLearning23 from "../assets/images/keywordsEnThemas/blendedLearning/0023.webp";
+import blendedLearning24 from "../assets/images/keywordsEnThemas/blendedLearning/0024.webp";
+import blendedLearning25 from "../assets/images/keywordsEnThemas/blendedLearning/0025.webp";
+import blendedLearning26 from "../assets/images/keywordsEnThemas/blendedLearning/0026.webp";
+import blendedLearning27 from "../assets/images/keywordsEnThemas/blendedLearning/0027.webp";
+import blendedLearning28 from "../assets/images/keywordsEnThemas/blendedLearning/0028.webp";
+import blendedLearning29 from "../assets/images/keywordsEnThemas/blendedLearning/0029.webp";
+import blendedLearning30 from "../assets/images/keywordsEnThemas/blendedLearning/0030.webp";
+import blendedLearning31 from "../assets/images/keywordsEnThemas/blendedLearning/0031.webp";
+import blendedLearning32 from "../assets/images/keywordsEnThemas/blendedLearning/0032.webp";
+import blendedLearning33 from "../assets/images/keywordsEnThemas/blendedLearning/0033.webp";
+import blendedLearning34 from "../assets/images/keywordsEnThemas/blendedLearning/0034.webp";
+import blendedLearning35 from "../assets/images/keywordsEnThemas/blendedLearning/0035.webp";
+import blendedLearning36 from "../assets/images/keywordsEnThemas/blendedLearning/0036.webp";
+import blendedLearning37 from "../assets/images/keywordsEnThemas/blendedLearning/0037.webp";
+import blendedLearning38 from "../assets/images/keywordsEnThemas/blendedLearning/0038.webp";
+import blendedLearning39 from "../assets/images/keywordsEnThemas/blendedLearning/0039.webp";
+import blendedLearning40 from "../assets/images/keywordsEnThemas/blendedLearning/0040.webp";
 
 import blockchain1 from "../assets/images/keywordsEnThemas/blockchain/0001.webp";
 import blockchain2 from "../assets/images/keywordsEnThemas/blockchain/0002.webp";
@@ -395,6 +436,47 @@ import didactiek38 from "../assets/images/keywordsEnThemas/didactiek/0038.webp";
 import didactiek39 from "../assets/images/keywordsEnThemas/didactiek/0039.webp";
 import didactiek40 from "../assets/images/keywordsEnThemas/didactiek/0040.webp";
 
+import didactischeInnovatie1 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0001.webp";
+import didactischeInnovatie2 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0002.webp";
+import didactischeInnovatie3 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0003.webp";
+import didactischeInnovatie4 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0004.webp";
+import didactischeInnovatie5 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0005.webp";
+import didactischeInnovatie6 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0006.webp";
+import didactischeInnovatie7 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0007.webp";
+import didactischeInnovatie8 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0008.webp";
+import didactischeInnovatie9 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0009.webp";
+import didactischeInnovatie10 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0010.webp";
+import didactischeInnovatie11 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0011.webp";
+import didactischeInnovatie12 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0012.webp";
+import didactischeInnovatie13 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0013.webp";
+import didactischeInnovatie14 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0014.webp";
+import didactischeInnovatie15 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0015.webp";
+import didactischeInnovatie16 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0016.webp";
+import didactischeInnovatie17 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0017.webp";
+import didactischeInnovatie18 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0018.webp";
+import didactischeInnovatie19 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0019.webp";
+import didactischeInnovatie20 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0020.webp";
+import didactischeInnovatie21 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0021.webp";
+import didactischeInnovatie22 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0022.webp";
+import didactischeInnovatie23 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0023.webp";
+import didactischeInnovatie24 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0024.webp";
+import didactischeInnovatie25 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0025.webp";
+import didactischeInnovatie26 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0026.webp";
+import didactischeInnovatie27 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0027.webp";
+import didactischeInnovatie28 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0028.webp";
+import didactischeInnovatie29 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0029.webp";
+import didactischeInnovatie30 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0030.webp";
+import didactischeInnovatie31 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0031.webp";
+import didactischeInnovatie32 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0032.webp";
+import didactischeInnovatie33 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0033.webp";
+import didactischeInnovatie34 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0034.webp";
+import didactischeInnovatie35 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0035.webp";
+import didactischeInnovatie36 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0036.webp";
+import didactischeInnovatie37 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0037.webp";
+import didactischeInnovatie38 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0038.webp";
+import didactischeInnovatie39 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0039.webp";
+import didactischeInnovatie40 from "../assets/images/keywordsEnThemas/didactischeInnovatie/0040.webp";
+
 import digitaalOndernemenEnLogistiek1 from "../assets/images/keywordsEnThemas/digitaalOndernemenEnLogistiek/0001.webp";
 import digitaalOndernemenEnLogistiek2 from "../assets/images/keywordsEnThemas/digitaalOndernemenEnLogistiek/0002.webp";
 import digitaalOndernemenEnLogistiek3 from "../assets/images/keywordsEnThemas/digitaalOndernemenEnLogistiek/0003.webp";
@@ -476,6 +558,47 @@ import digitalApplications37 from "../assets/images/keywordsEnThemas/digitalAppl
 import digitalApplications38 from "../assets/images/keywordsEnThemas/digitalApplications/0038.webp";
 import digitalApplications39 from "../assets/images/keywordsEnThemas/digitalApplications/0039.webp";
 import digitalApplications40 from "../assets/images/keywordsEnThemas/digitalApplications/0040.webp";
+
+import digitalHealth1 from "../assets/images/keywordsEnThemas/digitalHealth/0001.webp";
+import digitalHealth2 from "../assets/images/keywordsEnThemas/digitalHealth/0002.webp";
+import digitalHealth3 from "../assets/images/keywordsEnThemas/digitalHealth/0003.webp";
+import digitalHealth4 from "../assets/images/keywordsEnThemas/digitalHealth/0004.webp";
+import digitalHealth5 from "../assets/images/keywordsEnThemas/digitalHealth/0005.webp";
+import digitalHealth6 from "../assets/images/keywordsEnThemas/digitalHealth/0006.webp";
+import digitalHealth7 from "../assets/images/keywordsEnThemas/digitalHealth/0007.webp";
+import digitalHealth8 from "../assets/images/keywordsEnThemas/digitalHealth/0008.webp";
+import digitalHealth9 from "../assets/images/keywordsEnThemas/digitalHealth/0009.webp";
+import digitalHealth10 from "../assets/images/keywordsEnThemas/digitalHealth/0010.webp";
+import digitalHealth11 from "../assets/images/keywordsEnThemas/digitalHealth/0011.webp";
+import digitalHealth12 from "../assets/images/keywordsEnThemas/digitalHealth/0012.webp";
+import digitalHealth13 from "../assets/images/keywordsEnThemas/digitalHealth/0013.webp";
+import digitalHealth14 from "../assets/images/keywordsEnThemas/digitalHealth/0014.webp";
+import digitalHealth15 from "../assets/images/keywordsEnThemas/digitalHealth/0015.webp";
+import digitalHealth16 from "../assets/images/keywordsEnThemas/digitalHealth/0016.webp";
+import digitalHealth17 from "../assets/images/keywordsEnThemas/digitalHealth/0017.webp";
+import digitalHealth18 from "../assets/images/keywordsEnThemas/digitalHealth/0018.webp";
+import digitalHealth19 from "../assets/images/keywordsEnThemas/digitalHealth/0019.webp";
+import digitalHealth20 from "../assets/images/keywordsEnThemas/digitalHealth/0020.webp";
+import digitalHealth21 from "../assets/images/keywordsEnThemas/digitalHealth/0021.webp";
+import digitalHealth22 from "../assets/images/keywordsEnThemas/digitalHealth/0022.webp";
+import digitalHealth23 from "../assets/images/keywordsEnThemas/digitalHealth/0023.webp";
+import digitalHealth24 from "../assets/images/keywordsEnThemas/digitalHealth/0024.webp";
+import digitalHealth25 from "../assets/images/keywordsEnThemas/digitalHealth/0025.webp";
+import digitalHealth26 from "../assets/images/keywordsEnThemas/digitalHealth/0026.webp";
+import digitalHealth27 from "../assets/images/keywordsEnThemas/digitalHealth/0027.webp";
+import digitalHealth28 from "../assets/images/keywordsEnThemas/digitalHealth/0028.webp";
+import digitalHealth29 from "../assets/images/keywordsEnThemas/digitalHealth/0029.webp";
+import digitalHealth30 from "../assets/images/keywordsEnThemas/digitalHealth/0030.webp";
+import digitalHealth31 from "../assets/images/keywordsEnThemas/digitalHealth/0031.webp";
+import digitalHealth32 from "../assets/images/keywordsEnThemas/digitalHealth/0032.webp";
+import digitalHealth33 from "../assets/images/keywordsEnThemas/digitalHealth/0033.webp";
+import digitalHealth34 from "../assets/images/keywordsEnThemas/digitalHealth/0034.webp";
+import digitalHealth35 from "../assets/images/keywordsEnThemas/digitalHealth/0035.webp";
+import digitalHealth36 from "../assets/images/keywordsEnThemas/digitalHealth/0036.webp";
+import digitalHealth37 from "../assets/images/keywordsEnThemas/digitalHealth/0037.webp";
+import digitalHealth38 from "../assets/images/keywordsEnThemas/digitalHealth/0038.webp";
+import digitalHealth39 from "../assets/images/keywordsEnThemas/digitalHealth/0039.webp";
+import digitalHealth40 from "../assets/images/keywordsEnThemas/digitalHealth/0040.webp";
 
 import digitalSkillsMediawijsheid1 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0001.webp";
 import digitalSkillsMediawijsheid2 from "../assets/images/keywordsEnThemas/digitalSkillsMediawijsheid/0002.webp";
@@ -600,6 +723,88 @@ import digitalTwin38 from "../assets/images/keywordsEnThemas/digitalTwin/0038.we
 import digitalTwin39 from "../assets/images/keywordsEnThemas/digitalTwin/0039.webp";
 import digitalTwin40 from "../assets/images/keywordsEnThemas/digitalTwin/0040.webp";
 
+import digitaleTools1 from "../assets/images/keywordsEnThemas/digitaleTools/0001.webp";
+import digitaleTools2 from "../assets/images/keywordsEnThemas/digitaleTools/0002.webp";
+import digitaleTools3 from "../assets/images/keywordsEnThemas/digitaleTools/0003.webp";
+import digitaleTools4 from "../assets/images/keywordsEnThemas/digitaleTools/0004.webp";
+import digitaleTools5 from "../assets/images/keywordsEnThemas/digitaleTools/0005.webp";
+import digitaleTools6 from "../assets/images/keywordsEnThemas/digitaleTools/0006.webp";
+import digitaleTools7 from "../assets/images/keywordsEnThemas/digitaleTools/0007.webp";
+import digitaleTools8 from "../assets/images/keywordsEnThemas/digitaleTools/0008.webp";
+import digitaleTools9 from "../assets/images/keywordsEnThemas/digitaleTools/0009.webp";
+import digitaleTools10 from "../assets/images/keywordsEnThemas/digitaleTools/0010.webp";
+import digitaleTools11 from "../assets/images/keywordsEnThemas/digitaleTools/0011.webp";
+import digitaleTools12 from "../assets/images/keywordsEnThemas/digitaleTools/0012.webp";
+import digitaleTools13 from "../assets/images/keywordsEnThemas/digitaleTools/0013.webp";
+import digitaleTools14 from "../assets/images/keywordsEnThemas/digitaleTools/0014.webp";
+import digitaleTools15 from "../assets/images/keywordsEnThemas/digitaleTools/0015.webp";
+import digitaleTools16 from "../assets/images/keywordsEnThemas/digitaleTools/0016.webp";
+import digitaleTools17 from "../assets/images/keywordsEnThemas/digitaleTools/0017.webp";
+import digitaleTools18 from "../assets/images/keywordsEnThemas/digitaleTools/0018.webp";
+import digitaleTools19 from "../assets/images/keywordsEnThemas/digitaleTools/0019.webp";
+import digitaleTools20 from "../assets/images/keywordsEnThemas/digitaleTools/0020.webp";
+import digitaleTools21 from "../assets/images/keywordsEnThemas/digitaleTools/0021.webp";
+import digitaleTools22 from "../assets/images/keywordsEnThemas/digitaleTools/0022.webp";
+import digitaleTools23 from "../assets/images/keywordsEnThemas/digitaleTools/0023.webp";
+import digitaleTools24 from "../assets/images/keywordsEnThemas/digitaleTools/0024.webp";
+import digitaleTools25 from "../assets/images/keywordsEnThemas/digitaleTools/0025.webp";
+import digitaleTools26 from "../assets/images/keywordsEnThemas/digitaleTools/0026.webp";
+import digitaleTools27 from "../assets/images/keywordsEnThemas/digitaleTools/0027.webp";
+import digitaleTools28 from "../assets/images/keywordsEnThemas/digitaleTools/0028.webp";
+import digitaleTools29 from "../assets/images/keywordsEnThemas/digitaleTools/0029.webp";
+import digitaleTools30 from "../assets/images/keywordsEnThemas/digitaleTools/0030.webp";
+import digitaleTools31 from "../assets/images/keywordsEnThemas/digitaleTools/0031.webp";
+import digitaleTools32 from "../assets/images/keywordsEnThemas/digitaleTools/0032.webp";
+import digitaleTools33 from "../assets/images/keywordsEnThemas/digitaleTools/0033.webp";
+import digitaleTools34 from "../assets/images/keywordsEnThemas/digitaleTools/0034.webp";
+import digitaleTools35 from "../assets/images/keywordsEnThemas/digitaleTools/0035.webp";
+import digitaleTools36 from "../assets/images/keywordsEnThemas/digitaleTools/0036.webp";
+import digitaleTools37 from "../assets/images/keywordsEnThemas/digitaleTools/0037.webp";
+import digitaleTools38 from "../assets/images/keywordsEnThemas/digitaleTools/0038.webp";
+import digitaleTools39 from "../assets/images/keywordsEnThemas/digitaleTools/0039.webp";
+import digitaleTools40 from "../assets/images/keywordsEnThemas/digitaleTools/0040.webp";
+
+import educatieveTechnologie1 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0001.webp";
+import educatieveTechnologie2 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0002.webp";
+import educatieveTechnologie3 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0003.webp";
+import educatieveTechnologie4 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0004.webp";
+import educatieveTechnologie5 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0005.webp";
+import educatieveTechnologie6 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0006.webp";
+import educatieveTechnologie7 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0007.webp";
+import educatieveTechnologie8 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0008.webp";
+import educatieveTechnologie9 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0009.webp";
+import educatieveTechnologie10 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0010.webp";
+import educatieveTechnologie11 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0011.webp";
+import educatieveTechnologie12 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0012.webp";
+import educatieveTechnologie13 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0013.webp";
+import educatieveTechnologie14 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0014.webp";
+import educatieveTechnologie15 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0015.webp";
+import educatieveTechnologie16 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0016.webp";
+import educatieveTechnologie17 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0017.webp";
+import educatieveTechnologie18 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0018.webp";
+import educatieveTechnologie19 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0019.webp";
+import educatieveTechnologie20 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0020.webp";
+import educatieveTechnologie21 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0021.webp";
+import educatieveTechnologie22 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0022.webp";
+import educatieveTechnologie23 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0023.webp";
+import educatieveTechnologie24 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0024.webp";
+import educatieveTechnologie25 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0025.webp";
+import educatieveTechnologie26 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0026.webp";
+import educatieveTechnologie27 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0027.webp";
+import educatieveTechnologie28 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0028.webp";
+import educatieveTechnologie29 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0029.webp";
+import educatieveTechnologie30 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0030.webp";
+import educatieveTechnologie31 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0031.webp";
+import educatieveTechnologie32 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0032.webp";
+import educatieveTechnologie33 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0033.webp";
+import educatieveTechnologie34 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0034.webp";
+import educatieveTechnologie35 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0035.webp";
+import educatieveTechnologie36 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0036.webp";
+import educatieveTechnologie37 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0037.webp";
+import educatieveTechnologie38 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0038.webp";
+import educatieveTechnologie39 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0039.webp";
+import educatieveTechnologie40 from "../assets/images/keywordsEnThemas/educatieveTechnologie/0040.webp";
+
 import energie1 from "../assets/images/keywordsEnThemas/energie/0001.webp";
 import energie2 from "../assets/images/keywordsEnThemas/energie/0002.webp";
 import energie3 from "../assets/images/keywordsEnThemas/energie/0003.webp";
@@ -640,6 +845,47 @@ import energie37 from "../assets/images/keywordsEnThemas/energie/0037.webp";
 import energie38 from "../assets/images/keywordsEnThemas/energie/0038.webp";
 import energie39 from "../assets/images/keywordsEnThemas/energie/0039.webp";
 import energie40 from "../assets/images/keywordsEnThemas/energie/0040.webp";
+
+import fakeNews1 from "../assets/images/keywordsEnThemas/fakeNews/0001.webp";
+import fakeNews2 from "../assets/images/keywordsEnThemas/fakeNews/0002.webp";
+import fakeNews3 from "../assets/images/keywordsEnThemas/fakeNews/0003.webp";
+import fakeNews4 from "../assets/images/keywordsEnThemas/fakeNews/0004.webp";
+import fakeNews5 from "../assets/images/keywordsEnThemas/fakeNews/0005.webp";
+import fakeNews6 from "../assets/images/keywordsEnThemas/fakeNews/0006.webp";
+import fakeNews7 from "../assets/images/keywordsEnThemas/fakeNews/0007.webp";
+import fakeNews8 from "../assets/images/keywordsEnThemas/fakeNews/0008.webp";
+import fakeNews9 from "../assets/images/keywordsEnThemas/fakeNews/0009.webp";
+import fakeNews10 from "../assets/images/keywordsEnThemas/fakeNews/0010.webp";
+import fakeNews11 from "../assets/images/keywordsEnThemas/fakeNews/0011.webp";
+import fakeNews12 from "../assets/images/keywordsEnThemas/fakeNews/0012.webp";
+import fakeNews13 from "../assets/images/keywordsEnThemas/fakeNews/0013.webp";
+import fakeNews14 from "../assets/images/keywordsEnThemas/fakeNews/0014.webp";
+import fakeNews15 from "../assets/images/keywordsEnThemas/fakeNews/0015.webp";
+import fakeNews16 from "../assets/images/keywordsEnThemas/fakeNews/0016.webp";
+import fakeNews17 from "../assets/images/keywordsEnThemas/fakeNews/0017.webp";
+import fakeNews18 from "../assets/images/keywordsEnThemas/fakeNews/0018.webp";
+import fakeNews19 from "../assets/images/keywordsEnThemas/fakeNews/0019.webp";
+import fakeNews20 from "../assets/images/keywordsEnThemas/fakeNews/0020.webp";
+import fakeNews21 from "../assets/images/keywordsEnThemas/fakeNews/0021.webp";
+import fakeNews22 from "../assets/images/keywordsEnThemas/fakeNews/0022.webp";
+import fakeNews23 from "../assets/images/keywordsEnThemas/fakeNews/0023.webp";
+import fakeNews24 from "../assets/images/keywordsEnThemas/fakeNews/0024.webp";
+import fakeNews25 from "../assets/images/keywordsEnThemas/fakeNews/0025.webp";
+import fakeNews26 from "../assets/images/keywordsEnThemas/fakeNews/0026.webp";
+import fakeNews27 from "../assets/images/keywordsEnThemas/fakeNews/0027.webp";
+import fakeNews28 from "../assets/images/keywordsEnThemas/fakeNews/0028.webp";
+import fakeNews29 from "../assets/images/keywordsEnThemas/fakeNews/0029.webp";
+import fakeNews30 from "../assets/images/keywordsEnThemas/fakeNews/0030.webp";
+import fakeNews31 from "../assets/images/keywordsEnThemas/fakeNews/0031.webp";
+import fakeNews32 from "../assets/images/keywordsEnThemas/fakeNews/0032.webp";
+import fakeNews33 from "../assets/images/keywordsEnThemas/fakeNews/0033.webp";
+import fakeNews34 from "../assets/images/keywordsEnThemas/fakeNews/0034.webp";
+import fakeNews35 from "../assets/images/keywordsEnThemas/fakeNews/0035.webp";
+import fakeNews36 from "../assets/images/keywordsEnThemas/fakeNews/0036.webp";
+import fakeNews37 from "../assets/images/keywordsEnThemas/fakeNews/0037.webp";
+import fakeNews38 from "../assets/images/keywordsEnThemas/fakeNews/0038.webp";
+import fakeNews39 from "../assets/images/keywordsEnThemas/fakeNews/0039.webp";
+import fakeNews40 from "../assets/images/keywordsEnThemas/fakeNews/0040.webp";
 
 import gameOntwikkelingEnTechnologie1 from "../assets/images/keywordsEnThemas/gameOntwikkelingEnTechnologie/0001.webp";
 import gameOntwikkelingEnTechnologie2 from "../assets/images/keywordsEnThemas/gameOntwikkelingEnTechnologie/0002.webp";
@@ -846,6 +1092,88 @@ import industrie4038 from "../assets/images/keywordsEnThemas/industrie40/0038.we
 import industrie4039 from "../assets/images/keywordsEnThemas/industrie40/0039.webp";
 import industrie4040 from "../assets/images/keywordsEnThemas/industrie40/0040.webp";
 
+import innovatieveLeeromgevingen1 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0001.webp";
+import innovatieveLeeromgevingen2 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0002.webp";
+import innovatieveLeeromgevingen3 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0003.webp";
+import innovatieveLeeromgevingen4 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0004.webp";
+import innovatieveLeeromgevingen5 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0005.webp";
+import innovatieveLeeromgevingen6 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0006.webp";
+import innovatieveLeeromgevingen7 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0007.webp";
+import innovatieveLeeromgevingen8 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0008.webp";
+import innovatieveLeeromgevingen9 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0009.webp";
+import innovatieveLeeromgevingen10 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0010.webp";
+import innovatieveLeeromgevingen11 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0011.webp";
+import innovatieveLeeromgevingen12 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0012.webp";
+import innovatieveLeeromgevingen13 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0013.webp";
+import innovatieveLeeromgevingen14 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0014.webp";
+import innovatieveLeeromgevingen15 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0015.webp";
+import innovatieveLeeromgevingen16 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0016.webp";
+import innovatieveLeeromgevingen17 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0017.webp";
+import innovatieveLeeromgevingen18 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0018.webp";
+import innovatieveLeeromgevingen19 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0019.webp";
+import innovatieveLeeromgevingen20 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0020.webp";
+import innovatieveLeeromgevingen21 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0021.webp";
+import innovatieveLeeromgevingen22 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0022.webp";
+import innovatieveLeeromgevingen23 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0023.webp";
+import innovatieveLeeromgevingen24 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0024.webp";
+import innovatieveLeeromgevingen25 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0025.webp";
+import innovatieveLeeromgevingen26 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0026.webp";
+import innovatieveLeeromgevingen27 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0027.webp";
+import innovatieveLeeromgevingen28 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0028.webp";
+import innovatieveLeeromgevingen29 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0029.webp";
+import innovatieveLeeromgevingen30 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0030.webp";
+import innovatieveLeeromgevingen31 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0031.webp";
+import innovatieveLeeromgevingen32 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0032.webp";
+import innovatieveLeeromgevingen33 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0033.webp";
+import innovatieveLeeromgevingen34 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0034.webp";
+import innovatieveLeeromgevingen35 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0035.webp";
+import innovatieveLeeromgevingen36 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0036.webp";
+import innovatieveLeeromgevingen37 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0037.webp";
+import innovatieveLeeromgevingen38 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0038.webp";
+import innovatieveLeeromgevingen39 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0039.webp";
+import innovatieveLeeromgevingen40 from "../assets/images/keywordsEnThemas/innovatieveLeeromgevingen/0040.webp";
+
+import livingLab1 from "../assets/images/keywordsEnThemas/livingLab/0001.webp";
+import livingLab2 from "../assets/images/keywordsEnThemas/livingLab/0002.webp";
+import livingLab3 from "../assets/images/keywordsEnThemas/livingLab/0003.webp";
+import livingLab4 from "../assets/images/keywordsEnThemas/livingLab/0004.webp";
+import livingLab5 from "../assets/images/keywordsEnThemas/livingLab/0005.webp";
+import livingLab6 from "../assets/images/keywordsEnThemas/livingLab/0006.webp";
+import livingLab7 from "../assets/images/keywordsEnThemas/livingLab/0007.webp";
+import livingLab8 from "../assets/images/keywordsEnThemas/livingLab/0008.webp";
+import livingLab9 from "../assets/images/keywordsEnThemas/livingLab/0009.webp";
+import livingLab10 from "../assets/images/keywordsEnThemas/livingLab/0010.webp";
+import livingLab11 from "../assets/images/keywordsEnThemas/livingLab/0011.webp";
+import livingLab12 from "../assets/images/keywordsEnThemas/livingLab/0012.webp";
+import livingLab13 from "../assets/images/keywordsEnThemas/livingLab/0013.webp";
+import livingLab14 from "../assets/images/keywordsEnThemas/livingLab/0014.webp";
+import livingLab15 from "../assets/images/keywordsEnThemas/livingLab/0015.webp";
+import livingLab16 from "../assets/images/keywordsEnThemas/livingLab/0016.webp";
+import livingLab17 from "../assets/images/keywordsEnThemas/livingLab/0017.webp";
+import livingLab18 from "../assets/images/keywordsEnThemas/livingLab/0018.webp";
+import livingLab19 from "../assets/images/keywordsEnThemas/livingLab/0019.webp";
+import livingLab20 from "../assets/images/keywordsEnThemas/livingLab/0020.webp";
+import livingLab21 from "../assets/images/keywordsEnThemas/livingLab/0021.webp";
+import livingLab22 from "../assets/images/keywordsEnThemas/livingLab/0022.webp";
+import livingLab23 from "../assets/images/keywordsEnThemas/livingLab/0023.webp";
+import livingLab24 from "../assets/images/keywordsEnThemas/livingLab/0024.webp";
+import livingLab25 from "../assets/images/keywordsEnThemas/livingLab/0025.webp";
+import livingLab26 from "../assets/images/keywordsEnThemas/livingLab/0026.webp";
+import livingLab27 from "../assets/images/keywordsEnThemas/livingLab/0027.webp";
+import livingLab28 from "../assets/images/keywordsEnThemas/livingLab/0028.webp";
+import livingLab29 from "../assets/images/keywordsEnThemas/livingLab/0029.webp";
+import livingLab30 from "../assets/images/keywordsEnThemas/livingLab/0030.webp";
+import livingLab31 from "../assets/images/keywordsEnThemas/livingLab/0031.webp";
+import livingLab32 from "../assets/images/keywordsEnThemas/livingLab/0032.webp";
+import livingLab33 from "../assets/images/keywordsEnThemas/livingLab/0033.webp";
+import livingLab34 from "../assets/images/keywordsEnThemas/livingLab/0034.webp";
+import livingLab35 from "../assets/images/keywordsEnThemas/livingLab/0035.webp";
+import livingLab36 from "../assets/images/keywordsEnThemas/livingLab/0036.webp";
+import livingLab37 from "../assets/images/keywordsEnThemas/livingLab/0037.webp";
+import livingLab38 from "../assets/images/keywordsEnThemas/livingLab/0038.webp";
+import livingLab39 from "../assets/images/keywordsEnThemas/livingLab/0039.webp";
+import livingLab40 from "../assets/images/keywordsEnThemas/livingLab/0040.webp";
+
 import marketingCommunicatie1 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0001.webp";
 import marketingCommunicatie2 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0002.webp";
 import marketingCommunicatie3 from "../assets/images/keywordsEnThemas/marketingCommunicatie/0003.webp";
@@ -968,6 +1296,47 @@ import microbieleIdentificatie37 from "../assets/images/keywordsEnThemas/microbi
 import microbieleIdentificatie38 from "../assets/images/keywordsEnThemas/microbieleIdentificatie/0038.webp";
 import microbieleIdentificatie39 from "../assets/images/keywordsEnThemas/microbieleIdentificatie/0039.webp";
 import microbieleIdentificatie40 from "../assets/images/keywordsEnThemas/microbieleIdentificatie/0040.webp";
+
+import mixedReality1 from "../assets/images/keywordsEnThemas/mixedReality/0001.webp";
+import mixedReality2 from "../assets/images/keywordsEnThemas/mixedReality/0002.webp";
+import mixedReality3 from "../assets/images/keywordsEnThemas/mixedReality/0003.webp";
+import mixedReality4 from "../assets/images/keywordsEnThemas/mixedReality/0004.webp";
+import mixedReality5 from "../assets/images/keywordsEnThemas/mixedReality/0005.webp";
+import mixedReality6 from "../assets/images/keywordsEnThemas/mixedReality/0006.webp";
+import mixedReality7 from "../assets/images/keywordsEnThemas/mixedReality/0007.webp";
+import mixedReality8 from "../assets/images/keywordsEnThemas/mixedReality/0008.webp";
+import mixedReality9 from "../assets/images/keywordsEnThemas/mixedReality/0009.webp";
+import mixedReality10 from "../assets/images/keywordsEnThemas/mixedReality/0010.webp";
+import mixedReality11 from "../assets/images/keywordsEnThemas/mixedReality/0011.webp";
+import mixedReality12 from "../assets/images/keywordsEnThemas/mixedReality/0012.webp";
+import mixedReality13 from "../assets/images/keywordsEnThemas/mixedReality/0013.webp";
+import mixedReality14 from "../assets/images/keywordsEnThemas/mixedReality/0014.webp";
+import mixedReality15 from "../assets/images/keywordsEnThemas/mixedReality/0015.webp";
+import mixedReality16 from "../assets/images/keywordsEnThemas/mixedReality/0016.webp";
+import mixedReality17 from "../assets/images/keywordsEnThemas/mixedReality/0017.webp";
+import mixedReality18 from "../assets/images/keywordsEnThemas/mixedReality/0018.webp";
+import mixedReality19 from "../assets/images/keywordsEnThemas/mixedReality/0019.webp";
+import mixedReality20 from "../assets/images/keywordsEnThemas/mixedReality/0020.webp";
+import mixedReality21 from "../assets/images/keywordsEnThemas/mixedReality/0021.webp";
+import mixedReality22 from "../assets/images/keywordsEnThemas/mixedReality/0022.webp";
+import mixedReality23 from "../assets/images/keywordsEnThemas/mixedReality/0023.webp";
+import mixedReality24 from "../assets/images/keywordsEnThemas/mixedReality/0024.webp";
+import mixedReality25 from "../assets/images/keywordsEnThemas/mixedReality/0025.webp";
+import mixedReality26 from "../assets/images/keywordsEnThemas/mixedReality/0026.webp";
+import mixedReality27 from "../assets/images/keywordsEnThemas/mixedReality/0027.webp";
+import mixedReality28 from "../assets/images/keywordsEnThemas/mixedReality/0028.webp";
+import mixedReality29 from "../assets/images/keywordsEnThemas/mixedReality/0029.webp";
+import mixedReality30 from "../assets/images/keywordsEnThemas/mixedReality/0030.webp";
+import mixedReality31 from "../assets/images/keywordsEnThemas/mixedReality/0031.webp";
+import mixedReality32 from "../assets/images/keywordsEnThemas/mixedReality/0032.webp";
+import mixedReality33 from "../assets/images/keywordsEnThemas/mixedReality/0033.webp";
+import mixedReality34 from "../assets/images/keywordsEnThemas/mixedReality/0034.webp";
+import mixedReality35 from "../assets/images/keywordsEnThemas/mixedReality/0035.webp";
+import mixedReality36 from "../assets/images/keywordsEnThemas/mixedReality/0036.webp";
+import mixedReality37 from "../assets/images/keywordsEnThemas/mixedReality/0037.webp";
+import mixedReality38 from "../assets/images/keywordsEnThemas/mixedReality/0038.webp";
+import mixedReality39 from "../assets/images/keywordsEnThemas/mixedReality/0039.webp";
+import mixedReality40 from "../assets/images/keywordsEnThemas/mixedReality/0040.webp";
 
 import ondernemerschap1 from "../assets/images/keywordsEnThemas/ondernemerschap/0001.webp";
 import ondernemerschap2 from "../assets/images/keywordsEnThemas/ondernemerschap/0002.webp";
@@ -1133,6 +1502,47 @@ import placeholder38 from "../assets/images/keywordsEnThemas/placeholder/0038.we
 import placeholder39 from "../assets/images/keywordsEnThemas/placeholder/0039.webp";
 import placeholder40 from "../assets/images/keywordsEnThemas/placeholder/0040.webp";
 
+import productDesign1 from "../assets/images/keywordsEnThemas/productDesign/0001.webp";
+import productDesign2 from "../assets/images/keywordsEnThemas/productDesign/0002.webp";
+import productDesign3 from "../assets/images/keywordsEnThemas/productDesign/0003.webp";
+import productDesign4 from "../assets/images/keywordsEnThemas/productDesign/0004.webp";
+import productDesign5 from "../assets/images/keywordsEnThemas/productDesign/0005.webp";
+import productDesign6 from "../assets/images/keywordsEnThemas/productDesign/0006.webp";
+import productDesign7 from "../assets/images/keywordsEnThemas/productDesign/0007.webp";
+import productDesign8 from "../assets/images/keywordsEnThemas/productDesign/0008.webp";
+import productDesign9 from "../assets/images/keywordsEnThemas/productDesign/0009.webp";
+import productDesign10 from "../assets/images/keywordsEnThemas/productDesign/0010.webp";
+import productDesign11 from "../assets/images/keywordsEnThemas/productDesign/0011.webp";
+import productDesign12 from "../assets/images/keywordsEnThemas/productDesign/0012.webp";
+import productDesign13 from "../assets/images/keywordsEnThemas/productDesign/0013.webp";
+import productDesign14 from "../assets/images/keywordsEnThemas/productDesign/0014.webp";
+import productDesign15 from "../assets/images/keywordsEnThemas/productDesign/0015.webp";
+import productDesign16 from "../assets/images/keywordsEnThemas/productDesign/0016.webp";
+import productDesign17 from "../assets/images/keywordsEnThemas/productDesign/0017.webp";
+import productDesign18 from "../assets/images/keywordsEnThemas/productDesign/0018.webp";
+import productDesign19 from "../assets/images/keywordsEnThemas/productDesign/0019.webp";
+import productDesign20 from "../assets/images/keywordsEnThemas/productDesign/0020.webp";
+import productDesign21 from "../assets/images/keywordsEnThemas/productDesign/0021.webp";
+import productDesign22 from "../assets/images/keywordsEnThemas/productDesign/0022.webp";
+import productDesign23 from "../assets/images/keywordsEnThemas/productDesign/0023.webp";
+import productDesign24 from "../assets/images/keywordsEnThemas/productDesign/0024.webp";
+import productDesign25 from "../assets/images/keywordsEnThemas/productDesign/0025.webp";
+import productDesign26 from "../assets/images/keywordsEnThemas/productDesign/0026.webp";
+import productDesign27 from "../assets/images/keywordsEnThemas/productDesign/0027.webp";
+import productDesign28 from "../assets/images/keywordsEnThemas/productDesign/0028.webp";
+import productDesign29 from "../assets/images/keywordsEnThemas/productDesign/0029.webp";
+import productDesign30 from "../assets/images/keywordsEnThemas/productDesign/0030.webp";
+import productDesign31 from "../assets/images/keywordsEnThemas/productDesign/0031.webp";
+import productDesign32 from "../assets/images/keywordsEnThemas/productDesign/0032.webp";
+import productDesign33 from "../assets/images/keywordsEnThemas/productDesign/0033.webp";
+import productDesign34 from "../assets/images/keywordsEnThemas/productDesign/0034.webp";
+import productDesign35 from "../assets/images/keywordsEnThemas/productDesign/0035.webp";
+import productDesign36 from "../assets/images/keywordsEnThemas/productDesign/0036.webp";
+import productDesign37 from "../assets/images/keywordsEnThemas/productDesign/0037.webp";
+import productDesign38 from "../assets/images/keywordsEnThemas/productDesign/0038.webp";
+import productDesign39 from "../assets/images/keywordsEnThemas/productDesign/0039.webp";
+import productDesign40 from "../assets/images/keywordsEnThemas/productDesign/0040.webp";
+
 import qualityOfLife1 from "../assets/images/keywordsEnThemas/qualityOfLife/0001.webp";
 import qualityOfLife2 from "../assets/images/keywordsEnThemas/qualityOfLife/0002.webp";
 import qualityOfLife3 from "../assets/images/keywordsEnThemas/qualityOfLife/0003.webp";
@@ -1174,6 +1584,47 @@ import qualityOfLife38 from "../assets/images/keywordsEnThemas/qualityOfLife/003
 import qualityOfLife39 from "../assets/images/keywordsEnThemas/qualityOfLife/0039.webp";
 import qualityOfLife40 from "../assets/images/keywordsEnThemas/qualityOfLife/0040.webp";
 
+import simulatieOnderwijs1 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0001.webp";
+import simulatieOnderwijs2 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0002.webp";
+import simulatieOnderwijs3 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0003.webp";
+import simulatieOnderwijs4 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0004.webp";
+import simulatieOnderwijs5 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0005.webp";
+import simulatieOnderwijs6 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0006.webp";
+import simulatieOnderwijs7 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0007.webp";
+import simulatieOnderwijs8 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0008.webp";
+import simulatieOnderwijs9 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0009.webp";
+import simulatieOnderwijs10 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0010.webp";
+import simulatieOnderwijs11 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0011.webp";
+import simulatieOnderwijs12 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0012.webp";
+import simulatieOnderwijs13 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0013.webp";
+import simulatieOnderwijs14 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0014.webp";
+import simulatieOnderwijs15 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0015.webp";
+import simulatieOnderwijs16 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0016.webp";
+import simulatieOnderwijs17 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0017.webp";
+import simulatieOnderwijs18 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0018.webp";
+import simulatieOnderwijs19 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0019.webp";
+import simulatieOnderwijs20 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0020.webp";
+import simulatieOnderwijs21 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0021.webp";
+import simulatieOnderwijs22 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0022.webp";
+import simulatieOnderwijs23 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0023.webp";
+import simulatieOnderwijs24 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0024.webp";
+import simulatieOnderwijs25 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0025.webp";
+import simulatieOnderwijs26 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0026.webp";
+import simulatieOnderwijs27 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0027.webp";
+import simulatieOnderwijs28 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0028.webp";
+import simulatieOnderwijs29 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0029.webp";
+import simulatieOnderwijs30 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0030.webp";
+import simulatieOnderwijs31 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0031.webp";
+import simulatieOnderwijs32 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0032.webp";
+import simulatieOnderwijs33 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0033.webp";
+import simulatieOnderwijs34 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0034.webp";
+import simulatieOnderwijs35 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0035.webp";
+import simulatieOnderwijs36 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0036.webp";
+import simulatieOnderwijs37 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0037.webp";
+import simulatieOnderwijs38 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0038.webp";
+import simulatieOnderwijs39 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0039.webp";
+import simulatieOnderwijs40 from "../assets/images/keywordsEnThemas/simulatieOnderwijs/0040.webp";
+
 import socialCreativity1 from "../assets/images/keywordsEnThemas/socialCreativity/0001.webp";
 import socialCreativity2 from "../assets/images/keywordsEnThemas/socialCreativity/0002.webp";
 import socialCreativity3 from "../assets/images/keywordsEnThemas/socialCreativity/0003.webp";
@@ -1214,6 +1665,47 @@ import socialCreativity37 from "../assets/images/keywordsEnThemas/socialCreativi
 import socialCreativity38 from "../assets/images/keywordsEnThemas/socialCreativity/0038.webp";
 import socialCreativity39 from "../assets/images/keywordsEnThemas/socialCreativity/0039.webp";
 import socialCreativity40 from "../assets/images/keywordsEnThemas/socialCreativity/0040.webp";
+
+import socialeInterventiesMetImpact1 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0001.webp";
+import socialeInterventiesMetImpact2 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0002.webp";
+import socialeInterventiesMetImpact3 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0003.webp";
+import socialeInterventiesMetImpact4 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0004.webp";
+import socialeInterventiesMetImpact5 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0005.webp";
+import socialeInterventiesMetImpact6 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0006.webp";
+import socialeInterventiesMetImpact7 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0007.webp";
+import socialeInterventiesMetImpact8 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0008.webp";
+import socialeInterventiesMetImpact9 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0009.webp";
+import socialeInterventiesMetImpact10 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0010.webp";
+import socialeInterventiesMetImpact11 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0011.webp";
+import socialeInterventiesMetImpact12 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0012.webp";
+import socialeInterventiesMetImpact13 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0013.webp";
+import socialeInterventiesMetImpact14 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0014.webp";
+import socialeInterventiesMetImpact15 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0015.webp";
+import socialeInterventiesMetImpact16 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0016.webp";
+import socialeInterventiesMetImpact17 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0017.webp";
+import socialeInterventiesMetImpact18 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0018.webp";
+import socialeInterventiesMetImpact19 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0019.webp";
+import socialeInterventiesMetImpact20 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0020.webp";
+import socialeInterventiesMetImpact21 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0021.webp";
+import socialeInterventiesMetImpact22 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0022.webp";
+import socialeInterventiesMetImpact23 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0023.webp";
+import socialeInterventiesMetImpact24 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0024.webp";
+import socialeInterventiesMetImpact25 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0025.webp";
+import socialeInterventiesMetImpact26 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0026.webp";
+import socialeInterventiesMetImpact27 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0027.webp";
+import socialeInterventiesMetImpact28 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0028.webp";
+import socialeInterventiesMetImpact29 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0029.webp";
+import socialeInterventiesMetImpact30 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0030.webp";
+import socialeInterventiesMetImpact31 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0031.webp";
+import socialeInterventiesMetImpact32 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0032.webp";
+import socialeInterventiesMetImpact33 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0033.webp";
+import socialeInterventiesMetImpact34 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0034.webp";
+import socialeInterventiesMetImpact35 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0035.webp";
+import socialeInterventiesMetImpact36 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0036.webp";
+import socialeInterventiesMetImpact37 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0037.webp";
+import socialeInterventiesMetImpact38 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0038.webp";
+import socialeInterventiesMetImpact39 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0039.webp";
+import socialeInterventiesMetImpact40 from "../assets/images/keywordsEnThemas/socialeInterventiesMetImpact/0040.webp";
 
 import sportCoaching1 from "../assets/images/keywordsEnThemas/sportCoaching/0001.webp";
 import sportCoaching2 from "../assets/images/keywordsEnThemas/sportCoaching/0002.webp";
@@ -1461,6 +1953,88 @@ import vitalCities38 from "../assets/images/keywordsEnThemas/vitalCities/0038.we
 import vitalCities39 from "../assets/images/keywordsEnThemas/vitalCities/0039.webp";
 import vitalCities40 from "../assets/images/keywordsEnThemas/vitalCities/0040.webp";
 
+import welzijnInHetOnderwijs1 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0001.webp";
+import welzijnInHetOnderwijs2 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0002.webp";
+import welzijnInHetOnderwijs3 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0003.webp";
+import welzijnInHetOnderwijs4 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0004.webp";
+import welzijnInHetOnderwijs5 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0005.webp";
+import welzijnInHetOnderwijs6 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0006.webp";
+import welzijnInHetOnderwijs7 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0007.webp";
+import welzijnInHetOnderwijs8 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0008.webp";
+import welzijnInHetOnderwijs9 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0009.webp";
+import welzijnInHetOnderwijs10 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0010.webp";
+import welzijnInHetOnderwijs11 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0011.webp";
+import welzijnInHetOnderwijs12 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0012.webp";
+import welzijnInHetOnderwijs13 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0013.webp";
+import welzijnInHetOnderwijs14 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0014.webp";
+import welzijnInHetOnderwijs15 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0015.webp";
+import welzijnInHetOnderwijs16 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0016.webp";
+import welzijnInHetOnderwijs17 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0017.webp";
+import welzijnInHetOnderwijs18 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0018.webp";
+import welzijnInHetOnderwijs19 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0019.webp";
+import welzijnInHetOnderwijs20 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0020.webp";
+import welzijnInHetOnderwijs21 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0021.webp";
+import welzijnInHetOnderwijs22 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0022.webp";
+import welzijnInHetOnderwijs23 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0023.webp";
+import welzijnInHetOnderwijs24 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0024.webp";
+import welzijnInHetOnderwijs25 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0025.webp";
+import welzijnInHetOnderwijs26 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0026.webp";
+import welzijnInHetOnderwijs27 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0027.webp";
+import welzijnInHetOnderwijs28 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0028.webp";
+import welzijnInHetOnderwijs29 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0029.webp";
+import welzijnInHetOnderwijs30 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0030.webp";
+import welzijnInHetOnderwijs31 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0031.webp";
+import welzijnInHetOnderwijs32 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0032.webp";
+import welzijnInHetOnderwijs33 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0033.webp";
+import welzijnInHetOnderwijs34 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0034.webp";
+import welzijnInHetOnderwijs35 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0035.webp";
+import welzijnInHetOnderwijs36 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0036.webp";
+import welzijnInHetOnderwijs37 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0037.webp";
+import welzijnInHetOnderwijs38 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0038.webp";
+import welzijnInHetOnderwijs39 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0039.webp";
+import welzijnInHetOnderwijs40 from "../assets/images/keywordsEnThemas/welzijnInHetOnderwijs/0040.webp";
+
+import werknemers1 from "../assets/images/keywordsEnThemas/werknemers/0001.webp";
+import werknemers2 from "../assets/images/keywordsEnThemas/werknemers/0002.webp";
+import werknemers3 from "../assets/images/keywordsEnThemas/werknemers/0003.webp";
+import werknemers4 from "../assets/images/keywordsEnThemas/werknemers/0004.webp";
+import werknemers5 from "../assets/images/keywordsEnThemas/werknemers/0005.webp";
+import werknemers6 from "../assets/images/keywordsEnThemas/werknemers/0006.webp";
+import werknemers7 from "../assets/images/keywordsEnThemas/werknemers/0007.webp";
+import werknemers8 from "../assets/images/keywordsEnThemas/werknemers/0008.webp";
+import werknemers9 from "../assets/images/keywordsEnThemas/werknemers/0009.webp";
+import werknemers10 from "../assets/images/keywordsEnThemas/werknemers/0010.webp";
+import werknemers11 from "../assets/images/keywordsEnThemas/werknemers/0011.webp";
+import werknemers12 from "../assets/images/keywordsEnThemas/werknemers/0012.webp";
+import werknemers13 from "../assets/images/keywordsEnThemas/werknemers/0013.webp";
+import werknemers14 from "../assets/images/keywordsEnThemas/werknemers/0014.webp";
+import werknemers15 from "../assets/images/keywordsEnThemas/werknemers/0015.webp";
+import werknemers16 from "../assets/images/keywordsEnThemas/werknemers/0016.webp";
+import werknemers17 from "../assets/images/keywordsEnThemas/werknemers/0017.webp";
+import werknemers18 from "../assets/images/keywordsEnThemas/werknemers/0018.webp";
+import werknemers19 from "../assets/images/keywordsEnThemas/werknemers/0019.webp";
+import werknemers20 from "../assets/images/keywordsEnThemas/werknemers/0020.webp";
+import werknemers21 from "../assets/images/keywordsEnThemas/werknemers/0021.webp";
+import werknemers22 from "../assets/images/keywordsEnThemas/werknemers/0022.webp";
+import werknemers23 from "../assets/images/keywordsEnThemas/werknemers/0023.webp";
+import werknemers24 from "../assets/images/keywordsEnThemas/werknemers/0024.webp";
+import werknemers25 from "../assets/images/keywordsEnThemas/werknemers/0025.webp";
+import werknemers26 from "../assets/images/keywordsEnThemas/werknemers/0026.webp";
+import werknemers27 from "../assets/images/keywordsEnThemas/werknemers/0027.webp";
+import werknemers28 from "../assets/images/keywordsEnThemas/werknemers/0028.webp";
+import werknemers29 from "../assets/images/keywordsEnThemas/werknemers/0029.webp";
+import werknemers30 from "../assets/images/keywordsEnThemas/werknemers/0030.webp";
+import werknemers31 from "../assets/images/keywordsEnThemas/werknemers/0031.webp";
+import werknemers32 from "../assets/images/keywordsEnThemas/werknemers/0032.webp";
+import werknemers33 from "../assets/images/keywordsEnThemas/werknemers/0033.webp";
+import werknemers34 from "../assets/images/keywordsEnThemas/werknemers/0034.webp";
+import werknemers35 from "../assets/images/keywordsEnThemas/werknemers/0035.webp";
+import werknemers36 from "../assets/images/keywordsEnThemas/werknemers/0036.webp";
+import werknemers37 from "../assets/images/keywordsEnThemas/werknemers/0037.webp";
+import werknemers38 from "../assets/images/keywordsEnThemas/werknemers/0038.webp";
+import werknemers39 from "../assets/images/keywordsEnThemas/werknemers/0039.webp";
+import werknemers40 from "../assets/images/keywordsEnThemas/werknemers/0040.webp";
+
 import wetenschapscommunicatie1 from "../assets/images/keywordsEnThemas/wetenschapscommunicatie/0001.webp";
 import wetenschapscommunicatie2 from "../assets/images/keywordsEnThemas/wetenschapscommunicatie/0002.webp";
 import wetenschapscommunicatie3 from "../assets/images/keywordsEnThemas/wetenschapscommunicatie/0003.webp";
@@ -1501,6 +2075,47 @@ import wetenschapscommunicatie37 from "../assets/images/keywordsEnThemas/wetensc
 import wetenschapscommunicatie38 from "../assets/images/keywordsEnThemas/wetenschapscommunicatie/0038.webp";
 import wetenschapscommunicatie39 from "../assets/images/keywordsEnThemas/wetenschapscommunicatie/0039.webp";
 import wetenschapscommunicatie40 from "../assets/images/keywordsEnThemas/wetenschapscommunicatie/0040.webp";
+
+import zorgVoorEnDoorDeGemeenschap1 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0001.webp";
+import zorgVoorEnDoorDeGemeenschap2 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0002.webp";
+import zorgVoorEnDoorDeGemeenschap3 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0003.webp";
+import zorgVoorEnDoorDeGemeenschap4 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0004.webp";
+import zorgVoorEnDoorDeGemeenschap5 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0005.webp";
+import zorgVoorEnDoorDeGemeenschap6 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0006.webp";
+import zorgVoorEnDoorDeGemeenschap7 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0007.webp";
+import zorgVoorEnDoorDeGemeenschap8 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0008.webp";
+import zorgVoorEnDoorDeGemeenschap9 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0009.webp";
+import zorgVoorEnDoorDeGemeenschap10 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0010.webp";
+import zorgVoorEnDoorDeGemeenschap11 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0011.webp";
+import zorgVoorEnDoorDeGemeenschap12 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0012.webp";
+import zorgVoorEnDoorDeGemeenschap13 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0013.webp";
+import zorgVoorEnDoorDeGemeenschap14 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0014.webp";
+import zorgVoorEnDoorDeGemeenschap15 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0015.webp";
+import zorgVoorEnDoorDeGemeenschap16 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0016.webp";
+import zorgVoorEnDoorDeGemeenschap17 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0017.webp";
+import zorgVoorEnDoorDeGemeenschap18 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0018.webp";
+import zorgVoorEnDoorDeGemeenschap19 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0019.webp";
+import zorgVoorEnDoorDeGemeenschap20 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0020.webp";
+import zorgVoorEnDoorDeGemeenschap21 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0021.webp";
+import zorgVoorEnDoorDeGemeenschap22 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0022.webp";
+import zorgVoorEnDoorDeGemeenschap23 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0023.webp";
+import zorgVoorEnDoorDeGemeenschap24 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0024.webp";
+import zorgVoorEnDoorDeGemeenschap25 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0025.webp";
+import zorgVoorEnDoorDeGemeenschap26 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0026.webp";
+import zorgVoorEnDoorDeGemeenschap27 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0027.webp";
+import zorgVoorEnDoorDeGemeenschap28 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0028.webp";
+import zorgVoorEnDoorDeGemeenschap29 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0029.webp";
+import zorgVoorEnDoorDeGemeenschap30 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0030.webp";
+import zorgVoorEnDoorDeGemeenschap31 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0031.webp";
+import zorgVoorEnDoorDeGemeenschap32 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0032.webp";
+import zorgVoorEnDoorDeGemeenschap33 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0033.webp";
+import zorgVoorEnDoorDeGemeenschap34 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0034.webp";
+import zorgVoorEnDoorDeGemeenschap35 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0035.webp";
+import zorgVoorEnDoorDeGemeenschap36 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0036.webp";
+import zorgVoorEnDoorDeGemeenschap37 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0037.webp";
+import zorgVoorEnDoorDeGemeenschap38 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0038.webp";
+import zorgVoorEnDoorDeGemeenschap39 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0039.webp";
+import zorgVoorEnDoorDeGemeenschap40 from "../assets/images/keywordsEnThemas/zorgVoorEnDoorDeGemeenschap/0040.webp";
 
 
 const useGetKeywordImages = (keywordData) => {
@@ -1674,6 +2289,49 @@ const useGetKeywordImages = (keywordData) => {
         bigDataAndAnalytics38,
         bigDataAndAnalytics39,
         bigDataAndAnalytics40,
+    ];
+
+    const blendedLearningImages = [
+        blendedLearning1,
+        blendedLearning2,
+        blendedLearning3,
+        blendedLearning4,
+        blendedLearning5,
+        blendedLearning6,
+        blendedLearning7,
+        blendedLearning8,
+        blendedLearning9,
+        blendedLearning10,
+        blendedLearning11,
+        blendedLearning12,
+        blendedLearning13,
+        blendedLearning14,
+        blendedLearning15,
+        blendedLearning16,
+        blendedLearning17,
+        blendedLearning18,
+        blendedLearning19,
+        blendedLearning20,
+        blendedLearning21,
+        blendedLearning22,
+        blendedLearning23,
+        blendedLearning24,
+        blendedLearning25,
+        blendedLearning26,
+        blendedLearning27,
+        blendedLearning28,
+        blendedLearning29,
+        blendedLearning30,
+        blendedLearning31,
+        blendedLearning32,
+        blendedLearning33,
+        blendedLearning34,
+        blendedLearning35,
+        blendedLearning36,
+        blendedLearning37,
+        blendedLearning38,
+        blendedLearning39,
+        blendedLearning40,
     ];
 
     const blockchainImages = [
@@ -1917,6 +2575,49 @@ const useGetKeywordImages = (keywordData) => {
         didactiek40,
     ];
 
+    const didactischeInnovatieImages = [
+        didactischeInnovatie1,
+        didactischeInnovatie2,
+        didactischeInnovatie3,
+        didactischeInnovatie4,
+        didactischeInnovatie5,
+        didactischeInnovatie6,
+        didactischeInnovatie7,
+        didactischeInnovatie8,
+        didactischeInnovatie9,
+        didactischeInnovatie10,
+        didactischeInnovatie11,
+        didactischeInnovatie12,
+        didactischeInnovatie13,
+        didactischeInnovatie14,
+        didactischeInnovatie15,
+        didactischeInnovatie16,
+        didactischeInnovatie17,
+        didactischeInnovatie18,
+        didactischeInnovatie19,
+        didactischeInnovatie20,
+        didactischeInnovatie21,
+        didactischeInnovatie22,
+        didactischeInnovatie23,
+        didactischeInnovatie24,
+        didactischeInnovatie25,
+        didactischeInnovatie26,
+        didactischeInnovatie27,
+        didactischeInnovatie28,
+        didactischeInnovatie29,
+        didactischeInnovatie30,
+        didactischeInnovatie31,
+        didactischeInnovatie32,
+        didactischeInnovatie33,
+        didactischeInnovatie34,
+        didactischeInnovatie35,
+        didactischeInnovatie36,
+        didactischeInnovatie37,
+        didactischeInnovatie38,
+        didactischeInnovatie39,
+        didactischeInnovatie40,
+    ];
+
     const digitaalOndernemenEnLogistiekImages = [
         digitaalOndernemenEnLogistiek1,
         digitaalOndernemenEnLogistiek2,
@@ -2001,6 +2702,49 @@ const useGetKeywordImages = (keywordData) => {
         digitalApplications38,
         digitalApplications39,
         digitalApplications40,
+    ];
+
+    const digitalHealthImages = [
+        digitalHealth1,
+        digitalHealth2,
+        digitalHealth3,
+        digitalHealth4,
+        digitalHealth5,
+        digitalHealth6,
+        digitalHealth7,
+        digitalHealth8,
+        digitalHealth9,
+        digitalHealth10,
+        digitalHealth11,
+        digitalHealth12,
+        digitalHealth13,
+        digitalHealth14,
+        digitalHealth15,
+        digitalHealth16,
+        digitalHealth17,
+        digitalHealth18,
+        digitalHealth19,
+        digitalHealth20,
+        digitalHealth21,
+        digitalHealth22,
+        digitalHealth23,
+        digitalHealth24,
+        digitalHealth25,
+        digitalHealth26,
+        digitalHealth27,
+        digitalHealth28,
+        digitalHealth29,
+        digitalHealth30,
+        digitalHealth31,
+        digitalHealth32,
+        digitalHealth33,
+        digitalHealth34,
+        digitalHealth35,
+        digitalHealth36,
+        digitalHealth37,
+        digitalHealth38,
+        digitalHealth39,
+        digitalHealth40,
     ];
 
     const digitalSkillsMediawijsheidImages = [
@@ -2132,6 +2876,92 @@ const useGetKeywordImages = (keywordData) => {
         digitalTwin40,
     ];
 
+    const digitaleToolsImages = [
+        digitaleTools1,
+        digitaleTools2,
+        digitaleTools3,
+        digitaleTools4,
+        digitaleTools5,
+        digitaleTools6,
+        digitaleTools7,
+        digitaleTools8,
+        digitaleTools9,
+        digitaleTools10,
+        digitaleTools11,
+        digitaleTools12,
+        digitaleTools13,
+        digitaleTools14,
+        digitaleTools15,
+        digitaleTools16,
+        digitaleTools17,
+        digitaleTools18,
+        digitaleTools19,
+        digitaleTools20,
+        digitaleTools21,
+        digitaleTools22,
+        digitaleTools23,
+        digitaleTools24,
+        digitaleTools25,
+        digitaleTools26,
+        digitaleTools27,
+        digitaleTools28,
+        digitaleTools29,
+        digitaleTools30,
+        digitaleTools31,
+        digitaleTools32,
+        digitaleTools33,
+        digitaleTools34,
+        digitaleTools35,
+        digitaleTools36,
+        digitaleTools37,
+        digitaleTools38,
+        digitaleTools39,
+        digitaleTools40,
+    ];
+
+    const educatieveTechnologieImages = [
+        educatieveTechnologie1,
+        educatieveTechnologie2,
+        educatieveTechnologie3,
+        educatieveTechnologie4,
+        educatieveTechnologie5,
+        educatieveTechnologie6,
+        educatieveTechnologie7,
+        educatieveTechnologie8,
+        educatieveTechnologie9,
+        educatieveTechnologie10,
+        educatieveTechnologie11,
+        educatieveTechnologie12,
+        educatieveTechnologie13,
+        educatieveTechnologie14,
+        educatieveTechnologie15,
+        educatieveTechnologie16,
+        educatieveTechnologie17,
+        educatieveTechnologie18,
+        educatieveTechnologie19,
+        educatieveTechnologie20,
+        educatieveTechnologie21,
+        educatieveTechnologie22,
+        educatieveTechnologie23,
+        educatieveTechnologie24,
+        educatieveTechnologie25,
+        educatieveTechnologie26,
+        educatieveTechnologie27,
+        educatieveTechnologie28,
+        educatieveTechnologie29,
+        educatieveTechnologie30,
+        educatieveTechnologie31,
+        educatieveTechnologie32,
+        educatieveTechnologie33,
+        educatieveTechnologie34,
+        educatieveTechnologie35,
+        educatieveTechnologie36,
+        educatieveTechnologie37,
+        educatieveTechnologie38,
+        educatieveTechnologie39,
+        educatieveTechnologie40,
+    ];
+
     const energieImages = [
         energie1,
         energie2,
@@ -2173,6 +3003,49 @@ const useGetKeywordImages = (keywordData) => {
         energie38,
         energie39,
         energie40,
+    ];
+
+    const fakeNewsImages = [
+        fakeNews1,
+        fakeNews2,
+        fakeNews3,
+        fakeNews4,
+        fakeNews5,
+        fakeNews6,
+        fakeNews7,
+        fakeNews8,
+        fakeNews9,
+        fakeNews10,
+        fakeNews11,
+        fakeNews12,
+        fakeNews13,
+        fakeNews14,
+        fakeNews15,
+        fakeNews16,
+        fakeNews17,
+        fakeNews18,
+        fakeNews19,
+        fakeNews20,
+        fakeNews21,
+        fakeNews22,
+        fakeNews23,
+        fakeNews24,
+        fakeNews25,
+        fakeNews26,
+        fakeNews27,
+        fakeNews28,
+        fakeNews29,
+        fakeNews30,
+        fakeNews31,
+        fakeNews32,
+        fakeNews33,
+        fakeNews34,
+        fakeNews35,
+        fakeNews36,
+        fakeNews37,
+        fakeNews38,
+        fakeNews39,
+        fakeNews40,
     ];
 
     const gameOntwikkelingEnTechnologieImages = [
@@ -2390,6 +3263,92 @@ const useGetKeywordImages = (keywordData) => {
         industrie4040,
     ];
 
+    const innovatieveLeeromgevingenImages = [
+        innovatieveLeeromgevingen1,
+        innovatieveLeeromgevingen2,
+        innovatieveLeeromgevingen3,
+        innovatieveLeeromgevingen4,
+        innovatieveLeeromgevingen5,
+        innovatieveLeeromgevingen6,
+        innovatieveLeeromgevingen7,
+        innovatieveLeeromgevingen8,
+        innovatieveLeeromgevingen9,
+        innovatieveLeeromgevingen10,
+        innovatieveLeeromgevingen11,
+        innovatieveLeeromgevingen12,
+        innovatieveLeeromgevingen13,
+        innovatieveLeeromgevingen14,
+        innovatieveLeeromgevingen15,
+        innovatieveLeeromgevingen16,
+        innovatieveLeeromgevingen17,
+        innovatieveLeeromgevingen18,
+        innovatieveLeeromgevingen19,
+        innovatieveLeeromgevingen20,
+        innovatieveLeeromgevingen21,
+        innovatieveLeeromgevingen22,
+        innovatieveLeeromgevingen23,
+        innovatieveLeeromgevingen24,
+        innovatieveLeeromgevingen25,
+        innovatieveLeeromgevingen26,
+        innovatieveLeeromgevingen27,
+        innovatieveLeeromgevingen28,
+        innovatieveLeeromgevingen29,
+        innovatieveLeeromgevingen30,
+        innovatieveLeeromgevingen31,
+        innovatieveLeeromgevingen32,
+        innovatieveLeeromgevingen33,
+        innovatieveLeeromgevingen34,
+        innovatieveLeeromgevingen35,
+        innovatieveLeeromgevingen36,
+        innovatieveLeeromgevingen37,
+        innovatieveLeeromgevingen38,
+        innovatieveLeeromgevingen39,
+        innovatieveLeeromgevingen40,
+    ];
+
+    const livingLabImages = [
+        livingLab1,
+        livingLab2,
+        livingLab3,
+        livingLab4,
+        livingLab5,
+        livingLab6,
+        livingLab7,
+        livingLab8,
+        livingLab9,
+        livingLab10,
+        livingLab11,
+        livingLab12,
+        livingLab13,
+        livingLab14,
+        livingLab15,
+        livingLab16,
+        livingLab17,
+        livingLab18,
+        livingLab19,
+        livingLab20,
+        livingLab21,
+        livingLab22,
+        livingLab23,
+        livingLab24,
+        livingLab25,
+        livingLab26,
+        livingLab27,
+        livingLab28,
+        livingLab29,
+        livingLab30,
+        livingLab31,
+        livingLab32,
+        livingLab33,
+        livingLab34,
+        livingLab35,
+        livingLab36,
+        livingLab37,
+        livingLab38,
+        livingLab39,
+        livingLab40,
+    ];
+
     const marketingCommunicatieImages = [
         marketingCommunicatie1,
         marketingCommunicatie2,
@@ -2517,6 +3476,49 @@ const useGetKeywordImages = (keywordData) => {
         microbieleIdentificatie38,
         microbieleIdentificatie39,
         microbieleIdentificatie40,
+    ];
+
+    const mixedRealityImages = [
+        mixedReality1,
+        mixedReality2,
+        mixedReality3,
+        mixedReality4,
+        mixedReality5,
+        mixedReality6,
+        mixedReality7,
+        mixedReality8,
+        mixedReality9,
+        mixedReality10,
+        mixedReality11,
+        mixedReality12,
+        mixedReality13,
+        mixedReality14,
+        mixedReality15,
+        mixedReality16,
+        mixedReality17,
+        mixedReality18,
+        mixedReality19,
+        mixedReality20,
+        mixedReality21,
+        mixedReality22,
+        mixedReality23,
+        mixedReality24,
+        mixedReality25,
+        mixedReality26,
+        mixedReality27,
+        mixedReality28,
+        mixedReality29,
+        mixedReality30,
+        mixedReality31,
+        mixedReality32,
+        mixedReality33,
+        mixedReality34,
+        mixedReality35,
+        mixedReality36,
+        mixedReality37,
+        mixedReality38,
+        mixedReality39,
+        mixedReality40,
     ];
 
     const ondernemerschapImages = [
@@ -2691,6 +3693,49 @@ const useGetKeywordImages = (keywordData) => {
         placeholder40,
     ];
 
+    const productDesignImages = [
+        productDesign1,
+        productDesign2,
+        productDesign3,
+        productDesign4,
+        productDesign5,
+        productDesign6,
+        productDesign7,
+        productDesign8,
+        productDesign9,
+        productDesign10,
+        productDesign11,
+        productDesign12,
+        productDesign13,
+        productDesign14,
+        productDesign15,
+        productDesign16,
+        productDesign17,
+        productDesign18,
+        productDesign19,
+        productDesign20,
+        productDesign21,
+        productDesign22,
+        productDesign23,
+        productDesign24,
+        productDesign25,
+        productDesign26,
+        productDesign27,
+        productDesign28,
+        productDesign29,
+        productDesign30,
+        productDesign31,
+        productDesign32,
+        productDesign33,
+        productDesign34,
+        productDesign35,
+        productDesign36,
+        productDesign37,
+        productDesign38,
+        productDesign39,
+        productDesign40,
+    ];
+
     const qualityOfLifeImages = [
         qualityOfLife1,
         qualityOfLife2,
@@ -2734,6 +3779,49 @@ const useGetKeywordImages = (keywordData) => {
         qualityOfLife40,
     ];
 
+    const simulatieOnderwijsImages = [
+        simulatieOnderwijs1,
+        simulatieOnderwijs2,
+        simulatieOnderwijs3,
+        simulatieOnderwijs4,
+        simulatieOnderwijs5,
+        simulatieOnderwijs6,
+        simulatieOnderwijs7,
+        simulatieOnderwijs8,
+        simulatieOnderwijs9,
+        simulatieOnderwijs10,
+        simulatieOnderwijs11,
+        simulatieOnderwijs12,
+        simulatieOnderwijs13,
+        simulatieOnderwijs14,
+        simulatieOnderwijs15,
+        simulatieOnderwijs16,
+        simulatieOnderwijs17,
+        simulatieOnderwijs18,
+        simulatieOnderwijs19,
+        simulatieOnderwijs20,
+        simulatieOnderwijs21,
+        simulatieOnderwijs22,
+        simulatieOnderwijs23,
+        simulatieOnderwijs24,
+        simulatieOnderwijs25,
+        simulatieOnderwijs26,
+        simulatieOnderwijs27,
+        simulatieOnderwijs28,
+        simulatieOnderwijs29,
+        simulatieOnderwijs30,
+        simulatieOnderwijs31,
+        simulatieOnderwijs32,
+        simulatieOnderwijs33,
+        simulatieOnderwijs34,
+        simulatieOnderwijs35,
+        simulatieOnderwijs36,
+        simulatieOnderwijs37,
+        simulatieOnderwijs38,
+        simulatieOnderwijs39,
+        simulatieOnderwijs40,
+    ];
+
     const socialCreativityImages = [
         socialCreativity1,
         socialCreativity2,
@@ -2775,6 +3863,49 @@ const useGetKeywordImages = (keywordData) => {
         socialCreativity38,
         socialCreativity39,
         socialCreativity40,
+    ];
+
+    const socialeInterventiesMetImpactImages = [
+        socialeInterventiesMetImpact1,
+        socialeInterventiesMetImpact2,
+        socialeInterventiesMetImpact3,
+        socialeInterventiesMetImpact4,
+        socialeInterventiesMetImpact5,
+        socialeInterventiesMetImpact6,
+        socialeInterventiesMetImpact7,
+        socialeInterventiesMetImpact8,
+        socialeInterventiesMetImpact9,
+        socialeInterventiesMetImpact10,
+        socialeInterventiesMetImpact11,
+        socialeInterventiesMetImpact12,
+        socialeInterventiesMetImpact13,
+        socialeInterventiesMetImpact14,
+        socialeInterventiesMetImpact15,
+        socialeInterventiesMetImpact16,
+        socialeInterventiesMetImpact17,
+        socialeInterventiesMetImpact18,
+        socialeInterventiesMetImpact19,
+        socialeInterventiesMetImpact20,
+        socialeInterventiesMetImpact21,
+        socialeInterventiesMetImpact22,
+        socialeInterventiesMetImpact23,
+        socialeInterventiesMetImpact24,
+        socialeInterventiesMetImpact25,
+        socialeInterventiesMetImpact26,
+        socialeInterventiesMetImpact27,
+        socialeInterventiesMetImpact28,
+        socialeInterventiesMetImpact29,
+        socialeInterventiesMetImpact30,
+        socialeInterventiesMetImpact31,
+        socialeInterventiesMetImpact32,
+        socialeInterventiesMetImpact33,
+        socialeInterventiesMetImpact34,
+        socialeInterventiesMetImpact35,
+        socialeInterventiesMetImpact36,
+        socialeInterventiesMetImpact37,
+        socialeInterventiesMetImpact38,
+        socialeInterventiesMetImpact39,
+        socialeInterventiesMetImpact40,
     ];
 
     const sportCoachingImages = [
@@ -3035,6 +4166,92 @@ const useGetKeywordImages = (keywordData) => {
         vitalCities40,
     ];
 
+    const welzijnInHetOnderwijsImages = [
+        welzijnInHetOnderwijs1,
+        welzijnInHetOnderwijs2,
+        welzijnInHetOnderwijs3,
+        welzijnInHetOnderwijs4,
+        welzijnInHetOnderwijs5,
+        welzijnInHetOnderwijs6,
+        welzijnInHetOnderwijs7,
+        welzijnInHetOnderwijs8,
+        welzijnInHetOnderwijs9,
+        welzijnInHetOnderwijs10,
+        welzijnInHetOnderwijs11,
+        welzijnInHetOnderwijs12,
+        welzijnInHetOnderwijs13,
+        welzijnInHetOnderwijs14,
+        welzijnInHetOnderwijs15,
+        welzijnInHetOnderwijs16,
+        welzijnInHetOnderwijs17,
+        welzijnInHetOnderwijs18,
+        welzijnInHetOnderwijs19,
+        welzijnInHetOnderwijs20,
+        welzijnInHetOnderwijs21,
+        welzijnInHetOnderwijs22,
+        welzijnInHetOnderwijs23,
+        welzijnInHetOnderwijs24,
+        welzijnInHetOnderwijs25,
+        welzijnInHetOnderwijs26,
+        welzijnInHetOnderwijs27,
+        welzijnInHetOnderwijs28,
+        welzijnInHetOnderwijs29,
+        welzijnInHetOnderwijs30,
+        welzijnInHetOnderwijs31,
+        welzijnInHetOnderwijs32,
+        welzijnInHetOnderwijs33,
+        welzijnInHetOnderwijs34,
+        welzijnInHetOnderwijs35,
+        welzijnInHetOnderwijs36,
+        welzijnInHetOnderwijs37,
+        welzijnInHetOnderwijs38,
+        welzijnInHetOnderwijs39,
+        welzijnInHetOnderwijs40,
+    ];
+
+    const werknemersImages = [
+        werknemers1,
+        werknemers2,
+        werknemers3,
+        werknemers4,
+        werknemers5,
+        werknemers6,
+        werknemers7,
+        werknemers8,
+        werknemers9,
+        werknemers10,
+        werknemers11,
+        werknemers12,
+        werknemers13,
+        werknemers14,
+        werknemers15,
+        werknemers16,
+        werknemers17,
+        werknemers18,
+        werknemers19,
+        werknemers20,
+        werknemers21,
+        werknemers22,
+        werknemers23,
+        werknemers24,
+        werknemers25,
+        werknemers26,
+        werknemers27,
+        werknemers28,
+        werknemers29,
+        werknemers30,
+        werknemers31,
+        werknemers32,
+        werknemers33,
+        werknemers34,
+        werknemers35,
+        werknemers36,
+        werknemers37,
+        werknemers38,
+        werknemers39,
+        werknemers40,
+    ];
+
     const wetenschapscommunicatieImages = [
         wetenschapscommunicatie1,
         wetenschapscommunicatie2,
@@ -3078,6 +4295,49 @@ const useGetKeywordImages = (keywordData) => {
         wetenschapscommunicatie40,
     ];
 
+    const zorgVoorEnDoorDeGemeenschapImages = [
+        zorgVoorEnDoorDeGemeenschap1,
+        zorgVoorEnDoorDeGemeenschap2,
+        zorgVoorEnDoorDeGemeenschap3,
+        zorgVoorEnDoorDeGemeenschap4,
+        zorgVoorEnDoorDeGemeenschap5,
+        zorgVoorEnDoorDeGemeenschap6,
+        zorgVoorEnDoorDeGemeenschap7,
+        zorgVoorEnDoorDeGemeenschap8,
+        zorgVoorEnDoorDeGemeenschap9,
+        zorgVoorEnDoorDeGemeenschap10,
+        zorgVoorEnDoorDeGemeenschap11,
+        zorgVoorEnDoorDeGemeenschap12,
+        zorgVoorEnDoorDeGemeenschap13,
+        zorgVoorEnDoorDeGemeenschap14,
+        zorgVoorEnDoorDeGemeenschap15,
+        zorgVoorEnDoorDeGemeenschap16,
+        zorgVoorEnDoorDeGemeenschap17,
+        zorgVoorEnDoorDeGemeenschap18,
+        zorgVoorEnDoorDeGemeenschap19,
+        zorgVoorEnDoorDeGemeenschap20,
+        zorgVoorEnDoorDeGemeenschap21,
+        zorgVoorEnDoorDeGemeenschap22,
+        zorgVoorEnDoorDeGemeenschap23,
+        zorgVoorEnDoorDeGemeenschap24,
+        zorgVoorEnDoorDeGemeenschap25,
+        zorgVoorEnDoorDeGemeenschap26,
+        zorgVoorEnDoorDeGemeenschap27,
+        zorgVoorEnDoorDeGemeenschap28,
+        zorgVoorEnDoorDeGemeenschap29,
+        zorgVoorEnDoorDeGemeenschap30,
+        zorgVoorEnDoorDeGemeenschap31,
+        zorgVoorEnDoorDeGemeenschap32,
+        zorgVoorEnDoorDeGemeenschap33,
+        zorgVoorEnDoorDeGemeenschap34,
+        zorgVoorEnDoorDeGemeenschap35,
+        zorgVoorEnDoorDeGemeenschap36,
+        zorgVoorEnDoorDeGemeenschap37,
+        zorgVoorEnDoorDeGemeenschap38,
+        zorgVoorEnDoorDeGemeenschap39,
+        zorgVoorEnDoorDeGemeenschap40,
+    ];
+
 
 
     if (!keywordData) return [];
@@ -3087,43 +4347,58 @@ const useGetKeywordImages = (keywordData) => {
     const inputList = Array.isArray(keywordData) ? keywordData : [keywordData];
 
     return inputList.map(keywordName => {
-        if (keywordName === "G") return GImages;
+        if (keywordName === "5G") return GImages;
         if (keywordName === "aiArtificieleIntelligentie") return aiArtificieleIntelligentieImages;
         if (keywordName === "arVrXr") return arVrXrImages;
         if (keywordName === "bigDataAndAnalytics") return bigDataAndAnalyticsImages;
+        if (keywordName === "blendedLearning") return blendedLearningImages;
         if (keywordName === "blockchain") return blockchainImages;
         if (keywordName === "changeManagement") return changeManagementImages;
         if (keywordName === "circulaireEconomie") return circulaireEconomieImages;
         if (keywordName === "coCreatie") return coCreatieImages;
         if (keywordName === "cybersecurity") return cybersecurityImages;
         if (keywordName === "didactiek") return didactiekImages;
+        if (keywordName === "didactischeInnovatie") return didactischeInnovatieImages;
         if (keywordName === "digitaalOndernemenEnLogistiek") return digitaalOndernemenEnLogistiekImages;
         if (keywordName === "digitalApplications") return digitalApplicationsImages;
+        if (keywordName === "digitalHealth") return digitalHealthImages;
         if (keywordName === "digitalSkillsMediawijsheid") return digitalSkillsMediawijsheidImages;
         if (keywordName === "digitalStorytellingAndInfluencing") return digitalStorytellingAndInfluencingImages;
         if (keywordName === "digitalTwin") return digitalTwinImages;
+        if (keywordName === "digitaleTools") return digitaleToolsImages;
+        if (keywordName === "educatieveTechnologie") return educatieveTechnologieImages;
         if (keywordName === "energie") return energieImages;
+        if (keywordName === "fakeNews") return fakeNewsImages;
         if (keywordName === "gameOntwikkelingEnTechnologie") return gameOntwikkelingEnTechnologieImages;
         if (keywordName === "gameTechnology") return gameTechnologyImages;
         if (keywordName === "gezondeOmgeving") return gezondeOmgevingImages;
         if (keywordName === "hrHumanResources") return hrHumanResourcesImages;
         if (keywordName === "industrie40") return industrie40Images;
+        if (keywordName === "innovatieveLeeromgevingen") return innovatieveLeeromgevingenImages;
+        if (keywordName === "livingLab") return livingLabImages;
         if (keywordName === "marketingCommunicatie") return marketingCommunicatieImages;
         if (keywordName === "metaverse") return metaverseImages;
         if (keywordName === "microbieleIdentificatie") return microbieleIdentificatieImages;
+        if (keywordName === "mixedReality") return mixedRealityImages;
         if (keywordName === "ondernemerschap") return ondernemerschapImages;
         if (keywordName === "onderwijsEnVorming") return onderwijsEnVormingImages;
         if (keywordName === "palliatieveZorg") return palliatieveZorgImages;
         if (keywordName === "placeholder") return placeholderImages;
+        if (keywordName === "productDesign") return productDesignImages;
         if (keywordName === "qualityOfLife") return qualityOfLifeImages;
+        if (keywordName === "simulatieOnderwijs") return simulatieOnderwijsImages;
         if (keywordName === "socialCreativity") return socialCreativityImages;
+        if (keywordName === "socialeInterventiesMetImpact") return socialeInterventiesMetImpactImages;
         if (keywordName === "sportCoaching") return sportCoachingImages;
         if (keywordName === "stemSteam") return stemSteamImages;
         if (keywordName === "supplyChainOptimalisation") return supplyChainOptimalisationImages;
         if (keywordName === "sustainableBusiness") return sustainableBusinessImages;
         if (keywordName === "uxUserExperience") return uxUserExperienceImages;
         if (keywordName === "vitalCities") return vitalCitiesImages;
+        if (keywordName === "welzijnInHetOnderwijs") return welzijnInHetOnderwijsImages;
+        if (keywordName === "werknemers") return werknemersImages;
         if (keywordName === "wetenschapscommunicatie") return wetenschapscommunicatieImages;
+        if (keywordName === "zorgVoorEnDoorDeGemeenschap") return zorgVoorEnDoorDeGemeenschapImages;
         return placeholderImages;
     });
 }
