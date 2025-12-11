@@ -8,9 +8,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS3DObject, CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 
-import { useEffect, useRef } from 'react';
+
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
+import { useEffect, useRef } from 'react';
 
 import InfiniteScrollHero from './infiniteScrollHero';
 import ProjectCard3D from './projectCard3D';
@@ -21,6 +21,16 @@ import getPositions from '../../scripts/placeCards';
 //---------------------------- CONSTANTS ----------------------------//
 const cardWidth = 320; // From ProjectCard3D
 const cardHeight = 380; // From ProjectCard3D
+
+//---------------------------- VARS ----------------------------//
+//--- general
+let totalProjects;
+let scene;
+let cardObjects: CSS3DObject[] = []; //array with the 3D objects for all the cards
+let controls;
+let cardPositions = []; //array with positions for all the cards, relative to the frame
+
+//--- discover mode
 const gridScale = 1.3;
 const gridSize = {
     w: innerWidth * gridScale,
@@ -31,15 +41,9 @@ const cardsPerCanvas = 5;
 
 let gridCols;
 let gridRows;
-
-//---------------------------- VARS ----------------------------//
-let totalProjects;
 let totalCanvasses;
-let cardPositions = []; //array with positions for all the cards, relative to the frame
-let cardObjects: CSS3DObject[] = []; //array with the 3D objects for all the cards
-let absoluteCardPositions = [];
 let heroCanvas: CSS3DObject | null = null; // ADD: Reference to hero canvas
-let frameBorderObjects: CSS3DObject[] = []; // array with the borders for the frames
+let cardPositionsDiscover = [];
 
 let state = {
     scroll: {
@@ -57,6 +61,9 @@ let state = {
     screen: { width: window.innerWidth, height: window.innerHeight },
     viewport: { width: 0, height: 0 },
 };
+
+//--- gallery mode
+let cardPositionsGrid = [];
 
 //---------------------------- HELPER FUNCTIONS ----------------------------//
 //--- make the viewport = inner size
@@ -88,7 +95,9 @@ const createHeroCanvas = (projects, page, setPage, setVisible) => {
         </>
     );
 
+
     const css3DObject = new CSS3DObject(div);
+    css3DObject.name = 'heroCanvas';
 
     const positionX = 0;
     const positionY = 0;
@@ -128,7 +137,7 @@ const createCardCSS3DObjects = (projects, page, setPage, setVisible) => {
     if (cardObjects.length === 0) {
         projects.forEach((project, index) => {
             const projectInfo = getProjectInfo(project.id);
-            const position = absoluteCardPositions[index];
+            const position = cardPositions[index];
             console.log('position CARDS', position);
             const cardObject = createCard3DObject(projectInfo, position, page, setPage, setVisible);
             cardObjects.push(cardObject);
@@ -139,7 +148,7 @@ const createCardCSS3DObjects = (projects, page, setPage, setVisible) => {
 // 1. bereken hoeveel canvasses er moeten zijn -> zorg dat dit een rechthoek wordt
 // 2. geef elk project een position op het grote canvas. + zorg dat in het midden geen kaartjes zijn. 
 const calculateCardPositions = (totalWidth: number, totalHeight: number) => {
-    if (cardPositions.length === 0) {
+    if (cardPositionsDiscover.length === 0) {
         const positions = getPositions(
             totalProjects, totalWidth, totalHeight, cardWidth, cardHeight, gridSize.w, gridSize.h
         );
@@ -151,10 +160,28 @@ const calculateCardPositions = (totalWidth: number, totalHeight: number) => {
             z: pos.z || 0
         }));
 
-        cardPositions.push(...centeredPositions);
+        cardPositionsDiscover.push(...centeredPositions);
         return centeredPositions;
     }
-    return cardPositions;
+    return cardPositionsDiscover;
+}
+
+const calculateCardPositionsGrid = (width: number, height: number) => {
+    const gap = 16;
+    const cardsPerRow = Math.floor(width / (cardWidth + gap));
+    const rows = Math.ceil(totalProjects / cardsPerRow);
+
+    const positions = [];
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cardsPerRow; j++) {
+            const x = (j - (cardsPerRow - 1) / 2) * (cardWidth + gap);
+            const y = -i * (cardHeight + gap) + (cardHeight + gap) / 2;
+            positions.push({ x, y, z: 0 });
+
+            console.log('position XXX', x, y);
+        }
+    }
+    return positions;
 }
 
 //--- create a scene
@@ -175,36 +202,10 @@ const createCamera = () => {
     return camera;
 }
 
-const createScene = (projects, page, setPage, setVisible) => {
-    const scene = new THREE.Scene();
-
-    heroCanvas = createHeroCanvas(projects, page, setPage, setVisible);
-    scene.add(heroCanvas);
-
-    console.log('scene created');
-    return scene;
-}
-
-
-//--- debug functions
-const createFrameBorder = (): HTMLDivElement => {
-    const div = document.createElement('div');
-    div.style.width = `${gridSize.w}px`;
-    div.style.height = `${gridSize.h}px`;
-    div.style.border = '5px solid blue';
-    div.style.boxSizing = 'border-box';
-    div.style.backgroundColor = 'rgba(0, 0, 255, 0.05)'; // Light blue background
-    div.style.pointerEvents = 'none'; // Don't block card clicks
-    return div;
-};
-
-
 //---------------------------- FUNCTION ----------------------------//
-const cardsWorld = ({ projects, page, setPage, setVisible }) => {
+const cardsWorld = ({ projects, page, setPage, setVisible, isDiscoverMode }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const containerGSAP = useRef<HTMLDivElement>(null);
-
-    const { contextSafe } = useGSAP({ scope: containerGSAP }); 
+    heroCanvas = createHeroCanvas(projects, page, setPage, setVisible);
 
     useEffect(() => {
         if (!canvasRef.current) return;
@@ -217,33 +218,96 @@ const cardsWorld = ({ projects, page, setPage, setVisible }) => {
         const totalWidth = gridCols * gridSize.w;
         const totalHeight = gridRows * gridSize.h;
 
-        absoluteCardPositions = calculateCardPositions(totalWidth, totalHeight);
+        cardPositionsDiscover = calculateCardPositions(totalWidth, totalHeight);
+        cardPositionsGrid = calculateCardPositionsGrid(window.innerWidth, window.innerHeight);
+
+        if (isDiscoverMode) {
+            cardPositions = cardPositionsDiscover;
+        } else {
+            cardPositions = cardPositionsGrid;
+        }
 
         createCardCSS3DObjects(projects, page, setPage, setVisible);
 
         const canvas = canvasRef.current;
         const camera = createCamera();
         const rendererCCS3D = setupCSS3DRenderer(canvas);
-        const scene = createScene(projects, page, setPage, setVisible);
 
-        const controls = new OrbitControls(camera, rendererCCS3D.domElement);
-        controls.rotateSpeed = 0;
-        controls.zoom0;
-        controls.touches = {
-            ONE: THREE.TOUCH.PAN,
-            TWO: THREE.TOUCH.DOLLY_PAN,
+        if (!scene) {
+            scene = new THREE.Scene();
         }
-        controls.maxDistance = 7000;
-        controls.minDistance = 500;
-        controls.zoomSpeed = 1;
-        controls.panSpeed = 1;
-        controls.zoomToCursor = true;
 
         //--- add cards to scene
         cardObjects.forEach(cardObject => {
-            console.log('Adding card to scene LALA', cardObject);
             scene.add(cardObject);
         });
+
+
+        if (isDiscoverMode) {
+            cardObjects.forEach((cardObject, index) => {
+                cardObject.position.set(
+                    cardPositionsDiscover[index].x,
+                    cardPositionsDiscover[index].y,
+                    0);
+            });
+            const oldHero = scene.getObjectByName('heroCanvas');
+            if (!oldHero) scene.add(heroCanvas);
+        } else {
+            cardObjects.forEach((cardObject, index) => {
+                console.log(cardPositionsGrid);
+                cardObject.position.set(
+                    cardPositionsGrid[index].x,
+                    cardPositionsGrid[index].y,
+                    0);
+            });
+            const oldHero = scene.getObjectByName('heroCanvas');
+            if (oldHero) scene.remove(oldHero);
+        }
+
+
+        //--- controls
+        controls = new OrbitControls(camera, rendererCCS3D.domElement);
+        controls.rotateSpeed = 0;
+
+        if (isDiscoverMode) {
+            controls.touches = {
+                ONE: THREE.TOUCH.PAN,
+                TWO: THREE.TOUCH.DOLLY_PAN,
+            }
+        } else {
+            controls.touches = {
+                ONE: THREE.TOUCH.PAN,
+            }
+        }
+
+        controls.maxDistance = 7000;
+        controls.minDistance = 500;
+
+        const minPan = new THREE.Vector3(-totalWidth / 2, -totalHeight / 2, -Infinity);
+        const maxPan = new THREE.Vector3(totalWidth / 2, totalHeight / 2, Infinity);
+        const _v = new THREE.Vector3();
+
+        //--- easing, ...
+        const zoomSpeedTo = gsap.quickTo(controls, "zoomSpeed", { duration: 0.5, ease: "power1.out" });
+
+        controls.addEventListener("change", () => {
+            // Constraint panning
+            _v.copy(controls.target);
+            controls.target.clamp(minPan, maxPan);
+            _v.sub(controls.target);
+            camera.position.sub(_v);
+
+            // Dynamic zoom speed
+            const dist = controls.getDistance();
+            const range = controls.maxDistance - controls.minDistance;
+            const progress = (dist - controls.minDistance) / range;
+            const targetSpeed = Math.max(0.3, 1 - progress);
+            zoomSpeedTo(targetSpeed);
+        })
+
+        controls.zoomSpeed = 1;
+        controls.panSpeed = 1;
+        controls.zoomToCursor = true;
 
         //--- event handlers
         const handleResize = () => {
@@ -255,7 +319,8 @@ const cardsWorld = ({ projects, page, setPage, setVisible }) => {
             gridSize.w = window.innerWidth * gridScale;
             gridSize.h = window.innerHeight * gridScale;
 
-            rendererCCS3D.setSize(state.screen.width, state.screen.height);
+            rendererCCS3D.setSize(window.innerWidth, window.innerHeight);
+            // rendererCCS3D.setSize(state.screen.width, state.screen.height);
             camera.aspect = state.screen.width / state.screen.height;
             camera.updateProjectionMatrix();
 
@@ -295,7 +360,7 @@ const cardsWorld = ({ projects, page, setPage, setVisible }) => {
             });
         };
 
-    }, [projects]);
+    }, [projects, isDiscoverMode]);
 
 
     //---------------------------- HTML ----------------------------//

@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 import CardsWorld from '../3Dscenes/cardsWorld';
 
-const DiscoverScreen = ({projects, page, setPage, setVisible}) => {
+const DiscoverScreen = ({projects, page, setPage, setVisible, isDiscoverMode}) => {
     return (
         <View style={styles.container}>
             <CardsWorld
@@ -10,6 +10,7 @@ const DiscoverScreen = ({projects, page, setPage, setVisible}) => {
                 page={page}
                 setPage={setPage}
                 setVisible={setVisible}
+                isDiscoverMode={isDiscoverMode}
             />
         </View>
     );

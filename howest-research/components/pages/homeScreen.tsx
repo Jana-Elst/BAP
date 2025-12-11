@@ -15,7 +15,7 @@ const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, 
             <Header activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
 
             {
-                isDiscoverMode ? <DiscoverScreen page={page} setPage={setPage} projects={projects} setVisible={setVisible}>Ontdekweergave</DiscoverScreen> : <ProjectList page={page} setPage={setPage} projects={projects} setVisible={setVisible} />
+                <DiscoverScreen page={page} setPage={setPage} projects={projects} setVisible={setVisible} isDiscoverMode={isDiscoverMode} />
             }
 
             <View style={styles.footer}>
