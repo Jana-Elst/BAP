@@ -9,15 +9,14 @@ import Carousel, {
 
 
 import Card from "../atoms/card";
-import Images from "../cardsDetailPage/images";
 import Info from "../cardsDetailPage/info";
 import ModelView from "../cardsDetailPage/modelView";
 import QrCode from "../cardsDetailPage/qrCode";
 
 import { Colors } from "@/constants/theme";
+import { useComposition } from "@/scripts/createProjectImageCompositions";
 import { getProjectInfo } from "@/scripts/getData";
-import { StyledText, Title, TitleXSmall } from "../atoms/styledComponents";
-import { color } from "@rneui/base";
+import { Title, TitleXSmall } from "../atoms/styledComponents";
 
 
 const renderItems = [
@@ -31,9 +30,12 @@ const gap = 32;
 
 
 
-const DetailPage = ({ page, setPage }) => {
+const DetailPage = ({ page, setPage, setPositionData, positionData }) => {
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
+
+    const project = getProjectInfo(page.id);
+    const positionDataCalculated = useComposition(project, cardWidth, cardHeight, cardWidth, cardHeight);
 
     const onPressPagination = (index: number) => {
         ref.current?.scrollTo({
@@ -46,10 +48,8 @@ const DetailPage = ({ page, setPage }) => {
         });
     };
 
-    const project = getProjectInfo(page.id);
-
     return (
-        <View style={{gap: 16, flex: 1, paddingBottom: 8}}>
+        <View style={{ gap: 16, flex: 1, paddingBottom: 8 }}>
             <Carousel
                 ref={ref}
                 onProgressChange={progress}
@@ -70,13 +70,13 @@ const DetailPage = ({ page, setPage }) => {
                                 <TitleXSmall style={{ color: Colors[project.color + '80'] }}>{project.transitionDomain}</TitleXSmall>
                             </View>
 
-                            <View style={{ flex: 1}}>
+                            <View style={{ flex: 1 }}>
                                 {
-                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
+                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} positionData={positionDataCalculated} /> :
                                         item === "info" ? <Info project={project} /> :
                                             // item === "images" ? <Images project={project} /> :
-                                                item === "qrCode" ? <QrCode project={project}/> :
-                                                    null
+                                            item === "qrCode" ? <QrCode project={project} /> :
+                                                null
                                 }
                             </View>
                         </Card>

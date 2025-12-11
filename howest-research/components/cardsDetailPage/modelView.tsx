@@ -1,12 +1,11 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { StyledText } from "../atoms/styledComponents";
+import { StyleSheet, View } from "react-native";
 import ProjectImage from "../organisms/projectImage";
 
 
-const ModelView = ({ width, height, project, setPage, page }) => {
+const ModelView = ({ width, height, project, setPage, page, positionData }) => {
     return (
         <View style={styles.containerVis}>
-            <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} showKeywords={true} />
+            <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} showKeywords={true} positionData={positionData} />
         </View>
     );
 }

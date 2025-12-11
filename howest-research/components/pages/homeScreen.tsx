@@ -6,7 +6,7 @@ import { StyledText } from '../atoms/styledComponents';
 import ViewToggle from "../molecules/viewToggle";
 import Header from "../organisms/header";
 
-const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects, setVisible }) => {
+const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects }) => {
     const [isDiscoverMode, setIsDiscoverMode] = useState(true);
 
     return (
@@ -19,7 +19,6 @@ const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, 
                     projects={projects}
                     page={page}
                     setPage={setPage}
-                    setVisible={setVisible}
                     isDiscoverMode={isDiscoverMode}
                 />
             </View>

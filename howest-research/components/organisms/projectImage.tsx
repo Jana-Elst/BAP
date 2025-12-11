@@ -8,9 +8,8 @@ import { StyledText } from '../atoms/styledComponents';
 import Touchable from '../atoms/touchable';
 
 
-const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false }) => {
+const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, positionData }) => {
     const canvasRef = useRef<View>(null);
-    const positionData = useComposition(project, width, height, screenWidth, screenHeight);
 
     // Return loading state while images load
     if (positionData.isLoading) {

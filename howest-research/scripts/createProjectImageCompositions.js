@@ -361,7 +361,7 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         return image[rotationIndex + offset];
     });
 
-    // console.log('🔵 7. keywordSources', keywordSources);
+    console.log('🔵 7. keywordSources', keywordSources);
 
     // Hooks must be called unconditionally
     const keywordImage0 = useImage(keywordSources[0] || null);
@@ -389,25 +389,65 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     clusterImage = useImage(clusterSource || null);
 
     // If no project was provided, return early NOW (after all hooks have run)
-    if (!project) return { isLoading: true };
+        if (!project) return { isLoading: true };
 
-    const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
-    const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
+        const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
+        const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
 
     // console.log('🔵 8. keywordImages loaded', keywordImages);
     // console.log('🔵 9. clusterImage loaded', clusterImage);
 
-    //----- return loading state if images not loaded -----//
-    if (!allImagesLoaded) {
-        console.log('⏳ Waiting for all images to load...');
+        //----- return loading state if images not loaded -----//
+        if (!allImagesLoaded) {
+            console.log('⏳ Waiting for all images to load...');
+            return {
+                clusterPosition: undefined,
+                keywordPositions: [],
+                keywordInitialPositions: [],
+                boundingBoxesKeywords: undefined,
+                boundingBoxesKeywordsInitial: undefined,
+                boundingBoxesCluster: undefined,
+                keyWordLabelPositions: [],
+                keywordImageSources: keywordImages,
+                clusterImageSources: [clusterSource],
+                keywordData,
+                keywordImages: requiredKeywordImages,
+                clusterImage,
+                positions,
+                centerX,
+                centerY,
+                offset,
+                widthCluster,
+                heightCluster,
+                widhtKeyword,
+                heightKeyword,
+                getEllipseIntersection,
+                isLoading: true,
+            };
+        }
+
+        console.log('✅ All images loaded! Performing calculations...');
+
+        //----- Calculations -----//
+    const clusterPosition = getClusterPosition();
+    // console.log('🔵 10. clusterPosition', clusterPosition);
+    const keywordPositions = getKeywordPositions(clusterPosition, positions);
+    const keywordInitialPositions = getKeywordInitialPositions(positions);
+    // console.log('🔵 11. keywordPositions', keywordPositions);
+    const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, keywordData);
+    const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, keywordData);
+    // console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
+    const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
+    // console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
+
+        console.log('Composition data ready.', boundingBoxesCluster, boundingBoxesKeywords);
         return {
-            clusterPosition: undefined,
-            keywordPositions: [],
-            keywordInitialPositions: [],
-            boundingBoxesKeywords: undefined,
-            boundingBoxesKeywordsInitial: undefined,
-            boundingBoxesCluster: undefined,
-            keyWordLabelPositions: [],
+            clusterPosition,
+            keywordPositions,
+            keywordInitialPositions,
+            boundingBoxesKeywords,
+            boundingBoxesKeywordsInitial,
+            boundingBoxesCluster: boundingBoxesCluster,
             keywordImageSources: keywordImages,
             clusterImageSources: [clusterSource],
             keywordData,
@@ -422,47 +462,7 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
             widhtKeyword,
             heightKeyword,
             getEllipseIntersection,
-            isLoading: true,
+            isLoading: false,
         };
-    }
-
-    console.log('✅ All images loaded! Performing calculations...');
-
-    //----- Calculations -----//
-    const clusterPosition = getClusterPosition();
-    // console.log('🔵 10. clusterPosition', clusterPosition);
-    const keywordPositions = getKeywordPositions(clusterPosition, positions);
-    const keywordInitialPositions = getKeywordInitialPositions(positions);
-    // console.log('🔵 11. keywordPositions', keywordPositions);
-    const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, keywordData);
-    const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, keywordData);
-    // console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
-    const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
-    // console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
-
-    console.log('Composition data ready.', boundingBoxesCluster, boundingBoxesKeywords);
-    return {
-        clusterPosition,
-        keywordPositions,
-        keywordInitialPositions,
-        boundingBoxesKeywords,
-        boundingBoxesKeywordsInitial,
-        boundingBoxesCluster: boundingBoxesCluster,
-        keywordImageSources: keywordImages,
-        clusterImageSources: [clusterSource],
-        keywordData,
-        keywordImages: requiredKeywordImages,
-        clusterImage,
-        positions,
-        centerX,
-        centerY,
-        offset,
-        widthCluster,
-        heightCluster,
-        widhtKeyword,
-        heightKeyword,
-        getEllipseIntersection,
-        isLoading: false,
-    };
 };
 

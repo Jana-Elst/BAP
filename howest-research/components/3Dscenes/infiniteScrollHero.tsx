@@ -3,7 +3,7 @@ import ProjectCard3D from './projectCard3D';
 import { View } from 'react-native';
 import { getProjectInfo } from '@/scripts/getData';
 
-const InfiniteScrollHero = ({ projects, cardsPerCanvas, page, setPage, setVisible }) => {
+const InfiniteScrollHero = ({ projects, cardsPerCanvas, page, setPage }) => {
     const projectsShown = projects.slice(0, cardsPerCanvas);
     const positions = [
         { x: innerWidth-180, y: 64 },
@@ -28,7 +28,6 @@ const InfiniteScrollHero = ({ projects, cardsPerCanvas, page, setPage, setVisibl
                             <ProjectCard3D
                                 page={page}
                                 setPage={setPage}
-                                setVisible={setVisible}
                                 project={projectInformation}
                             />
                         </View>

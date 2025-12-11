@@ -7,7 +7,7 @@ import ExternalDisplay, {
 } from 'react-native-external-display';
 
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   const [page, setPage] = useState(
     {
       page: 'discover', //discover, gallery, about, detailResearch, detailKeyWord, searchResults, search, filter
@@ -15,6 +15,9 @@ export default function HomeScreen() {
       previousPages: []
     }
   );
+
+  const [positionDataIpad, setPositionDataIpad] = useState({});
+
 
   const screens = useExternalDisplay();
   const screenIds = Object.keys(screens);
@@ -34,7 +37,7 @@ export default function HomeScreen() {
           <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>
 
-        <Ipad page={page} setPage={setPage} />
+        <Ipad page={page} setPage={setPage} positionData={positionDataIpad} setPositionData={setPositionDataIpad} />
       </>
     )
 
@@ -42,7 +45,7 @@ export default function HomeScreen() {
     //-------------------- No external screen connected --------------------//
   } else {
     return (
-      <Ipad page={page} setPage={setPage} />
+      <Ipad page={page} setPage={setPage} positionData={positionDataIpad} setPositionData={setPositionDataIpad} />
     )
   }
 }
@@ -52,3 +55,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+export default HomeScreen;

@@ -100,7 +100,7 @@ const calculateCardPositions = () => {
     }
 }
 
-const createHeroCanvas = (projects, page, setPage, setVisible) => {
+const createHeroCanvas = (projects, page, setPage) => {
     const div = document.createElement('div');
     div.style.width = `${gridSize.w}px`;
     div.style.height = `${gridSize.h}px`;
@@ -109,7 +109,7 @@ const createHeroCanvas = (projects, page, setPage, setVisible) => {
 
     root.render(
         <>
-            <InfiniteScrollHero projects={projects} cardsPerCanvas={cardsPerCanvas} page={page} setPage={setPage} setVisible={setVisible} />
+            <InfiniteScrollHero projects={projects} cardsPerCanvas={cardsPerCanvas} page={page} setPage={setPage} />
         </>
     );
 
@@ -118,7 +118,7 @@ const createHeroCanvas = (projects, page, setPage, setVisible) => {
     return css3DObject;
 }
 
-const createCard3DObject = (project, position, page, setPage, setVisible) => {
+const createCard3DObject = (project, position, page, setPage) => {
     const div = document.createElement('div');
     div.style.width = `${cardWidth}px`;
     div.style.height = `${cardHeight}px`;
@@ -128,7 +128,6 @@ const createCard3DObject = (project, position, page, setPage, setVisible) => {
         <ProjectCard3D
             page={page}
             setPage={setPage}
-            setVisible={setVisible}
             project={project}
         />
     );
@@ -138,13 +137,13 @@ const createCard3DObject = (project, position, page, setPage, setVisible) => {
     return css3DObject;
 }
 
-const createCardCSS3DObjects = (projects, page, setPage, setVisible) => {
+const createCardCSS3DObjects = (projects, page, setPage) => {
     if (cardObjects.length === 0) {
         projects.forEach((project, index) => {
             // console.log('Creating card for project ID:', project.id);
             const projectInfo = getProjectInfo(project.id);
             const position = absoluteCardPositions[index];
-            const cardObject = createCard3DObject(projectInfo, position, page, setPage, setVisible);
+            const cardObject = createCard3DObject(projectInfo, position, page, setPage);
             cardObjects.push(cardObject);
         });
     }
@@ -206,7 +205,7 @@ const createCamera = () => {
     return camera;
 }
 
-const createScene = (projects, page, setPage, setVisible) => {
+const createScene = (projects, page, setPage) => {
     const scene = new THREE.Scene();
 
     //add cards to scene
@@ -215,7 +214,7 @@ const createScene = (projects, page, setPage, setVisible) => {
         scene.add(card);
     });
 
-    heroCanvas = createHeroCanvas(projects, page, setPage, setVisible);
+    heroCanvas = createHeroCanvas(projects, page, setPage);
     scene.add(heroCanvas);
 
     console.log('scene created');
@@ -237,7 +236,7 @@ const createFrameBorder = (): HTMLDivElement => {
 
 
 //---------------------------- FUNCTION ----------------------------//
-const InfiniteScrollView = ({ projects, page, setPage, setVisible }) => {
+const InfiniteScrollView = ({ projects, page, setPage }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
@@ -253,12 +252,12 @@ const InfiniteScrollView = ({ projects, page, setPage, setVisible }) => {
         calculateCardPositions();
         createAbsoluteCardPositions();
 
-        createCardCSS3DObjects(projects, page, setPage, setVisible);
+        createCardCSS3DObjects(projects, page, setPage);
 
         const canvas = canvasRef.current;
         const camera = createCamera();
         const rendererCCS3D = setupCSS3DRenderer(canvas);
-        const scene = createScene(projects, page, setPage, setVisible);
+        const scene = createScene(projects, page, setPage);
 
         //--- set positions infinite scroll
         const setPositions = () => {

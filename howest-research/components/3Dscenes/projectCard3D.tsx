@@ -5,7 +5,6 @@ import '../../styles/style.css';
 const ProjectCard3D = ({
     page,
     setPage,
-    setVisible,
     project,
 }) => {
 
@@ -25,7 +24,8 @@ const ProjectCard3D = ({
                 }
             ]
         })
-        setVisible(true);
+
+        console.log('OPEN DETAIL');
     }
 
     // If project data is missing for any reason (render timing, incomplete data), do not render the card.
