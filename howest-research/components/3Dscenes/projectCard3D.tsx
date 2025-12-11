@@ -38,7 +38,7 @@ const ProjectCard3D = ({
 
                 <div style={styles.header}>
                     <p style={styles.headerTitle}>{project.title}</p>
-                    <p style={styles.headerSubtitle}>{project.cluster.label}</p>
+                    <p style={styles.headerTeaser}>Dit is een korte teaser van ongeveer acht woorden</p>
                 </div>
                 <div style={styles.imageContainer}>
                     <Image
@@ -47,6 +47,7 @@ const ProjectCard3D = ({
                         style={styles.image}
                         contentFit="cover"
                     />
+                    <p style={{ ...styles.headerSubtitle, color: `var(--${color}-text)` }}>{project.cluster.label}</p>
                 </div>
             </div>
             <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>        </div>
@@ -58,7 +59,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         display: 'grid',
         gridTemplateRows: '1fr',
         gridTemplateColumns: '1fr',
-        alignItems: 'center',
+        alignItems: 'end',
         justifyItems: 'center',
     },
     card: {
@@ -71,7 +72,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        width: 'fit-content',
+        width: 275,
         border: '2px solid white',
         padding: '20px 12px 12px 12px',
         borderRadius: '42px',
@@ -105,7 +106,6 @@ const styles: { [key: string]: React.CSSProperties } = {
     header: {
         display: 'flex',
         flexDirection: 'column',
-        gap: 0,
     },
     headerTitle: {
         margin: 0,
@@ -117,8 +117,19 @@ const styles: { [key: string]: React.CSSProperties } = {
         lineHeight: '120%',
         letterSpacing: '1.1px',
         textTransform: 'capitalize',
+
+        marginTop: '8px',
+        marginBottom: '4px',
     },
     headerSubtitle: {
+        margin: 0,
+        padding: 0,
+        textAlign: 'center',
+        fontFamily: ' OpenSans-Semibold, sans-serif',
+        fontSize: '14px',
+    },
+
+    headerTeaser: {
         margin: 0,
         padding: 0,
         color: '#606060',
@@ -126,17 +137,25 @@ const styles: { [key: string]: React.CSSProperties } = {
         fontFamily: ' OpenSans-Semibold, sans-serif',
         fontSize: '16px',
     },
+
     imageContainer: {
         border: '2px solid white',
-        padding: '16px 24px',
+        padding: '12px 24px',
+        paddingBottom: '12px',
         borderRadius: '30px',
-        display: 'flex',
-        alignItems: 'center',
+        display: 'grid',
+        gridTemplateRows: 'min-content min-content',
+        gridTemplateColumns: '1fr',
+        alignItems: 'end',
         justifyContent: 'center',
     },
     image: {
+        gridRow: 1,
+        gridColumn: 1,
+
         width: '225px',
-        height: '225px',
+        height: '200px',
+        marginTop: '-8px',
         objectFit: 'cover',
     },
 };

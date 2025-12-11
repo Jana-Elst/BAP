@@ -11,7 +11,9 @@ import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 
 const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     const projectInfo = getProjectInfo(project.id);
+    const color = projectInfo.color;
     const [containerSize, setContainerSize] = useState({ width: 250, height: 250 });
+
     const imageSrc = useGetKeywordImages(project.formattedName);
 
     const handleOpenDetail = () => {
@@ -32,13 +34,13 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
 
     return (
         <TouchableOpacity onPress={handleOpenDetail} style={styles.container}>
-            <Card style={styles.card}> 
-                <View style={{ gap: 16, flex: 1, paddingVertical: 20}}>
-                    <View>
+            <Card style={styles.card}>
+                <View style={{ gap: 16, flex: 1, paddingVertical: 20 }}>
+                    <View style={{ gap: 12 }}>
+                        <ParagraphXSmall style={{ color: Colors[color + 'Text'], fontSize: 14, fontFamily: Fonts.sans.semiBold }}>{projectInfo.cluster.label}</ParagraphXSmall>
                         <StyledText style={{ fontFamily: Fonts.rounded.light, fontSize: 22 }}>{projectInfo.title}</StyledText>
-                        <ParagraphXSmall>{projectInfo.cluster.label}</ParagraphXSmall>
                     </View>
-                    <ParagraphSmall>Dit is een korte beschrijving van slechts 1 zinnetje. Kan ook meer zijn, geen idee...</ParagraphSmall>
+                    <ParagraphSmall style={{ fontFamily: Fonts.sans.regular }}>Dit is een korte beschrijving van slechts 1 zinnetje. Kan ook meer zijn, geen idee...</ParagraphSmall>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image

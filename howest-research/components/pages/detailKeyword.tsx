@@ -1,4 +1,4 @@
-import { Canvas, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
+import { Canvas, Image as SkiaImage } from '@shopify/react-native-skia';
 import { StyleSheet, View } from 'react-native';
 import { StyledText, SubTitle, Title } from '../atoms/styledComponents';
 
@@ -45,7 +45,7 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
                 <View style={{ alignItems: 'baseline', gap: 16, maxWidth: 650 }}>
                     <Title>{page.info.keyword.label}</Title>
                     <SubTitle style={{ marginBottom: 16, fontSize: 24 }}>Innovatie voor een actieve, gezonde en veerkrachtige samenleving</SubTitle>
-                    <StyledText style={{ fontSize: 20, fontFamily: Fonts.sans.semiBold, color: Colors.blueText }}>{filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projecten"}</StyledText>
+                    <StyledText style={{ fontSize: 20, fontFamily: Fonts.sans.semiBold, color: Colors.textGrey }}>{filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projecten"}</StyledText>
                 </View>
             </View>
         );
