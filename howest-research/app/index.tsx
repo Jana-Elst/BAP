@@ -18,7 +18,6 @@ const HomeScreen = () => {
 
   const [positionDataIpad, setPositionDataIpad] = useState({});
 
-
   const screens = useExternalDisplay();
   const screenIds = Object.keys(screens);
   const screenCount = screenIds.length;  //if total screen count is 1 --> external screen is connected!

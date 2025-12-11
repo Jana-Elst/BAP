@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -33,9 +33,7 @@ const gap = 32;
 const DetailPage = ({ page, setPage, setPositionData, positionData }) => {
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
-
     const project = getProjectInfo(page.id);
-    const positionDataCalculated = useComposition(project, cardWidth, cardHeight, cardWidth, cardHeight);
 
     const onPressPagination = (index: number) => {
         ref.current?.scrollTo({
@@ -72,7 +70,7 @@ const DetailPage = ({ page, setPage, setPositionData, positionData }) => {
 
                             <View style={{ flex: 1 }}>
                                 {
-                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} positionData={positionDataCalculated} /> :
+                                    item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                         item === "info" ? <Info project={project} /> :
                                             // item === "images" ? <Images project={project} /> :
                                             item === "qrCode" ? <QrCode project={project} /> :

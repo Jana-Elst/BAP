@@ -2,10 +2,10 @@ import { StyleSheet, View } from "react-native";
 import ProjectImage from "../organisms/projectImage";
 
 
-const ModelView = ({ width, height, project, setPage, page, positionData }) => {
+const ModelView = ({ width, height, project, setPage, page }) => {
     return (
         <View style={styles.containerVis}>
-            <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} showKeywords={true} positionData={positionData} />
+            <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} showKeywords={true} />
         </View>
     );
 }
