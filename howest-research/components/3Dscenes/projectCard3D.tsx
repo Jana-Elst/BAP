@@ -52,7 +52,9 @@ const ProjectCard3D = ({
     }, { scope: containerGSAP });
 
     useGSAP(() => {
+        // console.log(isLoading, page.page, page.id, project.id);
         if (isLoading && page.page !== 'discover' && page.id !== project.id) {
+            console.log('hide');
             gsap.to(containerGSAP.current, {
                 opacity: 0,
                 scale: 0,
@@ -60,6 +62,7 @@ const ProjectCard3D = ({
                 ease: "power1.inOut",
             });
         } else if (isLoading && page.page !== 'discover' && page.id === project.id) {
+            console.log('show KLIK');
             gsap.to(containerGSAP.current, {
                 opacity: 1,
                 scale: 1,
@@ -69,6 +72,7 @@ const ProjectCard3D = ({
         }
 
         if (page.page === 'discover' && page.id !== project.id) {
+            console.log('show DISCOVER');
             gsap.to(containerGSAP.current, {
                 opacity: 1,
                 scale: 1,
