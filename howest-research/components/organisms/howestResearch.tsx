@@ -2,8 +2,10 @@
 
 import { BlurView } from 'expo-blur';
 import { Image } from 'expo-image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn, FadeOut, Easing } from 'react-native-reanimated';
+import { useSharedValue, withTiming } from 'react-native-reanimated';
 import QRCode from 'react-native-qrcode-svg';
 
 import Card from '../atoms/card';
@@ -17,7 +19,11 @@ const image = require('../../assets/images/logoHowestResearchRGB.png')
 const HowestResearch = () => {
     const [visible, setVisible] = useState(false);
 
+    const entering = FadeIn.duration(250).easing(Easing.inOut(Easing.quad));
+    const exiting = FadeOut.duration(250).easing(Easing.inOut(Easing.quad));
+
     const toggleOverlay = () => {
+        console.log('TOGGLE OVERLAY');
         setVisible(!visible);
     };
 
@@ -35,7 +41,7 @@ const HowestResearch = () => {
                     <Pressable style={StyleSheet.absoluteFill} onPress={toggleOverlay} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={styles.overlayContent}>
+                    <Animated.View entering={entering} exiting={exiting} style={styles.overlayContent}>
                         <Card style={{ flexDirection: 'row', gap: 40, padding: 64 }} fill={true} borderRadius={80}>
                             <View style={{ flexDirection: 'column', gap: 18, width: '480' }}>
                                 <Card
@@ -69,9 +75,11 @@ const HowestResearch = () => {
                             </View>
                         </Card>
 
-                        <CloseButton onPress={toggleOverlay}>Sluit</CloseButton>
+                        <Pressable onPress={toggleOverlay}>
+                            <CloseButton onPress={toggleOverlay}>Sluit</CloseButton>
+                        </Pressable>
 
-                    </View>
+                    </Animated.View>
                 </View>
             </Modal >
         </View>
