@@ -71,7 +71,6 @@ export const getVisiblePixelsInfo = (image, imageWidth, imageHeight) => {
 };
 
 export const checkIsLoading = (isLoading) => {
-    console.log('isLoading iPad or externalDisplay', isLoading)
     if (isLoading.ipad || isLoading.externalDisplay) {
         return true
     }

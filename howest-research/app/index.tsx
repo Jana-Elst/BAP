@@ -10,13 +10,13 @@ import ExternalDisplay, {
 const HomeScreen = () => {
   const [page, setPage] = useState(
     {
-      page: 'discover', //discover, gallery, about, detailResearch, detailKeyWord, searchResults, search, filter
+      page: 'discover', //idle, discover, gallery, about, detailResearch, detailKeyWord, searchResults, search, filter
       id: null,
       previousPages: [],
       isLoading: {
         ipad: false,
         externalDisplay: false
-      }
+      },
     }
   );
 
@@ -38,7 +38,7 @@ const HomeScreen = () => {
           <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>
 
-        <Ipad page={page} setPage={setPage} />
+        <Ipad page={page} setPage={setPage}/>
       </>
     )
 

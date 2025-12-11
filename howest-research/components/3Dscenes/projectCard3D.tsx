@@ -1,16 +1,19 @@
 import { Image } from 'expo-image';
+import { checkIsLoading } from '../../scripts/getHelperFunction';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 import '../../styles/style.css';
 
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { useRef } from 'react';
 
 const ProjectCard3D = ({
     page,
     setPage,
     project,
 }) => {
+
+    const isLoading = checkIsLoading(page.isLoading);
 
     const handleOpenDetail = () => {
         setPage({
@@ -24,20 +27,74 @@ const ProjectCard3D = ({
                     page: page.page,
                     id: page.id
                 }
-            ]
+            ],
+            isLoading: {
+                ipad: true,
+                externalDisplay: false
+            }
         })
     }
 
     const imageSrc = useGetKeywordImages(project.formattedName);
     const color = project.color;
-    const containerGSAP = useRef();
+    const containerGSAP = useRef<HTMLDivElement>(null);
 
-    // If project data is missing for any reason (render timing, incomplete data), do not render the card.
+    useGSAP(() => {
+        gsap.to(containerGSAP.current, {
+            x: `+=${gsap.utils.random(-20, 20)}`,
+            y: `+=${gsap.utils.random(-20, 20)}`,
+            rotation: gsap.utils.random(-3, 3),
+            duration: gsap.utils.random(4, 7),
+            repeat: -1,
+            yoyo: true,
+            ease: "power1.inOut",
+        });
+    }, { scope: containerGSAP });
+
+    useGSAP(() => {
+        if (isLoading && page.page !== 'discover' && page.id !== project.id) {
+            gsap.to(containerGSAP.current, {
+                opacity: 0,
+                scale: 0,
+                duration: gsap.utils.random(0.5, 1),
+                ease: "power1.inOut",
+            });
+        } else if (isLoading && page.page !== 'discover' && page.id === project.id) {
+            gsap.to(containerGSAP.current, {
+                opacity: 1,
+                scale: 1,
+                duration: gsap.utils.random(0, 1),
+                ease: "power1.inOut",
+            });
+        }
+
+        if (page.page === 'discover' && page.id !== project.id) {
+            gsap.to(containerGSAP.current, {
+                opacity: 1,
+                scale: 1,
+                duration: gsap.utils.random(0, 1),
+                ease: "power1.inOut",
+            });
+        }
+    }, { scope: containerGSAP, dependencies: [isLoading, page.page] });
+
+    const handleTap = () => {
+        console.log('Tapped on project card');
+        gsap.to(containerGSAP.current, {
+            scale: 0.9,
+            duration: 0.15,
+            yoyo: true,
+            repeat: 1,
+            ease: "power1.inOut",
+            onComplete: handleOpenDetail
+        });
+    };
+
     if (!project) return null;
 
     return (
-        <div style={styles.container} onClick={handleOpenDetail}>
-            <div style={styles.card}>
+        <div style={styles.container} onClick={handleTap} ref={containerGSAP}>
+            <div style={styles.card} className="card">
                 <div style={styles.texture}></div>
 
                 <div style={styles.header}>
@@ -54,7 +111,8 @@ const ProjectCard3D = ({
                     <p style={{ ...styles.headerSubtitle, color: `var(--${color}-text)` }}>{project.cluster.label}</p>
                 </div>
             </div>
-            <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>        </div>
+            <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>
+        </div>
     );
 };
 

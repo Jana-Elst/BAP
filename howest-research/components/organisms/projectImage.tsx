@@ -12,27 +12,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     const canvasRef = useRef<View>(null);
     const positionData = useComposition(project, width, height, screenWidth, screenHeight);
 
-    useEffect(() => {
-        if (positionData.isLoading !== page.isLoading?.[device]) {
-            setPage((prevPage) => ({
-                ...prevPage,
-                isLoading: {
-                    ...prevPage.isLoading,
-                    [device]: positionData.isLoading,
-                },
-            }));
-        }
-    }, [positionData.isLoading, device, page.isLoading, setPage]);
-
-    // Return loading state while images load
-    if (positionData.isLoading) {
-        return (
-            <View>
-                <Text>Loading visualization...</Text>
-            </View>
-        );
-    }
-
     // Destructure all needed data
     const {
         keywordData = [],
@@ -54,6 +33,27 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         heightKeyword = height / 2,
         getEllipseIntersection,
     } = positionData;
+
+    useEffect(() => {
+        if (positionData.isLoading !== page.isLoading?.[device]) {
+            setPage((prevPage) => ({
+                ...prevPage,
+                isLoading: {
+                    ...prevPage.isLoading,
+                    [device]: positionData.isLoading,
+                },
+            }));
+        }
+    }, [positionData.isLoading, device, page.isLoading, setPage]);
+
+    // Return loading state while images load
+    if (positionData.isLoading) {
+        return (
+            <View>
+                <Text>Loading visualization...</Text>
+            </View>
+        );
+    }
 
     const getKeywordLabelPositions = () => {
         if (!positions) {
@@ -101,8 +101,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
 
     //----- event listeners -----//
     const handleOpendetailKeyword = (keyword: any, index: number) => {
-        console.log('keywordImageSources[index]:', keywordImageSources[index]);
-        console.log('HANDLE CLICK', page.isLoading);
         setPage({
             ...page,
             page: 'detailKeyword',
