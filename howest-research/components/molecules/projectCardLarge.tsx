@@ -13,7 +13,6 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     const projectInfo = getProjectInfo(project.id);
     const [containerSize, setContainerSize] = useState({ width: 250, height: 250 });
     const imageSrc = useGetKeywordImages(project.formattedName);
-    console.log('imageSrc', imageSrc);
 
     const handleOpenDetail = () => {
         setPage({
