@@ -10,7 +10,6 @@ import Card from "../atoms/card";
 import ProjectCardLarge from '../molecules/projectCardLarge';
 
 const DetailKeyword = ({ page, setPage, setVisible }) => {
-    console.log("DetailKeyword page:", page.id);
     const filteredProjects = getProjectsByKeyword(page.id);
     const keywordImage = page.info.keywordImageSource;
 
@@ -24,8 +23,6 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
     const imageHeight = keywordImage ? keywordImage.height() * imageScale : 0;
     const xPos = imageX + (180 - visibleInfo!.boundingBox.width) / 2;
     const yPos = imageY + (180 - visibleInfo!.boundingBox.height) / 2;
-
-    // console.log("imageScale:", imageScale, "imageX:", imageX, "imageY:", imageY);
 
     const Header = () => {
         return (

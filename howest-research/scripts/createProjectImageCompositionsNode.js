@@ -132,9 +132,6 @@ const getKeywordPositions = (clusterPosition, positions) => {
 
 //
 const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
-    console.log('Calculating bounding boxes for keywords...');
-    console.log('Keyword Positions:', keywordPositions);
-    console.log('Keyword Data:', keywordData.length);
     const boxesKeywords = keywordData.map((data, index) => {
         const pos = keywordPositions[index];
         if (!pos) return undefined;

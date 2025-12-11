@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
-import '../../styles/style.css'
+import '../../styles/style.css';
 
 const ProjectCard3D = ({
     page,
@@ -9,10 +9,8 @@ const ProjectCard3D = ({
     project,
 }) => {
 
-    console.log('project', project.formattedName);
     const imageSrc = useGetKeywordImages(project.formattedName);
     const color = project.color;
-    console.log('color', color);
 
     const handleOpenDetail = () => {
         setPage({

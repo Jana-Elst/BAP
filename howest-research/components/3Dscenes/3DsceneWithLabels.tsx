@@ -322,7 +322,6 @@ const createBoxes = (scene, boxCompositions) => {
         scene.add(sphere);
 
         // Create the box
-        console.log('BOX DATA:', boxData);
         const geometry = new THREE.BoxGeometry(...boxData.size as [number, number, number]);
         const material = new THREE.MeshStandardMaterial({
             color: boxData.color,

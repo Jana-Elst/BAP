@@ -47,7 +47,7 @@ const generateProjectImage = async (projectInfo) => {
         ctx = canvas.getContext("2d")
 
     //get data for composition
-    const composition = await useComposition(projectInfo, 600, 600, 600, 600);
+    const composition = await useComposition(projectInfo, 750, 750, 600, 600);
     // console.log('composition for', projectInfo.formattedName, composition);
 
     const {
@@ -83,7 +83,7 @@ const generateProjectImage = async (projectInfo) => {
 
             // Optional: Debug Bounding Box
             if (boundingBox) {
-                ctx.strokeStyle = 'rgba(255, 0, 0, 0.5)';
+                ctx.strokeStyle = 'transparent';
                 ctx.lineWidth = 1;
                 ctx.strokeRect(boundingBox.x, boundingBox.y, boundingBox.width, boundingBox.height);
             }
@@ -104,7 +104,7 @@ const generateProjectImage = async (projectInfo) => {
         );
 
         // B. Draw Inner Ellipse
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = 'transparent';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.ellipse(
@@ -122,7 +122,7 @@ const generateProjectImage = async (projectInfo) => {
         const outerW = clusterPosition.width + offset;
         const outerH = clusterPosition.height + offset;
 
-        ctx.strokeStyle = 'black';
+        ctx.strokeStyle = 'transparent';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.ellipse(

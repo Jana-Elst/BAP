@@ -1,7 +1,7 @@
 //----------------------------- IMPORTS -----------------------------//
+import { useImage } from '@shopify/react-native-skia';
 import useGetClusterImages from './getClusterImages';
 import useGetImages from './getKeywordImages';
-import { Canvas, Group, Oval, Rect, Line, vec, Circle, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
 
 //----------------------------- VARIABLES -----------------------------//
 let centerX
@@ -105,7 +105,6 @@ const getClusterPosition = () => {
 
 //get keyword positions based on cluster position
 const getKeywordPositions = (clusterPosition: any, positions: any) => {
-    console.log('getKeywordPositions - clusterPosition:', clusterPosition);
     if (!clusterPosition) return [];
 
     const radiusX = (clusterPosition.width + offset) / 2;
@@ -123,15 +122,21 @@ const getKeywordPositions = (clusterPosition: any, positions: any) => {
     });
 };
 
+const getKeywordInitialPositions = (positions) => {
+    if (!positions) return [];
+    return positions.degrees.map((degree) => {
+        const intersection = getEllipseIntersection(degree, centerX, centerY, 1920, 1080);
+        return {
+            x: intersection.x - widhtKeyword / 2,
+            y: intersection.y - heightKeyword / 2,
+            centerX: intersection.x,
+            centerY: intersection.y,
+        };
+    });
+};
+
 //
 const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
-    // console.log('getBoundingBoxesKeywords - keywordPositions:', keywordPositions);
-    // console.log('getBoundingBoxesKeywords - keywordImages:', keywordImages);
-    // const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
-    // const allLoadedKeywords = requiredKeywordImages.every(img => img !== null);
-    // console.log('getBoundingBoxesKeywords - allLoadedKeywords:', allLoadedKeywords);
-    // if (!allLoadedKeywords) return;
-
     const boxesKeywords = keywordImages.map((image, index) => {
         const pos = keywordPositions[index];
         if (!pos) return undefined;
@@ -169,7 +174,6 @@ const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
 };
 
 const getBoundingBoxCluster = (boundingBoxesKeywords) => {
-    console.log('getBoundingBoxCluster - boundingBoxesKeywords:', boundingBoxesKeywords);
     if (!boundingBoxesKeywords || boundingBoxesKeywords.length === 0) return;
 
     let minX = screenWidth;
@@ -177,16 +181,12 @@ const getBoundingBoxCluster = (boundingBoxesKeywords) => {
     let maxX = 0;
     let maxY = 0;
 
-    console.log('getBoundingBoxCluster - Initial minX, minY, maxX, maxY:', minX, minY, maxX, maxY);
     boundingBoxesKeywords.forEach((boundingBoxKeyword) => {
         if (!boundingBoxKeyword) return;
-        console.log('getBoundingBoxCluster - boundingBoxKeyword:', boundingBoxKeyword.x, boundingBoxKeyword.y, boundingBoxKeyword.width, boundingBoxKeyword.height);
 
         // Find the minimum top-left corner
         minX = Math.min(minX, boundingBoxKeyword.x);
         minY = Math.min(minY, boundingBoxKeyword.y);
-
-        console.log('getBoundingBoxCluster - minX, minY:', minX, minY);
 
         // Find the maximum bottom-right corner
         maxX = Math.max(maxX, boundingBoxKeyword.x + boundingBoxKeyword.width);
@@ -305,6 +305,17 @@ const getEllipseIntersection = (degree: number, ellipseCenterX: number, ellipseC
     return { x, y };
 };
 
+const getRectIntersection = (degree, rectCenterX, rectCenterY, width , height) => {
+    const radians = (degree * Math.PI) / 180;
+    const cosTheta = Math.cos(radians);
+    const sinTheta = Math.sin(radians);
+
+    const x = rectCenterX + width / 2 * cosTheta;
+    const y = rectCenterY + height / 2 * sinTheta;
+
+    return { x, y };
+}
+
 //----------------------------- export function -----------------------------//
 export const useComposition = (project, width, height, sWidth, sHeight) => {
     //----- constants -----//
@@ -319,25 +330,25 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     widhtKeyword = widthCluster / 2;
     heightKeyword = heightCluster / 2;
 
-    //----- get data from project -----//
-    const keywordData = project.keywords;
-    const projectColor = project.color;
+    //----- get data from project (SAFE GUARDED) -----//
+    const keywordData = project ? project.keywords : [];
+    const projectColor = project ? project.color : 'blue'; // default
     const keywordFormatted = keywordData.map(keyword => keyword.formattedName);
-    const clusterData = project.cluster;
+    const clusterData = project ? project.cluster : { formattedName: '' };
 
-    console.log('🔵 1. keywordData', keywordData);
-    console.log('🔵 2. keywordFormatted', keywordFormatted);
-    console.log('🔵 3. clusterData', clusterData);
+    // console.log('🔵 1. keywordData', keywordData);
+    // console.log('🔵 2. keywordFormatted', keywordFormatted);
+    // console.log('🔵 3. clusterData', clusterData);
 
     //----- get images from project -----//
     const keywordImagesSources = useGetImages(keywordFormatted);
     const clusterImagesSources = useGetClusterImages(clusterData.formattedName);
-    console.log('🔵 4. keywordImages', keywordImagesSources);
-    console.log('🔵 5. clusterImages', clusterImagesSources);
-    
+    // console.log('🔵 4. keywordImages', keywordImagesSources);
+    // console.log('🔵 5. clusterImages', clusterImagesSources);
+
     //----- get correct positions from keywordPositionsConfig -----//
-    const positions = keywordPositionsConfig[keywordData.length];
-    console.log('🔵 6. positions', positions);
+    const positions = keywordPositionsConfig[keywordData.length] || null;
+    // console.log('🔵 6. positions', positions);
 
     //----- get correct keyword & cluster images based on rotation from config -----//
     //keywords
@@ -350,8 +361,9 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         return image[rotationIndex + offset];
     });
 
-    console.log('🔵 7. keywordSources', keywordSources);
+    // console.log('🔵 7. keywordSources', keywordSources);
 
+    // Hooks must be called unconditionally
     const keywordImage0 = useImage(keywordSources[0] || null);
     const keywordImage1 = useImage(keywordSources[1] || null);
     const keywordImage2 = useImage(keywordSources[2] || null);
@@ -376,15 +388,14 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     const clusterSource = clusterImagesSources[0]?.[0]; // Get first image from first cluster
     clusterImage = useImage(clusterSource || null);
 
+    // If no project was provided, return early NOW (after all hooks have run)
+    if (!project) return { isLoading: true };
+
     const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
     const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
 
-    console.log('Checking image loading status...');
-    console.log('Cluster Image Loaded:', !!clusterImage);
-    console.log('Required Keyword Images Loaded:', requiredKeywordImages.map(img => img !== null));
-
-    console.log('🔵 8. keywordImages loaded', keywordImages);
-    console.log('🔵 9. clusterImage loaded', clusterImage);
+    // console.log('🔵 8. keywordImages loaded', keywordImages);
+    // console.log('🔵 9. clusterImage loaded', clusterImage);
 
     //----- return loading state if images not loaded -----//
     if (!allImagesLoaded) {
@@ -392,7 +403,9 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         return {
             clusterPosition: undefined,
             keywordPositions: [],
+            keywordInitialPositions: [],
             boundingBoxesKeywords: undefined,
+            boundingBoxesKeywordsInitial: undefined,
             boundingBoxesCluster: undefined,
             keyWordLabelPositions: [],
             keywordImageSources: keywordImages,
@@ -417,19 +430,23 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
 
     //----- Calculations -----//
     const clusterPosition = getClusterPosition();
-    console.log('🔵 10. clusterPosition', clusterPosition);    
+    // console.log('🔵 10. clusterPosition', clusterPosition);
     const keywordPositions = getKeywordPositions(clusterPosition, positions);
-    console.log('🔵 11. keywordPositions', keywordPositions);
+    const keywordInitialPositions = getKeywordInitialPositions(positions);
+    // console.log('🔵 11. keywordPositions', keywordPositions);
     const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, keywordData);
-    console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
+    const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, keywordData);
+    // console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
     const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
-    console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
+    // console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
 
     console.log('Composition data ready.', boundingBoxesCluster, boundingBoxesKeywords);
     return {
         clusterPosition,
         keywordPositions,
+        keywordInitialPositions,
         boundingBoxesKeywords,
+        boundingBoxesKeywordsInitial,
         boundingBoxesCluster: boundingBoxesCluster,
         keywordImageSources: keywordImages,
         clusterImageSources: [clusterSource],
