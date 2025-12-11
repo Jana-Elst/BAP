@@ -102,6 +102,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     //----- event listeners -----//
     const handleOpendetailKeyword = (keyword: any, index: number) => {
         console.log('keywordImageSources[index]:', keywordImageSources[index]);
+        console.log('HANDLE CLICK', page.isLoading);
         setPage({
             ...page,
             page: 'detailKeyword',

@@ -28,7 +28,7 @@ const Ipad = ({ page, setPage }) => {
 
     useEffect(() => {
         console.log('page.isLoading CHANGING', page.isLoading);
-        const loadState = checkIsLoading(page.isLoading);  
+        const loadState = checkIsLoading(page.isLoading);
         setIsLoading(loadState);
         if (loadState) {
             console.log('isLoading LAAAD');
@@ -77,16 +77,16 @@ const Ipad = ({ page, setPage }) => {
 
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
-                visible={!isLoading && visible}
+                visible={visible}
                 transparent={true}
                 onRequestClose={() => handleClosePopUp(setPage, page)}
             >
                 <View style={{ flex: 1 }}>
-                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
-                    <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
+                    {!isLoading && <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />}
+                    <Pressable style={StyleSheet.absoluteFill} onPress={() => isLoading && handleClosePopUp(setPage, page)} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32 }}>
+                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32, opacity: (isLoading || !visible) ? 0 : 1 }}>
                         {
                             page.previousPages.length > 1 &&
                             <Touchable

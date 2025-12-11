@@ -18,6 +18,7 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
 
     const handleOpenDetail = () => {
         setPage({
+            ...page,
             page: 'detailResearch',
             id: project.id,
             previousPages: [
