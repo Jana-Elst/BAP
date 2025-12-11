@@ -1,10 +1,10 @@
 import { StyleSheet, View } from 'react-native';
-import InfiniteScrollView from '../3Dscenes/infiniteScroll';
+import CardsWorld from '../3Dscenes/cardsWorld';
 
 const DiscoverScreen = ({projects, page, setPage, setVisible}) => {
     return (
         <View style={styles.container}>
-            <InfiniteScrollView
+            <CardsWorld
                 name="dom"
                 projects={projects}
                 page={page}

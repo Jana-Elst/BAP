@@ -1,3 +1,4 @@
+
 const checkPosition = (x, y, width, height, positions, overlapThreshold, canvasWidth, canvasHeight, containerWidth, containerHeight) => {
     // Check collision with other cards
     const collidesWithCards = positions.some(placed => {
@@ -44,16 +45,12 @@ const checkPosition = (x, y, width, height, positions, overlapThreshold, canvasW
 
 const getPosition = (cardWidth, cardHeight, containerWidth, containerHeight, positions, overlapThreshold, canvasWidth, canvasHeight) => {
     let randomX, randomY;
-    let maxAttempts = 500;
+    let maxAttempts = 1500; // Increased for test
     let validPosition = false;
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
         randomX = Math.random() * (containerWidth - cardWidth);
         randomY = Math.random() * (containerHeight - cardHeight);
-
-        // Note: I reversed the return logic of checkPosition above to mean "isValid" (true) or "collides" (Check logic)
-        // Wait, original checkPosition returned TRUE if NO OVERLAP (valid).
-        // My new checkPosition returns TRUE if VALID (no overlap with cards AND no overlap with center).
 
         if (checkPosition(randomX, randomY, cardWidth, cardHeight, positions, overlapThreshold, canvasWidth, canvasHeight, containerWidth, containerHeight)) {
             validPosition = true;
@@ -77,4 +74,50 @@ const getPositions = (totalProjects, containerWidth, containerHeight, cardWidth,
     return positions;
 };
 
-export default getPositions;
+// TEST EXECUTION
+const totalProjects = 50;
+const containerWidth = 2000;
+const containerHeight = 2000;
+const cardWidth = 100;
+const cardHeight = 100;
+const canvasWidth = 500;
+const canvasHeight = 500;
+
+const positions = getPositions(totalProjects, containerWidth, containerHeight, cardWidth, cardHeight, canvasWidth, canvasHeight);
+
+console.log(`Generated ${positions.length} positions.`);
+
+// Verify Logic
+const centerX = containerWidth / 2;
+const centerY = containerHeight / 2;
+const exLeft = centerX - canvasWidth / 2;
+const exRight = centerX + canvasWidth / 2;
+const exTop = centerY - canvasHeight / 2;
+const exBottom = centerY + canvasHeight / 2;
+
+let failures = 0;
+positions.forEach((pos, idx) => {
+    const cardRight = pos.x + pos.w;
+    const cardLeft = pos.x;
+    const cardBottom = pos.y + pos.h;
+    const cardTop = pos.y;
+
+    const isOverlapping = !(
+        cardRight < exLeft ||
+        cardLeft > exRight ||
+        cardBottom < exTop ||
+        cardTop > exBottom
+    );
+
+    if (isOverlapping) {
+        console.error(`Position ${idx} overlaps exclusion zone!`, pos);
+        failures++;
+    }
+});
+
+if (failures === 0) {
+    console.log("SUCCESS: No cards overlap with the center exclusion zone.");
+} else {
+    console.error(`FAILURE: ${failures} cards overlap with the center exclusion zone.`);
+    process.exit(1);
+}
