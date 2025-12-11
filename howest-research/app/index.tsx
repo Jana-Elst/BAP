@@ -12,11 +12,13 @@ const HomeScreen = () => {
     {
       page: 'discover', //discover, gallery, about, detailResearch, detailKeyWord, searchResults, search, filter
       id: null,
-      previousPages: []
+      previousPages: [],
+      isLoading: {
+        ipad: false,
+        externalDisplay: false
+      }
     }
   );
-
-  const [positionDataIpad, setPositionDataIpad] = useState({});
 
   const screens = useExternalDisplay();
   const screenIds = Object.keys(screens);
@@ -36,7 +38,7 @@ const HomeScreen = () => {
           <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>
 
-        <Ipad page={page} setPage={setPage} positionData={positionDataIpad} setPositionData={setPositionDataIpad} />
+        <Ipad page={page} setPage={setPage} />
       </>
     )
 
@@ -44,7 +46,7 @@ const HomeScreen = () => {
     //-------------------- No external screen connected --------------------//
   } else {
     return (
-      <Ipad page={page} setPage={setPage} positionData={positionDataIpad} setPositionData={setPositionDataIpad} />
+      <Ipad page={page} setPage={setPage} />
     )
   }
 }

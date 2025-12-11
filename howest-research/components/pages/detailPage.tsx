@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel, {
@@ -14,7 +14,6 @@ import ModelView from "../cardsDetailPage/modelView";
 import QrCode from "../cardsDetailPage/qrCode";
 
 import { Colors } from "@/constants/theme";
-import { useComposition } from "@/scripts/createProjectImageCompositions";
 import { getProjectInfo } from "@/scripts/getData";
 import { Title, TitleXSmall } from "../atoms/styledComponents";
 
@@ -30,10 +29,12 @@ const gap = 32;
 
 
 
-const DetailPage = ({ page, setPage, setPositionData, positionData }) => {
+const DetailPage = ({ page, setPage }) => {
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
     const project = getProjectInfo(page.id);
+
+    console.log('page OPEN DETAILPAGE', page);
 
     const onPressPagination = (index: number) => {
         ref.current?.scrollTo({

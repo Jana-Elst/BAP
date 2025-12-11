@@ -146,7 +146,6 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
     const scalingCluster = useSharedValue(1);
     const opacityCluster = useSharedValue(1);
 
-    console.log('boundingBoxesKeywordsInitial KKKKK', activeProjectData.positionData.boundingBoxesKeywordsInitial);
     const actualPositionKeywords = useSharedValue(
         activeProjectData.positionData.boundingBoxesKeywordsInitial ?
             activeProjectData.positionData.boundingBoxesKeywordsInitial.flatMap((box) => {
@@ -155,7 +154,7 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
             }) : []
     );
 
-    const isLoading = useSharedValue(false);
+    const isLoading = useSharedValue(page.isLoading.externalDisplay);
     const isDetail = useSharedValue(true);
     const globalTimestamp = useSharedValue(0);
 
@@ -231,6 +230,8 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
 
             //--- detailPage ---//
             if (!isLoading.value && page.page === 'detailResearch') {
+                console.log('detailResearch hologram NOT LOADING');
+
                 animationParts.value = detailScreen;
                 projectAnimation.value = [project?.cluster.formattedName, project?.cluster.formattedName];
                 currentProject.value = 0;

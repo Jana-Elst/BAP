@@ -8,14 +8,17 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { CSS3DObject, CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { useEffect, useRef } from 'react';
+import { useGSAP } from '@gsap/react';
 
 import InfiniteScrollHero from './infiniteScrollHero';
 import ProjectCard3D from './projectCard3D';
 
 import { getProjectInfo } from '../../scripts/getData';
 import getPositions from '../../scripts/placeCards';
+
+gsap.registerPlugin(useGSAP); // register the hook to avoid React version discrepancies 
 
 //---------------------------- CONSTANTS ----------------------------//
 const cardWidth = 320; // From ProjectCard3D
@@ -26,6 +29,8 @@ const cardsPerCanvas = 5;
 
 //---------------------------- COMPONENT ----------------------------//
 const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
+    const [pageData, setPageData] = useState({});
+
     //--- Refs (State that persists without triggering re-renders)
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const rendererRef = useRef<CSS3DRenderer | null>(null);
@@ -33,6 +38,8 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
     const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
     const controlsRef = useRef<OrbitControls | null>(null);
     const animIdRef = useRef<number>(0);
+    const containerGSAP = useRef();
+
 
     // Objects & Roots
     const heroObjectRef = useRef<CSS3DObject | null>(null);
@@ -229,26 +236,6 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         }
         controlsRef.current = controls;
 
-        // Custom Pan/Zoom Limits
-        const minPan = new THREE.Vector3(-totalWidth / 2, -totalHeight / 2, -Infinity);
-        const maxPan = new THREE.Vector3(totalWidth / 2, totalHeight / 2, Infinity);
-        const _v = new THREE.Vector3();
-        const zoomSpeedTo = gsap.quickTo(controls, "zoomSpeed", { duration: 0.5, ease: "power1.out" });
-
-        controls.addEventListener("change", () => {
-            _v.copy(controls.target);
-            controls.target.clamp(minPan, maxPan);
-            _v.sub(controls.target);
-            camera.position.sub(_v);
-
-            const dist = controls.getDistance();
-            const range = controls.maxDistance - controls.minDistance;
-            const progress = (dist - controls.minDistance) / range;
-            const targetSpeed = Math.max(0.3, 1 - progress);
-            zoomSpeedTo(targetSpeed);
-        });
-
-
         //-- Render Loop
         const renderLoop = () => {
             renderer.render(scene, camera);
@@ -272,7 +259,6 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             // Update hero size if needed (requires recreating div or scaling, omitted for simple refactor)
         };
         window.addEventListener('resize', handleResize);
-
 
         //-- Cleanup
         return () => {

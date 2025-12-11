@@ -2,17 +2,19 @@ import { Image } from 'expo-image';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 import '../../styles/style.css';
 
+import { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
 const ProjectCard3D = ({
     page,
     setPage,
     project,
 }) => {
 
-    const imageSrc = useGetKeywordImages(project.formattedName);
-    const color = project.color;
-
     const handleOpenDetail = () => {
         setPage({
+            ...page,
             page: 'detailResearch',
             id: project.id,
             previousPages: [
@@ -24,9 +26,11 @@ const ProjectCard3D = ({
                 }
             ]
         })
-
-        console.log('OPEN DETAIL');
     }
+
+    const imageSrc = useGetKeywordImages(project.formattedName);
+    const color = project.color;
+    const containerGSAP = useRef();
 
     // If project data is missing for any reason (render timing, incomplete data), do not render the card.
     if (!project) return null;

@@ -1,16 +1,28 @@
 import { Colors } from '@/constants/theme';
-import { Canvas, Group, Oval, Rect, Line, vec, Circle, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
-import { useMemo, useRef } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { Canvas, Circle, Group, Line, Oval, Rect, Image as SkiaImage, vec } from '@shopify/react-native-skia';
+import { useEffect, useRef } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { StyledText } from '../atoms/styledComponents';
 import Touchable from '../atoms/touchable';
 
 
-const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false }) => {
+const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, device }) => {
     const canvasRef = useRef<View>(null);
     const positionData = useComposition(project, width, height, screenWidth, screenHeight);
+
+    useEffect(() => {
+        if (positionData.isLoading !== page.isLoading?.[device]) {
+            setPage((prevPage) => ({
+                ...prevPage,
+                isLoading: {
+                    ...prevPage.isLoading,
+                    [device]: positionData.isLoading,
+                },
+            }));
+        }
+    }, [positionData.isLoading, device, page.isLoading, setPage]);
 
     // Return loading state while images load
     if (positionData.isLoading) {
@@ -91,6 +103,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     const handleOpendetailKeyword = (keyword: any, index: number) => {
         console.log('keywordImageSources[index]:', keywordImageSources[index]);
         setPage({
+            ...page,
             page: 'detailKeyword',
             id: keyword.id,
             info: {
@@ -307,7 +320,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
             <View style={styles.container}>
                 <TapGestureHandler onHandlerStateChange={handleTap}>
                     <View
-                        ref={canvasRef} 
+                        ref={canvasRef}
                         style={{ width: screenWidth, height: screenHeight }}>
                         <CanvasContent />
                         <View style={{ position: 'absolute', top: 0, left: 0 }}>
