@@ -6,13 +6,6 @@ import ProjectImage from "../organisms/projectImage";
 const ModelView = ({ width, height, project, setPage, page }) => {
     return (
         <View style={styles.containerVis}>
-            {/* {projectKeywords
-                .map(keyword => (
-                    <TouchableOpacity onPress={() => handleOpendetailKeyword(keyword.id)} key={keyword.id} style={styles.tag}>
-                        <StyledText style={styles.tagStyledText}>{keyword.label} {keyword.id}</StyledText>
-                    </TouchableOpacity>
-                ))} */}
-
             <ProjectImage screenWidth={width} screenHeight={height} width={700} height={700} project={project} setPage={setPage} page={page} showKeywords={true} />
         </View>
     );

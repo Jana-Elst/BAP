@@ -46,7 +46,6 @@ export default function Ipad({ page, setPage }) {
     return (
         <View style={styles.container}>
             <HomeScreen page={page} setPage={setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
-            {/* <DiscoverScreen projects={projects} page={page} setPage={setPage} isVisible={isVisible} /> */}
 
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
