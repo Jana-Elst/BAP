@@ -100,8 +100,6 @@ const setCardPositions = (positions, cardsObjsRef) => {
             cardObj.position.set(position.x, position.y, 0);
         }
     });
-
-    console.log('cardPositions', positions);
 }
 
 //--- xxxx
@@ -132,6 +130,7 @@ const calculateCardPositionsDiscover = (totalProjects: number, totalWidth: numbe
         z: pos.z || 0
     }));
 
+    console.log('positionsDiscover calculated');
     return cardPositionsDiscover;
 }
 
@@ -148,6 +147,7 @@ const calculateCardPositionsGrid = (totalProjects: number) => {
             positions.push({ x, y, z: 0 });
         }
     }
+    console.log('positionsGRID calculated');
     return positions;
 }
 
@@ -353,7 +353,18 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         // Update Card Positions
         setCardPositions(cardPositions, cardsObjsRef);
-        console.log('cardPositions', cardPositions);
+
+        //update hero
+        updateHero(projects, page, setPage, heroRef);
+
+        //Update camera & controls
+        if (cameraRef.current && controlsRef.current) {
+            const currentZ = cameraRef.current.position.z;
+            cameraRef.current.position.set(0, 0, currentZ);
+
+            controlsRef.current.target.set(0, 0, 0);
+            controlsRef.current.update();
+        }
 
         // Re-render
         if (rendererRef.current && sceneRef.current && cameraRef.current) {
