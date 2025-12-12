@@ -34,13 +34,6 @@ const calculateCameraZForScreen = (camera: THREE.PerspectiveCamera, screenHeight
     return z;
 };
 
-const calculateViewport = (camera: THREE.PerspectiveCamera) => {
-    const fov = camera.fov * (Math.PI / 180);
-    const height = 2 * Math.tan(fov / 2) * camera.position.z;
-    const width = height * camera.aspect;
-    return { height, width };
-};
-
 const updateHero = (projects, page, setPage, heroRef) => {
     if (heroRef.current) {
         heroRef.current.render(
@@ -204,6 +197,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
     const cardsRef = useRef<Map<number, Root>>(new Map());
     const cardsObjsRef = useRef<CSS3DObject[]>([]);
+    const limitsRef = useRef<{ min: THREE.Vector3, max: THREE.Vector3 }>({ min: new THREE.Vector3(-Infinity, -Infinity, -Infinity), max: new THREE.Vector3(Infinity, Infinity, Infinity) });
 
     //--- MEMOS
     const totalProjects = projects.length;
@@ -287,6 +281,21 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         setControlSettings(controlsRef.current, isDiscoverMode);
 
         controlsRef.current.addEventListener('change', () => {
+
+            //FIX
+            // Clamping logic
+            const controls = controlsRef.current;
+            const camera = cameraRef.current;
+            const { min, max } = limitsRef.current;
+            console.log('min', min);
+            console.log('max', max);
+            if (controls && camera) {
+                const v = new THREE.Vector3().copy(controls.target);
+                console.log('v', v);
+                controls.target.clamp(min, max);
+                v.sub(controls.target);
+                camera.position.sub(v);
+            }
             renderer.render(scene, camera);
         });
 
@@ -350,7 +359,24 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         console.log('Mode or positions updated');
 
-    }, [isDiscoverMode]);
+        //FIX
+        // Update Limits
+        if (isDiscoverMode) {
+            limitsRef.current.min.set(-32, -32, -Infinity);
+            limitsRef.current.max.set(32, 32, Infinity);
+        } else {
+            // Grid Mode Limits
+            const gap = 16;
+            const cardsPerRow = Math.floor(window.innerWidth / (cardWidth + gap));
+            const rows = Math.ceil(totalProjects / cardsPerRow);
+            const gridH = rows * (cardHeight + gap);
+
+            // Y goes from approx (cardHeight)/2 down to -gridH
+            limitsRef.current.min.set(0, -gridH, -Infinity);
+            limitsRef.current.max.set(0, (cardHeight + gap), Infinity);
+        }
+
+    }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
 
     // 3. if projects are changing
     useEffect(() => {
@@ -374,7 +400,19 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         // Update Card Positions
         setCardPositions(cardPositions, cardsObjsRef);
 
-        //update hero
+        //FIX
+        // Update Limits (Same as above)
+        if (isDiscoverMode) {
+            limitsRef.current.min.set(-totalWidth / 2, -totalHeight / 2, -Infinity);
+            limitsRef.current.max.set(totalWidth / 2, totalHeight / 2, Infinity);
+        } else {
+            const gap = 16;
+            const cardsPerRow = Math.floor(window.innerWidth / (cardWidth + gap));
+            const rows = Math.ceil(totalProjects / cardsPerRow);
+            const gridH = rows * (cardHeight + gap);
+            limitsRef.current.min.set(-window.innerWidth / 2, -gridH, -Infinity);
+            limitsRef.current.max.set(window.innerWidth / 2, (cardHeight + gap), Infinity);
+        }
         updateHero(projects, page, setPage, heroRef);
 
         //Update camera & controls
