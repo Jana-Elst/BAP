@@ -120,14 +120,34 @@ const calculateSizeCanvas = (totalProjects: number) => {
 };
 
 const calculateCardPositionsDiscover = (totalProjects: number, totalWidth: number, totalHeight: number, gridSize: { w: number, h: number }) => {
-    const positions = getDiscoverPositions(
-        totalProjects, totalWidth, totalHeight, cardWidth, cardHeight, gridSize.w, gridSize.h
+    const totalProjectsWithoutHero = totalProjects - cardsPerCanvas;
+
+    const positions = [
+        { x: -window.innerWidth/2 + 100, y: 150, z: 0 },
+        { x: 200, y: 300, z: 0 },
+        { x: window.innerWidth/2 - 50, y:100, z: 0 },
+        { x: -350, y: -window.innerHeight/2 + 100, z: 0 },
+        { x: -150, y:window.innerHeight/2 + 50, z: 0 },
+        { x: window.innerWidth/2 - 200, y: -window.innerHeight/2 + 50, z: 0 },
+    ];
+
+    const positionsAroundHero = getDiscoverPositions(
+        totalProjectsWithoutHero, totalWidth, totalHeight, cardWidth, cardHeight, gridSize.w, gridSize.h
     );
+
+    positionsAroundHero.forEach((position, index) => {
+        positions.push({
+            x: position.x - totalWidth / 2 + cardWidth / 2,
+            y: position.y - totalHeight / 2 + cardHeight / 2,
+            z: 0
+        });
+    });
+
     // Center positions
     const cardPositionsDiscover = positions.map(pos => ({
-        x: pos.x - totalWidth / 2 + cardWidth / 2,
-        y: pos.y - totalHeight / 2 + cardHeight / 2,
-        z: pos.z || 0
+        x: pos.x,
+        y: pos.y,
+        z: pos.z
     }));
 
     console.log('positionsDiscover calculated');

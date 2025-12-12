@@ -20,7 +20,7 @@ const InfiniteScrollHero = ({ projects, cardsPerCanvas, page, setPage }) => {
                 <h1 style={styles.h1}>Ontdek dé oplossing voor jouw bedrijf.</h1>
                 <p style={styles.p}>Wij deden het onderzoek.</p>
             </div>
-            <div>
+            {/* <div>
                 {projectsShown.map((project, index) => {
                     const projectInformation = getProjectInfo(project.id);
                     return (
@@ -33,13 +33,14 @@ const InfiniteScrollHero = ({ projects, cardsPerCanvas, page, setPage }) => {
                         </View>
                     )
                 })}
-            </div>
+            </div> */}
         </div>
     );
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
     container: {
+        // backgroundColor: 'red',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
