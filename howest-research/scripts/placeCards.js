@@ -66,7 +66,7 @@ const getPosition = (cardWidth, cardHeight, containerWidth, containerHeight, pos
     }
 };
 
-const getPositions = (totalProjects, containerWidth, containerHeight, cardWidth, cardHeight, canvasWidth, canvasHeight) => {
+const getdiscoverPositions = (totalProjects, containerWidth, containerHeight, cardWidth, cardHeight, canvasWidth, canvasHeight) => {
     let positions = [];
     const overlapThreshold = 0;
 
@@ -77,4 +77,4 @@ const getPositions = (totalProjects, containerWidth, containerHeight, cardWidth,
     return positions;
 };
 
-export default getPositions;
+export default getdiscoverPositions;

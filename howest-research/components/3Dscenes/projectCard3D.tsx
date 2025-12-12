@@ -72,7 +72,6 @@ const ProjectCard3D = ({
         }
 
         if (page.page === 'discover' && page.id !== project.id) {
-            console.log('show DISCOVER');
             gsap.to(containerGSAP.current, {
                 opacity: 1,
                 scale: 1,
