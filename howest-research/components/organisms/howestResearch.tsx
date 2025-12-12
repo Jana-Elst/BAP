@@ -19,8 +19,8 @@ const image = require('../../assets/images/logoHowestResearchRGB.png')
 const HowestResearch = () => {
     const [visible, setVisible] = useState(false);
 
-    const entering = FadeIn.duration(250).easing(Easing.inOut(Easing.quad));
-    const exiting = FadeOut.duration(250).easing(Easing.inOut(Easing.quad));
+    const entering = FadeIn.duration(1000).easing(Easing.inOut(Easing.quad));
+    const exiting = FadeOut.duration(1000).easing(Easing.inOut(Easing.quad));
 
     const toggleOverlay = () => {
         console.log('TOGGLE OVERLAY');
