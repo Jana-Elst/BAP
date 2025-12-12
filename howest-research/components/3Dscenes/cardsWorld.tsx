@@ -174,7 +174,7 @@ const calculateCardPositionsGrid = (totalProjects: number) => {
 const createOrbitControls = (camera: THREE.PerspectiveCamera, renderer: CSS3DRenderer) => {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.rotateSpeed = 0;
-    controls.maxDistance = 7000;
+    controls.maxDistance = 4000;
     controls.minDistance = 500;
     controls.zoomSpeed = 1;
     controls.panSpeed = 1;

@@ -1,12 +1,9 @@
 import "../../styles/fonts.css";
-import ProjectCard3D from './projectCard3D';
-import { View } from 'react-native';
-import { getProjectInfo } from '@/scripts/getData';
 
 const InfiniteScrollHero = ({ projects, cardsPerCanvas, page, setPage }) => {
     const projectsShown = projects.slice(0, cardsPerCanvas);
     const positions = [
-        { x: innerWidth-180, y: 64 },
+        { x: innerWidth - 180, y: 64 },
         { x: 64, y: 320 },
         { x: 400, y: innerHeight - 200 },
         { x: innerWidth, y: 500 },
