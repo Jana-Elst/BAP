@@ -1,10 +1,11 @@
 import ExternalScreen from "@/components/screens/externalDisplay";
 import Ipad from "@/components/screens/ipad";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet } from 'react-native';
 import ExternalDisplay, {
   useExternalDisplay,
 } from 'react-native-external-display';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const HomeScreen = () => {
@@ -17,8 +18,29 @@ const HomeScreen = () => {
         ipad: false,
         externalDisplay: false
       },
+      isTouched: false
     }
   );
+
+  const timerRef = useRef<any>(null);
+
+  const handleTouchStart = () => {
+    console.log('pressed');
+    if (timerRef.current) {
+      console.log('Timer already exists, clearing it');
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setPage(prev => ({ ...prev, isTouched: true }));
+  };
+
+  const handleTouchEnd = () => {
+    console.log('ended');
+    timerRef.current = setTimeout(() => {
+      console.log('Timer ended, setting isTouched false');
+      setPage(prev => ({ ...prev, isTouched: false }));
+    }, 6000);
+  };
 
   const screens = useExternalDisplay();
   const screenIds = Object.keys(screens);
@@ -38,7 +60,14 @@ const HomeScreen = () => {
           <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>
 
-        <Ipad page={page} setPage={setPage}/>
+        <GestureHandlerRootView
+          style={{ flex: 1 }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+        >
+          <Ipad page={page} setPage={setPage} />
+        </GestureHandlerRootView>
       </>
     )
 
@@ -46,7 +75,14 @@ const HomeScreen = () => {
     //-------------------- No external screen connected --------------------//
   } else {
     return (
-      <Ipad page={page} setPage={setPage} />
+      <GestureHandlerRootView
+        style={{ flex: 1 }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+      >
+        <Ipad page={page} setPage={setPage} />
+      </GestureHandlerRootView>
     )
   }
 }

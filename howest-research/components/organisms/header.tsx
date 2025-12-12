@@ -1,13 +1,15 @@
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Filter from './filter';
-import Search from './search';
-import HowestResearch from './howestResearch';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import LanguageToggle from '../molecules/languageToggle';
+import Filter from './filter';
+import HowestResearch from './howestResearch';
+import Search from './search';
 
 
-const Header = ({ activeFilters, setActiveFilters, setProjects }) => {
+const Header = ({ activeFilters, setActiveFilters, setProjects, style }) => {
     return (
-        <View style={styles.container}>
+        <Animated.View style={[styles.container, style]}>
             <HowestResearch />
 
             <View style={styles.rightSection}>
@@ -15,7 +17,7 @@ const Header = ({ activeFilters, setActiveFilters, setProjects }) => {
                 <Search />
                 <LanguageToggle />
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
