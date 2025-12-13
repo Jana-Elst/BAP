@@ -473,6 +473,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         // Animate Cards
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
+        updateLimits(isDiscoverMode, totalProjects, limitsRef);
 
     }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
 
