@@ -1,5 +1,6 @@
 import { Easing, Keyframe } from 'react-native-reanimated';
 
+//--- transitions ---//
 const getEnteringFade = (duration = 300) => new Keyframe({
     0: {
         opacity: 0,
@@ -63,5 +64,7 @@ const getExitingFadeScale = (duration = 300) => new Keyframe({
         easing: Easing.inOut(Easing.quad),
     },
 }).duration(duration);
+
+//--- clusters ---//
 
 export { getEnteringFade, getExitingFade, getEnteringScale, getExitingScale, getEnteringFadeScale, getExitingFadeScale };

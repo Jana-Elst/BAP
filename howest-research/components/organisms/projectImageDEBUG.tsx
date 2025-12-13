@@ -1,11 +1,8 @@
 import { Colors } from '@/constants/theme';
-import { getEnteringFadeScale } from '@/scripts/animations';
-import { checkIsLoading } from '@/scripts/getHelperFunction';
-import { Canvas, Line, Image as SkiaImage, vec } from '@shopify/react-native-skia';
+import { Canvas, Circle, Group, Line, Oval, Rect, Image as SkiaImage, vec } from '@shopify/react-native-skia';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
-import { State, TapGestureHandler } from 'react-native-gesture-handler';
-import { Easing, Extrapolation, interpolate, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import { StyleSheet, Text, View } from 'react-native';
+import { TapGestureHandler } from 'react-native-gesture-handler';
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { StyledText } from '../atoms/styledComponents';
 import Touchable from '../atoms/touchable';
@@ -92,67 +89,6 @@ const handleTap = (event: any, boundingBoxesKeywords: any[], keywordData: any[],
     });
 };
 
-const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoading, delay = 0, duration = 300 }: any) => {
-    const opacity = useSharedValue(0);
-
-    useEffect(() => {
-        if (!isLoading) {
-            opacity.value = withDelay(delay, withTiming(1, { duration }));
-        } else {
-            opacity.value = 0;
-        }
-    }, [isLoading]);
-
-    return (
-        <Line
-            p1={p1}
-            p2={p2}
-            color={color}
-            strokeWidth={strokeWidth}
-            opacity={opacity}
-        />
-    );
-};
-
-const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, delay = 0, duration = 500, bounceSignal, index }: any) => {
-    const progress = useSharedValue(0);
-    const bounceScale = useSharedValue(1);
-
-    useEffect(() => {
-        if (!isLoading) {
-            progress.value = withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.back(1.5)) }));
-        } else {
-            progress.value = 0;
-        }
-    }, [isLoading]);
-
-    useAnimatedReaction(
-        () => bounceSignal?.value,
-        (signal) => {
-            if (signal && signal.index === index && typeof signal.scale === 'number') {
-                bounceScale.value = withTiming(signal.scale, { duration: 100, easing: Easing.out(Easing.quad) });
-            }
-        }
-    );
-
-    const transform = useDerivedValue(() => {
-        const scale = interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP);
-        return [{ scale: scale * bounceScale.value }];
-    }, [progress, bounceScale]);
-
-    return (
-        <SkiaImage
-            image={image}
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            origin={origin}
-            transform={transform}
-        />
-    );
-};
-
 const CanvasContent = ({
     screenWidth,
     screenHeight,
@@ -174,13 +110,8 @@ const CanvasContent = ({
     clusterImage,
     widthCluster,
     heightCluster,
-    boundingBoxesCluster,
-    isLoadingGlobal,
-    randomDelays,
-    randomDurations,
-    bounceSignal
+    boundingBoxesCluster
 }: any) => {
-
     return (
         <Canvas style={{
             position: 'absolute',
@@ -195,15 +126,51 @@ const CanvasContent = ({
                 if (!pos || !keyWordLabelPositions || !keyWordLabelPositions[index]) return null;
 
                 return (
-                    <AnimatedLine
-                        key={`line-${index}`}
+                    <Line
+                        key={`line - ${index}`}
                         p1={vec(pos.centerX, pos.centerY)}
                         p2={vec(keyWordLabelPositions[index].x, keyWordLabelPositions[index].y)}
                         color={Colors.white}
                         strokeWidth={2}
-                        isLoading={isLoadingGlobal}
-                        delay={randomDelays[index]}
-                        duration={randomDurations[index]}
+                    />
+                );
+            })}
+
+            {/* Draw lines from center based on degrees */}
+            {positions.degrees.map((degree, index) => {
+                const radians = (degree * Math.PI) / 180;
+                const lineLength = Math.min(screenWidth, screenHeight) / 2;
+
+                const endX = centerX + Math.cos(radians) * lineLength;
+                const endY = centerY + Math.sin(radians) * lineLength;
+
+                return (
+                    <Line
+                        key={`line - ${index} `}
+                        p1={vec(centerX, centerY)}
+                        p2={vec(endX, endY)}
+                        color="transparent"
+                        strokeWidth={2}
+                    />
+                );
+            })}
+
+            {/* Draw intersection points */}
+            {clusterPosition && positions.degrees.map((degree, index) => {
+                const intersection = getEllipseIntersection(
+                    degree,
+                    centerX,
+                    centerY,
+                    (clusterPosition.width + offset) / 2,
+                    (clusterPosition.height + offset) / 2
+                );
+                return (
+                    <Circle
+                        key={`intersection - ${index} `}
+                        cx={intersection.x}
+                        cy={intersection.y}
+                        r={5}
+                        color="transparent"
                     />
                 );
             })}
@@ -218,40 +185,91 @@ const CanvasContent = ({
                 // Use pre-calculated render positions if available, otherwise fall back to pos
                 const renderX = boundingBox?.renderX ?? pos.x;
                 const renderY = boundingBox?.renderY ?? pos.y;
-                const randomDelay = randomDelays[index];
-                const randomDuration = randomDurations[index];
 
                 return (
-                    <AnimatedSkiaImage
-                        key={`keyword-${index}`}
-                        image={image}
-                        x={renderX}
-                        y={renderY}
-                        width={widhtKeyword}
-                        height={heightKeyword}
-                        origin={vec(renderX + widhtKeyword / 2, renderY + heightKeyword / 2)}
-                        isLoading={isLoadingGlobal}
-                        delay={randomDelay}
-                        duration={randomDuration}
-                        bounceSignal={bounceSignal}
-                        index={index}
-                    />
+                    <Group key={`keyword-${index}`}>
+                        <SkiaImage
+                            image={image}
+                            x={renderX}
+                            y={renderY}
+                            width={widhtKeyword}
+                            height={heightKeyword}
+                        />
+                        {boundingBox && (
+                            <Rect
+                                x={boundingBox.x}
+                                y={boundingBox.y}
+                                width={boundingBox.width}
+                                height={boundingBox.height}
+                                color="transparent"
+                                style="stroke"
+                                strokeWidth={2}
+                            />
+                        )}
+                    </Group>
                 );
             })}
 
             {/* Draw cluster image and bounding boxes */}
             {clusterPosition && (
-                <AnimatedSkiaImage
-                    image={clusterImage}
-                    x={clusterPosition.imageX}
-                    y={clusterPosition.imageY}
-                    width={widthCluster}
-                    height={heightCluster}
-                    origin={vec(clusterPosition.imageX + widthCluster / 2, clusterPosition.imageY + heightCluster / 2)}
-                    isLoading={isLoadingGlobal}
-                    delay={0}
-                    duration={300}
-                />
+                <Group>
+                    <SkiaImage
+                        image={clusterImage}
+                        x={clusterPosition.imageX}
+                        y={clusterPosition.imageY}
+                        width={widthCluster}
+                        height={heightCluster}
+                    />
+                    {clusterPosition && (
+                        <Group>
+                            {/* Inner ellipse around visible content */}
+                            <Oval
+                                x={clusterPosition.x}
+                                y={clusterPosition.y}
+                                width={clusterPosition.width}
+                                height={clusterPosition.height}
+                                color="transparent"
+                                style="stroke"
+                                strokeWidth={2}
+                            />
+                            {/* Outer ellipse with offset */}
+                            <Oval
+                                x={clusterPosition.x - offset / 2}
+                                y={clusterPosition.y - offset / 2}
+                                width={clusterPosition.width + offset}
+                                height={clusterPosition.height + offset}
+                                color="transparent"
+                                style="stroke"
+                                strokeWidth={2}
+                            />
+                        </Group>
+                    )}
+                    {boundingBoxesCluster && (
+                        <Oval
+                            x={boundingBoxesCluster.x}
+                            y={boundingBoxesCluster.y}
+                            width={boundingBoxesCluster.width}
+                            height={boundingBoxesCluster.height}
+                            color="transparent"
+                            style="stroke"
+                            strokeWidth={2}
+                        />
+                    )}
+
+
+                    {/* Draw points label */}
+                    {
+
+                        keywordData.map((keyword, index) => (
+                            <Circle
+                                key={`intersection - ${index} `}
+                                cx={keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0}
+                                cy={keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0}
+                                r={10}
+                                color="transparent"
+                            />))
+                    }
+                </Group>
             )}
         </Canvas>)
 }
@@ -259,12 +277,6 @@ const CanvasContent = ({
 const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, device }) => {
     const canvasRef = useRef<View>(null);
     const positionData = useComposition(project, width, height, screenWidth, screenHeight);
-
-    // Track active interaction for press-and-hold behavior
-    const activeInteraction = useRef<{ keyword: any, index: number } | null>(null);
-
-    // Create shared value effectively acting as a signal bus
-    const bounceSignal = useSharedValue({ index: -1, scale: 1 });
 
     // Destructure all needed data
     const {
@@ -289,10 +301,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     } = positionData;
 
     const keyWordLabelPositions = useMemo(() => getKeywordLabelPositions(positions, boundingBoxesCluster, getEllipseIntersection), [positionData]);
-    const isLoadingGlobal = useMemo(() => checkIsLoading(page.isLoading), [page.isLoading]);
-
-    const randomDelays = useMemo(() => keywordImages.map(() => Math.random() * (300 - 100) + 100), [keywordImages]);
-    const randomDurations = useMemo(() => keywordImages.map(() => Math.random() * (300 - 100) + 100), [keywordImages]);
 
     useEffect(() => {
         if (positionData.isLoading !== page.isLoading?.[device]) {
@@ -311,46 +319,8 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     }, [page, setPage, keywordImageSources, boundingBoxesKeywords]);
 
     const onTap = useCallback((event: any) => {
-        const { state, x, y } = event.nativeEvent;
-
-        if (state === State.BEGAN) {
-            let foundIndex = -1;
-            boundingBoxesKeywords?.forEach((box, index) => {
-                if (!box) return;
-                if (
-                    x >= box.x &&
-                    x <= box.x + box.width &&
-                    y >= box.y &&
-                    y <= box.y + box.height
-                ) {
-                    foundIndex = index;
-                }
-            });
-
-            if (foundIndex !== -1) {
-                const keyword = keywordData[foundIndex];
-                activeInteraction.current = { keyword, index: foundIndex };
-                bounceSignal.value = { index: foundIndex, scale: 0.9 };
-            }
-        } else if (state === State.END) {
-            if (activeInteraction.current) {
-                const { keyword, index } = activeInteraction.current;
-                bounceSignal.value = { index, scale: 1 };
-
-                setTimeout(() => {
-                    onOpenKeyword(keyword, index);
-                }, 100);
-
-                activeInteraction.current = null;
-            }
-        } else if (state === State.FAILED || state === State.CANCELLED) {
-            if (activeInteraction.current) {
-                const { index } = activeInteraction.current;
-                bounceSignal.value = { index, scale: 1 };
-                activeInteraction.current = null;
-            }
-        }
-    }, [boundingBoxesKeywords, keywordData, onOpenKeyword, bounceSignal]);
+        handleTap(event, boundingBoxesKeywords, keywordData, onOpenKeyword);
+    }, [boundingBoxesKeywords, keywordData, onOpenKeyword]);
 
     // Return loading state while images load
     //normally you shouldn't see this
@@ -391,44 +361,31 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                             widthCluster={widthCluster}
                             heightCluster={heightCluster}
                             boundingBoxesCluster={boundingBoxesCluster}
-                            isLoadingGlobal={isLoadingGlobal}
-                            randomDelays={randomDelays}
-                            randomDurations={randomDurations}
-                            bounceSignal={bounceSignal}
                         />
-
-                        {
-                            !isLoadingGlobal && (showKeywords && positionData) && keywordData.map((keyword, index) => (
-                                <Animated.View
-                                    key={keyword.id}
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: screenWidth,
-                                        height: screenHeight,
-                                        pointerEvents: 'box-none'
-                                    }}
-                                    entering={getEnteringFadeScale().delay(randomDelays[index])}
-                                >
-                                    <Touchable
-                                        onPress={() => onOpenKeyword(keyword, index)}
-                                        styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
-                                        icon={'arrow-forward-outline'}
-                                        iconPosition={'after'}
-                                        iconColor={Colors.blueText}
-                                        styleGradient={{
-                                            position: 'absolute',
-                                            top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
-                                            left: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0,
-                                            transform: [{ translateX: '-50%' }, { translateY: '-50%' }]
-                                        }}
-                                    >
-                                        <StyledText>{keyword.label}</StyledText>
-                                    </Touchable>
-                                </Animated.View>
-                            ))
-                        }
+                        <View style={{ position: 'absolute', top: 0, left: 0 }}>
+                            {
+                                (showKeywords && positionData) && keywordData.map((keyword, index) => (
+                                    <View key={keyword.id}>
+                                        <Touchable
+                                            onPress={() => onOpenKeyword(keyword, index)}
+                                            key={keyword.id}
+                                            styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
+                                            icon={'arrow-forward-outline'}
+                                            iconPosition={'after'}
+                                            iconColor={Colors.blueText}
+                                            styleGradient={{
+                                                position: 'absolute',
+                                                top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
+                                                left: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0,
+                                                transform: [{ translateX: '-50%' }, { translateY: '-50%' }]
+                                            }}
+                                        >
+                                            <StyledText>{keyword.label}</StyledText>
+                                        </Touchable>
+                                    </View>
+                                ))
+                            }
+                        </View>
                     </View>
                 </TapGestureHandler >
             </View >
@@ -458,13 +415,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     widthCluster={widthCluster}
                     heightCluster={heightCluster}
                     boundingBoxesCluster={boundingBoxesCluster}
-                    widthCluster={widthCluster}
-                    heightCluster={heightCluster}
-                    boundingBoxesCluster={boundingBoxesCluster}
-                    isLoadingGlobal={isLoadingGlobal}
-                    randomDelays={randomDelays}
-                    randomDurations={randomDurations}
-                    bounceSignal={bounceSignal}
                 />
             </View>
         );

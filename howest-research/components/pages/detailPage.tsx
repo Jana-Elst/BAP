@@ -11,6 +11,7 @@ import Card from "../atoms/card";
 import Info from "../cardsDetailPage/info";
 import ModelView from "../cardsDetailPage/modelView";
 import QrCode from "../cardsDetailPage/qrCode";
+import Images from "../cardsDetailPage/images";
 
 import { Colors } from "@/constants/theme";
 import { getEnteringFade, getEnteringFadeScale, getExitingFade, getExitingFadeScale } from "@/scripts/animations";
@@ -84,9 +85,9 @@ const DetailPage = ({ page, setPage }) => {
                                     {
                                         item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
                                             item === "info" ? <Info project={project} /> :
-                                                // item === "images" ? <Images project={project} /> :
-                                                item === "qrCode" ? <QrCode project={project} /> :
-                                                    null
+                                                item === "images" ? <Images project={project} /> :
+                                                    item === "qrCode" ? <QrCode project={project} /> :
+                                                        null
                                     }
                                 </View>
                             </Animated.View>
