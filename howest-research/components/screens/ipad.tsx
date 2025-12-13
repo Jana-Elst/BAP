@@ -1,42 +1,32 @@
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import Reanimated, { useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import data from '../../assets/data/structured-data.json';
-import { checkIsLoading } from '../../scripts/getHelperFunction';
 import CloseButton from '../atoms/closeButton';
-import { StyledText } from '../atoms/styledComponents';
 import Touchable from '../atoms/touchable';
 import DetailKeyword from '../pages/detailKeyword';
 import DetailPage from '../pages/detailPage';
 import HomeScreen from '../pages/homeScreen';
 
+const AnimatedBlurView = Reanimated.createAnimatedComponent(BlurView);
+
 const Ipad = ({ page, setPage }) => {
     const [visible, setVisible] = useState(false);
     const [activeFilters, setActiveFilters] = useState([]);
     const [projects, setProjects] = useState(data.projects);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const screenWidth = Dimensions.get('window').width;
-    const screenHeight = Dimensions.get('window').height;
-
+    const intensity = useSharedValue(0);
     useEffect(() => {
-        setVisible(((page.page === 'discover') || page.page === 'gallery' || page.page === 'filter') ? false : true);
-
-        console.log('page', page)
-        console.log('visible', visible)
+        const isHidden = (page.page === 'discover' || page.page === 'gallery' || page.page === 'filter');
+        setVisible(!isHidden);
+        if (isHidden) {
+            intensity.value = withTiming(0, { duration: 500 });
+        } else {
+            intensity.value = withDelay(400, withTiming(35, { duration: 500 }));
+        }
     }, [page.page]);
 
-    useEffect(() => {
-        console.log('page.isLoading CHANGING', page.isLoading);
-        const loadState = checkIsLoading(page.isLoading);
-        setIsLoading(loadState);
-        if (loadState) {
-            console.log('isLoading LAAAD');
-        }
-    }, [page.isLoading]);
-
     const handleClosePopUp = (setPage, page) => {
-        console.log('CLOSE POP UP', page);
         setPage({
             ...page,
             page: page.previousPages[0].page,
@@ -67,14 +57,6 @@ const Ipad = ({ page, setPage }) => {
                 setProjects={setProjects}
             />
 
-            {/* {
-                isLoading && (
-                    <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 10000, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-                        <StyledText>Loading...</StyledText>
-                    </View>
-                )
-            } */}
-
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
                 visible={visible}
@@ -82,11 +64,11 @@ const Ipad = ({ page, setPage }) => {
                 onRequestClose={() => handleClosePopUp(setPage, page)}
             >
                 <View style={{ flex: 1 }}>
-                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
+                    <AnimatedBlurView intensity={intensity} tint="dark" style={StyleSheet.absoluteFill} />
                     <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32}}>
+                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32 }}>
                         {
                             page.previousPages.length > 1 &&
                             <Touchable
