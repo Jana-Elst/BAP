@@ -194,6 +194,8 @@ const createOrbitControls = (camera: THREE.PerspectiveCamera, renderer: CSS3DRen
     controls.zoomSpeed = 1;
     controls.panSpeed = 1;
     controls.zoomToCursor = true;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
     return controls;
 }
 
@@ -483,6 +485,14 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         //--- render scene
         renderer.render(scene, camera);
+
+        const animate = () => {
+            controlsRef.current?.update();
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        };
+
+        animate();
 
         return () => {
             if (controlsRef.current) {
