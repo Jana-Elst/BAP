@@ -8,7 +8,7 @@ import * as THREE from 'three';
 
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getProjectInfo } from '@/scripts/getData';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -235,7 +235,7 @@ const animateCardsToState = (
 
         // Kill existing tweens
         gsap.killTweensOf(cardObj.position);
-        gsap.killTweensOf(cardObj.rotation);
+        gsap.killTweensOf(cardObj.position);
 
         const tl = gsap.timeline();
         // 1. Move to Target Position & Reset Rotation
@@ -292,6 +292,50 @@ const animateCardsToState = (
     });
 }
 
+const animateHero = (heroObjectRef,
+    isDiscoverMode: boolean,
+    duration: number = 0,
+    delay: number = 0
+) => {
+    const heroObj = heroObjectRef.current;
+    if (!heroObj) return;
+
+    const heroCanvas = heroObj.element;
+
+    // Kill existing tweens
+    gsap.killTweensOf(heroCanvas);
+    gsap.killTweensOf(heroObj.position);
+    // Be sure to reset any existing inline opacity if needed, 
+    // or let the tween handle it from current state.
+
+    const tlHero = gsap.timeline();
+
+    // 1. Dissolve (Fade Out)
+    tlHero.to(heroCanvas, {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in"
+    });
+
+    // 2. Reposition (Instant change while invisible)
+    tlHero.call(() => {
+        if (isDiscoverMode) {
+            heroCanvas.style.zIndex = '-100';
+            heroObj.position.set(0, 0, 0); // Reset position
+        } else {
+            heroCanvas.style.zIndex = '0';
+            heroObj.position.set(0, 450, 0); // Move to header position
+        }
+    });
+
+    // 3. Show Again (Fade In)
+    tlHero.to(heroCanvas, {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out"
+    }, "<+=0.3");
+}
+
 //--- eventListeners
 const changeControls = (controlsRef, cameraRef, limitsRef, rendererRef, sceneRef) => {
     const controls = controlsRef.current;
@@ -310,6 +354,8 @@ const changeControls = (controlsRef, cameraRef, limitsRef, rendererRef, sceneRef
 
 //---------------------------- COMPONENT ----------------------------//
 const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
+    const [heroSize, setHeroSize] = useState({ width: 0, height: 0 });
+
     //--- REFS
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const sceneRef = useRef<THREE.Scene>(null);
@@ -385,11 +431,21 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         const heroRoot = createRoot(heroCanvas);
         heroRef.current = heroRoot;
 
+        // Get height
+        const resizeObserver = new ResizeObserver(() => {
+            setHeroSize({
+                width: heroCanvas.offsetWidth,
+                height: heroCanvas.offsetHeight
+            });
+        });
+        resizeObserver.observe(heroCanvas);
+
         //2. render hero
         updateHero(heroRef);
         const heroObj = new CSS3DObject(heroCanvas);
         heroObj.name = 'heroCanvas';
         heroObj.position.set(0, 0, 0);
+
         heroObjectRef.current = heroObj;
 
         scene.add(heroObj);
@@ -405,6 +461,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         //3. set card Positions
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0, 0);
+        animateHero(heroObjectRef, isDiscoverMode, 0, 0);
 
         //--- add controls
         // 1. create controls
@@ -427,6 +484,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
                 renderer.domElement.parentNode.removeChild(renderer.domElement);
             }
             gsap.ticker.remove(chachedChangeControls);
+            resizeObserver.disconnect();
 
             console.log('initial card world destroyed');
         };
@@ -442,9 +500,9 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         console.log(currentZ, targetZ);
         console.log('cameraIsChanging', cameraIsChanging);
 
-        let transitionDuration = cameraIsChanging ? 1.5 : 0;
+        let transitionDuration = cameraIsChanging ? 1 : 0;
         if (transitionDuration > 0) {
-          transitionDuration = isDiscoverMode ? 0 : transitionDuration;   
+            transitionDuration = isDiscoverMode ? 0 : transitionDuration;
         }
 
         console.log('transitionDuration', transitionDuration);
@@ -489,6 +547,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         // Animate Cards
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 1.5, transitionDuration);
+        animateHero(heroObjectRef, isDiscoverMode, 0.3, 0);
         updateLimits(isDiscoverMode, totalProjects, limitsRef);
 
     }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
@@ -514,6 +573,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         });
 
         // Animate Cards
+        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
 
         updateHero(heroRef);
