@@ -82,11 +82,11 @@ const Ipad = ({ page, setPage }) => {
                 onRequestClose={() => handleClosePopUp(setPage, page)}
             >
                 <View style={{ flex: 1 }}>
-                    {!isLoading && <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />}
-                    <Pressable style={StyleSheet.absoluteFill} onPress={() => isLoading && handleClosePopUp(setPage, page)} />
+                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
+                    <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32, opacity: (isLoading || !visible) ? 0 : 1 }}>
+                    <View style={{ flex: 1, gap: 16, justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 32}}>
                         {
                             page.previousPages.length > 1 &&
                             <Touchable
