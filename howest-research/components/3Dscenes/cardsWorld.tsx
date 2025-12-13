@@ -26,6 +26,8 @@ const cardHeight = 380; // From ProjectCard3D
 const gridScale = 1.3;
 const cardsPerCanvas = 5;
 
+const paddingTopGridView = 96;
+
 //---------------------------- FUNCTIONS ----------------------------//
 //--- to create & update the scene
 const calculateCameraZForScreen = (camera: THREE.PerspectiveCamera, screenHeight: number) => {
@@ -167,7 +169,7 @@ const calculateCardPositionsDiscover = (totalProjects: number, totalWidth: numbe
     return cardPositionsDiscover;
 }
 
-const calculateCardPositionsGrid = (totalProjects: number) => {
+const calculateCardPositionsGrid = (totalProjects: number, heroSize: { width: number, height: number }) => {
     const gap = 16;
     const cardsPerRow = Math.floor(window.innerWidth / (cardWidth + gap));
     const rows = Math.ceil(totalProjects / cardsPerRow);
@@ -176,7 +178,7 @@ const calculateCardPositionsGrid = (totalProjects: number) => {
     for (let i = 0; i < rows; i++) {
         for (let j = 0; j < cardsPerRow; j++) {
             const x = (j - (cardsPerRow - 1) / 2) * (cardWidth + gap);
-            const y = -i * (cardHeight + gap) + (cardHeight + gap) / 2;
+            const y = -i * (cardHeight + gap) + cardHeight / 2 - heroSize.height;
             positions.push({ x, y, z: 0 });
         }
     }
@@ -302,8 +304,7 @@ const animateCardsToState = (
 
 const animateHero = (heroObjectRef,
     isDiscoverMode: boolean,
-    duration: number = 0,
-    delay: number = 0
+    heroSize
 ) => {
     const heroObj = heroObjectRef.current;
     if (!heroObj) return;
@@ -313,8 +314,6 @@ const animateHero = (heroObjectRef,
     // Kill existing tweens
     gsap.killTweensOf(heroCanvas);
     gsap.killTweensOf(heroObj.position);
-    // Be sure to reset any existing inline opacity if needed, 
-    // or let the tween handle it from current state.
 
     const tlHero = gsap.timeline();
 
@@ -325,14 +324,15 @@ const animateHero = (heroObjectRef,
         ease: "power2.in"
     });
 
-    // 2. Reposition (Instant change while invisible)
+    // 2. Reposition
+    console.log('heroSize', heroSize);
     tlHero.call(() => {
         if (isDiscoverMode) {
             heroCanvas.style.zIndex = '-100';
-            heroObj.position.set(0, 0, 0); // Reset position
+            heroObj.position.set(0, 0, 0);
         } else {
             heroCanvas.style.zIndex = '0';
-            heroObj.position.set(0, 450, 0); // Move to header position
+            heroObj.position.set(0, window.innerHeight / 2 - heroSize.height / 2 - paddingTopGridView, 0);
         }
     });
 
@@ -390,8 +390,8 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
     );
 
     const cardPositionsGrid = useMemo(() =>
-        calculateCardPositionsGrid(totalProjects),
-        [totalProjects]
+        calculateCardPositionsGrid(totalProjects, heroSize),
+        [totalProjects, heroSize]
     );
 
     // Determines which set of positions to use
@@ -469,7 +469,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         //3. set card Positions
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0, 0);
-        animateHero(heroObjectRef, isDiscoverMode, 0, 0);
+        animateHero(heroObjectRef, isDiscoverMode, heroSize);
 
         //--- add controls
         // 1. create controls
@@ -555,7 +555,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         // Animate Cards
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 1.5, transitionDuration);
-        animateHero(heroObjectRef, isDiscoverMode, 0.3, 0);
+        animateHero(heroObjectRef, isDiscoverMode, heroSize);
         updateLimits(isDiscoverMode, totalProjects, limitsRef);
 
     }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
