@@ -13,7 +13,7 @@ import ModelView from "../cardsDetailPage/modelView";
 import QrCode from "../cardsDetailPage/qrCode";
 
 import { Colors } from "@/constants/theme";
-import { getEnteringFade, getEnteringFadeScale, getExitingFadeScale } from "@/scripts/animations";
+import { getEnteringFade, getEnteringFadeScale, getExitingFade, getExitingFadeScale } from "@/scripts/animations";
 import { getProjectInfo } from "@/scripts/getData";
 import { checkIsLoading } from "@/scripts/getHelperFunction";
 import { Shimmer, ShimmerProvider } from 'react-native-fast-shimmer';
@@ -52,8 +52,13 @@ const DetailPage = ({ page, setPage }) => {
         });
     };
 
+    const previousPage = page.previousPages[page.previousPages.length - 1]?.page;
+
     return (
-        <Animated.View entering={getEnteringFadeScale(400).delay(400)} exiting={getExitingFadeScale()} style={{ gap: 16, flex: 1, paddingBottom: 8 }}>
+        <Animated.View
+            entering={previousPage === 'discover' ? getEnteringFadeScale(400).delay(400) : undefined}
+            exiting={previousPage === 'discover' ? getExitingFadeScale() : getExitingFade(400)}
+            style={{ gap: 16, flex: 1, paddingBottom: 8 }}>
             <Carousel
                 ref={ref}
                 onProgressChange={progress}
@@ -69,7 +74,7 @@ const DetailPage = ({ page, setPage }) => {
                 renderItem={({ item, index, animationValue }) => {
                     return (
                         <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }}>
-                            <Animated.View style={{ flex: 1 }} entering={index !== 0 ? getEnteringFade(800) : getEnteringFadeScale(0)}>
+                            <Animated.View style={{ flex: 1 }} entering={index !== 0 ? getEnteringFade(800) : getEnteringFade(0)}>
                                 <View style={styles.header}>
                                     <Title style={{ color: Colors[project.color + 'Text'] }}>{project.title}</Title>
                                     <TitleXSmall style={{ color: Colors[project.color + '80'] }}>{project.transitionDomain}</TitleXSmall>
