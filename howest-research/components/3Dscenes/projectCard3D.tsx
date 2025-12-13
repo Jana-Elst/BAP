@@ -3,115 +3,112 @@ import { checkIsLoading } from '../../scripts/getHelperFunction';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 import '../../styles/style.css';
 
-import { useGSAP } from '@gsap/react';
-import gsap from 'gsap';
-import { useRef } from 'react';
+// import { useGSAP } from '@gsap/react';
+// import gsap from 'gsap';
+// import { useRef } from 'react';
 
 const ProjectCard3D = ({
-    page,
-    setPage,
-    project,
-    isDiscoverMode
+    project
 }) => {
 
-    const isLoading = checkIsLoading(page.isLoading);
-    console.log('discover mode', isDiscoverMode);
+    // const isLoading = checkIsLoading(page.isLoading);
 
-    const handleOpenDetail = () => {
-        setPage({
-            ...page,
-            page: 'detailResearch',
-            id: project.id,
-            previousPages: [
-                ...(page.previousPages || []),
-                {
-                    info: page.info,
-                    page: page.page,
-                    id: page.id
-                }
-            ],
-            isLoading: {
-                ipad: true,
-                externalDisplay: false
-            }
-        })
-    }
+    // const handleOpenDetail = () => {
+    //     setPage({
+    //         ...page,
+    //         page: 'detailResearch',
+    //         id: project.id,
+    //         previousPages: [
+    //             ...(page.previousPages || []),
+    //             {
+    //                 info: page.info,
+    //                 page: page.page,
+    //                 id: page.id
+    //             }
+    //         ],
+    //         isLoading: {
+    //             ipad: true,
+    //             externalDisplay: false
+    //         }
+    //     });
+    // }
 
     const imageSrc = useGetKeywordImages(project.formattedName);
     const color = project.color;
-    const containerGSAP = useRef<HTMLDivElement>(null);
+    // const containerGSAP = useRef<HTMLDivElement>(null);
 
-    useGSAP(() => {
-        if (isDiscoverMode) {
-            console.log('discover mode');
-            gsap.to(containerGSAP.current, {
-                x: `+=${gsap.utils.random(-20, 20)}`,
-                y: `+=${gsap.utils.random(-20, 20)}`,
-                rotation: gsap.utils.random(-3, 3),
-                duration: gsap.utils.random(4, 7),
-                repeat: -1,
-                yoyo: true,
-                ease: "power1.inOut",
-            });
-        } else {
-            console.log('not discover mode');
-            gsap.to(containerGSAP.current, {
-                x: 0,
-                y: 0,
-                rotation: 0,
-                duration: 0,
-                ease: "power1.inOut",
-            });
-        }
-    }, { scope: containerGSAP, dependencies: [isDiscoverMode] });
+    // useGSAP(() => {
+    //     if (isDiscoverMode) {
+    //         console.log('discover mode');
+    //         gsap.to(containerGSAP.current, {
+    //             x: `+=${gsap.utils.random(-20, 20)}`,
+    //             y: `+=${gsap.utils.random(-20, 20)}`,
+    //             rotation: gsap.utils.random(-3, 3),
+    //             duration: gsap.utils.random(4, 7),
+    //             repeat: -1,
+    //             yoyo: true,
+    //             ease: "power1.inOut",
+    //         });
+    //     } else {
+    //         console.log('not discover mode');
+    //         gsap.to(containerGSAP.current, {
+    //             x: 0,
+    //             y: 0,
+    //             rotation: 0,
+    //             duration: 0,
+    //             ease: "power1.inOut",
+    //         });
+    //     }
+    // }, { scope: containerGSAP, dependencies: [isDiscoverMode] });
 
 
 
-    useGSAP(() => {
-        if (isLoading && page.page !== 'discover' && page.id !== project.id) {
-            console.log('hide');
-            gsap.to(containerGSAP.current, {
-                opacity: 0,
-                scale: 0,
-                duration: gsap.utils.random(0.5, 1),
-                ease: "power1.inOut",
-            });
-        } else if (isLoading && page.page !== 'discover' && page.id === project.id) {
-            console.log('show KLIK');
-            gsap.to(containerGSAP.current, {
-                opacity: 1,
-                scale: 1,
-                duration: gsap.utils.random(0, 1),
-                ease: "power1.inOut",
-            });
-        }
+    // useGSAP(() => {
+    //     if (isLoading && page.page !== 'discover' && page.id !== project.id) {
+    //         console.log('hide');
+    //         gsap.to(containerGSAP.current, {
+    //             opacity: 0,
+    //             scale: 0,
+    //             duration: gsap.utils.random(0.5, 1),
+    //             ease: "power1.inOut",
+    //         });
+    //     } else if (isLoading && page.page !== 'discover' && page.id === project.id) {
+    //         console.log('show KLIK');
+    //         gsap.to(containerGSAP.current, {
+    //             opacity: 1,
+    //             scale: 1,
+    //             duration: gsap.utils.random(0, 1),
+    //             ease: "power1.inOut",
+    //         });
+    //     }
 
-        if (page.page === 'discover' && page.id !== project.id) {
-            gsap.to(containerGSAP.current, {
-                opacity: 1,
-                scale: 1,
-                duration: gsap.utils.random(0, 1),
-                ease: "power1.inOut",
-            });
-        }
-    }, { scope: containerGSAP, dependencies: [isLoading, page.page] });
+    //     if (page.page === 'discover' && page.id !== project.id) {
+    //         gsap.to(containerGSAP.current, {
+    //             opacity: 1,
+    //             scale: 1,
+    //             duration: gsap.utils.random(0, 1),
+    //             ease: "power1.inOut",
+    //         });
+    //     }
+    // }, { scope: containerGSAP, dependencies: [isLoading, page.page] });
 
-    const handleTap = () => {
-        console.log('Tapped on project card');
-        gsap.to(containerGSAP.current, {
-            scale: 0.9,
-            duration: 0.15,
-            yoyo: true,
-            repeat: 1,
-            ease: "power1.inOut",
-            onComplete: handleOpenDetail
-        });
-    };
+    // const handleTap = () => {
+    //     console.log('Tapped on project card');
+    //     gsap.to(containerGSAP.current, {
+    //         scale: 0.9,
+    //         duration: 0.15,
+    //         yoyo: true,
+    //         repeat: 1,
+    //         ease: "power1.inOut",
+    //         onComplete: handleOpenDetail
+    //     });
+    // };
 
     if (!project) return null;
 
     return (
-        <div style={styles.container} onClick={handleTap} ref={containerGSAP}>
+        //         <div style={styles.container} onClick={handleTap} ref={containerGSAP}>
+        <div style={styles.container}>
             <div style={styles.card} className="card">
                 <div style={styles.texture}></div>
 

@@ -8,7 +8,7 @@ import * as THREE from 'three';
 
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { getProjectInfo } from '@/scripts/getData';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -51,13 +51,14 @@ const updateHero = (projects, page, setPage, heroRef) => {
     }
 };
 
-const createCards = (projects, cardsRef, page, setPage, isDiscoverMode) => {
+const createCards = (projects, cardsRef, page, setPage, isDiscoverMode, onRender) => {
     const cardsObjsRef = [];
 
     projects.forEach((project, index) => {
         const div = document.createElement('div');
         div.style.width = `${cardWidth}px`;
         div.style.height = `${cardHeight}px`;
+        div.className = 'card';
 
         const root = createRoot(div);
         cardsRef.current.set(project.id, root);
@@ -70,6 +71,42 @@ const createCards = (projects, cardsRef, page, setPage, isDiscoverMode) => {
         const cardObj = new CSS3DObject(div);
         cardObj.position.set(0, 0, 0);
 
+        //0. add event listeners
+        div.addEventListener('click', () => {
+            console.log('Tapped on project card');
+            gsap.to(cardObj.scale, {
+                x: 0.9,
+                y: 0.9,
+                duration: 0.15,
+                yoyo: true,
+                repeat: 1,
+                ease: "power1.inOut",
+                onUpdate: onRender,
+                onComplete: () => {
+                    setPage({
+                        ...page,
+                        page: 'detailResearch',
+                        id: project.id,
+                        previousPages: [
+                            ...(page.previousPages || []),
+                            {
+                                info: page.info,
+                                page: page.page,
+                                id: page.id
+                            }
+                        ],
+                        isLoading: {
+                            ipad: true,
+                            externalDisplay: false
+                        }
+                    });
+                }
+            });
+        });
+
+        // @ts-ignore
+        cardObj.userData = { id: project.id };
+
         cardsObjsRef.push(cardObj);
     });
 
@@ -79,23 +116,10 @@ const createCards = (projects, cardsRef, page, setPage, isDiscoverMode) => {
 const updateCard = (root: Root, project, page, setPage, isDiscoverMode) => {
     root.render(
         <ProjectCard3D
-            page={page}
-            setPage={setPage}
             project={project}
-            isDiscoverMode={isDiscoverMode}
         />
     );
 };
-
-const setCardPositions = (positions, cardsObjsRef) => {
-    console.log('setCardPositions', positions.length, cardsObjsRef.current.length);
-    cardsObjsRef.current.forEach((cardObj, index) => {
-        const position = positions[index];
-        if (position) {
-            cardObj.position.set(position.x, position.y, 0);
-        }
-    });
-}
 
 //--- xxxx
 const calculateSizeCanvas = (totalProjects: number) => {
@@ -204,6 +228,90 @@ const updateLimits = (isDiscoverMode: boolean, totalProjects: number, limitsRef)
     }
 }
 
+//--- gsap animations
+const animateCardsToState = (
+    cards: CSS3DObject[],
+    positions: { x: number, y: number, z: number }[],
+    isDiscoverMode: boolean,
+    duration: number = 1.5
+) => {
+    cards.forEach((cardObj, index) => {
+        const targetPos = positions[index];
+        if (!targetPos) return;
+
+        // Kill existing tweens
+        gsap.killTweensOf(cardObj.position);
+        gsap.killTweensOf(cardObj.rotation);
+
+        const tl = gsap.timeline();
+
+        // 1. Move to Target Position & Reset Rotation
+        if (index < 12) {
+            tl.to(cardObj.position, {
+                x: targetPos.x,
+                y: targetPos.y,
+                z: targetPos.z || 0,
+                duration: duration,
+                ease: "power2.inOut"
+            }, 0);
+        } else {
+            tl.to(cardObj.position, {
+                x: targetPos.x,
+                y: targetPos.y,
+                z: targetPos.z || 0,
+                duration: 0,
+                ease: "power2.inOut"
+            }, 0);
+        }
+
+        // Reset rotation (or animate to 0)
+        tl.to(cardObj.rotation, {
+            x: 0,
+            y: 0,
+            z: 0,
+            duration: duration,
+            ease: "power2.inOut"
+        }, 0);
+
+        // 2. Start Wiggle (only if Discover Mode)
+        if (isDiscoverMode) {
+            tl.add(() => {
+                gsap.to(cardObj.position, {
+                    x: `+=${gsap.utils.random(-20, 20)}`,
+                    y: `+=${gsap.utils.random(-20, 20)}`,
+                    duration: gsap.utils.random(4, 7),
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+                gsap.to(cardObj.rotation, {
+                    x: `+=${gsap.utils.random(-0.1, 0.1)}`,
+                    y: `+=${gsap.utils.random(-0.1, 0.1)}`,
+                    duration: gsap.utils.random(4, 7),
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power1.inOut"
+                });
+            });
+        }
+    });
+}
+
+//--- eventListeners
+const changeControls = (controlsRef, cameraRef, limitsRef, rendererRef, sceneRef) => {
+    const controls = controlsRef.current;
+    const camera = cameraRef.current;
+    const renderer = rendererRef.current;
+    const scene = sceneRef.current;
+
+    const { min, max } = limitsRef.current;
+    if (controls && camera) {
+        const copyOfControls = new THREE.Vector3().copy(controls.target);
+        controls.target.clamp(min, max);
+        copyOfControls.sub(controls.target);
+        camera.position.sub(copyOfControls);
+    } renderer.render(scene, camera);
+}
 
 //---------------------------- COMPONENT ----------------------------//
 const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
@@ -242,6 +350,11 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         return isDiscoverMode ? cardPositionsDiscover : cardPositionsGrid;
     }, [isDiscoverMode, cardPositionsDiscover, cardPositionsGrid]);
 
+    //--- CALLBACKS, EVENTLISTENERS
+    const chachedChangeControls = useCallback(() => {
+        changeControls(controlsRef, cameraRef, limitsRef, rendererRef, sceneRef);
+    }, []);
+
 
     // 1. Initialize
     useEffect(() => {
@@ -272,6 +385,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         const heroCanvas = document.createElement('div');
         heroCanvas.style.width = `${gridSize.w}px`;
         heroCanvas.style.height = `${gridSize.h}px`;
+        heroCanvas.style.zIndex = '-1';
         const heroRoot = createRoot(heroCanvas);
         heroRef.current = heroRoot;
 
@@ -286,7 +400,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         //--- create cards
         // 1.create cards
-        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode);
+        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode, chachedChangeControls);
 
         //2. add cards to scene
         cardsObjsRef.current.forEach(cardObj => {
@@ -294,7 +408,11 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         });
 
         //3. set card positions
-        setCardPositions(cardPositions, cardsObjsRef);
+        // animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0); // 0 duration for init
+        // But for consistency with unified function we can just use it.
+        // Actually, let's just set them initially directly if we want instant load
+        // But the previous code called setCardPositions.
+        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0);
 
         //--- add controls
         // 1. create controls
@@ -302,19 +420,9 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         // 2. set control settings
         setControlSettings(controlsRef.current, isDiscoverMode);
 
-        controlsRef.current.addEventListener('change', () => {
-            // Clamping logic
-            const controls = controlsRef.current;
-            const camera = cameraRef.current;
-            const { min, max } = limitsRef.current;
-            if (controls && camera) {
-                const copyOfControls = new THREE.Vector3().copy(controls.target);
-                controls.target.clamp(min, max);
-                copyOfControls.sub(controls.target);
-                camera.position.sub(copyOfControls);
-            }
-            renderer.render(scene, camera);
-        });
+        controlsRef.current.addEventListener('change', () => chachedChangeControls());
+        // Persistent ticker for animations
+        gsap.ticker.add(chachedChangeControls);
 
         //--- render scene
         renderer.render(scene, camera);
@@ -326,6 +434,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             if (renderer.domElement && renderer.domElement.parentNode) {
                 renderer.domElement.parentNode.removeChild(renderer.domElement);
             }
+            gsap.ticker.remove(chachedChangeControls);
 
             console.log('initial card world destroyed');
         };
@@ -362,17 +471,8 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             }
         }
 
-        setCardPositions(cardPositions, cardsObjsRef);
-
-        // Re-render
-        if (rendererRef.current && sceneRef.current && cameraRef.current) {
-            rendererRef.current.render(sceneRef.current, cameraRef.current);
-        }
-
-        console.log('Mode or positions updated');
-
-        //update limits
-        updateLimits(isDiscoverMode, totalProjects, limitsRef);
+        // Animate Cards
+        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
 
     }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
 
@@ -389,18 +489,15 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         });
 
         // Create new cards
-        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode);
+        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode, chachedChangeControls);
 
         // Add new cards to scene
         cardsObjsRef.current.forEach(cardObj => {
             sceneRef.current.add(cardObj);
         });
 
-        // Update Card Positions
-        setCardPositions(cardPositions, cardsObjsRef);
-
-        // Update Limits (Same as above)
-        updateLimits(isDiscoverMode, totalProjects, limitsRef);
+        // Animate Cards
+        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
 
         updateHero(projects, page, setPage, heroRef);
 
@@ -420,6 +517,98 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         console.log('projects updated');
     }, [totalProjects]);
+
+    //FIX
+    // 4. Handle animations and interactions
+    // useGSAP(() => {
+    //     if (!cardsObjsRef.current) return;
+
+    //     const isLoading = checkIsLoading(page.isLoading);
+
+    //     cardsObjsRef.current.forEach((cardObj) => {
+    //         const div = cardObj.element;
+    //         const projectId = cardObj.userData.id;
+
+    //         // Interaction: Tap
+    //         div.onclick = () => {
+    //             console.log('Tapped on project card');
+    //             gsap.to(div, {
+    //                 scale: 0.9,
+    //                 duration: 0.15,
+    //                 yoyo: true,
+    //                 repeat: 1,
+    //                 ease: "power1.inOut",
+    //                 onComplete: () => {
+    //                     setPage((prev: any) => ({
+    //                         ...prev,
+    //                         page: 'detailResearch',
+    //                         id: projectId,
+    //                         previousPages: [
+    //                             ...(prev.previousPages || []),
+    //                             {
+    //                                 info: prev.info,
+    //                                 page: prev.page,
+    //                                 id: prev.id
+    //                             }
+    //                         ],
+    //                         isLoading: {
+    //                             ipad: true,
+    //                             externalDisplay: false
+    //                         }
+    //                     }));
+    //                 }
+    //             });
+    //         };
+
+    //         // Animation: Wiggle in Discover Mode
+    //         if (isDiscoverMode) {
+    //             gsap.to(div, {
+    //                 x: `+=${gsap.utils.random(-20, 20)}`,
+    //                 y: `+=${gsap.utils.random(-20, 20)}`,
+    //                 rotation: gsap.utils.random(-3, 3),
+    //                 duration: gsap.utils.random(4, 7),
+    //                 repeat: -1,
+    //                 yoyo: true,
+    //                 ease: "power1.inOut",
+    //             });
+    //         } else {
+    //             gsap.to(div, {
+    //                 x: 0,
+    //                 y: 0,
+    //                 rotation: 0,
+    //                 duration: 0.5,
+    //                 ease: "power1.inOut",
+    //             });
+    //         }
+
+    //         // Animation: Show/Hide based on Loading
+    //         if (isLoading && page.page !== 'discover' && page.id !== projectId) {
+    //             gsap.to(div, {
+    //                 opacity: 0,
+    //                 scale: 0,
+    //                 duration: gsap.utils.random(0.5, 1),
+    //                 ease: "power1.inOut",
+    //             });
+    //         } else if (isLoading && page.page !== 'discover' && page.id === projectId) {
+    //             gsap.to(div, {
+    //                 opacity: 1,
+    //                 scale: 1,
+    //                 duration: gsap.utils.random(0, 1),
+    //                 ease: "power1.inOut",
+    //             });
+    //         }
+
+    //         if (page.page === 'discover' && page.id !== projectId) {
+    //             gsap.to(div, {
+    //                 opacity: 1,
+    //                 scale: 1,
+    //                 duration: gsap.utils.random(0, 1),
+    //                 ease: "power1.inOut",
+    //             });
+    //         }
+    //     });
+
+    // }, [isDiscoverMode, page, totalProjects]);
 
 
     //---------------------------- RENDER ----------------------------//
