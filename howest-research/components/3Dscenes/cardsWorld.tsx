@@ -116,12 +116,12 @@ const calculateCardPositionsDiscover = (totalProjects: number, totalWidth: numbe
     const totalProjectsWithoutHero = totalProjects - cardsPerCanvas;
 
     const positions = [
-        { x: -window.innerWidth/2 + 100, y: 150, z: 0 },
+        { x: -window.innerWidth / 2 + 100, y: 150, z: 0 },
         { x: 200, y: 300, z: 0 },
-        { x: window.innerWidth/2 - 50, y:100, z: 0 },
-        { x: -350, y: -window.innerHeight/2 + 100, z: 0 },
-        { x: -150, y:window.innerHeight/2 + 50, z: 0 },
-        { x: window.innerWidth/2 - 200, y: -window.innerHeight/2 + 50, z: 0 },
+        { x: window.innerWidth / 2 - 50, y: 100, z: 0 },
+        { x: -350, y: -window.innerHeight / 2 + 100, z: 0 },
+        { x: -150, y: window.innerHeight / 2 + 50, z: 0 },
+        { x: window.innerWidth / 2 - 200, y: -window.innerHeight / 2 + 50, z: 0 },
     ];
 
     const positionsAroundHero = getDiscoverPositions(
@@ -182,6 +182,26 @@ const setControlSettings = (controls: OrbitControls, isDiscoverMode: boolean) =>
         controls.touches = { ONE: THREE.TOUCH.PAN };
     }
 }
+
+//
+const updateLimits = (isDiscoverMode: boolean, totalProjects: number, limitsRef) => {
+    // Update Limits
+    if (isDiscoverMode) {
+        limitsRef.current.min.set(-32, -32, -Infinity);
+        limitsRef.current.max.set(32, 32, Infinity);
+    } else {
+        // Grid Mode Limits
+        const gap = 16;
+        const cardsPerRow = Math.floor(window.innerWidth / (cardWidth + gap / 2));
+        const rows = Math.ceil(totalProjects / cardsPerRow);
+        const gridH = rows * (cardHeight + gap) + ((cardHeight + gap) / 2);
+
+        const minY = -(gridH - (window.innerHeight + gap*5));
+        limitsRef.current.min.set(0, Math.min(0, minY), -Infinity);
+        limitsRef.current.max.set(0, 0, Infinity);
+    }
+}
+
 
 //---------------------------- COMPONENT ----------------------------//
 const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
@@ -359,22 +379,8 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         console.log('Mode or positions updated');
 
-        //FIX
-        // Update Limits
-        if (isDiscoverMode) {
-            limitsRef.current.min.set(-32, -32, -Infinity);
-            limitsRef.current.max.set(32, 32, Infinity);
-        } else {
-            // Grid Mode Limits
-            const gap = 16;
-            const cardsPerRow = Math.floor(window.innerWidth / (cardWidth + gap));
-            const rows = Math.ceil(totalProjects / cardsPerRow);
-            const gridH = rows * (cardHeight + gap);
-
-            // Y goes from approx (cardHeight)/2 down to -gridH
-            limitsRef.current.min.set(0, -gridH, -Infinity);
-            limitsRef.current.max.set(0, (cardHeight + gap), Infinity);
-        }
+        //update limits
+        updateLimits(isDiscoverMode, totalProjects, limitsRef);
 
     }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
 
@@ -400,19 +406,9 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         // Update Card Positions
         setCardPositions(cardPositions, cardsObjsRef);
 
-        //FIX
         // Update Limits (Same as above)
-        if (isDiscoverMode) {
-            limitsRef.current.min.set(-totalWidth / 2, -totalHeight / 2, -Infinity);
-            limitsRef.current.max.set(totalWidth / 2, totalHeight / 2, Infinity);
-        } else {
-            const gap = 16;
-            const cardsPerRow = Math.floor(window.innerWidth / (cardWidth + gap));
-            const rows = Math.ceil(totalProjects / cardsPerRow);
-            const gridH = rows * (cardHeight + gap);
-            limitsRef.current.min.set(-window.innerWidth / 2, -gridH, -Infinity);
-            limitsRef.current.max.set(window.innerWidth / 2, (cardHeight + gap), Infinity);
-        }
+        updateLimits(isDiscoverMode, totalProjects, limitsRef);
+
         updateHero(projects, page, setPage, heroRef);
 
         //Update camera & controls
