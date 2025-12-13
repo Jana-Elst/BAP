@@ -211,8 +211,8 @@ const setControlSettings = (controls: OrbitControls, isDiscoverMode: boolean) =>
 const updateLimits = (isDiscoverMode: boolean, totalProjects: number, limitsRef) => {
     // Update Limits
     if (isDiscoverMode) {
-        limitsRef.current.min.set(-32, -Infinity, -Infinity);
-        limitsRef.current.max.set(32, Infinity, Infinity);
+        limitsRef.current.min.set(-Infinity, -Infinity, -Infinity);
+        limitsRef.current.max.set(Infinity, Infinity, Infinity);
     } else {
         // Grid Mode Limits
         const gap = 16;
