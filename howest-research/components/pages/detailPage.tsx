@@ -8,10 +8,10 @@ import Carousel, {
 } from "react-native-reanimated-carousel";
 
 import Card from "../atoms/card";
+import Images from "../cardsDetailPage/images";
 import Info from "../cardsDetailPage/info";
 import ModelView from "../cardsDetailPage/modelView";
 import QrCode from "../cardsDetailPage/qrCode";
-import Images from "../cardsDetailPage/images";
 
 import { Colors } from "@/constants/theme";
 import { getEnteringFade, getEnteringFadeScale, getExitingFade, getExitingFadeScale } from "@/scripts/animations";
@@ -32,6 +32,7 @@ const DetailPage = ({ page, setPage }) => {
     const project = getProjectInfo(page.id);
 
     const isLoading = useMemo(() => {
+        console.log('isLoading', page.isLoading);
         return checkIsLoading(page.isLoading);
     }, [page.isLoading]);
 

@@ -82,7 +82,7 @@ const FloatingKeywordImage = ({
     );
 }
 
-const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; screenHeight: number; page: any }) => {
+const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: number; screenHeight: number; page: any, setPage: any }) => {
     //--- General ---//
     const { animationMap, projects } = useWebpAnimations();
     const project = page.id && page.page === 'detailResearch' ? getProjectInfo(page.id) : null;
@@ -157,6 +157,19 @@ const Hologram = ({ screenWidth, screenHeight, page }: { screenWidth: number; sc
     const isLoading = useSharedValue(page.isLoading.externalDisplay);
     const isDetail = useSharedValue(true);
     const globalTimestamp = useSharedValue(0);
+
+    useEffect(() => {
+        if (page.isLoading.externalDisplay !== positionData.isLoading) {
+            setPage((prev: any) => ({
+                ...prev,
+                isLoading: {
+                    ...prev.isLoading,
+                    externalDisplay: positionData.isLoading
+                }
+            }))
+        }
+        isLoading.value = positionData.isLoading;
+    }, [positionData.isLoading, page.isLoading.externalDisplay]);
 
     //--- Let's animate! ---//
     useFrameCallback((frameInfo) => {

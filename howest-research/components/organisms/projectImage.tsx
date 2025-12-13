@@ -73,12 +73,31 @@ const handleOpendetailKeyword = (keyword: any, index: number, page: any, setPage
     })
 }
 
+const handleTap = (event: any, boundingBoxesKeywords: any[], keywordData: any[], onOpenKeyword: (keyword: any, index: number) => void) => {
+    const { x, y } = event.nativeEvent;
+
+    // Check if touch is within any keyword bounding box
+    boundingBoxesKeywords?.forEach((box, index) => {
+        if (!box) return;
+
+        // Check if touch point is within the bounding box
+        if (
+            x >= box.x &&
+            x <= box.x + box.width &&
+            y >= box.y &&
+            y <= box.y + box.height
+        ) {
+            onOpenKeyword(keywordData[index], index);
+        }
+    });
+};
+
 const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoading, delay = 0, duration = 300 }: any) => {
     const opacity = useSharedValue(0);
 
     useEffect(() => {
         if (!isLoading) {
-            opacity.value = withDelay(delay, withTiming(1, { duration, easing: Easing.inOut(Easing.quad) }));
+            opacity.value = withDelay(delay, withTiming(1, { duration }));
         } else {
             opacity.value = 0;
         }
@@ -111,7 +130,7 @@ const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, dela
         () => bounceSignal?.value,
         (signal) => {
             if (signal && signal.index === index && typeof signal.scale === 'number') {
-                bounceScale.value = withSpring(signal.scale, { mass: 0.5, damping: 12, stiffness: 200 });
+                bounceScale.value = withTiming(signal.scale, { duration: 100, easing: Easing.out(Easing.quad) });
             }
         }
     );
@@ -133,346 +152,331 @@ const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, dela
         />
     );
 };
-// ... (CanvasContent code follows)
 
-// ... inside ProjectImage ...
-// inside onTap State.END block:
-        } else if (state === State.END) {
-    if (activeInteraction.current) {
-        const { keyword, index } = activeInteraction.current;
-        bounceSignal.value = { index, scale: 1 };
+const CanvasContent = ({
+    screenWidth,
+    screenHeight,
+    showKeywords,
+    positionData,
+    keywordData,
+    keywordPositions,
+    keyWordLabelPositions,
+    positions,
+    centerX,
+    centerY,
+    clusterPosition,
+    offset,
+    getEllipseIntersection,
+    keywordImages,
+    boundingBoxesKeywords,
+    widhtKeyword,
+    heightKeyword,
+    clusterImage,
+    widthCluster,
+    heightCluster,
+    boundingBoxesCluster,
+    isLoadingGlobal,
+    randomDelays,
+    randomDurations,
+    bounceSignal
+}: any) => {
 
-        // Slight delay to allow spring animation to kick in before navigation load
-        setTimeout(() => {
-            onOpenKeyword(keyword, index);
-        }, 80);
+    return (
+        <Canvas style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: screenWidth,
+            height: screenHeight,
+        }}>
 
-        activeInteraction.current = null;
-    }
-    const CanvasContent = ({
-        screenWidth,
-        screenHeight,
-        showKeywords,
-        positionData,
-        keywordData,
-        keywordPositions,
-        keyWordLabelPositions,
-        positions,
-        centerX,
-        centerY,
-        clusterPosition,
-        offset,
-        getEllipseIntersection,
-        keywordImages,
-        boundingBoxesKeywords,
-        widhtKeyword,
-        heightKeyword,
-        clusterImage,
-        widthCluster,
-        heightCluster,
-        boundingBoxesCluster,
-        isLoadingGlobal,
-        randomDelays,
-        randomDurations,
-        bounceSignal
-    }: any) => {
+            {(showKeywords && positionData) && keywordData.map((keyword, index) => {
+                const pos = keywordPositions[index];
+                if (!pos || !keyWordLabelPositions || !keyWordLabelPositions[index]) return null;
 
-        return (
-            <Canvas style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: screenWidth,
-                height: screenHeight,
-            }}>
-
-                {(showKeywords && positionData) && keywordData.map((keyword, index) => {
-                    const pos = keywordPositions[index];
-                    if (!pos || !keyWordLabelPositions || !keyWordLabelPositions[index]) return null;
-
-                    return (
-                        <AnimatedLine
-                            key={`line-${index}`}
-                            p1={vec(pos.centerX, pos.centerY)}
-                            p2={vec(keyWordLabelPositions[index].x, keyWordLabelPositions[index].y)}
-                            color={Colors.white}
-                            strokeWidth={2}
-                            isLoading={isLoadingGlobal}
-                            delay={randomDelays[index]}
-                            duration={randomDurations[index]}
-                        />
-                    );
-                })}
-
-                {/* Draw keyword images at intersection points */}
-                {keywordImages.map((image, index) => {
-                    const pos = keywordPositions[index];
-                    const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
-
-                    if (!pos) return null;
-
-                    // Use pre-calculated render positions if available, otherwise fall back to pos
-                    const renderX = boundingBox?.renderX ?? pos.x;
-                    const renderY = boundingBox?.renderY ?? pos.y;
-                    const randomDelay = randomDelays[index];
-                    const randomDuration = randomDurations[index];
-
-                    return (
-                        <AnimatedSkiaImage
-                            key={`keyword-${index}`}
-                            image={image}
-                            x={renderX}
-                            y={renderY}
-                            width={widhtKeyword}
-                            height={heightKeyword}
-                            origin={vec(renderX + widhtKeyword / 2, renderY + heightKeyword / 2)}
-                            isLoading={isLoadingGlobal}
-                            delay={randomDelay}
-                            duration={randomDuration}
-                            bounceSignal={bounceSignal}
-                            index={index}
-                        />
-                    );
-                })}
-
-                {/* Draw cluster image and bounding boxes */}
-                {clusterPosition && (
-                    <AnimatedSkiaImage
-                        image={clusterImage}
-                        x={clusterPosition.imageX}
-                        y={clusterPosition.imageY}
-                        width={widthCluster}
-                        height={heightCluster}
-                        origin={vec(clusterPosition.imageX + widthCluster / 2, clusterPosition.imageY + heightCluster / 2)}
+                return (
+                    <AnimatedLine
+                        key={`line-${index}`}
+                        p1={vec(pos.centerX, pos.centerY)}
+                        p2={vec(keyWordLabelPositions[index].x, keyWordLabelPositions[index].y)}
+                        color={Colors.white}
+                        strokeWidth={2}
                         isLoading={isLoadingGlobal}
-                        delay={0}
-                        duration={300}
+                        delay={randomDelays[index]}
+                        duration={randomDurations[index]}
                     />
-                )}
-            </Canvas>)
-    }
+                );
+            })}
 
-    const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, device }) => {
-        const canvasRef = useRef<View>(null);
-        const positionData = useComposition(project, width, height, screenWidth, screenHeight);
+            {/* Draw keyword images at intersection points */}
+            {keywordImages.map((image, index) => {
+                const pos = keywordPositions[index];
+                const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
 
-        // Track active interaction for press-and-hold behavior
-        const activeInteraction = useRef<{ keyword: any, index: number } | null>(null);
+                if (!pos) return null;
 
-        // Create shared value effectively acting as a signal bus
-        const bounceSignal = useSharedValue({ index: -1, scale: 1 });
+                // Use pre-calculated render positions if available, otherwise fall back to pos
+                const renderX = boundingBox?.renderX ?? pos.x;
+                const renderY = boundingBox?.renderY ?? pos.y;
+                const randomDelay = randomDelays[index];
+                const randomDuration = randomDurations[index];
 
-        // Destructure all needed data
-        const {
-            keywordData = [],
-            keywordPositions = [],
-            clusterPosition,
-            boundingBoxesKeywords = [],
-            boundingBoxesCluster,
-            keywordImageSources = [],
-            clusterImageSources = [],
-            keywordImages = [],
-            clusterImage,
-            positions = { degrees: [] },
-            centerX = screenWidth / 2,
-            centerY = screenHeight / 2,
-            offset = 0,
-            widthCluster = width,
-            heightCluster = height,
-            widhtKeyword = width / 2,
-            heightKeyword = height / 2,
-            getEllipseIntersection,
-        } = positionData;
-
-        const keyWordLabelPositions = useMemo(() => getKeywordLabelPositions(positions, boundingBoxesCluster, getEllipseIntersection), [positionData]);
-        const isLoadingGlobal = useMemo(() => checkIsLoading(page.isLoading), [page.isLoading]);
-
-        const randomDelays = useMemo(() => keywordImages.map(() => Math.random() * (300 - 100) + 100), [keywordImages]);
-        const randomDurations = useMemo(() => keywordImages.map(() => Math.random() * (300 - 100) + 100), [keywordImages]);
-
-        useEffect(() => {
-            if (positionData.isLoading !== page.isLoading?.[device]) {
-                setPage((prevPage) => ({
-                    ...prevPage,
-                    isLoading: {
-                        ...prevPage.isLoading,
-                        [device]: positionData.isLoading,
-                    },
-                }));
-            }
-        }, [positionData.isLoading, page.isLoading]);
-
-        const onOpenKeyword = useCallback((keyword: any, index: number) => {
-            handleOpendetailKeyword(keyword, index, page, setPage, keywordImageSources, boundingBoxesKeywords);
-        }, [page, setPage, keywordImageSources, boundingBoxesKeywords]);
-
-        const onTap = useCallback((event: any) => {
-            const { state, x, y } = event.nativeEvent;
-
-            if (state === State.BEGAN) {
-                let foundIndex = -1;
-                boundingBoxesKeywords?.forEach((box, index) => {
-                    if (!box) return;
-                    if (
-                        x >= box.x &&
-                        x <= box.x + box.width &&
-                        y >= box.y &&
-                        y <= box.y + box.height
-                    ) {
-                        foundIndex = index;
-                    }
-                });
-
-                if (foundIndex !== -1) {
-                    const keyword = keywordData[foundIndex];
-                    activeInteraction.current = { keyword, index: foundIndex };
-                    bounceSignal.value = { index: foundIndex, scale: 0.85 };
-                }
-            } else if (state === State.END) {
-                if (activeInteraction.current) {
-                    const { keyword, index } = activeInteraction.current;
-                    bounceSignal.value = { index, scale: 1 };
-
-                    setTimeout(() => {
-                        onOpenKeyword(keyword, index);
-                    }, 151);
-
-                    activeInteraction.current = null;
-                }
-            } else if (state === State.FAILED || state === State.CANCELLED) {
-                if (activeInteraction.current) {
-                    const { index } = activeInteraction.current;
-                    bounceSignal.value = { index, scale: 1 };
-                    activeInteraction.current = null;
-                }
-            }
-        }, [boundingBoxesKeywords, keywordData, onOpenKeyword, bounceSignal]);
-
-        // Return loading state while images load
-        //normally you shouldn't see this
-        if (positionData.isLoading) {
-            return (
-                <View>
-                    <Text>Loading visualization...</Text>
-                </View>
-            );
-        }
-
-        if (showKeywords) {
-            return (
-                <View style={styles.container}>
-                    <TapGestureHandler onHandlerStateChange={onTap}>
-                        <View
-                            ref={canvasRef}
-                            style={{ width: screenWidth, height: screenHeight }}>
-                            <CanvasContent
-                                screenWidth={screenWidth}
-                                screenHeight={screenHeight}
-                                showKeywords={showKeywords}
-                                positionData={positionData}
-                                keywordData={keywordData}
-                                keywordPositions={keywordPositions}
-                                keyWordLabelPositions={keyWordLabelPositions}
-                                positions={positions}
-                                centerX={centerX}
-                                centerY={centerY}
-                                clusterPosition={clusterPosition}
-                                offset={offset}
-                                getEllipseIntersection={getEllipseIntersection}
-                                keywordImages={keywordImages}
-                                boundingBoxesKeywords={boundingBoxesKeywords}
-                                widhtKeyword={widhtKeyword}
-                                heightKeyword={heightKeyword}
-                                clusterImage={clusterImage}
-                                widthCluster={widthCluster}
-                                heightCluster={heightCluster}
-                                boundingBoxesCluster={boundingBoxesCluster}
-                                isLoadingGlobal={isLoadingGlobal}
-                                randomDelays={randomDelays}
-                                randomDurations={randomDurations}
-                                bounceSignal={bounceSignal}
-                            />
-
-                            {
-                                !isLoadingGlobal && (showKeywords && positionData) && keywordData.map((keyword, index) => (
-                                    <Animated.View
-                                        key={keyword.id}
-                                        style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: screenWidth,
-                                            height: screenHeight,
-                                            pointerEvents: 'box-none'
-                                        }}
-                                        entering={getEnteringFadeScale().delay(randomDelays[index])}
-                                    >
-                                        <Touchable
-                                            onPress={() => onOpenKeyword(keyword, index)}
-                                            styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
-                                            icon={'arrow-forward-outline'}
-                                            iconPosition={'after'}
-                                            iconColor={Colors.blueText}
-                                            styleGradient={{
-                                                position: 'absolute',
-                                                top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
-                                                left: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0,
-                                                transform: [{ translateX: '-50%' }, { translateY: '-50%' }]
-                                            }}
-                                        >
-                                            <StyledText>{keyword.label}</StyledText>
-                                        </Touchable>
-                                    </Animated.View>
-                                ))
-                            }
-                        </View>
-                    </TapGestureHandler >
-                </View >
-            );
-        } else {
-            return (
-                <View style={styles.container}>
-                    <CanvasContent
-                        screenWidth={screenWidth}
-                        screenHeight={screenHeight}
-                        showKeywords={showKeywords}
-                        positionData={positionData}
-                        keywordData={keywordData}
-                        keywordPositions={keywordPositions}
-                        keyWordLabelPositions={keyWordLabelPositions}
-                        positions={positions}
-                        centerX={centerX}
-                        centerY={centerY}
-                        clusterPosition={clusterPosition}
-                        offset={offset}
-                        getEllipseIntersection={getEllipseIntersection}
-                        keywordImages={keywordImages}
-                        boundingBoxesKeywords={boundingBoxesKeywords}
-                        widhtKeyword={widhtKeyword}
-                        heightKeyword={heightKeyword}
-                        clusterImage={clusterImage}
-                        widthCluster={widthCluster}
-                        heightCluster={heightCluster}
-                        boundingBoxesCluster={boundingBoxesCluster}
-                        widthCluster={widthCluster}
-                        heightCluster={heightCluster}
-                        boundingBoxesCluster={boundingBoxesCluster}
-                        isLoadingGlobal={isLoadingGlobal}
-                        randomDelays={randomDelays}
-                        randomDurations={randomDurations}
+                return (
+                    <AnimatedSkiaImage
+                        key={`keyword-${index}`}
+                        image={image}
+                        x={renderX}
+                        y={renderY}
+                        width={widhtKeyword}
+                        height={heightKeyword}
+                        origin={vec(renderX + widhtKeyword / 2, renderY + heightKeyword / 2)}
+                        isLoading={isLoadingGlobal}
+                        delay={randomDelay}
+                        duration={randomDuration}
                         bounceSignal={bounceSignal}
+                        index={index}
                     />
-                </View>
-            );
+                );
+            })}
+
+            {/* Draw cluster image and bounding boxes */}
+            {clusterPosition && (
+                <AnimatedSkiaImage
+                    image={clusterImage}
+                    x={clusterPosition.imageX}
+                    y={clusterPosition.imageY}
+                    width={widthCluster}
+                    height={heightCluster}
+                    origin={vec(clusterPosition.imageX + widthCluster / 2, clusterPosition.imageY + heightCluster / 2)}
+                    isLoading={isLoadingGlobal}
+                    delay={0}
+                    duration={300}
+                />
+            )}
+        </Canvas>)
+}
+
+const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, device }) => {
+    const canvasRef = useRef<View>(null);
+    const positionData = useComposition(project, width, height, screenWidth, screenHeight);
+
+    // Track active interaction for press-and-hold behavior
+    const activeInteraction = useRef<{ keyword: any, index: number } | null>(null);
+
+    // Create shared value effectively acting as a signal bus
+    const bounceSignal = useSharedValue({ index: -1, scale: 1 });
+
+    // Destructure all needed data
+    const {
+        keywordData = [],
+        keywordPositions = [],
+        clusterPosition,
+        boundingBoxesKeywords = [],
+        boundingBoxesCluster,
+        keywordImageSources = [],
+        clusterImageSources = [],
+        keywordImages = [],
+        clusterImage,
+        positions = { degrees: [] },
+        centerX = screenWidth / 2,
+        centerY = screenHeight / 2,
+        offset = 0,
+        widthCluster = width,
+        heightCluster = height,
+        widhtKeyword = width / 2,
+        heightKeyword = height / 2,
+        getEllipseIntersection,
+    } = positionData;
+
+    const keyWordLabelPositions = useMemo(() => getKeywordLabelPositions(positions, boundingBoxesCluster, getEllipseIntersection), [positionData]);
+    const isLoadingGlobal = useMemo(() => checkIsLoading(page.isLoading), [page.isLoading]);
+
+    const randomDelays = useMemo(() => keywordImages.map(() => Math.random() * (300 - 100) + 100), [keywordImages]);
+    const randomDurations = useMemo(() => keywordImages.map(() => Math.random() * (300 - 100) + 100), [keywordImages]);
+
+    useEffect(() => {
+        if (positionData.isLoading !== page.isLoading?.[device]) {
+            setPage((prevPage) => ({
+                ...prevPage,
+                isLoading: {
+                    ...prevPage.isLoading,
+                    [device]: positionData.isLoading,
+                },
+            }));
         }
+    }, [positionData.isLoading, page.isLoading]);
+
+    const onOpenKeyword = useCallback((keyword: any, index: number) => {
+        handleOpendetailKeyword(keyword, index, page, setPage, keywordImageSources, boundingBoxesKeywords);
+    }, [page, setPage, keywordImageSources, boundingBoxesKeywords]);
+
+    const onTap = useCallback((event: any) => {
+        const { state, x, y } = event.nativeEvent;
+
+        if (state === State.BEGAN) {
+            let foundIndex = -1;
+            boundingBoxesKeywords?.forEach((box, index) => {
+                if (!box) return;
+                if (
+                    x >= box.x &&
+                    x <= box.x + box.width &&
+                    y >= box.y &&
+                    y <= box.y + box.height
+                ) {
+                    foundIndex = index;
+                }
+            });
+
+            if (foundIndex !== -1) {
+                const keyword = keywordData[foundIndex];
+                activeInteraction.current = { keyword, index: foundIndex };
+                bounceSignal.value = { index: foundIndex, scale: 0.9 };
+            }
+        } else if (state === State.END) {
+            if (activeInteraction.current) {
+                const { keyword, index } = activeInteraction.current;
+                bounceSignal.value = { index, scale: 1 };
+
+                setTimeout(() => {
+                    onOpenKeyword(keyword, index);
+                }, 100);
+
+                activeInteraction.current = null;
+            }
+        } else if (state === State.FAILED || state === State.CANCELLED) {
+            if (activeInteraction.current) {
+                const { index } = activeInteraction.current;
+                bounceSignal.value = { index, scale: 1 };
+                activeInteraction.current = null;
+            }
+        }
+    }, [boundingBoxesKeywords, keywordData, onOpenKeyword, bounceSignal]);
+
+    // Return loading state while images load
+    //normally you shouldn't see this
+    if (positionData.isLoading) {
+        return (
+            <View>
+                <Text>Loading visualization...</Text>
+            </View>
+        );
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-    });
+    if (showKeywords) {
+        return (
+            <View style={styles.container}>
+                <TapGestureHandler onHandlerStateChange={onTap}>
+                    <View
+                        ref={canvasRef}
+                        style={{ width: screenWidth, height: screenHeight }}>
+                        <CanvasContent
+                            screenWidth={screenWidth}
+                            screenHeight={screenHeight}
+                            showKeywords={showKeywords}
+                            positionData={positionData}
+                            keywordData={keywordData}
+                            keywordPositions={keywordPositions}
+                            keyWordLabelPositions={keyWordLabelPositions}
+                            positions={positions}
+                            centerX={centerX}
+                            centerY={centerY}
+                            clusterPosition={clusterPosition}
+                            offset={offset}
+                            getEllipseIntersection={getEllipseIntersection}
+                            keywordImages={keywordImages}
+                            boundingBoxesKeywords={boundingBoxesKeywords}
+                            widhtKeyword={widhtKeyword}
+                            heightKeyword={heightKeyword}
+                            clusterImage={clusterImage}
+                            widthCluster={widthCluster}
+                            heightCluster={heightCluster}
+                            boundingBoxesCluster={boundingBoxesCluster}
+                            isLoadingGlobal={isLoadingGlobal}
+                            randomDelays={randomDelays}
+                            randomDurations={randomDurations}
+                            bounceSignal={bounceSignal}
+                        />
 
-    export default ProjectImage;
+                        {
+                            !isLoadingGlobal && (showKeywords && positionData) && keywordData.map((keyword, index) => (
+                                <Animated.View
+                                    key={keyword.id}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: screenWidth,
+                                        height: screenHeight,
+                                        pointerEvents: 'box-none'
+                                    }}
+                                    entering={getEnteringFadeScale().delay(randomDelays[index])}
+                                >
+                                    <Touchable
+                                        onPress={() => onOpenKeyword(keyword, index)}
+                                        styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
+                                        icon={'arrow-forward-outline'}
+                                        iconPosition={'after'}
+                                        iconColor={Colors.blueText}
+                                        styleGradient={{
+                                            position: 'absolute',
+                                            top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
+                                            left: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0,
+                                            transform: [{ translateX: '-50%' }, { translateY: '-50%' }]
+                                        }}
+                                    >
+                                        <StyledText>{keyword.label}</StyledText>
+                                    </Touchable>
+                                </Animated.View>
+                            ))
+                        }
+                    </View>
+                </TapGestureHandler >
+            </View >
+        );
+    } else {
+        return (
+            <View style={styles.container}>
+                <CanvasContent
+                    screenWidth={screenWidth}
+                    screenHeight={screenHeight}
+                    showKeywords={showKeywords}
+                    positionData={positionData}
+                    keywordData={keywordData}
+                    keywordPositions={keywordPositions}
+                    keyWordLabelPositions={keyWordLabelPositions}
+                    positions={positions}
+                    centerX={centerX}
+                    centerY={centerY}
+                    clusterPosition={clusterPosition}
+                    offset={offset}
+                    getEllipseIntersection={getEllipseIntersection}
+                    keywordImages={keywordImages}
+                    boundingBoxesKeywords={boundingBoxesKeywords}
+                    widhtKeyword={widhtKeyword}
+                    heightKeyword={heightKeyword}
+                    clusterImage={clusterImage}
+                    widthCluster={widthCluster}
+                    heightCluster={heightCluster}
+                    boundingBoxesCluster={boundingBoxesCluster}
+                    widthCluster={widthCluster}
+                    heightCluster={heightCluster}
+                    boundingBoxesCluster={boundingBoxesCluster}
+                    isLoadingGlobal={isLoadingGlobal}
+                    randomDelays={randomDelays}
+                    randomDurations={randomDurations}
+                    bounceSignal={bounceSignal}
+                />
+            </View>
+        );
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
+
+export default ProjectImage;
