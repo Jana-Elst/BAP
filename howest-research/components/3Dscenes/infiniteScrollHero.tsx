@@ -11,7 +11,7 @@ const InfiniteScrollHero = () => {
 
 const styles: { [key: string]: React.CSSProperties } = {
     textContainer: {
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -19,6 +19,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         gap: '8px',
         padding: '32px',
         width: 'fit-content',
+        zIndex: -100,
     },
 
     h1: {

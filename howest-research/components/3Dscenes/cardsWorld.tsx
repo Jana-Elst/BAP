@@ -226,7 +226,8 @@ const animateCardsToState = (
     cards: CSS3DObject[],
     positions: { x: number, y: number, z: number }[],
     isDiscoverMode: boolean,
-    duration: number = 1.5
+    duration: number = 1.5,
+    delay: number = 0
 ) => {
     cards.forEach((cardObj, index) => {
         const targetPos = positions[index];
@@ -237,7 +238,6 @@ const animateCardsToState = (
         gsap.killTweensOf(cardObj.rotation);
 
         const tl = gsap.timeline();
-
         // 1. Move to Target Position & Reset Rotation
         if (index < 12) {
             tl.to(cardObj.position, {
@@ -245,7 +245,8 @@ const animateCardsToState = (
                 y: targetPos.y,
                 z: targetPos.z || 0,
                 duration: duration,
-                ease: "power2.inOut"
+                delay: delay - 0.5,
+                ease: "power4.out"
             }, 0);
         } else {
             tl.to(cardObj.position, {
@@ -253,7 +254,8 @@ const animateCardsToState = (
                 y: targetPos.y,
                 z: targetPos.z || 0,
                 duration: 0,
-                ease: "power2.inOut"
+                delay: delay,
+                ease: "power4.out"
             }, 0);
         }
 
@@ -378,6 +380,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         const heroCanvas = document.createElement('div');
         heroCanvas.style.width = 'fit-content';
         heroCanvas.style.height = 'fit-content';
+        heroCanvas.style.zIndex = '-100';
 
         const heroRoot = createRoot(heroCanvas);
         heroRef.current = heroRoot;
@@ -389,7 +392,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         heroObj.position.set(0, 0, 0);
         heroObjectRef.current = heroObj;
 
-        if (isDiscoverMode) scene.add(heroObj);
+        scene.add(heroObj);
 
         //--- create cards
         // 1.create cards
@@ -401,7 +404,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         });
 
         //3. set card Positions
-        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0);
+        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0, 0);
 
         //--- add controls
         // 1. create controls
@@ -432,37 +435,60 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
     // 2. if mode is changing
     useEffect(() => {
+        const currentZ = cameraRef.current?.position.z || 0;
+        const targetZ = calculateCameraZForScreen(cameraRef.current, window.innerHeight);
+        const cameraIsChanging = Math.round(currentZ) !== Math.round(targetZ);
+
+        console.log(currentZ, targetZ);
+        console.log('cameraIsChanging', cameraIsChanging);
+
+        let transitionDuration = cameraIsChanging ? 1.5 : 0;
+        if (transitionDuration > 0) {
+          transitionDuration = isDiscoverMode ? 0 : transitionDuration;   
+        }
+
+        console.log('transitionDuration', transitionDuration);
+
         if (controlsRef.current) {
             setControlSettings(controlsRef.current, isDiscoverMode);
-            controlsRef.current.reset();
+            // controlsRef.current.reset();
+            gsap.to(controlsRef.current.target, {
+                x: 0,
+                y: 0,
+                z: 0,
+                duration: transitionDuration,
+                ease: "power2.inOut"
+            });
         }
 
         // Reset Camera
         if (cameraRef.current) {
-            cameraRef.current.position.set(0, 0, calculateCameraZForScreen(cameraRef.current, window.innerHeight));
-            cameraRef.current.rotation.set(0, 0, 0);
-            cameraRef.current.updateProjectionMatrix();
+            gsap.to(cameraRef.current.position, {
+                x: 0,
+                y: 0,
+                z: targetZ,
+                duration: transitionDuration,
+                ease: "power2.inOut",
+                onUpdate: () => {
+                    cameraRef.current?.updateProjectionMatrix();
+                }
+            });
+
+            gsap.to(cameraRef.current.rotation, {
+                x: 0,
+                y: 0,
+                z: 0,
+                duration: transitionDuration,
+                ease: "power2.inOut"
+            });
         }
 
         if (controlsRef.current) {
             controlsRef.current.update();
         }
 
-        // // Update Hero Visibility
-        // const scene = sceneRef.current;
-        // const heroObj = heroObjectRef.current;
-        // if (scene && heroObj) {
-        //     if (isDiscoverMode) {
-        //         console.log('Adding hero to scene');
-        //         if (!scene.getObjectByName('heroCanvas')) scene.add(heroObj);
-        //     } else {
-        //         const existing = scene.getObjectByName('heroCanvas');
-        //         if (existing) scene.remove(existing);
-        //     }
-        // }
-
         // Animate Cards
-        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
+        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 1.5, transitionDuration);
         updateLimits(isDiscoverMode, totalProjects, limitsRef);
 
     }, [isDiscoverMode, totalWidth, totalHeight, totalProjects]);
