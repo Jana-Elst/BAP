@@ -34,17 +34,10 @@ const calculateCameraZForScreen = (camera: THREE.PerspectiveCamera, screenHeight
     return z;
 };
 
-const updateHero = (projects, page, setPage, heroRef) => {
+const updateHero = (heroRef) => {
     if (heroRef.current) {
         heroRef.current.render(
-            <>
-                <InfiniteScrollHero
-                    projects={projects}
-                    cardsPerCanvas={cardsPerCanvas}
-                    page={page}
-                    setPage={setPage}
-                />
-            </>
+            <InfiniteScrollHero />
         );
 
         console.log('heroImage is updated');
@@ -383,14 +376,14 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         //--- create hero
         // 1. create canvas
         const heroCanvas = document.createElement('div');
-        heroCanvas.style.width = `${gridSize.w}px`;
-        heroCanvas.style.height = `${gridSize.h}px`;
-        heroCanvas.style.zIndex = '-1';
+        heroCanvas.style.width = 'fit-content';
+        heroCanvas.style.height = 'fit-content';
+
         const heroRoot = createRoot(heroCanvas);
         heroRef.current = heroRoot;
 
         //2. render hero
-        updateHero(projects, page, setPage, heroRef);
+        updateHero(heroRef);
         const heroObj = new CSS3DObject(heroCanvas);
         heroObj.name = 'heroCanvas';
         heroObj.position.set(0, 0, 0);
@@ -407,11 +400,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             sceneRef.current.add(cardObj);
         });
 
-        //3. set card positions
-        // animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0); // 0 duration for init
-        // But for consistency with unified function we can just use it.
-        // Actually, let's just set them initially directly if we want instant load
-        // But the previous code called setCardPositions.
+        //3. set card Positions
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode, 0);
 
         //--- add controls
@@ -459,17 +448,18 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             controlsRef.current.update();
         }
 
-        // Update Hero Visibility
-        const scene = sceneRef.current;
-        const heroObj = heroObjectRef.current;
-        if (scene && heroObj) {
-            if (isDiscoverMode) {
-                if (!scene.getObjectByName('heroCanvas')) scene.add(heroObj);
-            } else {
-                const existing = scene.getObjectByName('heroCanvas');
-                if (existing) scene.remove(existing);
-            }
-        }
+        // // Update Hero Visibility
+        // const scene = sceneRef.current;
+        // const heroObj = heroObjectRef.current;
+        // if (scene && heroObj) {
+        //     if (isDiscoverMode) {
+        //         console.log('Adding hero to scene');
+        //         if (!scene.getObjectByName('heroCanvas')) scene.add(heroObj);
+        //     } else {
+        //         const existing = scene.getObjectByName('heroCanvas');
+        //         if (existing) scene.remove(existing);
+        //     }
+        // }
 
         // Animate Cards
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
@@ -500,7 +490,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         // Animate Cards
         animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
 
-        updateHero(projects, page, setPage, heroRef);
+        updateHero(heroRef);
 
         //Update camera & controls
         if (cameraRef.current && controlsRef.current) {
@@ -518,99 +508,6 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         console.log('projects updated');
     }, [totalProjects]);
-
-    //FIX
-    // 4. Handle animations and interactions
-    // useGSAP(() => {
-    //     if (!cardsObjsRef.current) return;
-
-    //     const isLoading = checkIsLoading(page.isLoading);
-
-    //     cardsObjsRef.current.forEach((cardObj) => {
-    //         const div = cardObj.element;
-    //         const projectId = cardObj.userData.id;
-
-    //         // Interaction: Tap
-    //         div.onclick = () => {
-    //             console.log('Tapped on project card');
-    //             gsap.to(div, {
-    //                 scale: 0.9,
-    //                 duration: 0.15,
-    //                 yoyo: true,
-    //                 repeat: 1,
-    //                 ease: "power1.inOut",
-    //                 onComplete: () => {
-    //                     setPage((prev: any) => ({
-    //                         ...prev,
-    //                         page: 'detailResearch',
-    //                         id: projectId,
-    //                         previousPages: [
-    //                             ...(prev.previousPages || []),
-    //                             {
-    //                                 info: prev.info,
-    //                                 page: prev.page,
-    //                                 id: prev.id
-    //                             }
-    //                         ],
-    //                         isLoading: {
-    //                             ipad: true,
-    //                             externalDisplay: false
-    //                         }
-    //                     }));
-    //                 }
-    //             });
-    //         };
-
-    //         // Animation: Wiggle in Discover Mode
-    //         if (isDiscoverMode) {
-    //             gsap.to(div, {
-    //                 x: `+=${gsap.utils.random(-20, 20)}`,
-    //                 y: `+=${gsap.utils.random(-20, 20)}`,
-    //                 rotation: gsap.utils.random(-3, 3),
-    //                 duration: gsap.utils.random(4, 7),
-    //                 repeat: -1,
-    //                 yoyo: true,
-    //                 ease: "power1.inOut",
-    //             });
-    //         } else {
-    //             gsap.to(div, {
-    //                 x: 0,
-    //                 y: 0,
-    //                 rotation: 0,
-    //                 duration: 0.5,
-    //                 ease: "power1.inOut",
-    //             });
-    //         }
-
-    //         // Animation: Show/Hide based on Loading
-    //         if (isLoading && page.page !== 'discover' && page.id !== projectId) {
-    //             gsap.to(div, {
-    //                 opacity: 0,
-    //                 scale: 0,
-    //                 duration: gsap.utils.random(0.5, 1),
-    //                 ease: "power1.inOut",
-    //             });
-    //         } else if (isLoading && page.page !== 'discover' && page.id === projectId) {
-    //             gsap.to(div, {
-    //                 opacity: 1,
-    //                 scale: 1,
-    //                 duration: gsap.utils.random(0, 1),
-    //                 ease: "power1.inOut",
-    //             });
-    //         }
-
-    //         if (page.page === 'discover' && page.id !== projectId) {
-    //             gsap.to(div, {
-    //                 opacity: 1,
-    //                 scale: 1,
-    //                 duration: gsap.utils.random(0, 1),
-    //                 ease: "power1.inOut",
-    //             });
-    //         }
-    //     });
-
-    // }, [isDiscoverMode, page, totalProjects]);
-
 
     //---------------------------- RENDER ----------------------------//
     return (
