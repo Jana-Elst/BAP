@@ -1,5 +1,4 @@
 import { Image } from 'expo-image';
-import { checkIsLoading } from '../../scripts/getHelperFunction';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
 import '../../styles/style.css';
 
@@ -138,6 +137,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         gridTemplateColumns: '1fr',
         alignItems: 'end',
         justifyItems: 'center',
+        transformStyle: 'preserve-3d',
     },
     card: {
         gridRow: 1,
@@ -156,6 +156,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         background: 'linear-gradient(123deg, rgba(255, 255, 255, 0.60) 12.29%, rgba(249, 249, 249, 0.56) 28.94%, rgba(224, 224, 224, 0.40) 90.97%)',
         boxShadow: '0 3px 30px -1.711px rgba(78, 78, 78, 0.20)',
         backdropFilter: 'blur(20px)',
+        transform: 'translateZ(1px)',
     },
     texture: {
         position: 'absolute',
@@ -176,7 +177,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         zIndex: -1,
         width: '214.279px',
         height: '326.486px',
-        transform: 'rotate(-46.149deg)',
+        transform: 'rotate(-46.149deg) translateZ(-1px)',
         flexShrink: 0,
         borderRadius: '326.486px',
     },

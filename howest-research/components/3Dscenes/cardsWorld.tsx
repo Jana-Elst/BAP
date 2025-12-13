@@ -51,6 +51,7 @@ const createCards = (projects, cardsRef, page, setPage, isDiscoverMode, onRender
         const div = document.createElement('div');
         div.style.width = `${cardWidth}px`;
         div.style.height = `${cardHeight}px`;
+        div.style.backfaceVisibility = 'hidden';
         div.className = 'card';
 
         const root = createRoot(div);
@@ -233,11 +234,18 @@ const animateCardsToState = (
         const targetPos = positions[index];
         if (!targetPos) return;
 
+        // Kill existing timeline if it exists
+        if (cardObj.userData.timeline) {
+            cardObj.userData.timeline.kill();
+        }
+
         // Kill existing tweens
         gsap.killTweensOf(cardObj.position);
-        gsap.killTweensOf(cardObj.position);
+        gsap.killTweensOf(cardObj.rotation);
 
         const tl = gsap.timeline();
+        cardObj.userData.timeline = tl;
+
         // 1. Move to Target Position & Reset Rotation
         if (index < 12) {
             tl.to(cardObj.position, {
