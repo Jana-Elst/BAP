@@ -96,6 +96,18 @@ const createCards = (projects, cardsRef, page, setPage, isDiscoverMode, onRender
                             externalDisplay: false
                         }
                     });
+
+                    cardsObjsRef.forEach(cardObj => {
+                        if (cardObj.userData.id === project.id) return;
+                        gsap.to(cardObj.scale, {
+                            x: 0,
+                            y: 0,
+                            duration: gsap.utils.random(0.1, 0.7),
+                            delay: gsap.utils.random(0, 1),
+                            ease: "power1.inOut",
+                            onUpdate: onRender
+                        });
+                    });
                 }
             });
         });
@@ -333,7 +345,7 @@ const animateHero = (heroObjectRef,
             heroCanvas.style.zIndex = '-100';
             heroObj.position.set(0, 0, 0);
         } else {
-            heroCanvas.style.zIndex = '0';
+            heroCanvas.style.zIndex = '-100';
             heroObj.position.set(0, window.innerHeight / 2 - heroSize.height / 2 - paddingTopGridView, 0);
         }
     });
@@ -611,7 +623,22 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         }
 
         console.log('projects updated');
+        console.log('projects updated');
     }, [totalProjects]);
+
+    // 4. if page change back to discover
+    useEffect(() => {
+        if (page.page === 'discover') {
+            cardsObjsRef.current.forEach(cardObj => {
+                gsap.to(cardObj.scale, {
+                    x: 1,
+                    y: 1,
+                    duration: gsap.utils.random(0.1, 0.6),
+                    ease: "power2.out",
+                });
+            });
+        }
+    }, [page.page]);
 
     //---------------------------- RENDER ----------------------------//
     return (
