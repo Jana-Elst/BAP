@@ -51,7 +51,7 @@ const updateHero = (projects, page, setPage, heroRef) => {
     }
 };
 
-const createCards = (projects, cardsRef, page, setPage) => {
+const createCards = (projects, cardsRef, page, setPage, isDiscoverMode) => {
     const cardsObjsRef = [];
 
     projects.forEach((project, index) => {
@@ -64,7 +64,7 @@ const createCards = (projects, cardsRef, page, setPage) => {
 
         //1. create card
         const projectInfo = getProjectInfo(project.id);
-        updateCard(root, projectInfo, page, setPage);
+        updateCard(root, projectInfo, page, setPage, isDiscoverMode);
 
         //2. make object from card
         const cardObj = new CSS3DObject(div);
@@ -76,17 +76,19 @@ const createCards = (projects, cardsRef, page, setPage) => {
     return cardsObjsRef;
 }
 
-const updateCard = (root: Root, project, page, setPage) => {
+const updateCard = (root: Root, project, page, setPage, isDiscoverMode) => {
     root.render(
         <ProjectCard3D
             page={page}
             setPage={setPage}
             project={project}
+            isDiscoverMode={isDiscoverMode}
         />
     );
 };
 
 const setCardPositions = (positions, cardsObjsRef) => {
+    console.log('setCardPositions', positions.length, cardsObjsRef.current.length);
     cardsObjsRef.current.forEach((cardObj, index) => {
         const position = positions[index];
         if (position) {
@@ -187,8 +189,8 @@ const setControlSettings = (controls: OrbitControls, isDiscoverMode: boolean) =>
 const updateLimits = (isDiscoverMode: boolean, totalProjects: number, limitsRef) => {
     // Update Limits
     if (isDiscoverMode) {
-        limitsRef.current.min.set(-32, -32, -Infinity);
-        limitsRef.current.max.set(32, 32, Infinity);
+        limitsRef.current.min.set(-32, -Infinity, -Infinity);
+        limitsRef.current.max.set(32, Infinity, Infinity);
     } else {
         // Grid Mode Limits
         const gap = 16;
@@ -196,7 +198,7 @@ const updateLimits = (isDiscoverMode: boolean, totalProjects: number, limitsRef)
         const rows = Math.ceil(totalProjects / cardsPerRow);
         const gridH = rows * (cardHeight + gap) + ((cardHeight + gap) / 2);
 
-        const minY = -(gridH - (window.innerHeight + gap*5));
+        const minY = -(gridH - (window.innerHeight + gap * 5));
         limitsRef.current.min.set(0, Math.min(0, minY), -Infinity);
         limitsRef.current.max.set(0, 0, Infinity);
     }
@@ -220,7 +222,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
     const limitsRef = useRef<{ min: THREE.Vector3, max: THREE.Vector3 }>({ min: new THREE.Vector3(-Infinity, -Infinity, -Infinity), max: new THREE.Vector3(Infinity, Infinity, Infinity) });
 
     //--- MEMOS
-    const totalProjects = projects.length;
+    const totalProjects = useMemo(() => projects.length, [projects]);
 
     // We only need to recalculate these if totalProjects changes (or screen size if we were tracking that)
     const { totalWidth, totalHeight, gridSize } = useMemo(() => calculateSizeCanvas(totalProjects), [totalProjects]);
@@ -284,7 +286,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         //--- create cards
         // 1.create cards
-        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage);
+        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode);
 
         //2. add cards to scene
         cardsObjsRef.current.forEach(cardObj => {
@@ -301,20 +303,15 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         setControlSettings(controlsRef.current, isDiscoverMode);
 
         controlsRef.current.addEventListener('change', () => {
-
-            //FIX
             // Clamping logic
             const controls = controlsRef.current;
             const camera = cameraRef.current;
             const { min, max } = limitsRef.current;
-            console.log('min', min);
-            console.log('max', max);
             if (controls && camera) {
-                const v = new THREE.Vector3().copy(controls.target);
-                console.log('v', v);
+                const copyOfControls = new THREE.Vector3().copy(controls.target);
                 controls.target.clamp(min, max);
-                v.sub(controls.target);
-                camera.position.sub(v);
+                copyOfControls.sub(controls.target);
+                camera.position.sub(copyOfControls);
             }
             renderer.render(scene, camera);
         });
@@ -365,12 +362,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             }
         }
 
-        // Update Card Positions
-        cardsObjsRef.current.forEach((cardObj, index) => {
-            const position = cardPositions[index];
-            // We can animate this using GSAP later if desired
-            cardObj.position.set(position.x, position.y, 0);
-        });
+        setCardPositions(cardPositions, cardsObjsRef);
 
         // Re-render
         if (rendererRef.current && sceneRef.current && cameraRef.current) {
@@ -386,6 +378,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
     // 3. if projects are changing
     useEffect(() => {
+        console.log('projects changed');
         if (!sceneRef.current) return;
 
         cardsRef.current.clear();
@@ -396,7 +389,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         });
 
         // Create new cards
-        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage);
+        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode);
 
         // Add new cards to scene
         cardsObjsRef.current.forEach(cardObj => {

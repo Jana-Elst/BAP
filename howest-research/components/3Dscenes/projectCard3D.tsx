@@ -11,9 +11,11 @@ const ProjectCard3D = ({
     page,
     setPage,
     project,
+    isDiscoverMode
 }) => {
 
     const isLoading = checkIsLoading(page.isLoading);
+    console.log('discover mode', isDiscoverMode);
 
     const handleOpenDetail = () => {
         setPage({
@@ -40,19 +42,32 @@ const ProjectCard3D = ({
     const containerGSAP = useRef<HTMLDivElement>(null);
 
     useGSAP(() => {
-        gsap.to(containerGSAP.current, {
-            x: `+=${gsap.utils.random(-20, 20)}`,
-            y: `+=${gsap.utils.random(-20, 20)}`,
-            rotation: gsap.utils.random(-3, 3),
-            duration: gsap.utils.random(4, 7),
-            repeat: -1,
-            yoyo: true,
-            ease: "power1.inOut",
-        });
-    }, { scope: containerGSAP });
+        if (isDiscoverMode) {
+            console.log('discover mode');
+            gsap.to(containerGSAP.current, {
+                x: `+=${gsap.utils.random(-20, 20)}`,
+                y: `+=${gsap.utils.random(-20, 20)}`,
+                rotation: gsap.utils.random(-3, 3),
+                duration: gsap.utils.random(4, 7),
+                repeat: -1,
+                yoyo: true,
+                ease: "power1.inOut",
+            });
+        } else {
+            console.log('not discover mode');
+            gsap.to(containerGSAP.current, {
+                x: 0,
+                y: 0,
+                rotation: 0,
+                duration: 0,
+                ease: "power1.inOut",
+            });
+        }
+    }, { scope: containerGSAP, dependencies: [isDiscoverMode] });
+
+
 
     useGSAP(() => {
-        // console.log(isLoading, page.page, page.id, project.id);
         if (isLoading && page.page !== 'discover' && page.id !== project.id) {
             console.log('hide');
             gsap.to(containerGSAP.current, {
