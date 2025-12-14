@@ -3,13 +3,14 @@ import { getEnteringFadeScale } from '@/scripts/animations';
 import { checkIsLoading } from '@/scripts/getHelperFunction';
 import { Canvas, Line, Image as SkiaImage, vec } from '@shopify/react-native-skia';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
-import { Easing, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { StyledText } from '../atoms/styledComponents';
 import Touchable from '../atoms/touchable';
 
+//---------- HELPER FUNCTIONS ----------//
 const getKeywordLabelPositions = (positions, boundingBoxesCluster, getEllipseIntersection) => {
     if (!positions) {
         console.log('No positions available');
@@ -52,37 +53,17 @@ const getKeywordLabelPositions = (positions, boundingBoxesCluster, getEllipseInt
     });
 };
 
-const handleOpendetailKeyword = (keyword: any, index: number, page: any, setPage: any, keywordImageSources: any[], boundingBoxesKeywords: any[]) => {
-    setPage({
-        ...page,
-        page: 'detailKeyword',
-        id: keyword.id,
-        info: {
-            keyword: keyword,
-            keywordImageSource: keywordImageSources[index],
-            boundingBoxKeyword: boundingBoxesKeywords[index],
-        },
-        previousPages: [
-            ...page.previousPages || [],
-            {
-                page: page.page,
-                id: page.id,
-                info: page.info,
-            }
-        ]
-    })
-}
-
-const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoading, delay = 0, duration = 300 }: any) => {
+//---------- ANIMATED COMPONENTS ----------//
+const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoadingGlobal, delay = 0, duration = 300 }: any) => {
     const opacity = useSharedValue(0);
 
     useEffect(() => {
-        if (!isLoading) {
+        if (!isLoadingGlobal) {
             opacity.value = withDelay(delay, withTiming(1, { duration }));
         } else {
             opacity.value = 0;
         }
-    }, [isLoading]);
+    }, [isLoadingGlobal]);
 
     return (
         <Line
@@ -95,9 +76,21 @@ const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoading, delay = 0, durati
     );
 };
 
-const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, delay = 0, duration = 500, index, tappedSignal }: any) => {
-    const bounceScale = useSharedValue(1);
+const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoadingGlobal, delay = 0, duration = 500, index, tappedSignal }: any) => {
+    const bounceScale = useSharedValue(0);
 
+    //--- animation on after loading ---//
+    useEffect(() => {
+        if (!isLoadingGlobal) {
+            console.log('Image loaded');
+            bounceScale.value = withDelay(delay, withTiming(1, { duration }));
+        } else {
+            console.log('Image not loaded yet');
+            bounceScale.value = 0;
+        }
+    }, [isLoadingGlobal]);
+
+    //--- animation on tap ---//
     useAnimatedReaction(
         () => tappedSignal?.value,
         (signal) => {
@@ -114,6 +107,8 @@ const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, dela
         return [{ scale: bounceScale.value }];
     }, [bounceScale]);
 
+
+
     return (
         <SkiaImage
             image={image}
@@ -127,6 +122,7 @@ const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, dela
     );
 };
 
+//---------- COMPONENTS ----------//
 const CanvasContent = ({
     screenWidth,
     screenHeight,
@@ -175,7 +171,7 @@ const CanvasContent = ({
                         p2={vec(keyWordLabelPositions[index].x, keyWordLabelPositions[index].y)}
                         color={Colors.white}
                         strokeWidth={2}
-                        isLoading={isLoadingGlobal}
+                        isLoadingGlobal={isLoadingGlobal}
                         delay={randomDelays[index]}
                         duration={randomDurations[index]}
                     />
@@ -204,7 +200,7 @@ const CanvasContent = ({
                         width={widhtKeyword}
                         height={heightKeyword}
                         origin={vec(renderX + widhtKeyword / 2, renderY + heightKeyword / 2)}
-                        isLoading={isLoadingGlobal}
+                        isLoadingGlobal={isLoadingGlobal}
                         delay={randomDelay}
                         duration={randomDuration}
                         index={index}
@@ -216,18 +212,66 @@ const CanvasContent = ({
             {/* Draw cluster image and bounding boxes */}
             {clusterPosition && (
                 <AnimatedSkiaImage
+                    key={`cluster`}
                     image={clusterImage}
                     x={clusterPosition.imageX}
                     y={clusterPosition.imageY}
                     width={widthCluster}
                     height={heightCluster}
                     origin={vec(clusterPosition.imageX + widthCluster / 2, clusterPosition.imageY + heightCluster / 2)}
-                    isLoading={isLoadingGlobal}
+                    isLoadingGlobal={isLoadingGlobal}
                     delay={0}
                     duration={300}
+                    tappedSignal={tappedSignal}
+                    index={-1}
                 />
             )}
         </Canvas>)
+}
+
+//---------- EVENT HANDLERS ----------//
+const handleOpendetailKeyword = (keyword: any, index: number, page: any, setPage: any, keywordImageSources: any[], boundingBoxesKeywords: any[]) => {
+    console.log('keyword:', boundingBoxesKeywords[index]);
+    setPage({
+        ...page,
+        page: 'detailKeyword',
+        id: keyword.id,
+        info: {
+            keyword: keyword,
+            keywordImageSource: keywordImageSources[index],
+            boundingBoxKeyword: boundingBoxesKeywords[index],
+        },
+        previousPages: [
+            ...page.previousPages || [],
+            {
+                page: page.page,
+                id: page.id,
+                info: page.info,
+            }
+        ]
+    })
+}
+
+const handleOpendetailCluster = (cluster: any, page: any, setPage: any, clusterImageSource: any, boundingBoxesCluster) => {
+    console.log('cluster:', boundingBoxesCluster);
+    setPage({
+        ...page,
+        page: 'detailCluster',
+        id: cluster.id,
+        info: {
+            keyword: cluster,
+            keywordImageSource: clusterImageSource,
+            boundingBoxKeyword: boundingBoxesCluster,
+        },
+        previousPages: [
+            ...page.previousPages || [],
+            {
+                page: page.page,
+                id: page.id,
+                info: page.info,
+            }
+        ]
+    })
 }
 
 const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, device }) => {
@@ -279,29 +323,44 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         const { x, y } = event.nativeEvent;
         let foundIndex = -1;
         for (let index = 0; index < boundingBoxesKeywords.length; index++) {
-            const box = boundingBoxesKeywords[index];
-            if (!box) continue;
+            const boxkeyword = boundingBoxesKeywords[index];
+            if (!boxkeyword) continue;
 
+            // Check if touch is within keyword bounding box
             if (
-                x >= box.x &&
-                x <= box.x + box.width &&
-                y >= box.y &&
-                y <= box.y + box.height
+                x >= boxkeyword.x &&
+                x <= boxkeyword.x + boxkeyword.width &&
+                y >= boxkeyword.y &&
+                y <= boxkeyword.y + boxkeyword.height
             ) {
                 foundIndex = index;
-
                 //the keywordimage should scale down and scale up again. Afterwards the detail keyword should open
                 console.log('Found index:', foundIndex);
 
                 // Trigger animation
                 tappedSignal.value = { index: foundIndex, timestamp: Date.now() };
+                console.log('keywordData[index]:', keywordData[index], 'keywordImageSources:', keywordImageSources[index]);
                 handleOpendetailKeyword(keywordData[index], index, page, setPage, keywordImageSources, boundingBoxesKeywords);
-
-                break;
+                return;
             }
         }
 
-    }, [boundingBoxesKeywords, keywordData]);
+        // Check if touch is within cluster bounding box
+        // Check if touch is within cluster image
+        if (clusterPosition) {
+            if (
+                x >= clusterPosition.imageX &&
+                x <= clusterPosition.imageX + widthCluster &&
+                y >= clusterPosition.imageY &&
+                y <= clusterPosition.imageY + heightCluster
+            ) {
+                console.log('Found cluster');
+                tappedSignal.value = { index: -1, timestamp: Date.now() };
+                handleOpendetailCluster(project.cluster, page, setPage, clusterImage, boundingBoxesCluster);
+            }
+        }
+
+    }, [boundingBoxesKeywords, keywordData, boundingBoxesCluster]);
 
     // Return loading state while images load
     //normally you shouldn't see this
@@ -360,7 +419,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                         height: screenHeight,
                                         pointerEvents: 'box-none'
                                     }}
-                                    entering={getEnteringFadeScale().delay(randomDelays[index])}
+                                    entering={getEnteringFadeScale().delay(randomDelays[index] + 50)}
                                 >
                                     <Touchable
                                         onPress={() => handleOpendetailKeyword(keyword, index, page, setPage, keywordImageSources, boundingBoxesKeywords)}

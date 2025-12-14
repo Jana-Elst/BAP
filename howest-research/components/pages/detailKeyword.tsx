@@ -3,15 +3,23 @@ import { StyleSheet, View } from 'react-native';
 import { StyledText, SubTitle, Title } from '../atoms/styledComponents';
 
 import { Colors, Fonts } from '@/constants/theme';
-import { getProjectsByKeyword } from "@/scripts/getData";
+import { getProjectsByKeyword, getProjectsByCluster } from "@/scripts/getData";
 import { getVisiblePixelsInfo } from '@/scripts/getHelperFunction';
 import { FlashList } from '@shopify/flash-list';
+import { useMemo } from 'react';
 import Card from "../atoms/card";
 import ProjectCardLarge from '../molecules/projectCardLarge';
 
 const DetailKeyword = ({ page, setPage, setVisible }) => {
-    const filteredProjects = getProjectsByKeyword(page.id);
-    const keywordImage = page.info.keywordImageSource;
+    const filteredProjects = useMemo(() => {
+        if (page.page === 'detailKeyword') {
+            return getProjectsByKeyword(page.id)
+        } else {
+            return getProjectsByCluster(page.id)
+        }
+    }, [page.id]);
+
+    const keywordImage = useMemo(() => page.info.keywordImageSource, [page.info.keywordImageSource]);
 
     const visibleInfo = getVisiblePixelsInfo(keywordImage, 180, 180);
 

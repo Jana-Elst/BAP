@@ -89,7 +89,7 @@ const Ipad = ({ page, setPage }) => {
                                 )
                             }
                             {
-                                page.page === 'detailKeyword' &&
+                                (page.page === 'detailKeyword' || page.page === 'detailCluster') &&
                                 (
                                     <DetailKeyword page={page} setPage={setPage} setVisible={setVisible} />
                                 )
