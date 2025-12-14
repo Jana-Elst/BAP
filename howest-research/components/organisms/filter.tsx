@@ -92,6 +92,8 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                             </View>
                                         )}
                                         renderItem={({ item }: { item: any }) => {
+                                            const label = item.label.split(' (')[0];
+                                            const labelCapitalize = label.charAt(0).toUpperCase() + label.slice(1).toLowerCase();
                                             return (
                                                 <Touchable
                                                     onPress={() => handleSelect(item)}
@@ -99,12 +101,12 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                                     iconPosition={'after'}
                                                     isActive={true}
                                                     styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
-                                                    styleGradient={{ alignSelf: 'center' }}><Paragraph>{item.label}</Paragraph></Touchable>
+                                                    styleGradient={{ alignSelf: 'center' }}><Paragraph>{labelCapitalize}</Paragraph></Touchable>
                                             );
                                         }}
                                         ListFooterComponent={() => (
                                             activeFilters.length > 0 ? (
-                                                <TouchableOpacity onPress={clearFilters} style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: 'green' }}>
+                                                <TouchableOpacity onPress={clearFilters} style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 }}>
                                                     <StyledText style={{ borderBottomWidth: 2, borderBottomColor: 'black' }}>Alle filters wissen</StyledText>
                                                 </TouchableOpacity>
                                             ) : null

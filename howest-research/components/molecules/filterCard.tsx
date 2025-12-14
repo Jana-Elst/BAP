@@ -84,7 +84,7 @@ const FilterCard = ({ project, onPress, isActive, filter }) => {
                 </View>
 
                 {filter === 'cluster' && (
-                    <StyledText style={styles.text}>{project.label.split(' (')[0]}</StyledText>
+                    <StyledText style={styles.text}>{project.label.split(' (')[0].charAt(0).toUpperCase() + project.label.split(' (')[0].slice(1).toLowerCase()}</StyledText>
                 )}
             </Card>
 

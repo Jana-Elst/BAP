@@ -12,7 +12,7 @@ const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isAc
             {/* <View style={styles.softLightOverlay} /> */}
             <View style={[styles.shadowContainer, { borderRadius: borderRadius }, flexStyle]}>
                 <LinearGradient
-                    style={[styles.card, { borderRadius: borderRadius }, { borderColor: isActive ? Colors.blue100 : Colors.white }, style, flexStyle]}
+                    style={[styles.card, { borderRadius: borderRadius }, { borderColor: isActive ? Colors.blue100 : Colors.white }, { borderWidth: isActive ? 2 : 1 }, style, flexStyle]}
                     colors={!isActive ? ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)'] : gradientColors}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 0.6, y: 1 }}
