@@ -12,8 +12,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.jana-e.howest-research",
       "icon": {
-        "dark": "./assets/images/splashIcons/icon-dark.png",
-        "light": "./assets/images/splashIcons/icon-light.png",
+        "dark": "./assets/images/splashIcons/ios-dark.png",
+        "light": "./assets/images/splashIcons/ios-light.png",
         "tinted": "./assets/images/splashIcons/icon.png"
       }
     },
