@@ -204,11 +204,10 @@ const createOrbitControls = (camera: THREE.PerspectiveCamera, renderer: CSS3DRen
     controls.maxDistance = 4000;
     controls.minDistance = 500;
     controls.zoomSpeed = 1;
-    controls.panSpeed = 1;
     controls.zoomToCursor = true;
     controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.panSpeed = 3.0;
+    controls.dampingFactor = 0.008;
+    controls.panSpeed = 1.5;
     return controls;
 }
 
