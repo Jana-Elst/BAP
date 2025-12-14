@@ -224,19 +224,6 @@ const CanvasContent = ({
                     index={-1}
                 />
             )}
-
-            {clusterPosition && boundingBoxesCluster && (
-                console.log('boundingBoxesCluster', boundingBoxesCluster),
-                <Rect
-                    x={clusterPosition.x}
-                    y={clusterPosition.y}
-                    width={clusterPosition.width}
-                    height={clusterPosition.height}
-                    color="red"
-                    style="stroke"
-                    strokeWidth={4}
-                />
-            )}
         </Canvas>)
 }
 
