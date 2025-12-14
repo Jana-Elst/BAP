@@ -108,7 +108,7 @@ const DetailPage = ({ page, setPage }) => {
                                                         style={{ width: '100%', height: '100%' }}
                                                         easing={Easing.linear}
                                                         speed={1}
-                                                        linearGradients={['transparent', 'rgba(255, 255, 255, 0.2)', 'transparent']}
+                                                        linearGradients={['transparent', '#ffffff33', 'transparent']}
                                                     />
                                                 </View>
                                             </ShimmerProvider>
