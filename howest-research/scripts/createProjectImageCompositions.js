@@ -211,7 +211,8 @@ const getBoundingBoxCluster = (boundingBoxesKeywords, screenWidth, screenHeight)
 
 
 //----------------------------- export function -----------------------------//
-export const useComposition = (project, width, height, sWidth, sHeight) => {
+export const useComposition = (project, width, height, sWidth, sHeight, name = 'default') => {
+    console.log('🟢 start using useComposition', name);
     //----- constants -----//
     const centerX = sWidth / 2;
     const centerY = sHeight / 2;
@@ -230,19 +231,19 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     const keywordFormatted = keywordData.map(keyword => keyword.formattedName);
     const clusterData = project ? project.cluster : { formattedName: '' };
 
-    console.log('🔵 1. keywordData', keywordData);
-    console.log('🔵 2. keywordFormatted', keywordFormatted);
-    console.log('🔵 3. clusterData', clusterData);
+    // console.log('🔵 1. keywordData', keywordData);
+    // console.log('🔵 2. keywordFormatted', keywordFormatted);
+    // console.log('🔵 3. clusterData', clusterData);
 
     //----- get images from project -----//
     const keywordImagesSources = useGetImages(keywordFormatted);
     const clusterImagesSources = useGetClusterImages(clusterData.formattedName);
-    console.log('🔵 4. keywordImages', keywordImagesSources);
-    console.log('🔵 5. clusterImages', clusterImagesSources);
+    // console.log('🔵 4. keywordImages', keywordImagesSources);
+    // console.log('🔵 5. clusterImages', clusterImagesSources);
 
     //----- get correct positions from keywordPositionsConfig -----//
     const positions = keywordPositionsConfig[keywordData.length] || null;
-    console.log('🔵 6. positions', positions);
+    // console.log('🔵 6. positions', positions);
 
     //----- get correct keyword & cluster images based on rotation from config -----//
     //keywords
@@ -255,7 +256,7 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         return image[rotationIndex + offset];
     });
 
-    console.log('🔵 7. keywordSources', keywordSources);
+    // console.log('🔵 7. keywordSources', keywordSources);
 
     const [keywordImage0, visibleInfo0] = useImageWithVisibleInfo(keywordSources[0] || null, widthKeyword, heightKeyword);
     const [keywordImage1, visibleInfo1] = useImageWithVisibleInfo(keywordSources[1] || null, widthKeyword, heightKeyword);
@@ -296,12 +297,12 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
 
         const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
 
-        console.log('🔵 8. keywordImages loaded', keywordImages);
-        console.log('🔵 9. clusterImage loaded', clusterImage);
+        // console.log('🔵 8. keywordImages loaded', keywordImages);
+        // console.log('🔵 9. clusterImage loaded', clusterImage);
 
         const allVisibleInfosReady = visibleInfoCluster !== undefined && requiredVisibleInfos.every(info => info !== undefined);
-        console.log('🔵 10. visibleInfoCluster', visibleInfoCluster);
-        console.log('🔵 11. requiredVisibleInfos', requiredVisibleInfos);
+        // console.log('🔵 10. visibleInfoCluster', visibleInfoCluster);
+        // console.log('🔵 11. requiredVisibleInfos', requiredVisibleInfos);
 
 
         //----- return loading state if images not loaded -----//

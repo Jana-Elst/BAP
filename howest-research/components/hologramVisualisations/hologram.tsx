@@ -17,7 +17,6 @@ import { useWebpAnimations } from "../../scripts/getWebpAnimations";
 const transition = ['Intro', 'Loop', 'Loop', 'Outro'];
 const detailScreen = ['Intro', 'Loop', 'Outro'];
 
-
 const FloatingKeywordImage = ({
     image,
     renderX,
@@ -42,6 +41,10 @@ const FloatingKeywordImage = ({
     page: any;
 }) => {
     const progress = useSharedValue(0);
+
+    console.log('❤️ image', image);
+    console.log('width', width);
+    console.log('height', height);
 
     useEffect(() => {
         const random = Math.floor(Math.random() * 2000);
@@ -90,10 +93,10 @@ const FloatingKeywordImage = ({
 }
 
 const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: number; screenHeight: number; page: any, setPage: any }) => {
-    //--- General ---//
+    // //--- General ---//
     const { animationMap, projects } = useWebpAnimations();
     const project = useMemo(() => page.id && page.page === 'detailResearch' ? getProjectInfo(page.id) : null, [page.id, page.page]);
-    const positionData = useComposition(project, screenWidth, screenHeight, screenWidth, screenHeight);
+    const positionData = useComposition(project, screenWidth, screenHeight, screenWidth, screenHeight, 'HOLOGRAM');
     const activeProjectData = useActiveProjectData(page, project, positionData);
 
     const {
@@ -115,7 +118,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
         offset,
         widthCluster,
         heightCluster,
-        widhtKeyword,
+        widthKeyword,
         heightKeyword,
         getEllipseIntersection,
         isLoading = false,
@@ -136,12 +139,12 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
     }, [positionData.isLoading, page.isLoading, project]);
 
     const isLoadingGlobal = useMemo(() => {
-        console.log('//------------------------------------ isLoadingGlobal', page.isLoading, positionData.isLoading, "------------------------------------//")
+        console.log('//----------- isLoadingGlobal', page.isLoading, positionData.isLoading, "-----------//")
         return checkIsLoading(page.isLoading)
     }, [page.isLoading]);
 
-    //--- project loops ---//
-    //idle screen
+    // //--- project loops ---//
+    // //idle screen
     const projectsLoop = useMemo(() => projects
         .filter(p => p !== 'clusteroverschrijdend')
         .flatMap(project => ['clusteroverschrijdend', project]), [projects]);
@@ -341,9 +344,11 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
         >
             {activeProjectData.project ? (
                 keywordImages.map((image, index) => {
-                    // const pos = keywordPositions[index];
+                    console.log('😎 keywordImages');
+                    console.log('😎 index');
+                    // // const pos = keywordPositions[index];
                     const pos = activeProjectData.positionData.keywordPositions[index];
-                    // console.log('pos', pos);
+                    console.log('😎 pos', pos);
 
                     const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
                     const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
@@ -358,9 +363,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                     const renderYInitial = boundingBoxInitial?.renderY ?? pos.y;
 
                     if (page.page === 'detailKeyword') {
-                        console.log('page INFO KEYWORD ID', page.info.keyword.id);
-                        console.log('activeProject', activeProjectData.project.keywords[index].id);
-
+                        console.log('😎 page INFO KEYWORD ID', page.info.keyword.id);
                         if (page.info.keyword.id === activeProjectData.project.keywords[index].id) {
                             return (
                                 <FloatingKeywordImage
@@ -371,7 +374,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                                     renderY={renderY}
                                     renderXInitial={renderXInitial}
                                     renderYInitial={renderYInitial}
-                                    width={widhtKeyword}
+                                    width={widthKeyword}
                                     height={heightKeyword}
                                     index={index}
                                     time={globalTimestamp}
@@ -379,6 +382,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                             );
                         }
                     } else {
+                        console.log('😎 detailPage');
                         return (
                             <FloatingKeywordImage
                                 page={page}
@@ -388,7 +392,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                                 renderY={renderY}
                                 renderXInitial={renderXInitial}
                                 renderYInitial={renderYInitial}
-                                width={widhtKeyword}
+                                width={widthKeyword}
                                 height={heightKeyword}
                                 index={index}
                                 time={globalTimestamp}
@@ -397,7 +401,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                     }
                 })
             ) : (
-                console.log('NO KEYWORDS', activeProjectData.project)
+                console.log('😎 NO KEYWORDS', activeProjectData.project)
             )}
 
             <Image
