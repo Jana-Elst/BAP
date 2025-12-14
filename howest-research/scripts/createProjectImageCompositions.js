@@ -1,22 +1,8 @@
 //----------------------------- IMPORTS -----------------------------//
-import { useImage } from '@shopify/react-native-skia';
 import { useMemo } from 'react';
+import { useImageWithVisibleInfo } from '../hooks/useSkiaImageWithVisibleInfo';
 import useGetClusterImages from './getClusterImages';
 import useGetImages from './getKeywordImages';
-
-//----------------------------- VARIABLES -----------------------------//
-let centerX
-let centerY
-let widthCluster
-let heightCluster
-let offset
-let widhtKeyword
-let heightKeyword
-let screenWidth
-let screenHeight
-
-let clusterImage
-let keywordImages: any[] = [];
 
 //----------------------------- DATA -----------------------------//
 const keywordPositionsConfig = [
@@ -83,14 +69,35 @@ const colorOffsets = {
 };
 
 //----------------------------- helper functions -----------------------------//
+//----- Calculate the intersection point on the offset ellipse for a given angle -----//
+const getEllipseIntersection = (degree, ellipseCenterX, ellipseCenterY, radiusX, radiusY) => {
+    const radians = (degree * Math.PI) / 180;
+
+    // For a line from center at angle θ intersecting an ellipse:
+    // We need to find the distance r from center where the line intersects the ellipse
+    // Formula: r = (a * b) / sqrt((b * cos(θ))² + (a * sin(θ))²)
+    // where a = radiusX (semi-major axis) and b = radiusY (semi-minor axis)
+
+    const cosTheta = Math.cos(radians);
+    const sinTheta = Math.sin(radians);
+
+    const denominator = Math.sqrt(
+        Math.pow(radiusY * cosTheta, 2) +
+        Math.pow(radiusX * sinTheta, 2)
+    );
+
+    const r = (radiusX * radiusY) / denominator;
+
+    const x = ellipseCenterX + r * cosTheta;
+    const y = ellipseCenterY + r * sinTheta;
+
+    return { x, y };
+};
+
 //----- Get Positions & Bounding boxes -----//
 //get cluster position based on visible pixels
-const getClusterPosition = () => {
+const getClusterPosition = (visibleInfo, centerX, centerY, widthCluster, heightCluster, offset) => {
     //check if cluster image is loaded
-    const allLoadedCluster = clusterImage !== null;
-    if (!allLoadedCluster) return;
-
-    const visibleInfo = getVisiblePixelsInfo(clusterImage, widthCluster, heightCluster);
     if (!visibleInfo) return;
 
     const imageX = centerX - visibleInfo.boundingBox.width / 2 - visibleInfo.offsetX;
@@ -105,7 +112,7 @@ const getClusterPosition = () => {
 };
 
 //get keyword positions based on cluster position
-const getKeywordPositions = (clusterPosition: any, positions: any) => {
+const getKeywordPositions = (clusterPosition, positions, centerX, centerY, offset, widthKeyword, heightKeyword) => {
     if (!clusterPosition) return [];
 
     const radiusX = (clusterPosition.width + offset) / 2;
@@ -115,7 +122,7 @@ const getKeywordPositions = (clusterPosition: any, positions: any) => {
     return positions.degrees.map((degree) => {
         const intersection = getEllipseIntersection(degree, centerX, centerY, radiusX, radiusY);
         return {
-            x: intersection.x - widhtKeyword / 2,
+            x: intersection.x - widthKeyword / 2,
             y: intersection.y - heightKeyword / 2,
             centerX: intersection.x,
             centerY: intersection.y,
@@ -123,12 +130,12 @@ const getKeywordPositions = (clusterPosition: any, positions: any) => {
     });
 };
 
-const getKeywordInitialPositions = (positions) => {
+const getKeywordInitialPositions = (positions, centerX, centerY, widthKeyword, heightKeyword) => {
     if (!positions) return [];
     return positions.degrees.map((degree) => {
         const intersection = getEllipseIntersection(degree, centerX, centerY, 1920, 1080);
         return {
-            x: intersection.x - widhtKeyword / 2,
+            x: intersection.x - widthKeyword / 2,
             y: intersection.y - heightKeyword / 2,
             centerX: intersection.x,
             centerY: intersection.y,
@@ -137,12 +144,12 @@ const getKeywordInitialPositions = (positions) => {
 };
 
 //
-const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
-    const boxesKeywords = keywordImages.map((image, index) => {
-        const pos = keywordPositions[index];
+const getBoundingBoxesKeywords = (keywordPositions, keywordVisibleInfos, widthKeyword, heightKeyword) => {
+    const boxesKeywords = keywordPositions.map((pos, index) => {
         if (!pos) return undefined;
 
-        const visibleInfo = getVisiblePixelsInfo(image, widhtKeyword, heightKeyword);
+        // Use the pre-calculated visible info
+        const visibleInfo = keywordVisibleInfos[index];
         if (!visibleInfo) return undefined;
 
         // Calculate where the visible content currently would be
@@ -174,7 +181,7 @@ const getBoundingBoxesKeywords = (keywordPositions, keywordData) => {
     return boxesKeywords;
 };
 
-const getBoundingBoxCluster = (boundingBoxesKeywords) => {
+const getBoundingBoxCluster = (boundingBoxesKeywords, screenWidth, screenHeight) => {
     if (!boundingBoxesKeywords || boundingBoxesKeywords.length === 0) return;
 
     let minX = screenWidth;
@@ -202,134 +209,20 @@ const getBoundingBoxCluster = (boundingBoxesKeywords) => {
     };
 };
 
-//----- xxx -----//
-const getVisiblePixelsInfo = (image: any, imageWidth: number, imageHeight: number): VisiblePixelsResult | undefined => {
-    if (!image) return undefined;
-
-    const originalWidth = image.width();
-    const originalHeight = image.height();
-
-    const pixels = image.readPixels(0, 0, {
-        width: originalWidth,
-        height: originalHeight,
-        colorType: 4,
-        alphaType: 2,
-    });
-
-    if (!pixels) return undefined;
-
-    let minX = originalWidth;
-    let minY = originalHeight;
-    let maxX = 0;
-    let maxY = 0;
-
-    for (let y = 0; y < originalHeight; y++) {
-        for (let x = 0; x < originalWidth; x++) {
-            const index = (y * originalWidth + x) * 4;
-            const alpha = pixels[index + 3];
-
-            if (alpha > 0) {
-                minX = Math.min(minX, x);
-                minY = Math.min(minY, y);
-                maxX = Math.max(maxX, x);
-                maxY = Math.max(maxY, y);
-            }
-        }
-    }
-
-    if (maxX >= minX && maxY >= minY) {
-        const imageAspect = originalWidth / originalHeight;
-        const containerAspect = imageWidth / imageHeight;
-
-        let renderedWidth: number;
-        let renderedHeight: number;
-        let containerOffsetX = 0;
-        let containerOffsetY = 0;
-
-        if (imageAspect > containerAspect) {
-            renderedWidth = imageWidth;
-            renderedHeight = imageWidth / imageAspect;
-            containerOffsetY = (imageHeight - renderedHeight) / 2;
-        } else {
-            renderedHeight = imageHeight;
-            renderedWidth = imageHeight * imageAspect;
-            containerOffsetX = (imageWidth - renderedWidth) / 2;
-        }
-
-        const scaleX = renderedWidth / originalWidth;
-        const scaleY = renderedHeight / originalHeight;
-
-        // Calculate the offset of visible content from top-left of container
-        //make sure the element is centered
-        const visibleOffsetX = containerOffsetX + minX * scaleX;
-        const visibleOffsetY = containerOffsetY + minY * scaleY;
-        const visibleWidth = (maxX - minX + 1) * scaleX;
-        const visibleHeight = (maxY - minY + 1) * scaleY;
-
-        return {
-            boundingBox: {
-                x: 0, // Will be set later based on image position
-                y: 0,
-                width: visibleWidth,
-                height: visibleHeight,
-            },
-            offsetX: visibleOffsetX,
-            offsetY: visibleOffsetY,
-        };
-    }
-
-    return undefined;
-};
-
-//----- Calculate the intersection point on the offset ellipse for a given angle -----//
-const getEllipseIntersection = (degree: number, ellipseCenterX: number, ellipseCenterY: number, radiusX: number, radiusY: number) => {
-    const radians = (degree * Math.PI) / 180;
-
-    // For a line from center at angle θ intersecting an ellipse:
-    // We need to find the distance r from center where the line intersects the ellipse
-    // Formula: r = (a * b) / sqrt((b * cos(θ))² + (a * sin(θ))²)
-    // where a = radiusX (semi-major axis) and b = radiusY (semi-minor axis)
-
-    const cosTheta = Math.cos(radians);
-    const sinTheta = Math.sin(radians);
-
-    const denominator = Math.sqrt(
-        Math.pow(radiusY * cosTheta, 2) +
-        Math.pow(radiusX * sinTheta, 2)
-    );
-
-    const r = (radiusX * radiusY) / denominator;
-
-    const x = ellipseCenterX + r * cosTheta;
-    const y = ellipseCenterY + r * sinTheta;
-
-    return { x, y };
-};
-
-const getRectIntersection = (degree, rectCenterX, rectCenterY, width, height) => {
-    const radians = (degree * Math.PI) / 180;
-    const cosTheta = Math.cos(radians);
-    const sinTheta = Math.sin(radians);
-
-    const x = rectCenterX + width / 2 * cosTheta;
-    const y = rectCenterY + height / 2 * sinTheta;
-
-    return { x, y };
-}
 
 //----------------------------- export function -----------------------------//
 export const useComposition = (project, width, height, sWidth, sHeight) => {
     //----- constants -----//
-    centerX = sWidth / 2;
-    centerY = sHeight / 2;
-    widthCluster = width;
-    heightCluster = height;
-    offset = widthCluster / 7.5;
-    screenHeight = sHeight;
-    screenWidth = sWidth;
+    const centerX = sWidth / 2;
+    const centerY = sHeight / 2;
+    const widthCluster = width;
+    const heightCluster = height;
+    const offset = widthCluster / 7.5;
+    const screenHeight = sHeight;
+    const screenWidth = sWidth;
 
-    widhtKeyword = widthCluster / 2;
-    heightKeyword = heightCluster / 2;
+    const widthKeyword = widthCluster / 2;
+    const heightKeyword = heightCluster / 2;
 
     //----- get data from project (SAFE GUARDED) -----//
     const keywordData = project ? project.keywords : [];
@@ -337,19 +230,19 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     const keywordFormatted = keywordData.map(keyword => keyword.formattedName);
     const clusterData = project ? project.cluster : { formattedName: '' };
 
-    // console.log('🔵 1. keywordData', keywordData);
-    // console.log('🔵 2. keywordFormatted', keywordFormatted);
-    // console.log('🔵 3. clusterData', clusterData);
+    console.log('🔵 1. keywordData', keywordData);
+    console.log('🔵 2. keywordFormatted', keywordFormatted);
+    console.log('🔵 3. clusterData', clusterData);
 
     //----- get images from project -----//
     const keywordImagesSources = useGetImages(keywordFormatted);
     const clusterImagesSources = useGetClusterImages(clusterData.formattedName);
-    // console.log('🔵 4. keywordImages', keywordImagesSources);
-    // console.log('🔵 5. clusterImages', clusterImagesSources);
+    console.log('🔵 4. keywordImages', keywordImagesSources);
+    console.log('🔵 5. clusterImages', clusterImagesSources);
 
     //----- get correct positions from keywordPositionsConfig -----//
     const positions = keywordPositionsConfig[keywordData.length] || null;
-    // console.log('🔵 6. positions', positions);
+    console.log('🔵 6. positions', positions);
 
     //----- get correct keyword & cluster images based on rotation from config -----//
     //keywords
@@ -362,19 +255,19 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         return image[rotationIndex + offset];
     });
 
-    // console.log('🔵 7. keywordSources', keywordSources);
+    console.log('🔵 7. keywordSources', keywordSources);
 
-    // Hooks must be called unconditionally
-    const keywordImage0 = useImage(keywordSources[0] || null);
-    const keywordImage1 = useImage(keywordSources[1] || null);
-    const keywordImage2 = useImage(keywordSources[2] || null);
-    const keywordImage3 = useImage(keywordSources[3] || null);
-    const keywordImage4 = useImage(keywordSources[4] || null);
-    const keywordImage5 = useImage(keywordSources[5] || null);
-    const keywordImage6 = useImage(keywordSources[6] || null);
-    const keywordImage7 = useImage(keywordSources[7] || null);
+    const [keywordImage0, visibleInfo0] = useImageWithVisibleInfo(keywordSources[0] || null, widthKeyword, heightKeyword);
+    const [keywordImage1, visibleInfo1] = useImageWithVisibleInfo(keywordSources[1] || null, widthKeyword, heightKeyword);
+    const [keywordImage2, visibleInfo2] = useImageWithVisibleInfo(keywordSources[2] || null, widthKeyword, heightKeyword);
+    const [keywordImage3, visibleInfo3] = useImageWithVisibleInfo(keywordSources[3] || null, widthKeyword, heightKeyword);
+    const [keywordImage4, visibleInfo4] = useImageWithVisibleInfo(keywordSources[4] || null, widthKeyword, heightKeyword);
+    const [keywordImage5, visibleInfo5] = useImageWithVisibleInfo(keywordSources[5] || null, widthKeyword, heightKeyword);
+    const [keywordImage6, visibleInfo6] = useImageWithVisibleInfo(keywordSources[6] || null, widthKeyword, heightKeyword);
+    const [keywordImage7, visibleInfo7] = useImageWithVisibleInfo(keywordSources[7] || null, widthKeyword, heightKeyword);
+    const [keywordImage8, visibleInfo8] = useImageWithVisibleInfo(keywordSources[8] || null, widthKeyword, heightKeyword);
 
-    keywordImages = [
+    const keywordImages = useMemo(() => [
         keywordImage0,
         keywordImage1,
         keywordImage2,
@@ -383,25 +276,37 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
         keywordImage5,
         keywordImage6,
         keywordImage7,
-    ];
+        keywordImage8,
+    ], [keywordImage0, keywordImage1, keywordImage2, keywordImage3, keywordImage4, keywordImage5, keywordImage6, keywordImage7, keywordImage8]);
+
+    const keywordVisibleInfos = useMemo(() => [
+        visibleInfo0, visibleInfo1, visibleInfo2, visibleInfo3, visibleInfo4, visibleInfo5, visibleInfo6, visibleInfo7, visibleInfo8
+    ], [visibleInfo0, visibleInfo1, visibleInfo2, visibleInfo3, visibleInfo4, visibleInfo5, visibleInfo6, visibleInfo7, visibleInfo8]);
 
     //clusters
     const clusterSource = clusterImagesSources[0]?.[0]; // Get first image from first cluster
-    clusterImage = useImage(clusterSource || null);
+    const [clusterImage, visibleInfoCluster] = useImageWithVisibleInfo(clusterSource || null, widthCluster, heightCluster);
 
     // If no project was provided, return early NOW (after all hooks have run)
     return useMemo(() => {
         if (!project) return { isLoading: true };
 
         const requiredKeywordImages = keywordImages.slice(0, keywordData.length);
+        const requiredVisibleInfos = keywordVisibleInfos.slice(0, keywordData.length);
+
         const allImagesLoaded = clusterImage !== null && requiredKeywordImages.every(img => img !== null);
 
-        // console.log('🔵 8. keywordImages loaded', keywordImages);
-        // console.log('🔵 9. clusterImage loaded', clusterImage);
+        console.log('🔵 8. keywordImages loaded', keywordImages);
+        console.log('🔵 9. clusterImage loaded', clusterImage);
+
+        const allVisibleInfosReady = visibleInfoCluster !== undefined && requiredVisibleInfos.every(info => info !== undefined);
+        console.log('🔵 10. visibleInfoCluster', visibleInfoCluster);
+        console.log('🔵 11. requiredVisibleInfos', requiredVisibleInfos);
+
 
         //----- return loading state if images not loaded -----//
-        if (!allImagesLoaded) {
-            console.log('⏳ Waiting for all images to load...');
+        if (!allImagesLoaded || !allVisibleInfosReady) {
+            console.log('⏳ Waiting for all images and visible infos to load...');
             return {
                 clusterPosition: undefined,
                 keywordPositions: [],
@@ -421,26 +326,24 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
                 offset,
                 widthCluster,
                 heightCluster,
-                widhtKeyword,
+                widthKeyword,
                 heightKeyword,
                 getEllipseIntersection,
                 isLoading: true,
             };
         }
 
-        console.log('✅ All images loaded! Performing calculations...');
+        console.log('✅ All images and visible infos loaded! Performing calculations...');
 
         //----- Calculations -----//
-        const clusterPosition = getClusterPosition();
-        // console.log('🔵 10. clusterPosition', clusterPosition);
-        const keywordPositions = getKeywordPositions(clusterPosition, positions);
-        const keywordInitialPositions = getKeywordInitialPositions(positions);
-        // console.log('🔵 11. keywordPositions', keywordPositions);
-        const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, keywordData);
-        const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, keywordData);
-        // console.log('🔵 12. boundingBoxesKeywords', boundingBoxesKeywords);
-        const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords);
-        // console.log('🔵 13. boundingBoxesCluster', boundingBoxesCluster);
+        const clusterPosition = getClusterPosition(visibleInfoCluster, centerX, centerY, widthCluster, heightCluster, offset);
+        const keywordPositions = getKeywordPositions(clusterPosition, positions, centerX, centerY, offset, widthKeyword, heightKeyword);
+        const keywordInitialPositions = getKeywordInitialPositions(positions, centerX, centerY, widthKeyword, heightKeyword);
+
+        const boundingBoxesKeywords = getBoundingBoxesKeywords(keywordPositions, requiredVisibleInfos, widthKeyword, heightKeyword);
+        const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, requiredVisibleInfos, widthKeyword, heightKeyword);
+
+        const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords, screenWidth, screenHeight);
 
         console.log('Composition data ready.');
         return {
@@ -461,7 +364,7 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
             offset,
             widthCluster,
             heightCluster,
-            widhtKeyword,
+            widthKeyword,
             heightKeyword,
             getEllipseIntersection,
             isLoading: false,
@@ -469,17 +372,20 @@ export const useComposition = (project, width, height, sWidth, sHeight) => {
     }, [
         project,
         clusterImage,
-        keywordImage0,
-        keywordImage1,
-        keywordImage2,
-        keywordImage3,
-        keywordImage4,
-        keywordImage5,
-        keywordImage6,
-        keywordImage7,
-        width,
-        height,
-        sWidth,
-        sHeight
+        visibleInfoCluster,
+        keywordImages,
+        keywordVisibleInfos,
+        keywordData,
+        positions,
+        centerX,
+        centerY,
+        offset,
+        widthCluster,
+        heightCluster,
+        widthKeyword,
+        heightKeyword,
+        screenWidth,
+        screenHeight,
+        clusterSource
     ]);
 };
