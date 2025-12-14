@@ -9,7 +9,6 @@ import Touchable from "../atoms/touchable";
 import FilterButton from '../molecules/filterButton';
 import FilterCard from '../molecules/filterCard';
 
-import { Colors } from '@/constants/theme';
 import { getAllTransitionDomains, getClusterName, getFilteredProjects } from '@/scripts/getData';
 import data from '../../assets/data/structured-data.json';
 
@@ -77,37 +76,41 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                     showIconOnly={true}
                                     styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
                                 </Touchable>
-                                {
-                                    activeFilters.length > 0 ?
-                                        <>
-                                            <FlashList
-                                                data={activeFilters}
-                                                horizontal={true}
-                                                estimatedItemSize={100}
-                                                ItemSeparatorComponent={() => (
-                                                    <View style={{ width: 12 }} />
-                                                )}
-                                                renderItem={({ item, index }) => {
-                                                    return (
-                                                        <Touchable
-                                                            onPress={() => handleSelect(item)}
-                                                            icon={'close'}
-                                                            iconPosition={'after'}
-                                                            isActive={true}
-                                                            styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
-                                                            styleGradient={{ alignSelf: 'center' }}><Paragraph>{item.label}</Paragraph></Touchable>
-                                                    );
-                                                }}
-                                            />
-
-                                            {
-                                                activeFilters.length > 0 && (
-                                                    <TouchableOpacity onPress={clearFilters}><StyledText style={{ borderBottomWidth: 2, borderBottomColor: Colors.black }}>Alle filters wissen</StyledText></TouchableOpacity>
-                                                )
-                                            }
-                                        </> :
-                                        <StyledText>Geen actieve filters. Selecteer één of meerdere filters.</StyledText>
-                                }
+                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                    <FlashList
+                                        data={activeFilters}
+                                        horizontal={true}
+                                        estimatedItemSize={100}
+                                        showsHorizontalScrollIndicator={false}
+                                        contentContainerStyle={{ paddingHorizontal: 18, justifyContent: 'center', alignItems: 'center', height: '100%' }}
+                                        ItemSeparatorComponent={() => (
+                                            <View style={{ width: 12 }} />
+                                        )}
+                                        ListEmptyComponent={() => (
+                                            <View style={{ justifyContent: 'center', height: '100%' }}>
+                                                <StyledText>Geen actieve filters. Selecteer één of meerdere filters.</StyledText>
+                                            </View>
+                                        )}
+                                        renderItem={({ item }: { item: any }) => {
+                                            return (
+                                                <Touchable
+                                                    onPress={() => handleSelect(item)}
+                                                    icon={'close'}
+                                                    iconPosition={'after'}
+                                                    isActive={true}
+                                                    styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
+                                                    styleGradient={{ alignSelf: 'center' }}><Paragraph>{item.label}</Paragraph></Touchable>
+                                            );
+                                        }}
+                                        ListFooterComponent={() => (
+                                            activeFilters.length > 0 ? (
+                                                <TouchableOpacity onPress={clearFilters} style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24, backgroundColor: 'green' }}>
+                                                    <StyledText style={{ borderBottomWidth: 2, borderBottomColor: 'black' }}>Alle filters wissen</StyledText>
+                                                </TouchableOpacity>
+                                            ) : null
+                                        )}
+                                    />
+                                </View>
                             </View>
 
                             {/*-------------------- Filters --------------------*/}
@@ -195,8 +198,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        gap: 16,
-        paddingHorizontal: 64,
+        paddingLeft: 64,
         marginBottom: 36,
     },
 
