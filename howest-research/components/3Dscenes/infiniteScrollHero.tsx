@@ -1,4 +1,4 @@
-import "@/styles/fonts.css";
+import "../../styles/style.css";
 
 const InfiniteScrollHero = () => {
     return (
