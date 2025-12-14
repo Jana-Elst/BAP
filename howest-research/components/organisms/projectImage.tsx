@@ -4,8 +4,8 @@ import { checkIsLoading } from '@/scripts/getHelperFunction';
 import { Canvas, Line, Image as SkiaImage, vec } from '@shopify/react-native-skia';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
-import { State, TapGestureHandler } from 'react-native-gesture-handler';
-import { Easing, Extrapolation, interpolate, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import { TapGestureHandler } from 'react-native-gesture-handler';
+import { Easing, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { StyledText } from '../atoms/styledComponents';
 import Touchable from '../atoms/touchable';
@@ -73,25 +73,6 @@ const handleOpendetailKeyword = (keyword: any, index: number, page: any, setPage
     })
 }
 
-const handleTap = (event: any, boundingBoxesKeywords: any[], keywordData: any[], onOpenKeyword: (keyword: any, index: number) => void) => {
-    const { x, y } = event.nativeEvent;
-
-    // Check if touch is within any keyword bounding box
-    boundingBoxesKeywords?.forEach((box, index) => {
-        if (!box) return;
-
-        // Check if touch point is within the bounding box
-        if (
-            x >= box.x &&
-            x <= box.x + box.width &&
-            y >= box.y &&
-            y <= box.y + box.height
-        ) {
-            onOpenKeyword(keywordData[index], index);
-        }
-    });
-};
-
 const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoading, delay = 0, duration = 300 }: any) => {
     const opacity = useSharedValue(0);
 
@@ -114,31 +95,24 @@ const AnimatedLine = ({ p1, p2, color, strokeWidth, isLoading, delay = 0, durati
     );
 };
 
-const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, delay = 0, duration = 500, bounceSignal, index }: any) => {
-    const progress = useSharedValue(0);
+const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoading, delay = 0, duration = 500, index, tappedSignal }: any) => {
     const bounceScale = useSharedValue(1);
 
-    useEffect(() => {
-        if (!isLoading) {
-            progress.value = withDelay(delay, withTiming(1, { duration, easing: Easing.out(Easing.back(1.5)) }));
-        } else {
-            progress.value = 0;
-        }
-    }, [isLoading]);
-
     useAnimatedReaction(
-        () => bounceSignal?.value,
+        () => tappedSignal?.value,
         (signal) => {
-            if (signal && signal.index === index && typeof signal.scale === 'number') {
-                bounceScale.value = withTiming(signal.scale, { duration: 100, easing: Easing.out(Easing.quad) });
+            if (signal && signal.index === index && signal.timestamp > 0) {
+                bounceScale.value = withSequence(
+                    withTiming(0.7, { duration: 150, easing: Easing.out(Easing.quad) }),
+                    withTiming(1, { duration: 150, easing: Easing.out(Easing.quad) }),
+                );
             }
         }
     );
 
     const transform = useDerivedValue(() => {
-        const scale = interpolate(progress.value, [0, 1], [0, 1], Extrapolation.CLAMP);
-        return [{ scale: scale * bounceScale.value }];
-    }, [progress, bounceScale]);
+        return [{ scale: bounceScale.value }];
+    }, [bounceScale]);
 
     return (
         <SkiaImage
@@ -178,7 +152,7 @@ const CanvasContent = ({
     isLoadingGlobal,
     randomDelays,
     randomDurations,
-    bounceSignal
+    tappedSignal,
 }: any) => {
 
     return (
@@ -233,8 +207,8 @@ const CanvasContent = ({
                         isLoading={isLoadingGlobal}
                         delay={randomDelay}
                         duration={randomDuration}
-                        bounceSignal={bounceSignal}
                         index={index}
+                        tappedSignal={tappedSignal}
                     />
                 );
             })}
@@ -259,12 +233,7 @@ const CanvasContent = ({
 const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false, device }) => {
     const canvasRef = useRef<View>(null);
     const positionData = useComposition(project, width, height, screenWidth, screenHeight);
-
-    // Track active interaction for press-and-hold behavior
-    const activeInteraction = useRef<{ keyword: any, index: number } | null>(null);
-
-    // Create shared value effectively acting as a signal bus
-    const bounceSignal = useSharedValue({ index: -1, scale: 1 });
+    const tappedSignal = useSharedValue({ index: -1, timestamp: 0 });
 
     // Destructure all needed data
     const {
@@ -286,7 +255,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         widhtKeyword = width / 2,
         heightKeyword = height / 2,
         getEllipseIntersection,
-    } = positionData;
+    } = useMemo(() => positionData, [positionData]);
 
     const keyWordLabelPositions = useMemo(() => getKeywordLabelPositions(positions, boundingBoxesCluster, getEllipseIntersection), [positionData]);
     const isLoadingGlobal = useMemo(() => checkIsLoading(page.isLoading), [page.isLoading]);
@@ -311,46 +280,32 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     }, [page, setPage, keywordImageSources, boundingBoxesKeywords]);
 
     const onTap = useCallback((event: any) => {
-        const { state, x, y } = event.nativeEvent;
+        const { x, y } = event.nativeEvent;
+        let foundIndex = -1;
+        for (let index = 0; index < boundingBoxesKeywords.length; index++) {
+            const box = boundingBoxesKeywords[index];
+            if (!box) continue;
 
-        if (state === State.BEGAN) {
-            let foundIndex = -1;
-            boundingBoxesKeywords?.forEach((box, index) => {
-                if (!box) return;
-                if (
-                    x >= box.x &&
-                    x <= box.x + box.width &&
-                    y >= box.y &&
-                    y <= box.y + box.height
-                ) {
-                    foundIndex = index;
-                }
-            });
+            if (
+                x >= box.x &&
+                x <= box.x + box.width &&
+                y >= box.y &&
+                y <= box.y + box.height
+            ) {
+                foundIndex = index;
 
-            if (foundIndex !== -1) {
-                const keyword = keywordData[foundIndex];
-                activeInteraction.current = { keyword, index: foundIndex };
-                bounceSignal.value = { index: foundIndex, scale: 0.9 };
-            }
-        } else if (state === State.END) {
-            if (activeInteraction.current) {
-                const { keyword, index } = activeInteraction.current;
-                bounceSignal.value = { index, scale: 1 };
+                //the keywordimage should scale down and scale up again. Afterwards the detail keyword should open
+                console.log('Found index:', foundIndex);
 
-                setTimeout(() => {
-                    onOpenKeyword(keyword, index);
-                }, 100);
+                // Trigger animation
+                tappedSignal.value = { index: foundIndex, timestamp: Date.now() };
+                handleOpendetailKeyword(keywordData[index], index, page, setPage, keywordImageSources, boundingBoxesKeywords);
 
-                activeInteraction.current = null;
-            }
-        } else if (state === State.FAILED || state === State.CANCELLED) {
-            if (activeInteraction.current) {
-                const { index } = activeInteraction.current;
-                bounceSignal.value = { index, scale: 1 };
-                activeInteraction.current = null;
+                break;
             }
         }
-    }, [boundingBoxesKeywords, keywordData, onOpenKeyword, bounceSignal]);
+
+    }, [boundingBoxesKeywords, keywordData]);
 
     // Return loading state while images load
     //normally you shouldn't see this
@@ -394,7 +349,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                             isLoadingGlobal={isLoadingGlobal}
                             randomDelays={randomDelays}
                             randomDurations={randomDurations}
-                            bounceSignal={bounceSignal}
+                            tappedSignal={tappedSignal}
                         />
 
                         {
@@ -464,7 +419,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     isLoadingGlobal={isLoadingGlobal}
                     randomDelays={randomDelays}
                     randomDurations={randomDurations}
-                    bounceSignal={bounceSignal}
                 />
             </View>
         );

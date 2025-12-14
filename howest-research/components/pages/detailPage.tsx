@@ -29,7 +29,12 @@ const gap = 32;
 const DetailPage = ({ page, setPage }) => {
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
-    const project = getProjectInfo(page.id);
+    
+    const projectRef = useRef(getProjectInfo(page.id));
+    if (page.page === 'detailResearch') {
+        projectRef.current = getProjectInfo(page.id);
+    }
+    const project = projectRef.current;
 
     const isLoading = useMemo(() => {
         console.log('isLoading', page.isLoading);

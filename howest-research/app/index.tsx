@@ -1,6 +1,6 @@
 import ExternalScreen from "@/components/screens/externalDisplay";
 import Ipad from "@/components/screens/ipad";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { StyleSheet } from 'react-native';
 import ExternalDisplay, {
   useExternalDisplay,
@@ -43,9 +43,8 @@ const HomeScreen = () => {
   };
 
   const screens = useExternalDisplay();
-  const screenIds = Object.keys(screens);
-  const screenCount = screenIds.length;  //if total screen count is 1 --> external screen is connected!
-  console.log('screens', screens);
+  const screenIds = useMemo(() => Object.keys(screens), [screens]);
+  const screenCount = useMemo(() => screenIds.length, [screenIds]);  //if total screen count is 1 --> external screen is connected!
 
   //-------------------- External screen connected --------------------//
   if (screenCount > 0) {

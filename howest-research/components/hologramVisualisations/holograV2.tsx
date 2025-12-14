@@ -2,21 +2,14 @@
 //https://shopify.github.io/react-native-skia/docs/animated-images/
 
 import { getProjectInfo } from "@/scripts/getData";
-import { checkIsLoading } from '@/scripts/getHelperFunction';
 import {
     Canvas,
     Image
 } from "@shopify/react-native-skia";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useRef } from "react";
 import { Easing, useDerivedValue, useFrameCallback, useSharedValue, withTiming } from "react-native-reanimated";
-import { useActiveProjectData } from "../../hooks/useActiveProjectData";
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { useWebpAnimations } from "../../scripts/getWebpAnimations";
-
-//--- Animation structures ---//
-const transition = ['Intro', 'Loop', 'Loop', 'Outro'];
-const detailScreen = ['Intro', 'Loop', 'Outro'];
-
 
 const FloatingKeywordImage = ({
     image,
@@ -92,59 +85,44 @@ const FloatingKeywordImage = ({
 const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: number; screenHeight: number; page: any, setPage: any }) => {
     //--- General ---//
     const { animationMap, projects } = useWebpAnimations();
-    const project = useMemo(() => page.id && page.page === 'detailResearch' ? getProjectInfo(page.id) : null, [page.id, page.page]);
+    const project = page.id && page.page === 'detailResearch' ? getProjectInfo(page.id) : null;
     const positionData = useComposition(project, screenWidth, screenHeight, screenWidth, screenHeight);
-    const activeProjectData = useActiveProjectData(page, project, positionData);
+
+    // Store the last valid project data to persist it when switching to detailKeyword
+    const previousProjectDataRef = useRef({ project: project, positionData: positionData });
+
+    if (page.page === 'detailResearch' && project) {
+        previousProjectDataRef.current = { project: project, positionData: positionData };
+    }
+
+    const activeProjectData = page.page === 'detailKeyword'
+        ? previousProjectDataRef.current
+        : { project: project, positionData: positionData };
 
     const {
-        clusterPosition = undefined,
+        keywordImages = [],
         keywordPositions = [],
         keywordInitialPositions = [],
-        boundingBoxesKeywords = undefined,
-        boundingBoxesKeywordsInitial = undefined,
-        boundingBoxesCluster = undefined,
-        keyWordLabelPositions = [],
-        keywordImageSources,
-        clusterImageSources = [],
-        keywordData,
-        keywordImages,
+        boundingBoxesKeywords,
+        boundingBoxesKeywordsInitial,
+        clusterPosition,
         clusterImage,
-        positions,
-        centerX,
-        centerY,
-        offset,
-        widthCluster,
-        heightCluster,
-        widhtKeyword,
-        heightKeyword,
-        getEllipseIntersection,
-        isLoading = false,
-    } = useMemo(() => activeProjectData.positionData, [activeProjectData.positionData]);
+        widhtKeyword = screenWidth / 2,
+        heightKeyword = screenHeight / 2,
+        widthCluster = screenWidth,
+        heightCluster = screenHeight
+    } = activeProjectData.positionData as any;
 
-    useEffect(() => {
-        const hologramIsLoading = project ? positionData.isLoading : false;
-        console.log('hologramIsLoading', hologramIsLoading)
-        if (page.isLoading.externalDisplay !== hologramIsLoading) {
-            setPage((prev: any) => ({
-                ...prev,
-                isLoading: {
-                    ...prev.isLoading,
-                    externalDisplay: hologramIsLoading
-                }
-            }))
-        }
-    }, [positionData.isLoading, page.isLoading, project]);
 
-    const isLoadingGlobal = useMemo(() => {
-        console.log('//------------------------------------ isLoadingGlobal', page.isLoading, positionData.isLoading, "------------------------------------//")
-        return checkIsLoading(page.isLoading)
-    }, [page.isLoading]);
+    //--- Animation structures ---//
+    const transition = ['Intro', 'Loop', 'Loop', 'Outro'];
+    const detailScreen = ['Intro', 'Loop', 'Outro'];
 
     //--- project loops ---//
     //idle screen
-    const projectsLoop = useMemo(() => projects
+    const projectsLoop = projects
         .filter(p => p !== 'clusteroverschrijdend')
-        .flatMap(project => ['clusteroverschrijdend', project]), [projects]);
+        .flatMap(project => ['clusteroverschrijdend', project]);
 
     //--- variables ---//
     //loop project
@@ -173,9 +151,24 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
             }) : []
     );
 
+    const isLoading = useSharedValue(page.isLoading.externalDisplay);
     const isDetail = useSharedValue(true);
     const globalTimestamp = useSharedValue(0);
 
+    useEffect(() => {
+        if (page.isLoading.externalDisplay !== positionData.isLoading) {
+            setPage((prev: any) => ({
+                ...prev,
+                isLoading: {
+                    ...prev.isLoading,
+                    externalDisplay: positionData.isLoading
+                }
+            }))
+        }
+        isLoading.value = positionData.isLoading;
+    }, [positionData.isLoading, page.isLoading.externalDisplay]);
+
+    //--- Let's animate! ---//
     useFrameCallback((frameInfo) => {
         //general
         const { timestamp } = frameInfo;
@@ -187,10 +180,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
         floatY.value = Math.cos(timestamp * 0.004) * 10;
 
         const activeAnimation = animationMap[projectAnimation.value[currentProject.value] + part];
-
-        if (!part) {
-            console.log('activeAnimation', projectAnimation.value[currentProject.value] + part);
-        }
 
         // ------------- Transition animations ------------- //
         //--- Normal Frame Processing ---//
@@ -238,7 +227,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
             }
 
             //--- loading ---//
-            if (isLoadingGlobal) {
+            if (isLoading.value) {
                 if (currentAnimationIndex.value === 2 || currentAnimationIndex.value === 3) {
                     currentAnimationIndex.value = 2;
                     currentFrameIndex.value = 0;
@@ -250,15 +239,17 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
             }
 
             //--- detailPage ---//
-            if (!isLoadingGlobal && page.page === 'detailResearch') {
-                animationParts.value = transition;
+            if (!isLoading.value && page.page === 'detailResearch') {
+                console.log('detailResearch hologram NOT LOADING');
+
+                animationParts.value = detailScreen;
                 projectAnimation.value = [project?.cluster.formattedName, project?.cluster.formattedName];
                 currentProject.value = 0;
                 nextProject.value = 1;
 
                 //--- keywordDetail ---//
-            } else if (!isLoadingGlobal && page.page === 'detailKeyword') {
-                animationParts.value = transition;
+            } else if (!isLoading.value && page.page === 'detailKeyword') {
+                animationParts.value = detailScreen;
                 currentProject.value = 0;
                 nextProject.value = 0;
             } else {
@@ -332,6 +323,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
         }
     }, [page.page, positionData.isLoading]);
 
+
     return (
         <Canvas
             style={{
@@ -343,7 +335,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 keywordImages.map((image, index) => {
                     // const pos = keywordPositions[index];
                     const pos = activeProjectData.positionData.keywordPositions[index];
-                    // console.log('pos', pos);
+                    console.log('pos', pos);
 
                     const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
                     const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
@@ -395,6 +387,14 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                             />
                         );
                     }
+
+                    // return (<Image
+                    //     image={image}
+                    //     x={renderX}
+                    //     y={renderY}
+                    //     width={widhtKeyword}
+                    //     height={heightKeyword}
+                    // />);
                 })
             ) : (
                 console.log('NO KEYWORDS', activeProjectData.project)
