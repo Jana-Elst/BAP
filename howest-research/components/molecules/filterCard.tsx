@@ -1,9 +1,9 @@
+import Card from "@/components/atoms/card";
+import { Fonts } from "@/constants/theme";
 import { Image } from 'expo-image';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { StyledText } from '../atoms/styledComponents';
-import { Colors, Fonts } from "@/constants/theme";
-import Card from "@/components/atoms/card";
 import RadialGradientComponent from '../atoms/radialGradient';
+import { StyledText } from '../atoms/styledComponents';
 
 import activeHealthCah from '../../assets/images/filters/activeHealthCah.png';
 import architectuurEnDesignCad from '../../assets/images/filters/architectuurEnDesignCad.png';
@@ -22,10 +22,11 @@ import sociaalAgogischWerkCsaw from '../../assets/images/filters/sociaalAgogisch
 import digitaal from '../../assets/images/filters/digitaal.png';
 import ecologisch from '../../assets/images/filters/ecologisch.png';
 import gezond from '../../assets/images/filters/gezond.png';
-import sociaal from '../../assets/images/filters/sociaal.png';
 import leren from '../../assets/images/filters/leren.png';
-import { useMemo, useState } from 'react';
+import sociaal from '../../assets/images/filters/sociaal.png';
+
 import { getDomainColor } from '@/scripts/getData';
+import { useMemo, useState } from 'react';
 
 const images = {
     'activeHealthCah': activeHealthCah,
@@ -51,7 +52,7 @@ const images = {
 
 const FilterCard = ({ project, onPress, isActive, filter }) => {
     const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-    
+
     const color = useMemo(() => {
         if (filter === 'domain') {
             return getDomainColor(project.formattedName);
@@ -83,14 +84,13 @@ const FilterCard = ({ project, onPress, isActive, filter }) => {
                 </View>
 
                 {filter === 'cluster' && (
-                    <StyledText style={styles.text}>{project.label}</StyledText>
+                    <StyledText style={styles.text}>{project.label.split(' (')[0]}</StyledText>
                 )}
             </Card>
 
 
             {filter === 'domain' && !isActive && (
                 <View style={styles.radialGradientContainer}>
-                    {/* background: var(--linear-fill-blue, linear-gradient(134deg, var(--colors-bleu-10, rgba(68, 200, 245, 0.10)) 10.11%, var(--colors-bleu-50, rgba(68, 200, 245, 0.50)) 92.52%)); */}
                     <RadialGradientComponent width={containerSize.width} height={containerSize.height} color={color} />
                 </View>
             )}

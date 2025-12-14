@@ -30,11 +30,11 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
     const handleSelect = (item) => {
         console.log('Selected item:', item);
 
-        const isAlreadySelected = activeFilters.some(filter => filter.id === item.id);
+        const isAlreadySelected = activeFilters.some(filter => filter.formattedName === item.formattedName);
         if (isAlreadySelected) {
             // If already selected, remove it
             setActiveFilters(
-                activeFilters.filter(filter => filter.id !== item.id)
+                activeFilters.filter(filter => filter.formattedName !== item.formattedName)
             );
             return;
         }
@@ -115,7 +115,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                 <View>
                                     <View style={{ paddingLeft: 64 }}>
                                         <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
-                                        <StyledText style={styles.filterDescription}>De 5 domeinen waarbinnen Howest Research onderzoek voert.</StyledText>
+                                        <StyledText style={styles.filterDescription}>5 domeinen waarbinnen Howest Research onderzoek voert</StyledText>
                                     </View>
                                     <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, paddingHorizontal: 64 }}>
                                         {transitionDomains.map((item, index) => (
@@ -124,7 +124,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                                 filter={'domain'}
                                                 project={item}
                                                 onPress={() => handleSelect(item)}
-                                                isActive={activeFilters.includes(item)}
+                                                isActive={activeFilters.some((filter: any) => filter.formattedName === item.formattedName)}
                                             />
                                         ))}
                                     </View>
@@ -133,7 +133,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                 <View>
                                     <View style={{ paddingLeft: 64 }}>
                                         <SubTitleSmall>Clusters</SubTitleSmall>
-                                        <StyledText style={styles.filterDescription}>13 subgroeperingen gelinkt aan de verschillende opleidingsclusters</StyledText>
+                                        <StyledText style={styles.filterDescription}>13 clusters gelinkt aan onze verschillende opleidingen</StyledText>
                                     </View>
                                     <FlashList
                                         data={clusters.filter(item => {
@@ -147,23 +147,23 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                             <View style={{ width: 20 }} />
                                         )}
                                         renderItem={({ item, index }) => {
-                                            const cluster = getClusterName(item.id);
+                                            console.log('item', item);
                                             return (
-                                                <FilterCard
-                                                    filter={'cluster'}
-                                                    project={cluster}
-                                                    onPress={() => handleSelect(cluster)}
-                                                    isActive={activeFilters.includes(cluster)} />
+                                                <View style={{ paddingBottom: 56 }}>
+                                                    <FilterCard
+                                                        filter={'cluster'}
+                                                        project={item}
+                                                        onPress={() => handleSelect(item)}
+                                                        isActive={activeFilters.some((filter: any) => filter.formattedName === item.formattedName)} />
+                                                </View>
                                             )
-                                        }
-
-                                        }
+                                        }}
                                     />
                                 </View>
                             </View>
 
                             {/*-------------------- Buttons footer --------------------*/}
-                            <View style={{ gap: 16, marginTop: 28, alignItems: 'center', justifyContent: 'center' }}>
+                            <View style={{ gap: 16, alignItems: 'center', justifyContent: 'center' }}>
                                 {
                                     activeFilters.length > 0 ? (
                                         <TouchableOpacity onPress={clearFilters}><ParagraphLarge style={{ borderBottomWidth: 2 }}>Alle filters wissen</ParagraphLarge></TouchableOpacity>
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         gap: 16,
         paddingHorizontal: 64,
-        marginBottom: 8,
+        marginBottom: 36,
     },
 
     overlayContent: {
@@ -211,7 +211,6 @@ const styles = StyleSheet.create({
     card: {
         paddingTop: 55,
         paddingBottom: 34,
-        gap: 28,
         borderWidth: 3,
     },
 
