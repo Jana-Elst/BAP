@@ -1,7 +1,7 @@
 import { Colors } from '@/constants/theme';
 import { getEnteringFadeScale } from '@/scripts/animations';
 import { checkIsLoading } from '@/scripts/getHelperFunction';
-import { Canvas, Line, Rect, Image as SkiaImage, vec } from '@shopify/react-native-skia';
+import { Canvas, Line, Image as SkiaImage, vec } from '@shopify/react-native-skia';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
@@ -363,7 +363,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
             }
         }
 
-    }, [boundingBoxesKeywords, keywordData, boundingBoxesCluster]);
+    }, [boundingBoxesKeywords, keywordData, boundingBoxesCluster, page, setPage]);
 
     // Return loading state while images load
     //normally you shouldn't see this

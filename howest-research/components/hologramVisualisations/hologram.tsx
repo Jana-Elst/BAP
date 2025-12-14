@@ -6,7 +6,7 @@ import { checkIsLoading } from '@/scripts/getHelperFunction';
 import {
     Canvas,
     Image,
-    Rect
+    vec
 } from "@shopify/react-native-skia";
 import React, { useEffect, useMemo } from "react";
 import { Easing, useDerivedValue, useFrameCallback, useSharedValue, withTiming } from "react-native-reanimated";
@@ -16,7 +16,6 @@ import { useWebpAnimations } from "../../scripts/getWebpAnimations";
 
 //--- Animation structures ---//
 const transition = ['Intro', 'Loop', 'Loop', 'Outro'];
-const detailScreen = ['Intro', 'Loop', 'Outro'];
 
 const FloatingKeywordImage = ({
     image,
@@ -43,12 +42,10 @@ const FloatingKeywordImage = ({
 }) => {
     const progress = useSharedValue(0);
 
-    console.log('❤️ image', image);
-    console.log('width', width);
-    console.log('height', height);
+    console.log('❤️ page', page.page);
 
     useEffect(() => {
-        const random = Math.floor(Math.random() * 2000);
+        const random = Math.floor(Math.random() * 2000 + 1000);
         progress.value = 0;
         progress.value = withTiming(1, { duration: random, easing: Easing.out(Easing.cubic) });
     }, [page.page]);
@@ -65,6 +62,8 @@ const FloatingKeywordImage = ({
         let currentX;
         if (page.page === 'detailKeyword') {
             currentX = renderX + offsetX.value;
+        } else if (page.page === 'detailCluster') {
+            currentX = renderX + (renderXInitial - renderX) * progress.value;
         } else {
             currentX = renderXInitial + (renderX - renderXInitial) * progress.value;
         }
@@ -76,6 +75,8 @@ const FloatingKeywordImage = ({
         let currentY;
         if (page.page === 'detailKeyword') {
             currentY = renderY + offsetY.value;
+        } else if (page.page === 'detailCluster') {
+            currentY = renderY + (renderYInitial - renderY) * progress.value;
         } else {
             currentY = renderYInitial + (renderY - renderYInitial) * progress.value;
         }
@@ -264,6 +265,11 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 animationParts.value = transition;
                 currentProject.value = 0;
                 nextProject.value = 0;
+            } else if (!isLoadingGlobal && page.page === 'detailCluster') {
+                animationParts.value = transition;
+                projectAnimation.value = [page.info.keyword.formattedName, page.info.keyword.formattedName];
+                currentProject.value = 0;
+                nextProject.value = 1;
             } else {
                 animationParts.value = transition;
                 projectAnimation.value = projectsLoop;
@@ -287,10 +293,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
     //---- Transition logic ----//
     useEffect(() => {
         if (page.page === 'detailResearch' && isLoading.value === false) {
-            console.log('--- Debugging Transition Logic ---');
-            console.log('page.page:', page.page);
-            console.log('boundingBoxesKeywords:', activeProjectData.positionData.boundingBoxesKeywords);
-            console.log('activeProjectData:', activeProjectData);
             if (activeProjectData?.positionData) {
                 console.log('positionData keys:', Object.keys(activeProjectData.positionData));
             } else {
@@ -316,19 +318,23 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
         }
         if (page.page === 'detailKeyword') {
             scalingCluster.value = withTiming(0, {
-                duration: 1000,
+                duration: 500,
                 easing: Easing.inOut(Easing.quad)
             });
             opacityCluster.value = withTiming(0, {
-                duration: 1000,
+                duration: 500,
                 easing: Easing.inOut(Easing.quad)
             });
 
         } else {
-            scalingCluster.value = withTiming(1, { duration: 1000 });
-            opacityCluster.value = withTiming(1, { duration: 1000 });
+            scalingCluster.value = withTiming(1, { duration: 100 });
+            opacityCluster.value = withTiming(1, { duration: 100 });
         }
     }, [page.page, positionData.isLoading]);
+
+    const transform = useDerivedValue(() => {
+        return [{ scale: scalingCluster.value }];
+    }, [scalingCluster]);
 
     return (
         <Canvas
@@ -341,7 +347,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 keywordImages.map((image, index) => {
                     console.log('😎 keywordImages');
                     console.log('😎 index');
-                    // // const pos = keywordPositions[index];
                     const pos = activeProjectData.positionData.keywordPositions[index];
                     console.log('😎 pos', pos);
 
@@ -401,7 +406,8 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
 
             <Image
                 image={currentImage}
-                scale={scalingCluster}
+                transform={transform}
+                origin={vec(screenWidth / 2, screenHeight / 2)}
                 opacity={opacityCluster}
                 x={floatX}
                 y={floatY}
@@ -409,16 +415,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 height={screenHeight}
                 fit="contain"
             />
-            {/* <Rect
-                scale={scalingCluster}
-                x={floatX}
-                y={floatY}
-                width={boundingBoxesCluster.width}
-                height={boundingBoxesCluster.height}
-                color="red"
-                style="stroke"
-                strokeWidth={4}
-            /> */}
         </Canvas>
     );
 }
