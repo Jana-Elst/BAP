@@ -3,12 +3,12 @@ import { Colors } from "@/constants/theme";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Pressable, StyleSheet, View } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
+import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
 import { ParagraphLarge } from "./styledComponents";
 
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
-const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosition = 'before', showIconOnly = false, styleButton = null, styleGradient = null, styleText = null, iconColor = null }) => {
+const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosition = 'before', showIconOnly = false, styleButton = null, styleGradient = null, styleText = null, iconColor = null, scaleAnimation = 0.95 }) => {
     const scale = useSharedValue(1);
 
     const animatedStyle = useAnimatedStyle(() => {
@@ -18,11 +18,14 @@ const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosit
     });
 
     const handlePressIn = () => {
-        scale.value = withSpring(0.95);
+        scale.value = withSequence(
+            withTiming(0.80, { duration: 100, easing: Easing.inOut(Easing.quad) }),
+            withTiming(1, { duration: 100, easing: Easing.inOut(Easing.quad) })
+        );
     };
 
     const handlePressOut = () => {
-        scale.value = withSpring(1);
+        scale.value = withTiming(1);
     };
 
     return (

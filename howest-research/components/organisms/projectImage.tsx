@@ -275,10 +275,6 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         }
     }, [positionData.isLoading, page.isLoading]);
 
-    const onOpenKeyword = useCallback((keyword: any, index: number) => {
-        handleOpendetailKeyword(keyword, index, page, setPage, keywordImageSources, boundingBoxesKeywords);
-    }, [page, setPage, keywordImageSources, boundingBoxesKeywords]);
-
     const onTap = useCallback((event: any) => {
         const { x, y } = event.nativeEvent;
         let foundIndex = -1;
@@ -367,11 +363,12 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                     entering={getEnteringFadeScale().delay(randomDelays[index])}
                                 >
                                     <Touchable
-                                        onPress={() => onOpenKeyword(keyword, index)}
+                                        onPress={() => handleOpendetailKeyword(keyword, index, page, setPage, keywordImageSources, boundingBoxesKeywords)}
                                         styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
                                         icon={'arrow-forward-outline'}
                                         iconPosition={'after'}
                                         iconColor={Colors.blueText}
+                                        scaleAnimation={0.90}
                                         styleGradient={{
                                             position: 'absolute',
                                             top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
