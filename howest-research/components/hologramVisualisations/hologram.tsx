@@ -5,7 +5,8 @@ import { getProjectInfo } from "@/scripts/getData";
 import { checkIsLoading } from '@/scripts/getHelperFunction';
 import {
     Canvas,
-    Image
+    Image,
+    Rect
 } from "@shopify/react-native-skia";
 import React, { useEffect, useMemo } from "react";
 import { Easing, useDerivedValue, useFrameCallback, useSharedValue, withTiming } from "react-native-reanimated";
@@ -176,7 +177,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
             }) : []
     );
 
-    const isDetail = useSharedValue(true);
     const globalTimestamp = useSharedValue(0);
 
     useFrameCallback((frameInfo) => {
@@ -297,11 +297,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 console.log('positionData is undefined or null');
             }
 
-            // const targetValues = boundingBoxesKeywords?.map((box) => ({
-            //     renderX: box.renderX,
-            //     renderY: box.renderY
-            // })) || [];
-
             const targetValues =
                 activeProjectData.positionData.boundingBoxesKeywords ?
                     activeProjectData.positionData.boundingBoxesKeywords.flatMap((box) => {
@@ -414,6 +409,16 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 height={screenHeight}
                 fit="contain"
             />
+            {/* <Rect
+                scale={scalingCluster}
+                x={floatX}
+                y={floatY}
+                width={boundingBoxesCluster.width}
+                height={boundingBoxesCluster.height}
+                color="red"
+                style="stroke"
+                strokeWidth={4}
+            /> */}
         </Canvas>
     );
 }

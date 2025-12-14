@@ -97,8 +97,8 @@ const getEllipseIntersection = (degree, ellipseCenterX, ellipseCenterY, radiusX,
 //----- Get Positions & Bounding boxes -----//
 //get cluster position based on visible pixels
 const getClusterPosition = (visibleInfo, centerX, centerY, widthCluster, heightCluster, offset) => {
-    //check if cluster image is loaded
     if (!visibleInfo) return;
+    console.log('🔵 visibleInfo', visibleInfo); //get a boundingbox with the data width, height, x, y, offsetX, offsetY
 
     const imageX = centerX - visibleInfo.boundingBox.width / 2 - visibleInfo.offsetX;
     const imageY = centerY - visibleInfo.boundingBox.height / 2 - visibleInfo.offsetY;
@@ -107,6 +107,13 @@ const getClusterPosition = (visibleInfo, centerX, centerY, widthCluster, heightC
     const y = centerY - visibleInfo.boundingBox.height / 2;
     const width = visibleInfo.boundingBox.width;
     const height = visibleInfo.boundingBox.height;
+
+    console.log('🔵 x', x);
+    console.log('🔵 y', y);
+    console.log('🔵 width', width);
+    console.log('🔵 height', height);
+    console.log('🔵 imageX', imageX);
+    console.log('🔵 imageY', imageY);
 
     return { x, y, width, height, imageX, imageY };
 };
@@ -338,6 +345,7 @@ export const useComposition = (project, width, height, sWidth, sHeight, name = '
 
         //----- Calculations -----//
         const clusterPosition = getClusterPosition(visibleInfoCluster, centerX, centerY, widthCluster, heightCluster, offset);
+        
         const keywordPositions = getKeywordPositions(clusterPosition, positions, centerX, centerY, offset, widthKeyword, heightKeyword);
         const keywordInitialPositions = getKeywordInitialPositions(positions, centerX, centerY, widthKeyword, heightKeyword);
 
@@ -345,6 +353,7 @@ export const useComposition = (project, width, height, sWidth, sHeight, name = '
         const boundingBoxesKeywordsInitial = getBoundingBoxesKeywords(keywordInitialPositions, requiredVisibleInfos, widthKeyword, heightKeyword);
 
         const boundingBoxesCluster = getBoundingBoxCluster(boundingBoxesKeywords, screenWidth, screenHeight);
+        console.log('🟡 boundingBoxesCluster', boundingBoxesCluster);
 
         console.log('Composition data ready.');
         return {

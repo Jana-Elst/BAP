@@ -1,7 +1,7 @@
 import { Colors } from '@/constants/theme';
 import { getEnteringFadeScale } from '@/scripts/animations';
 import { checkIsLoading } from '@/scripts/getHelperFunction';
-import { Canvas, Line, Image as SkiaImage, vec } from '@shopify/react-native-skia';
+import { Canvas, Line, Rect, Image as SkiaImage, vec } from '@shopify/react-native-skia';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { TapGestureHandler } from 'react-native-gesture-handler';
@@ -107,8 +107,6 @@ const AnimatedSkiaImage = ({ image, x, y, width, height, origin, isLoadingGlobal
         return [{ scale: bounceScale.value }];
     }, [bounceScale]);
 
-
-
     return (
         <SkiaImage
             image={image}
@@ -139,7 +137,7 @@ const CanvasContent = ({
     getEllipseIntersection,
     keywordImages,
     boundingBoxesKeywords,
-    widhtKeyword,
+    widthKeyword,
     heightKeyword,
     clusterImage,
     widthCluster,
@@ -197,9 +195,9 @@ const CanvasContent = ({
                         image={image}
                         x={renderX}
                         y={renderY}
-                        width={widhtKeyword}
+                        width={widthKeyword}
                         height={heightKeyword}
-                        origin={vec(renderX + widhtKeyword / 2, renderY + heightKeyword / 2)}
+                        origin={vec(renderX + widthKeyword / 2, renderY + heightKeyword / 2)}
                         isLoadingGlobal={isLoadingGlobal}
                         delay={randomDelay}
                         duration={randomDuration}
@@ -224,6 +222,19 @@ const CanvasContent = ({
                     duration={300}
                     tappedSignal={tappedSignal}
                     index={-1}
+                />
+            )}
+
+            {clusterPosition && boundingBoxesCluster && (
+                console.log('boundingBoxesCluster', boundingBoxesCluster),
+                <Rect
+                    x={clusterPosition.x}
+                    y={clusterPosition.y}
+                    width={clusterPosition.width}
+                    height={clusterPosition.height}
+                    color="red"
+                    style="stroke"
+                    strokeWidth={4}
                 />
             )}
         </Canvas>)
@@ -296,7 +307,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         offset = 0,
         widthCluster = width,
         heightCluster = height,
-        widhtKeyword = width / 2,
+        widthKeyword = width / 2,
         heightKeyword = height / 2,
         getEllipseIntersection,
     } = useMemo(() => positionData, [positionData]);
@@ -347,12 +358,17 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
 
         // Check if touch is within cluster bounding box
         // Check if touch is within cluster image
+
+        // x = { clusterPosition.x }
+        // y = { clusterPosition.y }
+        // width = { clusterPosition.width }
+        // height = { clusterPosition.height }
         if (clusterPosition) {
             if (
-                x >= clusterPosition.imageX &&
-                x <= clusterPosition.imageX + widthCluster &&
-                y >= clusterPosition.imageY &&
-                y <= clusterPosition.imageY + heightCluster
+                x >= clusterPosition.x &&
+                x <= clusterPosition.x + clusterPosition.width &&
+                y >= clusterPosition.y &&
+                y <= clusterPosition.y + clusterPosition.height
             ) {
                 console.log('Found cluster');
                 tappedSignal.value = { index: -1, timestamp: Date.now() };
@@ -395,7 +411,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                             getEllipseIntersection={getEllipseIntersection}
                             keywordImages={keywordImages}
                             boundingBoxesKeywords={boundingBoxesKeywords}
-                            widhtKeyword={widhtKeyword}
+                            widthKeyword={widthKeyword}
                             heightKeyword={heightKeyword}
                             clusterImage={clusterImage}
                             widthCluster={widthCluster}
@@ -430,6 +446,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                         scaleAnimation={0.90}
                                         styleGradient={{
                                             position: 'absolute',
+                                            zIndex: 100,
                                             top: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].y : 0,
                                             left: keyWordLabelPositions && keyWordLabelPositions[index] ? keyWordLabelPositions[index].x : 0,
                                             transform: [{ translateX: '-50%' }, { translateY: '-50%' }]
@@ -463,15 +480,12 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                     getEllipseIntersection={getEllipseIntersection}
                     keywordImages={keywordImages}
                     boundingBoxesKeywords={boundingBoxesKeywords}
-                    widhtKeyword={widhtKeyword}
+                    widthKeyword={widthKeyword}
                     heightKeyword={heightKeyword}
                     clusterImage={clusterImage}
-                    widthCluster={widthCluster}
-                    heightCluster={heightCluster}
                     boundingBoxesCluster={boundingBoxesCluster}
                     widthCluster={widthCluster}
                     heightCluster={heightCluster}
-                    boundingBoxesCluster={boundingBoxesCluster}
                     isLoadingGlobal={isLoadingGlobal}
                     randomDelays={randomDelays}
                     randomDurations={randomDurations}
