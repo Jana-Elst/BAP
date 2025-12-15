@@ -42,7 +42,8 @@ const Touchable = ({ onPress, isActive = false, icon = null, children, iconPosit
                     onPress={onPress}
                     style={[styles.content, styleButton, iconPosition === 'after' ? { flexDirection: 'row-reverse' } : null]}>
                     {icon && <Ionicons name={icon} size={24} color={iconColor || Colors.black} />}
-                    {(showIconOnly && !isActive) || !children ? null : <ParagraphLarge style={styleText}>{children}</ParagraphLarge>}
+                    {(showIconOnly && !isActive) || !children || typeof children !== 'string' ? null : <ParagraphLarge style={styleText}>{children}</ParagraphLarge>}
+                    {typeof children === 'string' ? null : children}
                 </Pressable>
             </AnimatedLinearGradient>
         </View>

@@ -1,8 +1,8 @@
 import { Colors, Fonts } from "@/constants/theme";
-import { Text, StyleSheet } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, Text } from "react-native";
 
-const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null }) => {
+const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null, numberOfLines = undefined }) => {
     if (hasGradient) {
         return (
             <LinearGradient
@@ -11,10 +11,10 @@ const StyledText = ({ children, style = null, hasGradient = false, styleGradient
                 end={{ x: 1, y: 0 }}
                 style={styleGradient}
             >
-                <Text style={[styles.paragraph, style]}>{children}</Text>
+                <Text style={[styles.paragraph, style, {flexShrink: 1}]} numberOfLines={numberOfLines}>{children}</Text>
             </LinearGradient>)
     } else {
-        return <Text style={[styles.paragraph, style]}>{children}</Text>
+        return <Text style={[styles.paragraph, style, {flexShrink: 1}]} numberOfLines={numberOfLines}>{children}</Text>
     }
 };
 
@@ -55,16 +55,8 @@ const ParagraphBold = ({ children, style = null }) => {
 };
 
 export {
-    StyledText,
-    Title,
-    SubTitle,
-    Paragraph,
-    SubTitleSmall,
-    ParagraphSmall,
-    ParagraphXSmall,
-    ParagraphLarge,
-    TitleXSmall,
-    ParagraphBold
+    Paragraph, ParagraphBold, ParagraphLarge, ParagraphSmall,
+    ParagraphXSmall, StyledText, SubTitle, SubTitleSmall, Title, TitleXSmall
 };
 
 const styles = StyleSheet.create({

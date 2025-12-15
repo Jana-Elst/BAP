@@ -27,7 +27,9 @@ const FloatingKeywordImage = ({
     height,
     index,
     time,
-    page
+    page,
+    screenWidth,
+    screenHeight
 }: {
     image: any;
     renderX: number;
@@ -39,6 +41,8 @@ const FloatingKeywordImage = ({
     index: number;
     time: any;
     page: any;
+    screenWidth: number;
+    screenHeight: number;
 }) => {
     const progress = useSharedValue(0);
 
@@ -62,6 +66,8 @@ const FloatingKeywordImage = ({
         let currentX;
         if (page.page === 'detailKeyword') {
             currentX = renderX + offsetX.value;
+        } else if (page.page === 'discover') {
+            currentX = renderX + (renderXInitial - renderX) * progress.value;
         } else if (page.page === 'detailCluster') {
             currentX = renderX + (renderXInitial - renderX) * progress.value;
         } else {
@@ -75,6 +81,8 @@ const FloatingKeywordImage = ({
         let currentY;
         if (page.page === 'detailKeyword') {
             currentY = renderY + offsetY.value;
+        } else if (page.page === 'discover') {
+            currentY = renderY + (renderYInitial - renderY) * progress.value;
         } else if (page.page === 'detailCluster') {
             currentY = renderY + (renderYInitial - renderY) * progress.value;
         } else {
@@ -98,7 +106,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
     // //--- General ---//
     const { animationMap, projects } = useWebpAnimations();
     const project = useMemo(() => page.id && page.page === 'detailResearch' ? getProjectInfo(page.id) : null, [page.id, page.page]);
-    const positionData = useComposition(project, screenWidth, screenHeight, screenWidth, screenHeight, 'HOLOGRAM');
+    const positionData = useComposition(project, screenWidth * 0.80, screenHeight * 0.80, screenWidth, screenHeight, 'HOLOGRAM');
     const activeProjectData = useActiveProjectData(page, project, positionData);
 
     const {
@@ -150,6 +158,23 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
     const projectsLoop = useMemo(() => projects
         .filter(p => p !== 'clusteroverschrijdend')
         .flatMap(project => ['clusteroverschrijdend', project]), [projects]);
+
+    useEffect(() => {
+        const lastPage = page.previousPages?.[page.previousPages.length - 1];
+        console.log('🧡 page.previousPage', lastPage?.page);
+        console.log('🧡 page.CURRENT', page.page);
+
+        if (page.page === 'detailResearch' && lastPage?.page === 'detailKeyword' && project) {
+            projectAnimation.value = [project.cluster.formattedName, project.cluster.formattedName];
+            currentProject.value = 0;
+            currentAnimationIndex.value = 0;
+            currentFrameIndex.value = 0;
+            animationParts.value = transition;
+        } else if (page.page === 'discover' && lastPage?.page === 'detailCluster') {
+            projectAnimation.value = projectsLoop;
+            animationParts.value = transition;
+        }
+    }, [page.page, project, page.previousPages, projectsLoop]);
 
     //--- variables ---//
     //loop project
@@ -345,10 +370,7 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
         >
             {activeProjectData.project ? (
                 keywordImages.map((image, index) => {
-                    console.log('😎 keywordImages');
-                    console.log('😎 index');
                     const pos = activeProjectData.positionData.keywordPositions[index];
-                    console.log('😎 pos', pos);
 
                     const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
                     const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
@@ -363,7 +385,6 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                     const renderYInitial = boundingBoxInitial?.renderY ?? pos.y;
 
                     if (page.page === 'detailKeyword') {
-                        console.log('😎 page INFO KEYWORD ID', page.info.keyword.id);
                         if (page.info.keyword.id === activeProjectData.project.keywords[index].id) {
                             return (
                                 <FloatingKeywordImage
@@ -378,11 +399,12 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                                     height={heightKeyword}
                                     index={index}
                                     time={globalTimestamp}
+                                    screenWidth={screenWidth}
+                                    screenHeight={screenHeight}
                                 />
                             );
                         }
                     } else {
-                        console.log('😎 detailPage');
                         return (
                             <FloatingKeywordImage
                                 page={page}
@@ -396,12 +418,14 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                                 height={heightKeyword}
                                 index={index}
                                 time={globalTimestamp}
+                                screenWidth={screenWidth}
+                                screenHeight={screenHeight}
                             />
                         );
                     }
                 })
             ) : (
-                console.log('😎 NO KEYWORDS', activeProjectData.project)
+                console.log('NO KEYWORDS', activeProjectData.project)
             )}
 
             <Image
@@ -409,10 +433,10 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                 transform={transform}
                 origin={vec(screenWidth / 2, screenHeight / 2)}
                 opacity={opacityCluster}
-                x={floatX}
-                y={floatY}
-                width={screenWidth}
-                height={screenHeight}
+                x={useDerivedValue(() => (screenWidth * 0.1) + floatX.value, [screenWidth])}
+                y={useDerivedValue(() => (screenHeight * 0.1) + floatY.value, [screenHeight])}
+                width={screenWidth * 0.80}
+                height={screenHeight * 0.80}
                 fit="contain"
             />
         </Canvas>

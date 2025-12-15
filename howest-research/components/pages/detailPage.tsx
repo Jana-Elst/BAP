@@ -29,7 +29,7 @@ const gap = 32;
 const DetailPage = ({ page, setPage }) => {
     const ref = useRef<ICarouselInstance>(null);
     const progress = useSharedValue<number>(0);
-    
+
     const projectRef = useRef(getProjectInfo(page.id));
     if (page.page === 'detailResearch') {
         projectRef.current = getProjectInfo(page.id);
@@ -61,6 +61,16 @@ const DetailPage = ({ page, setPage }) => {
 
     const previousPage = page.previousPages[page.previousPages.length - 1]?.page;
 
+    // Calculate restrained dimensions for ModelView
+    const modelViewHorizontalPadding = 64; // From header paddingHorizontal
+    const modelViewVerticalPaddingTop = 64; // From header paddingTop
+    const modelViewVerticalPaddingBottom = 32; // From Animated.View paddingBottom
+    const headerHeightEstimate = 50; // Estimate height of Title and TitleXSmall
+
+    const modelViewWidth = cardWidth - (2 * modelViewHorizontalPadding);
+    const modelViewHeight = cardHeight - modelViewVerticalPaddingTop - modelViewVerticalPaddingBottom - headerHeightEstimate;
+
+
     return (
         <Animated.View
             entering={previousPage === 'discover' ? getEnteringFadeScale(400).delay(400) : undefined}
@@ -81,15 +91,15 @@ const DetailPage = ({ page, setPage }) => {
                 renderItem={({ item, index, animationValue }) => {
                     return (
                         <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }}>
-                            <Animated.View style={{ flex: 1 }} entering={index !== 0 ? getEnteringFade(800) : getEnteringFade(0)}>
-                                <View style={styles.header}>
+                            <Animated.View style={{ flex: 1, paddingBottom: 32 }} entering={index !== 0 ? getEnteringFade(800) : getEnteringFade(0)}>
+                                <View style={[styles.header, { paddingHorizontal: 64, paddingTop: 64 }]}>
                                     <Title style={{ color: Colors[project.color + 'Text'] }}>{project.title}</Title>
                                     <TitleXSmall style={{ color: Colors[project.color + '80'] }}>{project.transitionDomain}</TitleXSmall>
                                 </View>
 
                                 <View style={{ flex: 1 }}>
                                     {
-                                        item === "model" ? <ModelView width={cardWidth} height={741} project={project} setPage={setPage} page={page} /> :
+                                        item === "model" ? <ModelView width={modelViewWidth} height={modelViewHeight} project={project} setPage={setPage} page={page} /> :
                                             item === "info" ? <Info project={project} /> :
                                                 item === "images" ? <Images project={project} /> :
                                                     item === "qrCode" ? <QrCode project={project} /> :
@@ -137,7 +147,7 @@ const DetailPage = ({ page, setPage }) => {
 
 const styles = StyleSheet.create({
     card: {
-        padding: 64,
+        // padding: 64,
     },
 
     header: {
