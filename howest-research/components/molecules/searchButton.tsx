@@ -1,6 +1,7 @@
 import Touchable from "../atoms/touchable";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
+import {StyledText} from "../atoms/styledComponents";
 
 const SearchButton = () => {
     const [isActive, setIsActive] = useState(false);
@@ -14,7 +15,7 @@ const SearchButton = () => {
             onPress={() => { openSearch() }}
             icon={'search'}
         >
-            Zoeken</Touchable>
+            <StyledText fontSize={22}>Zoeken</StyledText></Touchable>
     )
 }
 

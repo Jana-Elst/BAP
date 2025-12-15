@@ -1,6 +1,6 @@
-import { View, StyleSheet } from "react-native";
-import Touchable from "../atoms/touchable";
+import { StyleSheet, View } from "react-native";
 import { StyledText } from "../atoms/styledComponents";
+import Touchable from "../atoms/touchable";
 
 const FilterButton = ({ onPress, activeFilters }) => {
     return (
@@ -9,8 +9,17 @@ const FilterButton = ({ onPress, activeFilters }) => {
                 onPress={onPress}
                 icon={'filter'}
             >
-                Filter</Touchable>
-            {activeFilters.length > 0 && <StyledText hasGradient={true} style={styles.activeFiltersCount} styleGradient={styles.gradient}>{activeFilters.length}</StyledText>}
+                <StyledText fontSize={22}>Filter</StyledText>
+            </Touchable>
+            {activeFilters.length > 0 &&
+                <StyledText
+                    fontSize={22}
+                    hasGradient={true}
+                    style={styles.activeFiltersCount}
+                    styleGradient={styles.gradient}>
+                    {activeFilters.length}
+                </StyledText>
+            }
         </View>
     )
 }
@@ -26,6 +35,9 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 100,
         fontSize: 24
+    },
+    gradient: {
+        borderRadius: 100,
     }
 });
 

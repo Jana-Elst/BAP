@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import LanguageToggle from '../molecules/languageToggle';
 import Filter from './filter';
 import HowestResearch from './howestResearch';
@@ -36,6 +35,7 @@ const styles = StyleSheet.create({
 
     rightSection: {
         flexDirection: 'row',
+        alignItems: 'center',
         gap: 16,
     },
 

@@ -13,6 +13,10 @@ const HowestResearchButton = ({ onPress }) => {
             icon='information-circle-outline'
             iconPosition='after'
             styleButton={styles.button}
+            iconSize={32}
+            styleButton={{
+                gap: 12
+            }}
         >
             <Image
                 style={styles.image}

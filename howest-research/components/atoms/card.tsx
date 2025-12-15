@@ -1,27 +1,28 @@
 import { Colors } from "@/constants/theme";
 import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
+import textureCard from '@/assets/images/textureCard.png';
 
 const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isActive = false, fill = false, containerStyle = null, gradientColors = ['rgba(68, 200, 245, 0.10)', 'rgba(68, 200, 245, 0.50)'] }) => {
     const flexStyle = fill ? { flex: 1 } : {};
 
     return (
         <BlurView intensity={50} tint="light" style={[styles.blurContainer, { borderRadius: borderRadius }, containerStyle, flexStyle]}>
-            {/* <ImageBackground source={backgroundImage} resizeMode='repeat' imageStyle={{opacity: 0.4}}> */}
-            {/* <View style={styles.softLightOverlay} /> */}
-            <View style={[styles.shadowContainer, { borderRadius: borderRadius }, flexStyle]}>
-                <LinearGradient
-                    style={[styles.card, { borderRadius: borderRadius }, { borderColor: isActive ? Colors.blue100 : Colors.white }, { borderWidth: isActive ? 2 : 1 }, style, flexStyle]}
-                    colors={!isActive ? ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)'] : gradientColors}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 0.6, y: 1 }}
-                    onLayout={onLayout}
-                >
-                    {children}
-                </LinearGradient>
-            </View>
-            {/* </ImageBackground> */}
+            <ImageBackground source={textureCard} resizeMode='repeat' imageStyle={{ opacity: 0.5 }}>
+                <View style={{ opacity: 0.5 }} />
+                <View style={[styles.shadowContainer, { borderRadius: borderRadius }, flexStyle]}>
+                    <LinearGradient
+                        style={[styles.card, { borderRadius: borderRadius }, { borderColor: isActive ? Colors.blue100 : Colors.white }, { borderWidth: isActive ? 2 : 1 }, style, flexStyle]}
+                        colors={!isActive ? ['rgba(255, 255, 255, 0.6)', 'rgba(255, 255, 255, 0.6)', 'rgba(224, 224, 224, 0.4)'] : gradientColors}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0.6, y: 1 }}
+                        onLayout={onLayout}
+                    >
+                        {children}
+                    </LinearGradient>
+                </View>
+            </ImageBackground>
         </BlurView>
     )
 }

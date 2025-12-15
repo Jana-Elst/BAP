@@ -2,7 +2,11 @@ import { Colors, Fonts } from "@/constants/theme";
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, Text } from "react-native";
 
-const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null, numberOfLines = undefined }) => {
+const lineHeight = (fontSize: number, multiplier: number = 1) => {
+    return Math.round(fontSize * multiplier);
+}
+
+const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null, numberOfLines = undefined, ...props }: any) => {
     if (hasGradient) {
         return (
             <LinearGradient
@@ -11,10 +15,10 @@ const StyledText = ({ children, style = null, hasGradient = false, styleGradient
                 end={{ x: 1, y: 0 }}
                 style={styleGradient}
             >
-                <Text style={[styles.paragraph, style, {flexShrink: 1}]} numberOfLines={numberOfLines}>{children}</Text>
+                <Text style={[styles.paragraph, style, { flexShrink: 1 }]} numberOfLines={numberOfLines} {...props}>{children}</Text>
             </LinearGradient>)
     } else {
-        return <Text style={[styles.paragraph, style, {flexShrink: 1}]} numberOfLines={numberOfLines}>{children}</Text>
+        return <Text style={[styles.paragraph, style, { flexShrink: 1 }]} numberOfLines={numberOfLines} {...props}>{children}</Text>
     }
 };
 
@@ -63,54 +67,54 @@ const styles = StyleSheet.create({
     paragraph: {
         fontFamily: Fonts.sans.regular,
         fontSize: 20,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(20, 1.4),
     },
 
     title: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 40,
-        // lineHeight: 1.2,
+        lineHeight: lineHeight(40, 1.2),
     },
 
     subTitle: {
         fontFamily: Fonts.sans.semiBold,
         fontSize: 28,
-        // lineHeight: ,
+        lineHeight: lineHeight(20, 1.2),
     },
 
     subTitleSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 32,
-        // lineHeight: 1.2,
+        lineHeight: lineHeight(32, 1.2),
     },
 
     paragraphSmall: {
         fontFamily: Fonts.sans.regular,
         fontSize: 18,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(18, 1.4),
     },
 
     paragraphXSmall: {
         fontFamily: Fonts.sans.regular,
         fontSize: 16,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(16, 1.4),
     },
 
     paragraphLarge: {
         fontFamily: Fonts.sans.regular,
         fontSize: 24,
-        // lineHeight: 1.35,
+        lineHeight: lineHeight(24, 1.35),
     },
 
     TitleXSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 24,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(24, 1.4),
     },
 
     paragraphBold: {
         fontFamily: Fonts.sans.bold,
         fontSize: 20,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(20, 1.4),
     }
 });

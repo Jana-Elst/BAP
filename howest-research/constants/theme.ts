@@ -6,6 +6,7 @@
 import { Platform } from 'react-native';
 
 const white = '#ffffff';
+const white75 = 'rgba(255, 255, 255, 0.75)';
 const black = '#000000';
 const textGrey = '#606060';
 
@@ -80,6 +81,7 @@ const gradientYellowDarkEnd = 'rgba(255, 242, 0, 0.50)';
 
 export const Colors = {
   white: white,
+  white75: white75,
   black: black,
   textGrey: textGrey,
 

@@ -39,7 +39,7 @@ const HomeScreen = () => {
     timerRef.current = setTimeout(() => {
       console.log('Timer ended, setting isTouched false');
       setPage(prev => ({ ...prev, isTouched: false }));
-    }, 180000);
+    }, 60000);
   };
 
   const screens = useExternalDisplay();
