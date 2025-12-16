@@ -585,7 +585,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
                                         styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
                                         icon={'arrow-forward-outline'}
                                         iconPosition={'after'}
-                                        iconColor={Colors.blueText}
+                                        iconColor={Colors[project.color + 'Text']}
                                         scaleAnimation={0.90}
                                         styleGradient={{
                                             position: 'absolute',

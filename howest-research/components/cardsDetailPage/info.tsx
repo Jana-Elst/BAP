@@ -16,10 +16,10 @@ const Info = ({ project }) => {
         .filter((text: string) => text.length > 0);
 
     return (
-        <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1 }}>
+        <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1, marginHorizontal: 64 }}>
             <View style={{ flexDirection: 'column', gap: 18, width: '350' }}>
                 <View style={{ gap: 18, flex: 1 }}>
-                    <SubTitle>Dit is een korte teaser van ongeveer 8 woorden.</SubTitle>
+                    <SubTitle numberOfLines={2}>{abstractSplitted[0]}</SubTitle>
                     <View style={{ gap: 8 }}>
                         {abstractSplitted.map((item, index) => (
                             <StyledText key={index}>{item}</StyledText>
@@ -45,7 +45,7 @@ const Info = ({ project }) => {
                     <View style={{ gap: 2 }}>
                         <ParagraphBold>ProjectLeider</ParagraphBold>
                         <ParagraphSmall>{project.contactPerson}</ParagraphSmall>
-                        <ParagraphSmall>{project.contactPersonEmail}</ParagraphSmall>
+                        <ParagraphSmall>{project.contactPersonEmail.replace('@', '@\u200B')}</ParagraphSmall>
                     </View>
 
                     <View style={{ gap: 2 }}>

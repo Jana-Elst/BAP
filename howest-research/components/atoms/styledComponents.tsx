@@ -26,8 +26,8 @@ const Title = ({ children, style = null }) => {
     return <Text style={[styles.title, style]}>{children}</Text>
 };
 
-const SubTitle = ({ children, style = null }) => {
-    return <Text style={[styles.subTitle, style]}>{children}</Text>
+const SubTitle = ({ children, style = null, numberOfLines = undefined }) => {
+    return <Text style={[styles.subTitle, style]} numberOfLines={numberOfLines}>{children}</Text>
 };
 
 const Paragraph = ({ children, style = null }) => {
@@ -38,12 +38,12 @@ const SubTitleSmall = ({ children, style = null }) => {
     return <Text style={[styles.subTitleSmall, style]}>{children}</Text>
 };
 
-const ParagraphSmall = ({ children, style = null }) => {
-    return <Text style={[styles.paragraphSmall, style]}>{children}</Text>
+const ParagraphSmall = ({ children, style = null, numberOfLines = undefined }) => {
+    return <Text style={[styles.paragraphSmall, style]} numberOfLines={numberOfLines}>{children}</Text>
 };
 
-const ParagraphXSmall = ({ children, style = null }) => {
-    return <Text style={[styles.paragraphXSmall, style]}>{children}</Text>
+const ParagraphXSmall = ({ children, style = null, numberOfLines = undefined }) => {
+    return <Text style={[styles.paragraphXSmall, style]} numberOfLines={numberOfLines}>{children}</Text>
 };
 
 const ParagraphLarge = ({ children, style = null }) => {
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     subTitle: {
         fontFamily: Fonts.sans.semiBold,
         fontSize: 28,
-        lineHeight: lineHeight(20, 1.2),
+        lineHeight: 33.6,
     },
 
     subTitleSmall: {

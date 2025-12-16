@@ -44,7 +44,7 @@ const DetailPage = ({ page, setPage }) => {
     const renderItems = useMemo(() => {
         if (!isLoading) {
             return [
-                "model", "info", "images", "qrCode"
+                "model", "info", "qrCode"
             ];
         }
         return [
@@ -94,7 +94,7 @@ const DetailPage = ({ page, setPage }) => {
                             <Animated.View style={{ flex: 1, paddingBottom: 32 }} entering={index !== 0 ? getEnteringFade(800) : getEnteringFade(0)}>
                                 <View style={[styles.header, { paddingHorizontal: 64, paddingTop: 64 }]}>
                                     <Title style={{ color: Colors[project.color + 'Text'] }}>{project.title}</Title>
-                                    <TitleXSmall style={{ color: Colors[project.color + '80'] }}>{project.transitionDomain}</TitleXSmall>
+                                    <TitleXSmall style={{ color: Colors[project.color + 'TextLight'] }}>{project.transitionDomain}</TitleXSmall>
                                 </View>
 
                                 <View style={{ flex: 1 }}>
