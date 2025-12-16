@@ -11,7 +11,7 @@ const EmptyState = ({ setPage, page }) => {
                 <p style={styles.title}>Met jouw gekozen filters voerden we nog geen onderzoek uit.</p>
                 <p style={styles.text}>Heb jij een idee? Laat van je horen!</p>
             </div>
-            <button onClick={() => setPage((prev: any) => ({ ...prev, info: 'contact' }))} style={styles.button}>Neem contact op</button>
+            <button onClick={() => setPage({ ...page, info: 'contact' })} style={styles.button}>Neem contact op</button>
         </div>
     );
 };

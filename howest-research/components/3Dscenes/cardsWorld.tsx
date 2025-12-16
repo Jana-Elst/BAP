@@ -50,7 +50,7 @@ const updateHero = (heroRef: MutableRefObject<Root | null>) => {
 const updateEmptyState = (emptyStateRef: MutableRefObject<Root | null>, setPage: any, page: any) => {
     if (emptyStateRef.current) {
         emptyStateRef.current.render(
-            <EmptyState setPage={setPage} page={page}/>
+            <EmptyState setPage={setPage} page={page} />
         );
 
         console.log('emptyState is updated');
@@ -435,6 +435,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
     // 1. Initialize
     useEffect(() => {
+        console.log('------------- INIT -------------');
         if (!canvasRef.current) return;
 
         //create scene
@@ -551,6 +552,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
     // 2. if mode is changing
     useEffect(() => {
+        console.log('------------- MODE CHANGING -------------');
         const currentZ = cameraRef.current?.position.z || 0;
         const targetZ = calculateCameraZForScreen(cameraRef.current, window.innerHeight);
         const cameraIsChanging = Math.round(currentZ) !== Math.round(targetZ);
@@ -710,6 +712,11 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             rendererRef.current.render(sceneRef.current, cameraRef.current);
         }
     }, [page.isTouched]);
+
+    // 5. Update EmptyState when page changes (to prevent stale state)
+    useEffect(() => {
+        updateEmptyState(emptyStateRef, setPage, page);
+    }, [page]);
 
     //---------------------------- RENDER ----------------------------//
     return (
