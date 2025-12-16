@@ -1,6 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from 'expo-blur';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { getEnteringFade, getEnteringScale, getExitingFade, getExitingScale } from '../../scripts/animations';
@@ -15,7 +15,7 @@ import { getAllTransitionDomains, getClusterName, getFilteredProjects } from '@/
 import data from '../../assets/data/structured-data.json';
 
 
-const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
+const Filter = ({ activeFilters, setActiveFilters, setProjects, page }) => {
     const [visible, setVisible] = useState(false);
     const buttonRef = useRef(null);
 
@@ -47,7 +47,15 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
 
     const clearFilters = () => {
         setActiveFilters([]);
+        setProjects(getFilteredProjects([]));
     };
+
+    useEffect(() => {
+        if (!page.isTouched) {
+            clearFilters();
+            setVisible(false);
+        }
+    }, [page.isTouched]);
 
     return (
         <View style={styles.container}>

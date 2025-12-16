@@ -47,10 +47,10 @@ const updateHero = (heroRef: MutableRefObject<Root | null>) => {
     }
 };
 
-const updateEmptyState = (emptyStateRef: MutableRefObject<Root | null>) => {
+const updateEmptyState = (emptyStateRef: MutableRefObject<Root | null>, setPage: any, page: any) => {
     if (emptyStateRef.current) {
         emptyStateRef.current.render(
-            <EmptyState />
+            <EmptyState setPage={setPage} page={page}/>
         );
 
         console.log('emptyState is updated');
@@ -494,7 +494,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         const emptyStateRoot = createRoot(emptyStateCanvas);
         emptyStateRef.current = emptyStateRoot;
-        updateEmptyState(emptyStateRef);
+        updateEmptyState(emptyStateRef, setPage, page);
 
         const emptyStateObj = new CSS3DObject(emptyStateCanvas);
         emptyStateObj.position.set(0, 0, 0);

@@ -6,13 +6,13 @@ import HowestResearch from './howestResearch';
 import Search from './search';
 
 
-const Header = ({ activeFilters, setActiveFilters, setProjects, style }) => {
+const Header = ({ activeFilters, setActiveFilters, setProjects, style, page, setPage }) => {
     return (
         <Animated.View style={[styles.container, style]}>
-            <HowestResearch />
+            <HowestResearch page={page} setPage={setPage} />
 
             <View style={styles.rightSection}>
-                <Filter activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
+                <Filter activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} page={page} />
                 <Search />
                 <LanguageToggle />
             </View>

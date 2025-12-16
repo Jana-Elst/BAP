@@ -43,7 +43,7 @@ const HomeScreen = () => {
         isTouched: false,
         page: 'discover'
       }));
-    // }, 10000);
+    // }, 1000);
   }, 60000);
   };
 

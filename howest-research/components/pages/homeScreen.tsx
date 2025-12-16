@@ -37,7 +37,7 @@ const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, 
 
     return (
         <View style={styles.container}>
-            <Header activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} style={animatedStyle} />
+            <Header activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} style={animatedStyle} page={page} setPage={setPage} />
 
             <View style={styles.cardsWorld}>
                 <CardsWorld
@@ -50,7 +50,7 @@ const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, 
             </View>
 
             <Animated.View style={styles.footer}>
-                <InstructionHomeScreen style={instructionsAnimatedStyle}/>
+                <InstructionHomeScreen style={instructionsAnimatedStyle} />
                 <Animated.View style={animatedStyle}>
                     <ViewToggle setActive={setIsDiscoverMode} isActive={isDiscoverMode} />
                 </Animated.View>

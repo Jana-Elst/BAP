@@ -3,7 +3,7 @@ import image from '../../assets/images/noResults.png';
 import '../../styles/style.css';
 
 
-const EmptyState = () => {
+const EmptyState = ({ setPage, page }) => {
     return (
         <div style={styles.container}>
             <Image source={image} style={{ width: 300, height: 300 }} contentFit="contain" />
@@ -11,7 +11,7 @@ const EmptyState = () => {
                 <p style={styles.title}>Met jouw gekozen filters voerden we nog geen onderzoek uit.</p>
                 <p style={styles.text}>Heb jij een idee? Laat van je horen!</p>
             </div>
-            <button style={styles.button}>Neem contact op</button>
+            <button onClick={() => setPage((prev: any) => ({ ...prev, info: 'contact' }))} style={styles.button}>Neem contact op</button>
         </div>
     );
 };
