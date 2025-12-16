@@ -13,9 +13,10 @@ const QrCode = ({ project }) => {
     return (
         <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1, alignItems: 'center', marginHorizontal: 64 }}>
             <Card
-                style={{ borderColor: 'transparent', paddingHorizontal: 24, paddingVertical: 40, maxWidth: '372', gap: 24, justifyContent: 'center', alignItems: 'center' }}
+                style={{ borderColor: Colors[project.color+'100'], borderWidth: 1, paddingHorizontal: 24, paddingVertical: 40, maxWidth: '372', gap: 24, justifyContent: 'center', alignItems: 'center' }}
                 fill={false}
                 isActive={true}
+                animatedView={false}
                 gradientColors={[
                     Colors['gradient' + (project.color.charAt(0).toUpperCase() + project.color.slice(1)) + 'DarkStart'],
                     Colors['gradient' + (project.color.charAt(0).toUpperCase() + project.color.slice(1)) + 'DarkEnd']

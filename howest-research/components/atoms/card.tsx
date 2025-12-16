@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-const Card = ({ children, borderRadius = 30, onLayout = undefined, style = null, isActive = false, fill = false, containerStyle = null, gradientColors = ['rgba(68, 200, 245, 0.10)', 'rgba(68, 200, 245, 0.50)'] }) => {
+const Card = ({ children, borderRadius = 30, onLayout = undefined, style = null, isActive = false, fill = false, containerStyle = null, gradientColors = ['rgba(68, 200, 245, 0.10)', 'rgba(68, 200, 245, 0.50)'], animatedView = true }) => {
     const flexStyle = fill ? { flex: 1 } : {};
 
     const activeAnimation = useSharedValue(isActive ? 1 : 0);
@@ -47,7 +47,7 @@ const Card = ({ children, borderRadius = 30, onLayout = undefined, style = null,
                         { borderRadius: borderRadius },
                         style,
                         flexStyle,
-                        animatedCardStyle,
+                        animatedView && animatedCardStyle,
                         { overflow: 'hidden' }
                     ]}
                     onLayout={onLayout}
