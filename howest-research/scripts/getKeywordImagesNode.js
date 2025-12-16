@@ -1,5 +1,5 @@
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/10/2025, 5:40:54 PM
+// Generated on: 12/17/2025, 12:38:22 AM
 
 const keywordImagePaths = {
     "5G": [

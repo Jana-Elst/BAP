@@ -24,7 +24,12 @@ categories.forEach(category => {
         .sort();
 
     // Generate camelCase variable name
-    const varName = category.replace(/[-_](.)/g, (_, c) => c.toUpperCase());
+    let varName = category.replace(/[-_](.)/g, (_, c) => c.toUpperCase());
+
+    // If starts with number, remove it (e.g. 5G -> G)
+    if (/^\d/.test(varName)) {
+        varName = varName.replace(/^\d+/, '');
+    }
 
     // Generate imports
     images.forEach((image, index) => {
