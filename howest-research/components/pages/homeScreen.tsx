@@ -9,6 +9,12 @@ import InstructionHomeScreen from '../organisms/instructionsHomeScreen';
 const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects }) => {
     const [isDiscoverMode, setIsDiscoverMode] = useState(true);
 
+    useEffect(() => {
+        if (!page.isTouched) {
+            setIsDiscoverMode(true);
+        }
+    }, [page]);
+
     const opacity = useSharedValue(page.isTouched ? 1 : 0);
     const instructionsOpacity = useSharedValue(page.isTouched ? 0 : 1);
 

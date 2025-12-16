@@ -3,11 +3,10 @@ import { Colors } from "@/constants/theme";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { BlurView } from "expo-blur";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useEffect } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import Animated, { Easing, useAnimatedStyle, useSharedValue, withSequence, withTiming } from "react-native-reanimated";
 import { ParagraphLarge } from "./styledComponents";
-
-const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 const Touchable = ({
     onPress,
@@ -41,11 +40,24 @@ const Touchable = ({
     dropShadowOn?: boolean;
 }) => {
     const scale = useSharedValue(1);
+    const activeTransition = useSharedValue(isActive ? 1 : 0);
+
+    useEffect(() => {
+        activeTransition.value = withTiming(isActive ? 1 : 0, { duration: 300 });
+    }, [isActive]);
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
             transform: [{ scale: scale.value }],
         };
+    });
+
+    const activeOpacity = useAnimatedStyle(() => {
+        return { opacity: activeTransition.value };
+    });
+
+    const inactiveOpacity = useAnimatedStyle(() => {
+        return { opacity: 1 - activeTransition.value };
     });
 
     const handlePressIn = () => {
@@ -102,22 +114,36 @@ const Touchable = ({
                     borderRadius: 100,
                     overflow: 'hidden',
                 }]}>
-            <AnimatedLinearGradient
-                colors={isActive ? gradientColorsActive : gradientColorsInactive}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={[styles.gradient, animatedStyle]}
+            <Animated.View
+                style={[styles.gradient, animatedStyle, { overflow: 'hidden' }]}
             >
+                <Animated.View style={[StyleSheet.absoluteFill, inactiveOpacity]}>
+                    <LinearGradient
+                        colors={gradientColorsInactive as any}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={{ flex: 1 }}
+                    />
+                </Animated.View>
+                <Animated.View style={[StyleSheet.absoluteFill, activeOpacity]}>
+                    <LinearGradient
+                        colors={gradientColorsActive as any}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 1, y: 0 }}
+                        style={{ flex: 1 }}
+                    />
+                </Animated.View>
+
                 <Pressable
                     onPressIn={handlePressIn}
                     onPressOut={handlePressOut}
                     onPress={onPress}
                     style={[styles.content, styleButton, iconPosition === 'after' ? { flexDirection: 'row-reverse' } : null]}>
-                        {icon && <Ionicons name={icon} size={iconSize} color={iconColor || Colors.black} />}
-                        {(showIconOnly && !isActive) || !children || typeof children !== 'string' ? null : <ParagraphLarge style={styleText}>{children}</ParagraphLarge>}
-                        {typeof children === 'string' ? null : children}
+                    {icon && <Ionicons name={icon} size={iconSize} color={iconColor || Colors.black} />}
+                    {(showIconOnly && !isActive) || !children || typeof children !== 'string' ? null : <ParagraphLarge style={styleText}>{children}</ParagraphLarge>}
+                    {typeof children === 'string' ? null : children}
                 </Pressable>
-            </AnimatedLinearGradient>
+            </Animated.View>
         </BlurView >
     )
 }

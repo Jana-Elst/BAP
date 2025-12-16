@@ -640,6 +640,23 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         }
     }, [page.page]);
 
+    useEffect(() => {
+        console.log('page.isTouched', page.isTouched);
+        //Update camera & controls
+        if (cameraRef.current && controlsRef.current) {
+            cameraRef.current.position.set(0, 0, 0);
+            cameraRef.current.position.z = calculateCameraZForScreen(cameraRef.current, window.innerHeight);
+
+            controlsRef.current.target.set(0, 0, 0);
+            controlsRef.current.update();
+        }
+
+        // Re-render
+        if (rendererRef.current && sceneRef.current && cameraRef.current) {
+            rendererRef.current.render(sceneRef.current, cameraRef.current);
+        }
+    }, [page.isTouched]);
+
     //---------------------------- RENDER ----------------------------//
     return (
         <div style={{
