@@ -69,3 +69,10 @@ export const getVisiblePixelsInfo = (image, imageWidth, imageHeight) => {
 
     return undefined;
 };
+
+export const checkIsLoading = (isLoading) => {
+    if (isLoading.ipad || isLoading.externalDisplay) {
+        return true
+    }
+    return false;
+};

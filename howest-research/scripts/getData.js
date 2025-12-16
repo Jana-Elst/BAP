@@ -207,6 +207,16 @@ export const getProjectsByKeyword = (keywordID) => {
     return projectsInfo;
 };
 
+export const getProjectsByCluster = (clusterID) => {
+    const projectsInfo = data.projects
+        .filter(project => project.clusterId === clusterID)
+        .map(project => {
+            const projectInfo = getProjectInfo(project.id);
+            return projectInfo;
+        });
+    return projectsInfo;
+};
+
 export const getFilteredProjects = (activeFilters) => {
     let filteredProjects = data.projects;
 

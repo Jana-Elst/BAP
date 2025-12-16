@@ -1,22 +1,26 @@
-import { Colors, Fonts } from "@/constants/theme";
+import { Colors } from "@/constants/theme";
 import { Image } from 'expo-image';
 import Card from "../atoms/card";
 
 import { StyleSheet, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 
-import { ParagraphLarge, ParagraphSmall, StyledText, SubTitleSmall} from '../atoms/styledComponents';
+import { ParagraphSmall, StyledText, SubTitleSmall } from '../atoms/styledComponents';
 
 const image = require('../../assets/images/logoHowestResearchRGB.png')
 
 const QrCode = ({ project }) => {
     return (
-        <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1, alignItems: 'center' }}>
-            <Card 
-            style={{ borderColor: 'transparent', paddingHorizontal: 24, paddingVertical: 40, maxWidth: '372', gap: 24, justifyContent: 'center', alignItems: 'center' }}
-            fill={false}
-            isActive={true}
-                gradientColors={[Colors[project.color + '10'], Colors[project.color + '80']]}
+        <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1, alignItems: 'center', marginHorizontal: 64 }}>
+            <Card
+                style={{ borderColor: Colors[project.color+'100'], borderWidth: 1, paddingHorizontal: 24, paddingVertical: 40, maxWidth: '372', gap: 24, justifyContent: 'center', alignItems: 'center' }}
+                fill={false}
+                isActive={true}
+                animatedView={false}
+                gradientColors={[
+                    Colors['gradient' + (project.color.charAt(0).toUpperCase() + project.color.slice(1)) + 'DarkStart'],
+                    Colors['gradient' + (project.color.charAt(0).toUpperCase() + project.color.slice(1)) + 'DarkEnd']
+                ]}
             >
                 <Image
                     style={{ width: 230, height: 34 }}

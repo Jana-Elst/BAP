@@ -1,21 +1,22 @@
 import { StyleSheet, View } from 'react-native';
-import Filter from './filter';
-import Search from './search';
-import HowestResearch from './howestResearch';
+import Animated from 'react-native-reanimated';
 import LanguageToggle from '../molecules/languageToggle';
+import Filter from './filter';
+import HowestResearch from './howestResearch';
+import Search from './search';
 
 
-const Header = ({ activeFilters, setActiveFilters, setProjects }) => {
+const Header = ({ activeFilters, setActiveFilters, setProjects, style, page, setPage }) => {
     return (
-        <View style={styles.container}>
-            <HowestResearch />
+        <Animated.View style={[styles.container, style]}>
+            <HowestResearch page={page} setPage={setPage} />
 
             <View style={styles.rightSection}>
-                <Filter activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
+                <Filter activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} page={page} />
                 <Search />
                 <LanguageToggle />
             </View>
-        </View>
+        </Animated.View>
     )
 }
 
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 
     rightSection: {
         flexDirection: 'row',
+        alignItems: 'center',
         gap: 16,
     },
 

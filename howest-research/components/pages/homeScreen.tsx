@@ -1,43 +1,60 @@
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
+import CardsWorld from '../3Dscenes/cardsWorld';
 import ViewToggle from "../molecules/viewToggle";
 import Header from "../organisms/header";
-import ProjectList from "../organisms/projectsList";
-import { useState } from 'react';
-import DiscoverScreen from './discoverScreen';
-import { StyledText } from '../atoms/styledComponents';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import InstructionHomeScreen from '../organisms/instructionsHomeScreen';
 
-const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects, setVisible }) => {
+const HomeScreen = ({ page, setPage, activeFilters, setActiveFilters, projects, setProjects }) => {
     const [isDiscoverMode, setIsDiscoverMode] = useState(true);
+
+    useEffect(() => {
+        if (!page.isTouched) {
+            setIsDiscoverMode(true);
+        }
+    }, [page]);
+
+    const opacity = useSharedValue(page.isTouched ? 1 : 0);
+    const instructionsOpacity = useSharedValue(page.isTouched ? 0 : 1);
+
+    useEffect(() => {
+        opacity.value = withTiming(page.isTouched ? 1 : 0, { duration: 500 });
+        instructionsOpacity.value = withDelay(2000, withTiming(page.isTouched ? 0 : 1, { duration: 1000 }));
+    }, [page.isTouched]);
+
+    const animatedStyle = useAnimatedStyle(() => {
+        return {
+            opacity: opacity.value,
+        };
+    });
+
+    const instructionsAnimatedStyle = useAnimatedStyle(() => {
+        return {
+            opacity: instructionsOpacity.value,
+        };
+    });
 
     return (
         <View style={styles.container}>
-            <Header activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} />
+            <Header activeFilters={activeFilters} setActiveFilters={setActiveFilters} setProjects={setProjects} style={animatedStyle} page={page} setPage={setPage} />
 
-            {
-                isDiscoverMode ? <DiscoverScreen page={page} setPage={setPage} projects={projects} setVisible={setVisible}>Ontdekweergave</DiscoverScreen> : <ProjectList page={page} setPage={setPage} projects={projects} setVisible={setVisible} />
-            }
-
-            <View style={styles.footer}>
-                <View 
-                style={{
-                    alignSelf: 'center',
-
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 8,
-                    justifyContent: 'center',
-                    backgroundColor: 'white',
-                    paddingVertical: 16,
-                    paddingHorizontal: 24,
-                    borderRadius: 100,
-                    marginBottom: 16
-                }}>
-                    <StyledText>Veeg in alle richtingen</StyledText>
-                    <Ionicons name="swap-horizontal-outline" size={24} />
-                </View>
-                <ViewToggle setActive={setIsDiscoverMode} isActive={isDiscoverMode} />
+            <View style={styles.cardsWorld}>
+                <CardsWorld
+                    name="dom"
+                    projects={projects}
+                    page={page}
+                    setPage={setPage}
+                    isDiscoverMode={isDiscoverMode}
+                />
             </View>
+
+            <Animated.View style={styles.footer}>
+                <InstructionHomeScreen style={instructionsAnimatedStyle} />
+                <Animated.View style={animatedStyle}>
+                    <ViewToggle setActive={setIsDiscoverMode} isActive={isDiscoverMode} />
+                </Animated.View>
+            </Animated.View>
         </View>
     );
 }
@@ -48,6 +65,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'space-between',
+    },
+
+    cardsWorld: {
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: -1,
     },
 
     footer: {

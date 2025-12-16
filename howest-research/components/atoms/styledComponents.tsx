@@ -1,8 +1,12 @@
 import { Colors, Fonts } from "@/constants/theme";
-import { Text, StyleSheet } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, Text } from "react-native";
 
-const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null }) => {
+const lineHeight = (fontSize: number, multiplier: number = 1) => {
+    return Math.round(fontSize * multiplier);
+}
+
+const StyledText = ({ children, style = null, hasGradient = false, styleGradient = null, numberOfLines = undefined, ...props }: any) => {
     if (hasGradient) {
         return (
             <LinearGradient
@@ -11,10 +15,10 @@ const StyledText = ({ children, style = null, hasGradient = false, styleGradient
                 end={{ x: 1, y: 0 }}
                 style={styleGradient}
             >
-                <Text style={[styles.paragraph, style]}>{children}</Text>
+                <Text style={[styles.paragraph, style, { flexShrink: 1 }]} numberOfLines={numberOfLines} {...props}>{children}</Text>
             </LinearGradient>)
     } else {
-        return <Text style={[styles.paragraph, style]}>{children}</Text>
+        return <Text style={[styles.paragraph, style, { flexShrink: 1 }]} numberOfLines={numberOfLines} {...props}>{children}</Text>
     }
 };
 
@@ -22,8 +26,8 @@ const Title = ({ children, style = null }) => {
     return <Text style={[styles.title, style]}>{children}</Text>
 };
 
-const SubTitle = ({ children, style = null }) => {
-    return <Text style={[styles.subTitle, style]}>{children}</Text>
+const SubTitle = ({ children, style = null, numberOfLines = undefined }) => {
+    return <Text style={[styles.subTitle, style]} numberOfLines={numberOfLines}>{children}</Text>
 };
 
 const Paragraph = ({ children, style = null }) => {
@@ -34,12 +38,12 @@ const SubTitleSmall = ({ children, style = null }) => {
     return <Text style={[styles.subTitleSmall, style]}>{children}</Text>
 };
 
-const ParagraphSmall = ({ children, style = null }) => {
-    return <Text style={[styles.paragraphSmall, style]}>{children}</Text>
+const ParagraphSmall = ({ children, style = null, numberOfLines = undefined }) => {
+    return <Text style={[styles.paragraphSmall, style]} numberOfLines={numberOfLines}>{children}</Text>
 };
 
-const ParagraphXSmall = ({ children, style = null }) => {
-    return <Text style={[styles.paragraphXSmall, style]}>{children}</Text>
+const ParagraphXSmall = ({ children, style = null, numberOfLines = undefined }) => {
+    return <Text style={[styles.paragraphXSmall, style]} numberOfLines={numberOfLines}>{children}</Text>
 };
 
 const ParagraphLarge = ({ children, style = null }) => {
@@ -55,70 +59,62 @@ const ParagraphBold = ({ children, style = null }) => {
 };
 
 export {
-    StyledText,
-    Title,
-    SubTitle,
-    Paragraph,
-    SubTitleSmall,
-    ParagraphSmall,
-    ParagraphXSmall,
-    ParagraphLarge,
-    TitleXSmall,
-    ParagraphBold
+    Paragraph, ParagraphBold, ParagraphLarge, ParagraphSmall,
+    ParagraphXSmall, StyledText, SubTitle, SubTitleSmall, Title, TitleXSmall
 };
 
 const styles = StyleSheet.create({
     paragraph: {
         fontFamily: Fonts.sans.regular,
         fontSize: 20,
-        // lineHeight: 1.4,
+        lineHeight: 28,
     },
 
     title: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 40,
-        // lineHeight: 1.2,
+        lineHeight: lineHeight(40, 1.2),
     },
 
     subTitle: {
         fontFamily: Fonts.sans.semiBold,
         fontSize: 28,
-        // lineHeight: ,
+        lineHeight: 33.6,
     },
 
     subTitleSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 32,
-        // lineHeight: 1.2,
+        lineHeight: lineHeight(32, 1.2),
     },
 
     paragraphSmall: {
         fontFamily: Fonts.sans.regular,
         fontSize: 18,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(18, 1.4),
     },
 
     paragraphXSmall: {
         fontFamily: Fonts.sans.regular,
         fontSize: 16,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(16, 1.4),
     },
 
     paragraphLarge: {
         fontFamily: Fonts.sans.regular,
         fontSize: 24,
-        // lineHeight: 1.35,
+        lineHeight: lineHeight(24, 1.35),
     },
 
     TitleXSmall: {
         fontFamily: Fonts.rounded.bold,
         fontSize: 24,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(24, 1.4),
     },
 
     paragraphBold: {
         fontFamily: Fonts.sans.bold,
         fontSize: 20,
-        // lineHeight: 1.4,
+        lineHeight: lineHeight(20, 1.4),
     }
 });

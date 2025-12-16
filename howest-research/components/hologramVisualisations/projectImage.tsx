@@ -5,7 +5,7 @@ import { useComposition } from '../../scripts/createProjectImageCompositions';
 
 
 const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPage, page, showKeywords = false }) => {
-    const positionData = useComposition(project, width, height, screenWidth, screenHeight);
+    // const positionData = useComposition(project, width, height, screenWidth, screenHeight);
 
     // Return loading state while images load
     if (positionData.isLoading) {

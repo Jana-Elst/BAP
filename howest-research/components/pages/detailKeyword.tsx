@@ -1,18 +1,25 @@
-import { Canvas, Image as SkiaImage, useImage } from '@shopify/react-native-skia';
+import { Canvas, Image as SkiaImage } from '@shopify/react-native-skia';
 import { StyleSheet, View } from 'react-native';
 import { StyledText, SubTitle, Title } from '../atoms/styledComponents';
 
 import { Colors, Fonts } from '@/constants/theme';
-import { getProjectsByKeyword } from "@/scripts/getData";
+import { getProjectsByCluster, getProjectsByKeyword } from "@/scripts/getData";
 import { getVisiblePixelsInfo } from '@/scripts/getHelperFunction';
 import { FlashList } from '@shopify/flash-list';
+import { useMemo } from 'react';
 import Card from "../atoms/card";
 import ProjectCardLarge from '../molecules/projectCardLarge';
 
 const DetailKeyword = ({ page, setPage, setVisible }) => {
-    const filteredProjects = getProjectsByKeyword(page.id);
-    const keywordImage = page.info.keywordImageSource;
+    const filteredProjects = useMemo(() => {
+        if (page.page === 'detailKeyword') {
+            return getProjectsByKeyword(page.id)
+        } else {
+            return getProjectsByCluster(page.id)
+        }
+    }, [page.id]);
 
+    const keywordImage = useMemo(() => page.info.keywordImageSource, [page.info.keywordImageSource]);
     const visibleInfo = getVisiblePixelsInfo(keywordImage, 180, 180);
 
     // Calculate how to position the full image so visible pixels fill the canvas
@@ -42,10 +49,10 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
                         />
                     </Canvas>
                 )}
-                <View style={{ alignItems: 'baseline', gap: 16, maxWidth: 650 }}>
+                <View style={{ alignItems: 'baseline', gap: 8, maxWidth: 650 }}>
                     <Title>{page.info.keyword.label}</Title>
                     <SubTitle style={{ marginBottom: 16, fontSize: 24 }}>Innovatie voor een actieve, gezonde en veerkrachtige samenleving</SubTitle>
-                    <StyledText style={{ fontSize: 20, fontFamily: Fonts.sans.semiBold, color: Colors.blueText }}>{filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projecten"}</StyledText>
+                    <StyledText style={{ fontSize: 20, fontFamily: Fonts.sans.semiBold, color: Colors.textGrey }}>{filteredProjects.length} {filteredProjects.length === 1 ? "project" : "projecten"}</StyledText>
                 </View>
             </View>
         );
@@ -53,11 +60,13 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
 
     return (
         <View style={{ flex: 1, paddingHorizontal: 128, marginTop: 72, height: '845' }}>
-            <Card fill={true}>
-                {/* <View style={{ flex: 1, paddingHorizontal: 44, gap: 32 }}> */}
+            <Card fill={true} animatedView={false}>
                 <View style={{ flex: 1 }}>
                     <FlashList
                         data={filteredProjects}
+                        bounces={false}
+                        scrollEventThrottle={16}
+                        style={styles.scrollView}
                         numColumns={2}
                         ListHeaderComponent={<Header />}
                         contentContainerStyle={{ paddingBottom: 32, paddingTop: 72, paddingHorizontal: 44 }}
@@ -69,7 +78,7 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
                             )
                         }
                         }
-                        showsVerticalScrollIndicator={false}
+                        scrollIndicatorInsets={{ right: 1, bottom: 1 }} // Adjust insets to make scrollbar more visible
                         estimatedItemSize={200}
                     />
                 </View>
@@ -80,6 +89,9 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
 }
 
 const styles = StyleSheet.create({
+    scrollView: {
+        position: 'relative',
+    },
 });
 
 export default DetailKeyword;

@@ -1,52 +1,61 @@
 import { BlurView } from 'expo-blur';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
+import Reanimated, { useSharedValue, withDelay, withTiming } from 'react-native-reanimated';
 import data from '../../assets/data/structured-data.json';
 import CloseButton from '../atoms/closeButton';
+import Touchable from '../atoms/touchable';
 import DetailKeyword from '../pages/detailKeyword';
 import DetailPage from '../pages/detailPage';
 import HomeScreen from '../pages/homeScreen';
-import Touchable from '../atoms/touchable';
 
-export default function Ipad({ page, setPage }) {
+const AnimatedBlurView = Reanimated.createAnimatedComponent(BlurView);
+
+const Ipad = ({ page, setPage }) => {
     const [visible, setVisible] = useState(false);
     const [activeFilters, setActiveFilters] = useState([]);
     const [projects, setProjects] = useState(data.projects);
-
-
-    const isVisible = (page) => {
-        if (page === 'discover' || page === 'gallery' || page === 'filter') {
-            setVisible(false);
+    const intensity = useSharedValue(0);
+    useEffect(() => {
+        const isHidden = (page.page === 'discover' || page.page === 'gallery' || page.page === 'filter');
+        setVisible(!isHidden);
+        if (isHidden) {
+            intensity.value = withTiming(0, { duration: 500 });
         } else {
-            setVisible(true);
+            intensity.value = withDelay(400, withTiming(35, { duration: 500 }));
         }
-    };
+    }, [page.page]);
 
     const handleClosePopUp = (setPage, page) => {
-        console.log('CLOSE POP UP', page);
         setPage({
+            ...page,
             page: page.previousPages[0].page,
             id: null,
             previousPages: [],
             info: {}
         })
-        isVisible(page.previousPages[0].page);
     }
 
     const handleBack = () => {
         setPage({
+            ...page,
             page: page.previousPages[page.previousPages.length - 1].page,
             id: page.previousPages[page.previousPages.length - 1].id,
             previousPages: page.previousPages.slice(0, -1),
             info: page.previousPages[page.previousPages.length - 1].info
         })
-        isVisible(page.previousPages[page.previousPages.length - 1].page);
     }
 
     return (
         <View style={styles.container}>
-            <HomeScreen page={page} setPage={setPage} activeFilters={activeFilters} setActiveFilters={setActiveFilters} projects={projects} setProjects={setProjects} setVisible={setVisible} />
-            {/* <DiscoverScreen projects={projects} page={page} setPage={setPage} isVisible={isVisible} /> */}
+            <HomeScreen
+                page={page}
+                setPage={setPage}
+                activeFilters={activeFilters}
+                setActiveFilters={setActiveFilters}
+                projects={projects}
+                setProjects={setProjects}
+            />
 
             {/*--------------- Detailpage overlays --------------------*/}
             <Modal
@@ -55,7 +64,7 @@ export default function Ipad({ page, setPage }) {
                 onRequestClose={() => handleClosePopUp(setPage, page)}
             >
                 <View style={{ flex: 1 }}>
-                    <BlurView intensity={35} tint="dark" style={StyleSheet.absoluteFill} />
+                    <AnimatedBlurView intensity={intensity} tint="dark" style={StyleSheet.absoluteFill} />
                     <Pressable style={StyleSheet.absoluteFill} onPress={() => handleClosePopUp(setPage, page)} />
 
                     {/*-------------------- Overlay content --------------------*/}
@@ -76,12 +85,11 @@ export default function Ipad({ page, setPage }) {
                             {
                                 page.page === 'detailResearch' &&
                                 (
-                                    
-                                        <DetailPage page={page} setPage={setPage} />
+                                    <DetailPage page={page} setPage={setPage} />
                                 )
                             }
                             {
-                                page.page === 'detailKeyword' &&
+                                (page.page === 'detailKeyword' || page.page === 'detailCluster') &&
                                 (
                                     <DetailKeyword page={page} setPage={setPage} setVisible={setVisible} />
                                 )
@@ -117,3 +125,5 @@ const styles = StyleSheet.create({
         flex: 1,
     }
 });
+
+export default Ipad;

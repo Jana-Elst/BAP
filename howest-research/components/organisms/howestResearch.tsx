@@ -1,24 +1,34 @@
 //https://www.npmjs.com/package/react-native-qrcode-svg
 
 import { BlurView } from 'expo-blur';
-import { Image } from 'expo-image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import Animated from 'react-native-reanimated';
+import { getEnteringFade, getEnteringScale, getExitingFade, getExitingScale } from '../../scripts/animations';
 
-import Card from '../atoms/card';
 import CloseButton from '../atoms/closeButton';
-import { ParagraphLarge, ParagraphSmall, StyledText, SubTitleSmall } from '../atoms/styledComponents';
-import AccordeonHowestResearch from '../molecules/accordeonHowestResearch';
 import HowestResearchButton from '../molecules/howestResearchButton';
+import HowestResearchContentCard from '../molecules/howestResearchContentCard';
 
 const image = require('../../assets/images/logoHowestResearchRGB.png')
 
-const HowestResearch = () => {
+const HowestResearch = ({ children = null, page, setPage }) => {
     const [visible, setVisible] = useState(false);
 
+    useEffect(() => {
+        if (page?.info === 'contact') {
+            setVisible(true);
+        }
+    }, [page?.info]);
+
     const toggleOverlay = () => {
-        setVisible(!visible);
+        console.log('TOGGLE OVERLAY');
+        const newVisible = !visible;
+        setVisible(newVisible);
+
+        if (!newVisible && page?.info === 'contact') {
+            setPage({ ...page, info: null });
+        }
     };
 
     return (
@@ -35,43 +45,16 @@ const HowestResearch = () => {
                     <Pressable style={StyleSheet.absoluteFill} onPress={toggleOverlay} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View style={styles.overlayContent}>
-                        <Card style={{ flexDirection: 'row', gap: 40, padding: 64 }} fill={true} borderRadius={80}>
-                            <View style={{ flexDirection: 'column', gap: 18, width: '480' }}>
-                                <Card
-                                    isActive={true}
-                                    style={{ borderColor: 'transparent', alignItems: 'center', justifyContent: 'center' }}
-                                    fill={true}
-                                >
-                                    <Image
-                                        style={styles.image}
-                                        source={image}
-                                        contentFit="contain"
-                                    />
-                                </Card>
-                                <Card style={{ paddingHorizontal: 64, paddingVertical: 40, gap: 16, alignItems: 'center', borderWidth: 1 }}>
-                                    <ParagraphLarge style={{ textAlign: 'center' }}>Geïnteresseerd in één van onze onderzoeksprojecten?</ParagraphLarge>
-                                    <SubTitleSmall style={{ textAlign: 'center' }}>Neem contact op</SubTitleSmall>
-                                    <QRCode
-                                        value="https://www.figma.com/proto/YKxkw8cVjng9b7Z4bi0o3F/phone-userTest?page-id=0%3A1&node-id=1-1736&viewport=223%2C63%2C0.28&t=c9BRBTLy78mc7Ey8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A1736"
-                                        backgroundColor='transparent'
-                                        size={275}
-                                    />
-                                    <ParagraphSmall style={{ textAlign: 'center' }}>www.howest.be/nl/onderzoek-aan-howest</ParagraphSmall>
-                                </Card>
-                            </View>
-                            <View style={{ flex: 1, gap: 32 }}>
-                                <View style={{ gap: 12 }}>
-                                    <SubTitleSmall>Innovatief en toekomstgericht onderzoek dat klaar is om ingezet te worden.</SubTitleSmall>
-                                    <StyledText>Howest University of Applied Sciences is more than a place where young people come to learn. As a knowledge institution, one of our main tasks is to act as a research and service partner to organisations and businesses in West-Flanders – and of course beyond.</StyledText>
-                                </View>
-                                <AccordeonHowestResearch />
-                            </View>
-                        </Card>
+                    <Animated.View entering={getEnteringFade()} exiting={getExitingFade()} style={styles.overlayContent}>
+                        <Animated.View entering={getEnteringScale()} exiting={getExitingScale()} style={{ flex: 1 }}>
+                            <HowestResearchContentCard />
+                        </Animated.View>
 
-                        <CloseButton onPress={toggleOverlay}>Sluit</CloseButton>
+                        <Pressable onPress={toggleOverlay}>
+                            <CloseButton onPress={toggleOverlay}>Sluit</CloseButton>
+                        </Pressable>
 
-                    </View>
+                    </Animated.View>
                 </View>
             </Modal >
         </View>

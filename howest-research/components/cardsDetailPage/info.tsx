@@ -16,10 +16,10 @@ const Info = ({ project }) => {
         .filter((text: string) => text.length > 0);
 
     return (
-        <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1 }}>
+        <View style={{ flexDirection: 'row', gap: 40, marginTop: 16, flex: 1, marginHorizontal: 64 }}>
             <View style={{ flexDirection: 'column', gap: 18, width: '350' }}>
                 <View style={{ gap: 18, flex: 1 }}>
-                    <SubTitle>Dit is een korte teaser van ongeveer 8 woorden.</SubTitle>
+                    <SubTitle numberOfLines={2}>{abstractSplitted[0]}</SubTitle>
                     <View style={{ gap: 8 }}>
                         {abstractSplitted.map((item, index) => (
                             <StyledText key={index}>{item}</StyledText>
@@ -37,25 +37,35 @@ const Info = ({ project }) => {
             </View>
             <View style={{ flex: 1, gap: 16 }}>
                 <View style={{ gap: 12, borderWidth: 2, borderColor: Colors.white, borderRadius: 30, paddingVertical: 32, paddingHorizontal: 24, flex: 1 }}>
-                    <View style={{ gap: 2 }}>
-                        <ParagraphBold>Onderzoeksgroep</ParagraphBold>
-                        <StyledText>{project.researchGroup.label}</StyledText>
-                    </View>
+                    { project.researchGroup && (
+                        <View style={{ gap: 2 }}>
+                            <ParagraphBold>Onderzoeksgroep</ParagraphBold>
+                            <StyledText>{project.researchGroup.label}</StyledText>
+                        </View>
+                    )}
 
-                    <View style={{ gap: 2 }}>
-                        <ParagraphBold>ProjectLeider</ParagraphBold>
-                        <ParagraphSmall>{project.contactPerson}</ParagraphSmall>
-                        <ParagraphSmall>{project.contactPersonEmail}</ParagraphSmall>
-                    </View>
+                    {
+                        project.contactPerson && project.contactPersonEmail && (
+                            <View style={{ gap: 2 }}>
+                                <ParagraphBold>ProjectLeider</ParagraphBold>
+                                <ParagraphSmall>{project.contactPerson}</ParagraphSmall>
+                                <ParagraphSmall>{project.contactPersonEmail.replace('@', '@\u200B')}</ParagraphSmall>
+                            </View>
+                        )
+                    }
 
-                    <View style={{ gap: 2 }}>
-                        <ParagraphBold>Projectduur</ParagraphBold>
-                        <ParagraphSmall>{project.startDate} - {project.endDate}</ParagraphSmall>
-                    </View>
+                    {
+                        project.startDate && project.endDate && (
+                            <View style={{ gap: 2 }}>
+                                <ParagraphBold>Projectduur</ParagraphBold>
+                                <ParagraphSmall>{project.startDate} - {project.endDate}</ParagraphSmall>
+                            </View>
+                        )
+                    }
 
-                    <View style={{ gap: 2 }}>
+                    {/* <View style={{ gap: 2 }}>
                         <ParagraphBold>Links</ParagraphBold>
-                    </View>
+                    </View> */}
                 </View>
 
                 <Card style={{ padding: 24, gap: 12, alignItems: 'center', borderWidth: 1, flexDirection: 'row' }}>

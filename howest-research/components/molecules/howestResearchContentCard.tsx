@@ -1,0 +1,80 @@
+//https://www.npmjs.com/package/react-native-qrcode-svg
+
+import { Image } from 'expo-image';
+import { StyleSheet, View } from 'react-native';
+import QRCode from 'react-native-qrcode-svg';
+import Animated from 'react-native-reanimated';
+import { getEnteringFade, getEnteringScale, getExitingFade, getExitingScale } from '../../scripts/animations';
+
+import Card from '../atoms/card';
+import { ParagraphLarge, ParagraphSmall, StyledText, SubTitleSmall } from '../atoms/styledComponents';
+import AccordeonHowestResearch from '../molecules/accordeonHowestResearch';
+
+const image = require('../../assets/images/logoHowestResearchRGB.png')
+
+const HowestResearchContentCard = () => {
+    return (
+        <Animated.View entering={getEnteringFade()} exiting={getExitingFade()} style={styles.overlayContent}>
+            <Animated.View entering={getEnteringScale()} exiting={getExitingScale()} style={{ flex: 1 }}>
+                <Card style={{ flexDirection: 'row', gap: 40, padding: 64 }} fill={true} borderRadius={80} animatedView={false}>
+                    <View style={{ flexDirection: 'column', gap: 18, width: '480' }}>
+                        <Card
+                            isActive={true}
+                            style={{ borderColor: 'transparent', alignItems: 'center', justifyContent: 'center' }}
+                            fill={true}
+                            animatedView={false}
+                        >
+                            <Image
+                                style={styles.image}
+                                source={image}
+                                contentFit="contain"
+                            />
+                        </Card>
+                        <Card style={{ paddingHorizontal: 40, paddingVertical: 40, gap: 16, alignItems: 'center', borderWidth: 1 }} animatedView={false}>
+                            <ParagraphLarge style={{ textAlign: 'center' }}>Geïnteresseerd in één van onze onderzoeksprojecten?</ParagraphLarge>
+                            <SubTitleSmall style={{ textAlign: 'center' }}>Neem contact op</SubTitleSmall>
+                            <QRCode
+                                value="https://www.figma.com/proto/YKxkw8cVjng9b7Z4bi0o3F/phone-userTest?page-id=0%3A1&node-id=1-1736&viewport=223%2C63%2C0.28&t=c9BRBTLy78mc7Ey8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A1736"
+                                backgroundColor='transparent'
+                                size={225}
+                            />
+                            <ParagraphSmall style={{ textAlign: 'center' }}>www.howest.be/nl/onderzoek-aan-howest</ParagraphSmall>
+                        </Card>
+                    </View>
+                    <View style={{ flex: 1, gap: 6 }}>
+                        <View style={{ gap: 12 }}>
+                            <SubTitleSmall>Innovatief en toekomstgericht onderzoek dat klaar is om ingezet te worden.</SubTitleSmall>
+                            <StyledText>Howest University of Applied Sciences is more than a place where young people come to learn. As a knowledge institution, one of our main tasks is to act as a research and service partner to organisations and businesses in West-Flanders – and of course beyond.</StyledText>
+                        </View>
+                        <AccordeonHowestResearch />
+                    </View>
+                </Card>
+            </Animated.View>
+        </Animated.View>
+    )
+}
+
+const styles = StyleSheet.create({
+    container: {
+        position: 'relative',
+    },
+
+    modalContainer: {
+        flex: 1,
+    },
+
+    overlayContent: {
+        top: 0,
+        left: 0,
+        flex: 1,
+        margin: 32,
+        gap: 20,
+    },
+
+    image: {
+        width: 380,
+        height: 55,
+    },
+});
+
+export default HowestResearchContentCard;

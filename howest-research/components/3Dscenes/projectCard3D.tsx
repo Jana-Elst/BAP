@@ -1,44 +1,24 @@
 import { Image } from 'expo-image';
 import useGetKeywordImages from '../../scripts/getVisualizationProjectImages';
-import '../../styles/style.css';
+import "../../styles/style.css";
 
 const ProjectCard3D = ({
-    page,
-    setPage,
-    setVisible,
-    project,
+    project
 }) => {
 
     const imageSrc = useGetKeywordImages(project.formattedName);
     const color = project.color;
 
-    const handleOpenDetail = () => {
-        setPage({
-            page: 'detailResearch',
-            id: project.id,
-            previousPages: [
-                ...(page.previousPages || []),
-                {
-                    info: page.info,
-                    page: page.page,
-                    id: page.id
-                }
-            ]
-        })
-        setVisible(true);
-    }
-
-    // If project data is missing for any reason (render timing, incomplete data), do not render the card.
     if (!project) return null;
 
     return (
-        <div style={styles.container} onClick={handleOpenDetail}>
-            <div style={styles.card}>
+        <div style={styles.container}>
+            <div style={styles.card} className="card">
                 <div style={styles.texture}></div>
 
                 <div style={styles.header}>
                     <p style={styles.headerTitle}>{project.title}</p>
-                    <p style={styles.headerSubtitle}>{project.cluster.label}</p>
+                    <p style={styles.headerTeaser}>Dit is een korte teaser van ongeveer acht woorden</p>
                 </div>
                 <div style={styles.imageContainer}>
                     <Image
@@ -47,9 +27,12 @@ const ProjectCard3D = ({
                         style={styles.image}
                         contentFit="cover"
                     />
+                    <p style={{ ...styles.headerSubtitle, color: `var(--${color}-text)` }}>{project.cluster.label}</p>
                 </div>
             </div>
-            <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>        </div>
+            <div style={{ ...styles.gradient, background: `radial-gradient(65.35% 66.61% at 50% 50%, var(--${color}-100) 0%, var(--${color}-10) 100%)` }}></div>
+            <div style={{ backgroundColor: '#f0f0f0' }}></div>
+        </div>
     );
 };
 
@@ -58,8 +41,9 @@ const styles: { [key: string]: React.CSSProperties } = {
         display: 'grid',
         gridTemplateRows: '1fr',
         gridTemplateColumns: '1fr',
-        alignItems: 'center',
+        alignItems: 'end',
         justifyItems: 'center',
+        transformStyle: 'preserve-3d',
     },
     card: {
         gridRow: 1,
@@ -71,13 +55,14 @@ const styles: { [key: string]: React.CSSProperties } = {
         alignItems: 'center',
         justifyContent: 'center',
         textAlign: 'center',
-        width: 'fit-content',
+        width: 275,
         border: '2px solid white',
         padding: '20px 12px 12px 12px',
         borderRadius: '42px',
         background: 'linear-gradient(123deg, rgba(255, 255, 255, 0.60) 12.29%, rgba(249, 249, 249, 0.56) 28.94%, rgba(224, 224, 224, 0.40) 90.97%)',
         boxShadow: '0 3px 30px -1.711px rgba(78, 78, 78, 0.20)',
         backdropFilter: 'blur(20px)',
+        transform: 'translateZ(1px)',
     },
     texture: {
         position: 'absolute',
@@ -98,45 +83,64 @@ const styles: { [key: string]: React.CSSProperties } = {
         zIndex: -1,
         width: '214.279px',
         height: '326.486px',
-        transform: 'rotate(-46.149deg)',
+        transform: 'rotate(-46.149deg) translateZ(-1px)',
         flexShrink: 0,
         borderRadius: '326.486px',
     },
     header: {
         display: 'flex',
         flexDirection: 'column',
-        gap: 0,
     },
     headerTitle: {
         margin: 0,
         padding: 0,
         color: 'black',
         textAlign: 'center',
-        fontFamily: 'VAGRoundedStd-Bold, sans-serif',
+        fontFamily: 'VAGRoundedStd-Light, sans-serif',
         fontSize: '22px',
         lineHeight: '120%',
         letterSpacing: '1.1px',
         textTransform: 'capitalize',
+
+        marginTop: '8px',
+        marginBottom: '4px',
     },
     headerSubtitle: {
         margin: 0,
         padding: 0,
+        textAlign: 'center',
+        fontFamily: 'OpenSans-Semibold, sans-serif',
+        fontSize: '14px',
+    },
+
+    headerTeaser: {
+        margin: 0,
+        padding: 0,
         color: '#606060',
         textAlign: 'center',
-        fontFamily: ' OpenSans-Semibold, sans-serif',
+        fontFamily: 'OpenSans-Semibold, sans-serif',
         fontSize: '16px',
     },
+
     imageContainer: {
-        border: '2px solid white',
-        padding: '16px 24px',
+        // border: '2px solid white',
+        padding: '12px 24px',
+        paddingBottom: '12px',
         borderRadius: '30px',
-        display: 'flex',
-        alignItems: 'center',
+        display: 'grid',
+        gridTemplateRows: 'min-content min-content',
+        gridTemplateColumns: '1fr',
+        alignItems: 'end',
         justifyContent: 'center',
+        border: '2px solid var(--colors-white-50, rgba(255, 255, 255, 0.50))',
     },
     image: {
+        gridRow: 1,
+        gridColumn: 1,
+
         width: '225px',
-        height: '225px',
+        height: '200px',
+        marginTop: '-8px',
         objectFit: 'cover',
     },
 };

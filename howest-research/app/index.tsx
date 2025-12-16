@@ -1,25 +1,55 @@
 import ExternalScreen from "@/components/screens/externalDisplay";
 import Ipad from "@/components/screens/ipad";
-import React, { useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { StyleSheet } from 'react-native';
 import ExternalDisplay, {
   useExternalDisplay,
 } from 'react-native-external-display';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   const [page, setPage] = useState(
     {
-      page: 'discover', //discover, gallery, about, detailResearch, detailKeyWord, searchResults, search, filter
+      page: 'discover', //idle, discover, gallery, about, detailResearch, detailKeyWord, searchResults, search, filter
       id: null,
-      previousPages: []
+      previousPages: [],
+      isLoading: {
+        ipad: false,
+        externalDisplay: false
+      },
+      isTouched: false
     }
   );
 
+  const timerRef = useRef<any>(null);
+
+  const handleTouchStart = () => {
+    console.log('pressed');
+    if (timerRef.current) {
+      console.log('Timer already exists, clearing it');
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+    }
+    setPage(prev => ({ ...prev, isTouched: true }));
+  };
+
+  const handleTouchEnd = () => {
+    console.log('ended');
+    timerRef.current = setTimeout(() => {
+      console.log('Timer ended, setting isTouched false');
+      setPage(prev => ({
+        ...prev,
+        isTouched: false,
+        page: 'discover'
+      }));
+    // }, 1000);
+  }, 60000);
+  };
+
   const screens = useExternalDisplay();
-  const screenIds = Object.keys(screens);
-  const screenCount = screenIds.length;  //if total screen count is 1 --> external screen is connected!
-  console.log('screens', screens);
+  const screenIds = useMemo(() => Object.keys(screens), [screens]);
+  const screenCount = useMemo(() => screenIds.length, [screenIds]);  //if total screen count is 1 --> external screen is connected!
 
   //-------------------- External screen connected --------------------//
   if (screenCount > 0) {
@@ -34,7 +64,14 @@ export default function HomeScreen() {
           <ExternalScreen screen={screens} page={page} setPage={setPage} />
         </ExternalDisplay>
 
-        <Ipad page={page} setPage={setPage} />
+        <GestureHandlerRootView
+          style={{ flex: 1 }}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+        >
+          <Ipad page={page} setPage={setPage} />
+        </GestureHandlerRootView>
       </>
     )
 
@@ -42,7 +79,14 @@ export default function HomeScreen() {
     //-------------------- No external screen connected --------------------//
   } else {
     return (
-      <Ipad page={page} setPage={setPage} />
+      <GestureHandlerRootView
+        style={{ flex: 1 }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+      >
+        <Ipad page={page} setPage={setPage} />
+      </GestureHandlerRootView>
     )
   }
 }
@@ -52,3 +96,5 @@ const styles = StyleSheet.create({
     flex: 1,
   }
 });
+
+export default HomeScreen;
