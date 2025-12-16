@@ -1,6 +1,6 @@
 import "../../styles/style.css";
 
-const InfiniteScrollHero = () => {
+const Hero = () => {
     return (
         <div style={styles.textContainer}>
             <h1 style={styles.h1}>Ontdek dé oplossing voor jouw bedrijf.</h1>
@@ -45,4 +45,4 @@ const styles: { [key: string]: React.CSSProperties } = {
     }
 };
 
-export default InfiniteScrollHero;
+export default Hero;

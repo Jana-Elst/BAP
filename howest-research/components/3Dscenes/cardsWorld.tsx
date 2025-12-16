@@ -8,13 +8,14 @@ import * as THREE from 'three';
 
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { getProjectInfo } from '@/scripts/getData';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { CSS3DObject, CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer.js';
 import getDiscoverPositions from '../../scripts/placeCards';
-import InfiniteScrollHero from './infiniteScrollHero';
+import EmptyState from './emptyState';
+import Hero from './hero';
 import ProjectCard3D from './projectCard3D';
 
 gsap.registerPlugin(useGSAP);
@@ -36,17 +37,27 @@ const calculateCameraZForScreen = (camera: THREE.PerspectiveCamera, screenHeight
     return z;
 };
 
-const updateHero = (heroRef) => {
+const updateHero = (heroRef: MutableRefObject<Root | null>) => {
     if (heroRef.current) {
         heroRef.current.render(
-            <InfiniteScrollHero />
+            <Hero />
         );
 
         console.log('heroImage is updated');
     }
 };
 
-const createCards = (projects, cardsRef, page, setPage, isDiscoverMode, onRender) => {
+const updateEmptyState = (emptyStateRef: MutableRefObject<Root | null>) => {
+    if (emptyStateRef.current) {
+        emptyStateRef.current.render(
+            <EmptyState />
+        );
+
+        console.log('emptyState is updated');
+    }
+};
+
+const createCards = (projects: any[], cardsRef: any, page: any, setPage: any, isDiscoverMode: any, onRender: any) => {
     const cardsObjsRef = [];
 
     projects.forEach((project, index) => {
@@ -121,7 +132,7 @@ const createCards = (projects, cardsRef, page, setPage, isDiscoverMode, onRender
     return cardsObjsRef;
 }
 
-const updateCard = (root: Root, project, page, setPage, isDiscoverMode) => {
+const updateCard = (root: Root, project: any, page: any, setPage: any, isDiscoverMode: any) => {
     root.render(
         <ProjectCard3D
             project={project}
@@ -316,9 +327,9 @@ const animateCardsToState = (
     });
 }
 
-const animateHero = (heroObjectRef,
+const animateHero = (heroObjectRef: any,
     isDiscoverMode: boolean,
-    heroSize
+    heroSize: any
 ) => {
     const heroObj = heroObjectRef.current;
     if (!heroObj) return;
@@ -359,7 +370,7 @@ const animateHero = (heroObjectRef,
 }
 
 //--- eventListeners
-const changeControls = (controlsRef, cameraRef, limitsRef, rendererRef, sceneRef) => {
+const changeControls = (controlsRef: any, cameraRef: any, limitsRef: any, rendererRef: any, sceneRef: any) => {
     const controls = controlsRef.current;
     const camera = cameraRef.current;
     const renderer = rendererRef.current;
@@ -387,6 +398,9 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
     const heroRef = useRef<Root>(null);
     const heroObjectRef = useRef<CSS3DObject>(null);
+
+    const emptyStateRef = useRef<Root>(null);
+    const emptyStateObjectRef = useRef<CSS3DObject>(null);
 
     const cardsRef = useRef<Map<number, Root>>(new Map());
     const cardsObjsRef = useRef<CSS3DObject[]>([]);
@@ -471,6 +485,20 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
         heroObjectRef.current = heroObj;
 
         scene.add(heroObj);
+
+        //--- create empty state
+        const emptyStateCanvas = document.createElement('div');
+        emptyStateCanvas.style.width = 'fit-content';
+        emptyStateCanvas.style.height = 'fit-content';
+        emptyStateCanvas.style.zIndex = '100';
+
+        const emptyStateRoot = createRoot(emptyStateCanvas);
+        emptyStateRef.current = emptyStateRoot;
+        updateEmptyState(emptyStateRef);
+
+        const emptyStateObj = new CSS3DObject(emptyStateCanvas);
+        emptyStateObj.position.set(0, 0, 0);
+        emptyStateObjectRef.current = emptyStateObj;
 
         //--- create cards
         // 1.create cards
@@ -594,17 +622,43 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             sceneRef.current.remove(cardObj);
         });
 
-        // Create new cards
-        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode, chachedChangeControls);
+        // Check if there are projects
+        if (projects.length === 0) {
+            if (emptyStateObjectRef.current) {
+                sceneRef.current.add(emptyStateObjectRef.current);
+            }
+            if (controlsRef.current) {
+                controlsRef.current.enabled = false;
+            }
+            // Hide Hero if empty state is shown to prevent overlap
+            if (heroObjectRef.current) {
+                sceneRef.current.remove(heroObjectRef.current);
+            }
+        } else {
+            if (emptyStateObjectRef.current) {
+                sceneRef.current.remove(emptyStateObjectRef.current);
+            }
+            if (controlsRef.current) {
+                controlsRef.current.enabled = true;
+            }
+            // Ensure Hero is in scene if projects exist
+            if (heroObjectRef.current) {
+                // Check if already added to avoid adding twice (Three.js handles this but good to be explicit/safe or just add)
+                sceneRef.current.add(heroObjectRef.current);
+            }
 
-        // Add new cards to scene
-        cardsObjsRef.current.forEach(cardObj => {
-            sceneRef.current.add(cardObj);
-        });
+            // Create new cards
+            cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode, chachedChangeControls);
 
-        // Animate Cards
-        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
-        animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
+            // Add new cards to scene
+            cardsObjsRef.current.forEach(cardObj => {
+                sceneRef.current.add(cardObj);
+            });
+
+            // Animate Cards
+            animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
+            animateCardsToState(cardsObjsRef.current, cardPositions, isDiscoverMode);
+        }
 
         updateHero(heroRef);
 
