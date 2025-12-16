@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     paragraph: {
         fontFamily: Fonts.sans.regular,
         fontSize: 20,
-        lineHeight: lineHeight(20, 1.4),
+        lineHeight: 28,
     },
 
     title: {

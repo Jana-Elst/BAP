@@ -1,5 +1,6 @@
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from 'expo-blur';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
@@ -76,13 +77,13 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                     showIconOnly={true}
                                     styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
                                 </Touchable>
-                                <View style={{ flex: 1, justifyContent: 'center' }}>
+                                <View style={{ flex: 1, justifyContent: 'center', position: 'relative' }}>
                                     <FlashList
                                         data={activeFilters}
                                         horizontal={true}
                                         estimatedItemSize={100}
                                         showsHorizontalScrollIndicator={false}
-                                        contentContainerStyle={{ paddingHorizontal: 18, justifyContent: 'center', alignItems: 'center', height: '100%' }}
+                                        contentContainerStyle={{ paddingHorizontal: 18, paddingLeft: 32, justifyContent: 'center', alignItems: 'center', height: '100%' }}
                                         ItemSeparatorComponent={() => (
                                             <View style={{ width: 12 }} />
                                         )}
@@ -117,8 +118,8 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
 
                             {/*-------------------- Filters --------------------*/}
                             <View style={styles.filterContainer}>
-                                <View>
-                                    <View style={{ paddingLeft: 64 }}>
+                                <View style={{ gap: 12 }}>
+                                    <View style={{ paddingLeft: 64, gap: 4 }}>
                                         <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
                                         <StyledText style={styles.filterDescription}>5 domeinen waarbinnen Howest Research onderzoek voert</StyledText>
                                     </View>
@@ -135,8 +136,8 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                                     </View>
                                 </View>
 
-                                <View>
-                                    <View style={{ paddingLeft: 64 }}>
+                                <View style={{ gap: 12 }}>
+                                    <View style={{ paddingLeft: 64, gap: 4 }}>
                                         <SubTitleSmall>Clusters</SubTitleSmall>
                                         <StyledText style={styles.filterDescription}>13 clusters gelinkt aan onze verschillende opleidingen</StyledText>
                                     </View>

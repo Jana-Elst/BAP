@@ -9,7 +9,7 @@ const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isAc
 
     return (
         <BlurView intensity={50} tint="light" style={[styles.blurContainer, { borderRadius: borderRadius }, containerStyle, flexStyle]}>
-            <ImageBackground source={textureCard} resizeMode='repeat' imageStyle={{ opacity: 0.5 }}>
+            {/* <ImageBackground source={textureCard} resizeMode='repeat' imageStyle={{ opacity: 0.5 }}> */}
                 <View style={{ opacity: 0.5 }} />
                 <View style={[styles.shadowContainer, { borderRadius: borderRadius }, flexStyle]}>
                     <LinearGradient
@@ -22,7 +22,7 @@ const Card = ({ children, borderRadius = 30, onLayout = null, style = null, isAc
                         {children}
                     </LinearGradient>
                 </View>
-            </ImageBackground>
+            {/* </ImageBackground> */}
         </BlurView>
     )
 }

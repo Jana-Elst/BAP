@@ -123,7 +123,7 @@ const styles: { [key: string]: React.CSSProperties } = {
     },
 
     imageContainer: {
-        border: '2px solid white',
+        // border: '2px solid white',
         padding: '12px 24px',
         paddingBottom: '12px',
         borderRadius: '30px',
@@ -132,6 +132,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         gridTemplateColumns: '1fr',
         alignItems: 'end',
         justifyContent: 'center',
+        border: '2px solid var(--colors-white-50, rgba(255, 255, 255, 0.50))',
     },
     image: {
         gridRow: 1,

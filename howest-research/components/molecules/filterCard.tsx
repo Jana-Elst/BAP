@@ -112,6 +112,8 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: Fonts.rounded.light,
         textAlign: 'center',
+        fontSize: 18,
+        lineHeight: 19.8,
     },
 
     imageContainer: {
