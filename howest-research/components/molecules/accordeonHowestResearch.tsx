@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     content: {
-        gap: 16,
+        gap: 8,
     }
 });
 

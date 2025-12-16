@@ -1,8 +1,9 @@
 import { FlashList } from "@shopify/flash-list";
 import { BlurView } from 'expo-blur';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useRef, useState } from 'react';
 import { Modal, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import Animated from 'react-native-reanimated';
+import { getEnteringFade, getEnteringScale, getExitingFade, getExitingScale } from '../../scripts/animations';
 
 import Card from "../atoms/card";
 import { Paragraph, ParagraphLarge, StyledText, SubTitleSmall } from "../atoms/styledComponents";
@@ -67,120 +68,122 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                     <Pressable style={StyleSheet.absoluteFill} onPress={toggleOverlay} />
 
                     {/*-------------------- Overlay content --------------------*/}
-                    <View pointerEvents="box-none" style={styles.overlayContent}>
-                        <Card style={styles.card} borderRadius={80}>
-                            <View style={styles.header}>
-                                <Touchable
-                                    onPress={toggleOverlay}
-                                    isActive={activeFilters.length > 0 ? false : true}
-                                    icon={'arrow-back-outline'}
-                                    showIconOnly={true}
-                                    styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
-                                </Touchable>
-                                <View style={{ flex: 1, justifyContent: 'center', position: 'relative' }}>
-                                    <FlashList
-                                        data={activeFilters}
-                                        horizontal={true}
-                                        estimatedItemSize={100}
-                                        showsHorizontalScrollIndicator={false}
-                                        contentContainerStyle={{ paddingHorizontal: 18, paddingLeft: 32, justifyContent: 'center', alignItems: 'center', height: '100%' }}
-                                        ItemSeparatorComponent={() => (
-                                            <View style={{ width: 12 }} />
-                                        )}
-                                        ListEmptyComponent={() => (
-                                            <View style={{ justifyContent: 'center', height: '100%' }}>
-                                                <StyledText>Geen actieve filters. Selecteer één of meerdere filters.</StyledText>
-                                            </View>
-                                        )}
-                                        renderItem={({ item }: { item: any }) => {
-                                            const label = item.label.split(' (')[0];
-                                            const labelCapitalize = label.charAt(0).toUpperCase() + label.slice(1).toLowerCase();
-                                            return (
-                                                <Touchable
-                                                    onPress={() => handleSelect(item)}
-                                                    icon={'close'}
-                                                    iconPosition={'after'}
-                                                    isActive={true}
-                                                    styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
-                                                    styleGradient={{ alignSelf: 'center' }}><Paragraph>{labelCapitalize}</Paragraph></Touchable>
-                                            );
-                                        }}
-                                        ListFooterComponent={() => (
-                                            activeFilters.length > 0 ? (
-                                                <TouchableOpacity onPress={clearFilters} style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 }}>
-                                                    <StyledText style={{ borderBottomWidth: 2, borderBottomColor: 'black' }}>Alle filters wissen</StyledText>
-                                                </TouchableOpacity>
-                                            ) : null
-                                        )}
-                                    />
-                                </View>
-                            </View>
-
-                            {/*-------------------- Filters --------------------*/}
-                            <View style={styles.filterContainer}>
-                                <View style={{ gap: 12 }}>
-                                    <View style={{ paddingLeft: 64, gap: 4 }}>
-                                        <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
-                                        <StyledText style={styles.filterDescription}>5 domeinen waarbinnen Howest Research onderzoek voert</StyledText>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, paddingHorizontal: 64 }}>
-                                        {transitionDomains.map((item, index) => (
-                                            <FilterCard
-                                                key={index}
-                                                filter={'domain'}
-                                                project={item}
-                                                onPress={() => handleSelect(item)}
-                                                isActive={activeFilters.some((filter: any) => filter.formattedName === item.formattedName)}
-                                            />
-                                        ))}
-                                    </View>
-                                </View>
-
-                                <View style={{ gap: 12 }}>
-                                    <View style={{ paddingLeft: 64, gap: 4 }}>
-                                        <SubTitleSmall>Clusters</SubTitleSmall>
-                                        <StyledText style={styles.filterDescription}>13 clusters gelinkt aan onze verschillende opleidingen</StyledText>
-                                    </View>
-                                    <FlashList
-                                        data={clusters.filter(item => {
-                                            const cluster = getClusterName(item.id);
-                                            return cluster.formattedName !== 'clusteroverschrijdend';
-                                        })}
-                                        horizontal={true}
-                                        showsHorizontalScrollIndicator={false}
-                                        contentContainerStyle={{ paddingHorizontal: 64 }}
-                                        ItemSeparatorComponent={() => (
-                                            <View style={{ width: 20 }} />
-                                        )}
-                                        renderItem={({ item, index }) => {
-                                            console.log('item', item);
-                                            return (
-                                                <View style={{ paddingBottom: 56 }}>
-                                                    <FilterCard
-                                                        filter={'cluster'}
-                                                        project={item}
-                                                        onPress={() => handleSelect(item)}
-                                                        isActive={activeFilters.some((filter: any) => filter.formattedName === item.formattedName)} />
+                    <Animated.View entering={getEnteringFade()} exiting={getExitingFade()} style={styles.overlayContent}>
+                        <Animated.View pointerEvents="box-none" entering={getEnteringScale()} exiting={getExitingScale()} style={{ flex: 1 }}>
+                            <Card style={styles.card} borderRadius={80}>
+                                <View style={styles.header}>
+                                    <Touchable
+                                        onPress={toggleOverlay}
+                                        isActive={activeFilters.length > 0 ? false : true}
+                                        icon={'arrow-back-outline'}
+                                        showIconOnly={true}
+                                        styleButton={{ paddingVertical: 16, paddingHorizontal: 20 }}>
+                                    </Touchable>
+                                    <View style={{ flex: 1, justifyContent: 'center', position: 'relative' }}>
+                                        <FlashList
+                                            data={activeFilters}
+                                            horizontal={true}
+                                            estimatedItemSize={100}
+                                            showsHorizontalScrollIndicator={false}
+                                            contentContainerStyle={{ paddingHorizontal: 18, paddingLeft: 32, justifyContent: 'center', alignItems: 'center', height: '100%' }}
+                                            ItemSeparatorComponent={() => (
+                                                <View style={{ width: 12 }} />
+                                            )}
+                                            ListEmptyComponent={() => (
+                                                <View style={{ justifyContent: 'center', height: '100%' }}>
+                                                    <StyledText>Geen actieve filters. Selecteer één of meerdere filters.</StyledText>
                                                 </View>
-                                            )
-                                        }}
-                                    />
+                                            )}
+                                            renderItem={({ item }: { item: any }) => {
+                                                const label = item.label.split(' (')[0];
+                                                const labelCapitalize = label.charAt(0).toUpperCase() + label.slice(1).toLowerCase();
+                                                return (
+                                                    <Touchable
+                                                        onPress={() => handleSelect(item)}
+                                                        icon={'close'}
+                                                        iconPosition={'after'}
+                                                        isActive={true}
+                                                        styleButton={{ paddingVertical: 8, paddingHorizontal: 20 }}
+                                                        styleGradient={{ alignSelf: 'center' }}><Paragraph>{labelCapitalize}</Paragraph></Touchable>
+                                                );
+                                            }}
+                                            ListFooterComponent={() => (
+                                                activeFilters.length > 0 ? (
+                                                    <TouchableOpacity onPress={clearFilters} style={{ justifyContent: 'center', alignItems: 'center', paddingHorizontal: 24 }}>
+                                                        <StyledText style={{ borderBottomWidth: 2, borderBottomColor: 'black' }}>Alle filters wissen</StyledText>
+                                                    </TouchableOpacity>
+                                                ) : null
+                                            )}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
 
-                            {/*-------------------- Buttons footer --------------------*/}
-                            <View style={{ gap: 16, alignItems: 'center', justifyContent: 'center' }}>
-                                {
-                                    activeFilters.length > 0 ? (
-                                        <TouchableOpacity onPress={clearFilters}><ParagraphLarge style={{ borderBottomWidth: 2 }}>Alle filters wissen</ParagraphLarge></TouchableOpacity>
-                                    ) : (
-                                        <ParagraphLarge style={{ borderBottomWidth: 3, borderBottomColor: 'transparent' }}> </ParagraphLarge>
-                                    )
-                                }
-                                <Touchable onPress={toggleOverlay} isActive={activeFilters.length > 0 ? true : false} styleButton={{ paddingHorizontal: 20, paddingVertical: 16 }} styleGradient={{ alignSelf: 'center' }}>Pas filters toe</Touchable>
-                            </View>
-                        </Card>
-                    </View>
+                                {/*-------------------- Filters --------------------*/}
+                                <View style={styles.filterContainer}>
+                                    <View style={{ gap: 12 }}>
+                                        <View style={{ paddingLeft: 64, gap: 4 }}>
+                                            <SubTitleSmall>Transitiedomeinen</SubTitleSmall>
+                                            <StyledText style={styles.filterDescription}>5 domeinen waarbinnen Howest Research onderzoek voert</StyledText>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20, paddingHorizontal: 64 }}>
+                                            {transitionDomains.map((item, index) => (
+                                                <FilterCard
+                                                    key={index}
+                                                    filter={'domain'}
+                                                    project={item}
+                                                    onPress={() => handleSelect(item)}
+                                                    isActive={activeFilters.some((filter: any) => filter.formattedName === item.formattedName)}
+                                                />
+                                            ))}
+                                        </View>
+                                    </View>
+
+                                    <View style={{ gap: 12 }}>
+                                        <View style={{ paddingLeft: 64, gap: 4 }}>
+                                            <SubTitleSmall>Clusters</SubTitleSmall>
+                                            <StyledText style={styles.filterDescription}>13 clusters gelinkt aan onze verschillende opleidingen</StyledText>
+                                        </View>
+                                        <FlashList
+                                            data={clusters.filter(item => {
+                                                const cluster = getClusterName(item.id);
+                                                return cluster.formattedName !== 'clusteroverschrijdend';
+                                            })}
+                                            horizontal={true}
+                                            showsHorizontalScrollIndicator={false}
+                                            contentContainerStyle={{ paddingHorizontal: 64 }}
+                                            ItemSeparatorComponent={() => (
+                                                <View style={{ width: 20 }} />
+                                            )}
+                                            renderItem={({ item, index }) => {
+                                                console.log('item', item);
+                                                return (
+                                                    <View style={{ paddingBottom: 56 }}>
+                                                        <FilterCard
+                                                            filter={'cluster'}
+                                                            project={item}
+                                                            onPress={() => handleSelect(item)}
+                                                            isActive={activeFilters.some((filter: any) => filter.formattedName === item.formattedName)} />
+                                                    </View>
+                                                )
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+
+                                {/*-------------------- Buttons footer --------------------*/}
+                                <View style={{ gap: 16, alignItems: 'center', justifyContent: 'center' }}>
+                                    {
+                                        activeFilters.length > 0 ? (
+                                            <TouchableOpacity onPress={clearFilters}><ParagraphLarge style={{ borderBottomWidth: 2 }}>Alle filters wissen</ParagraphLarge></TouchableOpacity>
+                                        ) : (
+                                            <ParagraphLarge style={{ borderBottomWidth: 3, borderBottomColor: 'transparent' }}> </ParagraphLarge>
+                                        )
+                                    }
+                                    <Touchable onPress={toggleOverlay} isActive={activeFilters.length > 0 ? true : false} styleButton={{ paddingHorizontal: 20, paddingVertical: 16 }} styleGradient={{ alignSelf: 'center' }}>Pas filters toe</Touchable>
+                                </View>
+                            </Card>
+                        </Animated.View>
+                    </Animated.View>
                 </View>
             </Modal >
         </View >

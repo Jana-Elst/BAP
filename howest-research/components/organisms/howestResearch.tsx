@@ -64,7 +64,7 @@ const HowestResearch = () => {
                                         <ParagraphSmall style={{ textAlign: 'center' }}>www.howest.be/nl/onderzoek-aan-howest</ParagraphSmall>
                                     </Card>
                                 </View>
-                                <View style={{ flex: 1, gap: 32 }}>
+                                <View style={{ flex: 1, gap: 6 }}>
                                     <View style={{ gap: 12 }}>
                                         <SubTitleSmall>Innovatief en toekomstgericht onderzoek dat klaar is om ingezet te worden.</SubTitleSmall>
                                         <StyledText>Howest University of Applied Sciences is more than a place where young people come to learn. As a knowledge institution, one of our main tasks is to act as a research and service partner to organisations and businesses in West-Flanders – and of course beyond.</StyledText>
