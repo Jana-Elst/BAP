@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
 
     card: {
         borderWidth: 2,
+        borderColor: Colors.white,
     }
 });
 

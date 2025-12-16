@@ -14,7 +14,12 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     const color = projectInfo.color;
     const [containerSize, setContainerSize] = useState({ width: 250, height: 250 });
 
-    const imageSrc = useGetKeywordImages(project.formattedName);
+    const abstractSplitted = project.abstract
+        .split('</p>')
+        .map((text: string) => text.replace(/<p[^>]*>/g, '').trim())
+        .filter((text: string) => text.length > 0);
+
+    const imageSrc = useGetKeywordImages(projectInfo.formattedName);
 
     const handleOpenDetail = () => {
         setPage({
@@ -36,12 +41,12 @@ const ProjectCardLarge = ({ project, page, setPage, setVisible }) => {
     return (
         <TouchableOpacity onPress={handleOpenDetail} style={styles.container}>
             <Card style={styles.card}>
-                <View style={{ gap: 16, flex: 1, paddingVertical: 20 }}>
-                    <View style={{ gap: 12 }}>
+                <View style={{ gap: 8, flex: 1, paddingVertical: 20 }}>
+                    <View style={{ gap: 4 }}>
                         <ParagraphXSmall style={{ color: Colors[color + 'Text'], fontSize: 14, fontFamily: Fonts.sans.semiBold }}>{projectInfo.cluster.label}</ParagraphXSmall>
                         <StyledText style={{ fontFamily: Fonts.rounded.light, fontSize: 22 }}>{projectInfo.title}</StyledText>
                     </View>
-                    <ParagraphSmall style={{ fontFamily: Fonts.sans.regular }}>Dit is een korte beschrijving van slechts 1 zinnetje. Kan ook meer zijn, geen idee...</ParagraphSmall>
+                    <ParagraphSmall style={{ fontFamily: Fonts.sans.regular }} numberOfLines={3}>{abstractSplitted[0]}</ParagraphSmall>
                 </View>
                 <View style={styles.imageContainer}>
                     <Image
@@ -81,7 +86,7 @@ const styles = StyleSheet.create({
     },
 
     imageContainer: {
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: Colors.white,
         padding: 16,
         paddingRight: 20,

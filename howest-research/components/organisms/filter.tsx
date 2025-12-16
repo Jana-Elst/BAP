@@ -70,7 +70,7 @@ const Filter = ({ activeFilters, setActiveFilters, setProjects }) => {
                     {/*-------------------- Overlay content --------------------*/}
                     <Animated.View entering={getEnteringFade()} exiting={getExitingFade()} style={styles.overlayContent}>
                         <Animated.View pointerEvents="box-none" entering={getEnteringScale()} exiting={getExitingScale()} style={{ flex: 1 }}>
-                            <Card style={styles.card} borderRadius={80}>
+                            <Card style={styles.card} borderRadius={80} animatedView={false}>
                                 <View style={styles.header}>
                                     <Touchable
                                         onPress={toggleOverlay}
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     card: {
         paddingTop: 55,
         paddingBottom: 34,
-        borderWidth: 3,
+        borderWidth: 2,
     },
 
     activeFilterCount: {

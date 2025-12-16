@@ -40,7 +40,7 @@ const HowestResearch = () => {
                     {/*-------------------- Overlay content --------------------*/}
                     <Animated.View entering={getEnteringFade()} exiting={getExitingFade()} style={styles.overlayContent}>
                         <Animated.View entering={getEnteringScale()} exiting={getExitingScale()} style={{ flex: 1 }}>
-                            <Card style={{ flexDirection: 'row', gap: 40, padding: 64 }} fill={true} borderRadius={80}>
+                            <Card style={{ flexDirection: 'row', gap: 40, padding: 64 }} fill={true} borderRadius={80} animatedView={false}>
                                 <View style={{ flexDirection: 'column', gap: 18, width: '480' }}>
                                     <Card
                                         isActive={true}
@@ -53,7 +53,7 @@ const HowestResearch = () => {
                                             contentFit="contain"
                                         />
                                     </Card>
-                                    <Card style={{ paddingHorizontal: 64, paddingVertical: 40, gap: 16, alignItems: 'center', borderWidth: 1 }}>
+                                    <Card style={{ paddingHorizontal: 64, paddingVertical: 40, gap: 16, alignItems: 'center', borderWidth: 1 }} animatedView={false}>
                                         <ParagraphLarge style={{ textAlign: 'center' }}>Geïnteresseerd in één van onze onderzoeksprojecten?</ParagraphLarge>
                                         <SubTitleSmall style={{ textAlign: 'center' }}>Neem contact op</SubTitleSmall>
                                         <QRCode

@@ -90,7 +90,7 @@ const DetailPage = ({ page, setPage }) => {
                 data={[...renderItems]}
                 renderItem={({ item, index, animationValue }) => {
                     return (
-                        <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }}>
+                        <Card style={[styles.card]} fill={true} containerStyle={{ width: cardWidth }} animatedView={false}>
                             <Animated.View style={{ flex: 1, paddingBottom: 32 }} entering={index !== 0 ? getEnteringFade(800) : getEnteringFade(0)}>
                                 <View style={[styles.header, { paddingHorizontal: 64, paddingTop: 64 }]}>
                                     <Title style={{ color: Colors[project.color + 'Text'] }}>{project.title}</Title>
@@ -147,7 +147,8 @@ const DetailPage = ({ page, setPage }) => {
 
 const styles = StyleSheet.create({
     card: {
-        // padding: 64,
+        borderWidth: 2,
+        borderColor: Colors.white,
     },
 
     header: {
