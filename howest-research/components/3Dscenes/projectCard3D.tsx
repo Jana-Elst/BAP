@@ -96,7 +96,7 @@ const styles: { [key: string]: React.CSSProperties } = {
         padding: 0,
         color: 'black',
         textAlign: 'center',
-        fontFamily: 'VAGRoundedStd-Bold, sans-serif',
+        fontFamily: 'VAGRoundedStd-Light, sans-serif',
         fontSize: '22px',
         lineHeight: '120%',
         letterSpacing: '1.1px',
