@@ -61,7 +61,6 @@ const DetailKeyword = ({ page, setPage, setVisible }) => {
     return (
         <View style={{ flex: 1, paddingHorizontal: 128, marginTop: 72, height: '845' }}>
             <Card fill={true} animatedView={false}>
-                {/* <View style={{ flex: 1, paddingHorizontal: 44, gap: 32 }}> */}
                 <View style={{ flex: 1 }}>
                     <FlashList
                         data={filteredProjects}
