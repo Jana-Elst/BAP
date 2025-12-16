@@ -471,7 +471,11 @@ Located in `howest-research/tsconfig.json`:
 
 ## 🤝 Contributing
 
-This is a Bachelor Project repository. Development history shows iterative improvements over December 2025.
+This is a Bachelor Project (BAP) repository developed as part of an academic thesis at Howest. 
+
+**Note**: This project represents completed academic work. The repository is maintained for reference and portfolio purposes. While the codebase is available for viewing and learning, active contributions are not being accepted as this is a completed academic project.
+
+For questions or discussions about the implementation, feel free to open an issue.
 
 ---
 
