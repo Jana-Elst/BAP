@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { scanImageDirectories } from './utils/file-helpers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -8,32 +9,15 @@ const __dirname = path.dirname(__filename);
 const IMAGES_KEYWORD_DIR = path.join(__dirname, '../assets/images/keywordsEnThemas');
 const OUTPUT_FILE = path.join(__dirname, 'getKeywordImages.js');
 
-// Read all subdirectories in keywordsEnThemas
-const categories = fs.readdirSync(IMAGES_KEYWORD_DIR, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
+const categories = scanImageDirectories(IMAGES_KEYWORD_DIR);
 
 let imports = '';
 let imageArrays = '';
 let conditions = '';
 
-categories.forEach(category => {
-    const categoryPath = path.join(IMAGES_KEYWORD_DIR, category);
-    const images = fs.readdirSync(categoryPath)
-        .filter(file => /\.(png|jpg|jpeg|gif|webp)$/i.test(file))
-        .sort();
-
-    // Generate camelCase variable name
-    let varName = category.replace(/[-_](.)/g, (_, c) => c.toUpperCase());
-
-    // If starts with number, remove it (e.g. 5G -> G)
-    if (/^\d/.test(varName)) {
-        varName = varName.replace(/^\d+/, '');
-    }
-
+categories.forEach(({ name: category, images, varName }) => {
     // Generate imports
     images.forEach((image, index) => {
-        const imageName = path.parse(image).name;
         imports += `import ${varName}${index + 1} from "../assets/images/keywordsEnThemas/${category}/${image}";\n`;
     });
     imports += '\n';

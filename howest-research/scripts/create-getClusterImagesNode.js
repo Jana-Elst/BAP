@@ -2,25 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { scanImageDirectories } from './utils/file-helpers.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const IMAGES_CLUSTER_DIR = path.join(__dirname, '../assets/images/clusters');
 const OUTPUT_FILE = path.join(__dirname, 'getClusterImagesNode.js');
 
-// Read all subdirectories in clusters
-const clusters = fs.readdirSync(IMAGES_CLUSTER_DIR, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
+const clusters = scanImageDirectories(IMAGES_CLUSTER_DIR);
 
 let clusterMap = {};
 
-clusters.forEach(cluster => {
-    const clusterPath = path.join(IMAGES_CLUSTER_DIR, cluster);
-    const images = fs.readdirSync(clusterPath)
-        .filter(file => /\.(png|jpg|jpeg|gif|webp)$/i.test(file))
-        .sort();
-
+clusters.forEach(({ name: cluster, images }) => {
     clusterMap[cluster] = images.map(image =>
         path.join(IMAGES_CLUSTER_DIR, cluster, image)
     );

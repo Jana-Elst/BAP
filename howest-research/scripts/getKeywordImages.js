@@ -1,6 +1,6 @@
 // filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/17/2025, 12:38:32 AM
+// Generated on: 12/17/2025, 12:50:11 AM
 
 import G1 from "../assets/images/keywordsEnThemas/5G/0001.webp";
 import G2 from "../assets/images/keywordsEnThemas/5G/0002.webp";

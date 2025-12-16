@@ -2,25 +2,19 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { scanImageDirectories } from './utils/file-helpers.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const IMAGES_KEYWORD_DIR = path.join(__dirname, '../assets/images/keywordsEnThemas');
 const OUTPUT_FILE = path.join(__dirname, 'getKeywordImagesNode.js');
 
-// Read all subdirectories in keywordsEnThemas
-const categories = fs.readdirSync(IMAGES_KEYWORD_DIR, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
+const categories = scanImageDirectories(IMAGES_KEYWORD_DIR);
 
 let keywordMap = {};
 
-categories.forEach(category => {
-    const categoryPath = path.join(IMAGES_KEYWORD_DIR, category);
-    const images = fs.readdirSync(categoryPath)
-        .filter(file => /\.(png|jpg|jpeg|gif|webp)$/i.test(file))
-        .sort();
-
+categories.forEach(({ name: category, images }) => {
     keywordMap[category] = images.map(image =>
         path.join(IMAGES_KEYWORD_DIR, category, image)
     );

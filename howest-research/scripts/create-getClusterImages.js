@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { scanImageDirectories } from './utils/file-helpers.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -8,24 +9,13 @@ const __dirname = path.dirname(__filename);
 const IMAGES_CLUSTER_DIR = path.join(__dirname, '../assets/images/clusters');
 const OUTPUT_FILE = path.join(__dirname, 'getClusterImages.js');
 
-// Read all subdirectories in clusters
-const clusters = fs.readdirSync(IMAGES_CLUSTER_DIR, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
+const clusters = scanImageDirectories(IMAGES_CLUSTER_DIR);
 
 let imports = '';
 let imageArrays = '';
 let conditions = '';
 
-clusters.forEach(cluster => {
-    const clusterPath = path.join(IMAGES_CLUSTER_DIR, cluster);
-    const images = fs.readdirSync(clusterPath)
-        .filter(file => /\.(png|jpg|jpeg|gif|webp)$/i.test(file))
-        .sort();
-
-    // Generate camelCase variable name
-    const varName = cluster.replace(/[-_](.)/g, (_, c) => c.toUpperCase());
-
+clusters.forEach(({ name: cluster, images, varName }) => {
     // Generate imports
     images.forEach((image, index) => {
         imports += `import ${varName}${index + 1} from "../assets/images/clusters/${cluster}/${image}";\n`;
