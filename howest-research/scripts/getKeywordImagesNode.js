@@ -1,5 +1,5 @@
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/17/2025, 1:20:04 AM
+// Generated on: 12/17/2025, 4:43:56 PM
 
 const keywordImagePaths = {
     "5G": [
@@ -1538,6 +1538,48 @@ const keywordImagePaths = {
         "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/placeholder/0038.webp",
         "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/placeholder/0039.webp",
         "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/placeholder/0040.webp"
+    ],
+    "preventieveGezondheid": [
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0001.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0002.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0003.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0004.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0005.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0006.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0007.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0008.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0009.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0010.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0011.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0012.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0013.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0014.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0015.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0016.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0017.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0018.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0019.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0020.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0021.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0022.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0023.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0024.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0025.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0026.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0027.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0028.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0029.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0030.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0031.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0032.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0033.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0034.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0035.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0036.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0037.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0038.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0039.webp",
+        "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/preventieveGezondheid/0040.webp"
     ],
     "productDesign": [
         "/Users/janaelst/Desktop/BAP/DEV/howest-research/assets/images/keywordsEnThemas/productDesign/0001.webp",

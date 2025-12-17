@@ -28,7 +28,7 @@ const QrCode = ({ project }) => {
                     contentFit="contain"
                 />
                 <QRCode
-                    value="https://www.figma.com/proto/YKxkw8cVjng9b7Z4bi0o3F/phone-userTest?page-id=0%3A1&node-id=1-1272&viewport=223%2C63%2C0.28&t=c9BRBTLy78mc7Ey8-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1%3A1736"
+                    value="https://www.figma.com/proto/3RQlsql4eHP4QYYBqJkySk/BAP?page-id=1419%3A16778&node-id=1419-16915&viewport=282%2C50%2C0.28&t=GP100ibcvk2JcslE-1&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=1419%3A16915"
                     backgroundColor='transparent'
                     size={270}
                 />
