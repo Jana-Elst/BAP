@@ -34,9 +34,87 @@ BAP/
 └── tests/                    # Testing environments
 ```
 
+## 🌿 Development Branches
+
+The project utilized multiple feature branches for parallel development:
+
+- **main** - Production-ready code with merged features
+- **threeJS** - 3D visualization experiments and Three.js integration
+- **infiniteGrid-threeJS** - Infinite grid implementation with Three.js
+- **Projects-infiniteScroll** - Infinite scroll for project cards
+- **Demo-infiniteScroll** - Demo version of infinite scrolling
+- **styling** - UI styling and visual design iterations
+- **clusterImages** - Cluster image generation and management
+- **hologram-visualisations** - Holographic animation effects
+- **optimize-performances** - Performance improvements and optimizations
+- **mulitple-screens** - Multi-screen (iPad + external display) functionality
+- **demo-materials** - Demo content and materials for presentation
+- **branch-luna** - Collaborative work with team member Luna
+- **User-test-2** - User testing iteration 2
+
 ## 🚀 Development Timeline
 
-### Week 1 (December 2-3, 2025): Foundation & Infinite Grid
+### Pre-Week 1 (November 22-30, 2025): Initial Setup & 3D Foundation
+
+**November 22-23:**
+- Initial project setup and Git initialization
+- Started React Native app with external screen support
+- Implemented basic 3D view with Three.js
+- Removed default headers for custom UI
+
+**November 24-25:**
+- Added correct keywords to 3D environment
+- Set up 3D scene with bounding boxes and reference points
+- Debugged positioning systems
+- Implemented model scaling and rotation
+- Added placeholder textboxes for labels
+- Created connection lines between 3D elements
+
+**November 26:**
+- Fixed CSS for 3D detail canvas
+- Implemented line connections from reference points
+- Added custom fonts (VAGRoundedStd and OpenSans)
+- Restructured font definitions in app.json
+- Created StyledText component
+- Rearranged component file structure
+- Continued work on detail page layout
+
+**November 27:**
+- Created first infinite grid using GSAP converted to React Native Animated
+- Implemented panning functionality
+- Built working infinite scroll in both directions
+- Created InfiniteGrid component
+- Refactored DiscoverCard integration
+- Addressed performance issues with infinite scrolling
+- Fixed model display for each keyword
+- Merged Projects-infiniteScroll (PR #4)
+
+**November 28:**
+- Created different canvases with projects to build a unified grid
+- Fixed file naming for models
+- Created demo materials for presentations
+- Developed homescreen components
+
+**November 29:**
+- Added ProjectCard and ProjectList components
+- Installed Expo Blur for visual effects
+- Enhanced ProjectCard layout with FlashList integration
+- Implemented radial gradient component
+- Added dynamic color handling
+- Built filter functionality with modal
+- Completed filtercard implementation
+
+**November 30 - December 1:**
+- Enhanced filtering functionality across components
+- Implemented HowestResearch modal with accordions
+- Added QR code generation capability
+- Integrated visibility management across screens
+- Implemented pager view in DetailPage
+- Added react-native-reanimated-carousel
+
+---
+
+### Week 1 (December 2-3, 2025): Refinement & Infinite Grid Integration
 
 **December 2:**
 - Created initial demo card with CSS styling
@@ -466,6 +544,148 @@ Located in `howest-research/tsconfig.json`:
 - Strict type checking enabled
 - Path aliases for clean imports
 - React Native type definitions
+
+---
+
+## 🏗️ Code Architecture & Implementation
+
+### Component Hierarchy
+
+**Atoms** (`components/atoms/`):
+- `styledComponents.tsx` - Basic styled UI elements using React Native components
+- `radialGradient.tsx` - Reusable radial gradient component for visual effects
+
+**Organisms** (`components/organisms/`):
+- `projectImage.tsx` - Complex component handling project visualizations with Skia canvas
+  - Renders cluster images with ellipse bounding boxes
+  - Dynamically displays keyword images
+  - Manages tap gestures for interactive elements
+- `infiniteGrid.tsx` - Core infinite scrolling grid using Three.js
+  - Implements tile-based rendering for performance
+  - Handles pan and zoom gestures
+  - Dynamically loads/unloads project cards
+- `filter.tsx` - Filter modal with cluster and keyword selection
+- `header.tsx` - Animated header with touch-based opacity
+- `howestResearch.tsx` - Research information modal with QR codes
+- `instructionsHomeScreen.tsx` - Onboarding instructions overlay
+
+**Pages** (`components/pages/`):
+- `homeScreen.tsx` - Main entry point with page state management
+  - Manages navigation between discover, detail, filter modes
+  - Implements 60-second idle timeout for auto-reset
+  - Coordinates iPad and external display states
+- `detailPage.tsx` - Project detail view with carousel
+  - Uses react-native-reanimated-carousel for image gallery
+  - Accordion sections for project information
+  - Dynamic gradient backgrounds based on project colors
+- `detailKeyword.tsx` - Keyword-focused detail view
+  - Displays filtered projects by keyword
+  - Shows keyword visualization images
+
+**Screens** (`components/screens/`):
+- `ipad.tsx` - Main iPad interface controller
+  - Manages all page transitions
+  - Handles filter state and project selection
+  - Implements loading states with shimmer effects
+- `externalDisplay.tsx` - Secondary display for holograms
+  - Renders ProjectImage with holographic animations
+  - Synchronized with iPad state via props
+  - Displays floating keyword/cluster visualizations
+
+### Key Technical Implementations
+
+**3D Scene Management** (Three.js + React Three Fiber):
+- Scene setup with ambient and directional lighting
+- Camera controls for orbit and zoom
+- Bounding box calculations for model positioning
+- Connection lines between 3D elements using line geometry
+
+**Image Generation Pipeline** (`scripts/`):
+- `create-imageForEachProject.js` - Generates composite project images
+  - Uses Sharp and skia-canvas for server-side image processing
+  - Creates canvas compositions with multiple layers
+  - Exports as optimized PNG files
+- `createProjectImageCompositionsNode.js` - Node.js version of composition logic
+  - Calculates keyword label positions using radial clearance algorithm
+  - Prevents label overlap with cluster bounding boxes
+  - Uses trigonometric calculations for positioning
+- `create-getClusterImagesNode.js` - Generates cluster visualization images
+  - Combines multiple keyword images into cluster compositions
+  - Applies project-specific color schemes
+- `create-getKeywordImagesNode.js` - Creates individual keyword images
+- `create_webp_animations.js` - Generates animated WEBP files
+  - Creates looping animations for holographic effects
+  - Converts PNG sequences to optimized WEBP
+- `run-all-scripts.js` - Master script that executes all generation scripts in sequence
+  - Ensures proper dependency order
+  - Logs execution time for each step
+- Import generation scripts:
+  - `getClusterImages.js`, `getKeywordImages.js`, `getVisualizationProjectImages.js`
+  - Auto-generate TypeScript import statements
+  - Scan asset directories dynamically
+  - Create typed import maps for compile-time safety
+  - Include generation timestamps for cache busting
+
+**Animation Systems**:
+- **GSAP Integration** - Smooth UI transitions and scroll animations
+  - Timeline-based animation sequences
+  - Easing functions for natural motion
+- **React Native Reanimated** - Gesture-driven animations
+  - Shared values for coordinated animations
+  - Worklet-based transformations for 60fps performance
+- **WEBP Animations** - Holographic effects
+  - Looping animated WEBP files for clusters
+  - State-based animation playback
+  - Fade in/out transitions between states
+
+**State Management**:
+- **Zustand Store** - Global loading state
+  - Synchronized loading indicators across displays
+  - Prevents interaction during data fetching
+- **React State** - Component-level state
+  - Page navigation history with info metadata
+  - Filter selections (clusters, keywords)
+  - Visibility flags for conditional rendering
+
+**Performance Optimizations**:
+- `useMemo` hooks for expensive image computations
+- `FlashList` instead of FlatList for 10x better performance
+- Lazy loading of 3D models and large images
+- Debounced gesture handlers to prevent excessive re-renders
+- Canvas recycling in infinite grid to minimize memory
+
+**Gesture Handling**:
+- Pan gesture for 3D scene navigation
+- Pinch gesture for zoom in/out
+- Tap gesture with hit testing on canvas elements
+- Touch start/end for header/footer opacity animations
+
+**Advanced Algorithms**:
+
+1. **Radial Clearance Distance Calculation** (`projectImage.tsx`):
+   - Prevents keyword label overlap with cluster images
+   - Ray-casting algorithm from center point
+   - Calculates intersection points with bounding boxes
+   - Determines minimum distance to clear all obstacles
+   - Uses trigonometric functions (cos/sin) for angle-based positioning
+
+2. **Infinite Grid Tile Management**:
+   - Viewport-based tile visibility calculation
+   - Dynamic loading/unloading based on scroll position
+   - Coordinate transformation for seamless wrapping
+   - Prevents memory leaks by recycling off-screen tiles
+
+3. **Touch Hit Detection on Canvas**:
+   - Point-in-ellipse algorithm for cluster images
+   - Bounding box intersection tests for keywords
+   - Event coordinate transformation (screen → canvas space)
+   - Priority-based hit testing (keywords before clusters)
+
+4. **Loading State Synchronization**:
+   - Zustand store with derived state calculations
+   - Prevents race conditions between iPad and external display
+   - Ensures both screens complete loading before enabling interaction
+   - Shimmer effects during async image loading
 
 ---
 
