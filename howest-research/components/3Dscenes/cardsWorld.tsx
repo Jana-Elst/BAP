@@ -57,7 +57,7 @@ const updateEmptyState = (emptyStateRef: MutableRefObject<Root | null>, setPage:
     }
 };
 
-const createCards = (projects: any[], cardsRef: any, page: any, setPage: any, isDiscoverMode: any, onRender: any) => {
+const createCards = (projects: any[], cardsRef: any, pageRef: any, setPage: any, isDiscoverMode: any, onRender: any) => {
     const cardsObjsRef = [];
 
     projects.forEach((project, index) => {
@@ -72,7 +72,7 @@ const createCards = (projects: any[], cardsRef: any, page: any, setPage: any, is
 
         //1. create card
         const projectInfo = getProjectInfo(project.id);
-        updateCard(root, projectInfo, page, setPage, isDiscoverMode);
+        updateCard(root, projectInfo, pageRef.current, setPage, isDiscoverMode);
 
         //2. make object from card
         const cardObj = new CSS3DObject(div);
@@ -90,22 +90,24 @@ const createCards = (projects: any[], cardsRef: any, page: any, setPage: any, is
                 ease: "power1.inOut",
                 onUpdate: onRender,
                 onComplete: () => {
+                    const currentPage = pageRef.current;
                     setPage({
-                        ...page,
+                        ...currentPage,
                         page: 'detailResearch',
                         id: project.id,
                         previousPages: [
-                            ...(page.previousPages || []),
+                            ...(currentPage.previousPages || []),
                             {
-                                info: page.info,
-                                page: page.page,
-                                id: page.id
+                                info: currentPage.info,
+                                page: currentPage.page,
+                                id: currentPage.id
                             }
                         ],
                         isLoading: {
                             ipad: true,
                             externalDisplay: false
-                        }
+                        },
+                        isTouched: true
                     });
 
                     cardsObjsRef.forEach(cardObj => {
@@ -402,6 +404,9 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
     const emptyStateRef = useRef<Root>(null);
     const emptyStateObjectRef = useRef<CSS3DObject>(null);
 
+    const pageRef = useRef(page);
+    pageRef.current = page;
+
     const cardsRef = useRef<Map<number, Root>>(new Map());
     const cardsObjsRef = useRef<CSS3DObject[]>([]);
     const limitsRef = useRef<{ min: THREE.Vector3, max: THREE.Vector3 }>({ min: new THREE.Vector3(-Infinity, -Infinity, -Infinity), max: new THREE.Vector3(Infinity, Infinity, Infinity) });
@@ -503,7 +508,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
 
         //--- create cards
         // 1.create cards
-        cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode, chachedChangeControls);
+        cardsObjsRef.current = createCards(projects, cardsRef, pageRef, setPage, isDiscoverMode, chachedChangeControls);
 
         //2. add cards to scene
         cardsObjsRef.current.forEach(cardObj => {
@@ -650,7 +655,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
             }
 
             // Create new cards
-            cardsObjsRef.current = createCards(projects, cardsRef, page, setPage, isDiscoverMode, chachedChangeControls);
+            cardsObjsRef.current = createCards(projects, cardsRef, pageRef, setPage, isDiscoverMode, chachedChangeControls);
 
             // Add new cards to scene
             cardsObjsRef.current.forEach(cardObj => {
