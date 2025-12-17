@@ -1,7 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const { execFile } = require('child_process');
-const util = require('util');
+import { execFile } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import util from 'util';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const execFilePromise = util.promisify(execFile);
 

@@ -9,6 +9,7 @@ import {
     vec
 } from "@shopify/react-native-skia";
 import React, { useEffect, useMemo } from "react";
+import { View } from "react-native";
 import { Easing, useDerivedValue, useFrameCallback, useSharedValue, withTiming } from "react-native-reanimated";
 import { useActiveProjectData } from "../../hooks/useActiveProjectData";
 import { useComposition } from '../../scripts/createProjectImageCompositions';
@@ -362,30 +363,55 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
     }, [scalingCluster]);
 
     return (
-        <Canvas
+        <View
             style={{
                 width: screenWidth,
                 height: screenHeight,
+                transform: [{ scaleX: -1 }]
             }}
         >
-            {activeProjectData.project ? (
-                keywordImages.map((image, index) => {
-                    const pos = activeProjectData.positionData.keywordPositions[index];
+            <Canvas
+                style={{
+                    flex: 1
+                }}
+            >
+                {activeProjectData.project ? (
+                    keywordImages.map((image, index) => {
+                        const pos = activeProjectData.positionData.keywordPositions[index];
 
-                    const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
-                    const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
+                        const boundingBox = boundingBoxesKeywords ? boundingBoxesKeywords[index] : undefined;
+                        const boundingBoxInitial = boundingBoxesKeywordsInitial ? boundingBoxesKeywordsInitial[index] : undefined;
 
-                    if (!pos) return null;
+                        if (!pos) return null;
 
-                    // Use pre-calculated render positions if available, otherwise fall back to pos
-                    const renderX = boundingBox?.renderX ?? pos.x;
-                    const renderY = boundingBox?.renderY ?? pos.y;
+                        // Use pre-calculated render positions if available, otherwise fall back to pos
+                        const renderX = boundingBox?.renderX ?? pos.x;
+                        const renderY = boundingBox?.renderY ?? pos.y;
 
-                    const renderXInitial = boundingBoxInitial?.renderX ?? pos.x;
-                    const renderYInitial = boundingBoxInitial?.renderY ?? pos.y;
+                        const renderXInitial = boundingBoxInitial?.renderX ?? pos.x;
+                        const renderYInitial = boundingBoxInitial?.renderY ?? pos.y;
 
-                    if (page.page === 'detailKeyword') {
-                        if (page.info.keyword.id === activeProjectData.project.keywords[index].id) {
+                        if (page.page === 'detailKeyword') {
+                            if (page.info.keyword.id === activeProjectData.project.keywords[index].id) {
+                                return (
+                                    <FloatingKeywordImage
+                                        page={page}
+                                        key={`keyword-${index}`} // Note: 'index' here might be undefined if not scoped correctly
+                                        image={image} // Note: 'image' here might be undefined if not scoped correctly
+                                        renderX={renderX}
+                                        renderY={renderY}
+                                        renderXInitial={renderXInitial}
+                                        renderYInitial={renderYInitial}
+                                        width={widthKeyword}
+                                        height={heightKeyword}
+                                        index={index}
+                                        time={globalTimestamp}
+                                        screenWidth={screenWidth}
+                                        screenHeight={screenHeight}
+                                    />
+                                );
+                            }
+                        } else {
                             return (
                                 <FloatingKeywordImage
                                     page={page}
@@ -404,42 +430,24 @@ const Hologram = ({ screenWidth, screenHeight, page, setPage }: { screenWidth: n
                                 />
                             );
                         }
-                    } else {
-                        return (
-                            <FloatingKeywordImage
-                                page={page}
-                                key={`keyword-${index}`} // Note: 'index' here might be undefined if not scoped correctly
-                                image={image} // Note: 'image' here might be undefined if not scoped correctly
-                                renderX={renderX}
-                                renderY={renderY}
-                                renderXInitial={renderXInitial}
-                                renderYInitial={renderYInitial}
-                                width={widthKeyword}
-                                height={heightKeyword}
-                                index={index}
-                                time={globalTimestamp}
-                                screenWidth={screenWidth}
-                                screenHeight={screenHeight}
-                            />
-                        );
-                    }
-                })
-            ) : (
-                console.log('NO KEYWORDS', activeProjectData.project)
-            )}
+                    })
+                ) : (
+                    console.log('NO KEYWORDS', activeProjectData.project)
+                )}
 
-            <Image
-                image={currentImage}
-                transform={transform}
-                origin={vec(screenWidth / 2, screenHeight / 2)}
-                opacity={opacityCluster}
-                x={useDerivedValue(() => (screenWidth * 0.1) + floatX.value, [screenWidth])}
-                y={useDerivedValue(() => (screenHeight * 0.1) + floatY.value, [screenHeight])}
-                width={screenWidth * 0.80}
-                height={screenHeight * 0.80}
-                fit="contain"
-            />
-        </Canvas>
+                <Image
+                    image={currentImage}
+                    transform={transform}
+                    origin={vec(screenWidth / 2, screenHeight / 2)}
+                    opacity={opacityCluster}
+                    x={useDerivedValue(() => (screenWidth * 0.1) + floatX.value, [screenWidth])}
+                    y={useDerivedValue(() => (screenHeight * 0.1) + floatY.value, [screenHeight])}
+                    width={screenWidth * 0.80}
+                    height={screenHeight * 0.80}
+                    fit="contain"
+                />
+            </Canvas>
+        </View>
     );
 }
 

@@ -4,7 +4,7 @@ import { checkIsLoading } from '@/scripts/getHelperFunction';
 import { Canvas, Line, Image as SkiaImage, vec } from '@shopify/react-native-skia';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { TapGestureHandler } from 'react-native-gesture-handler';
+import { State, TapGestureHandler } from 'react-native-gesture-handler';
 import Animated, { Easing, useAnimatedReaction, useDerivedValue, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated';
 import { useComposition } from '../../scripts/createProjectImageCompositions';
 import { StyledText } from '../atoms/styledComponents';
@@ -480,46 +480,55 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
         }
     }, [positionData.isLoading, page.isLoading]);
 
-    const onTap = useCallback((event: any) => {
-        const { x, y } = event.nativeEvent;
-        let foundIndex = -1;
-        for (let index = 0; index < boundingBoxesKeywords.length; index++) {
-            const boxkeyword = boundingBoxesKeywords[index];
-            if (!boxkeyword) continue;
+    const onRelease = useCallback(() => {
+        console.log('Released');
+    }, []);
 
-            // Check if touch is within keyword bounding box
-            if (
-                x >= boxkeyword.x &&
-                x <= boxkeyword.x + boxkeyword.width &&
-                y >= boxkeyword.y &&
-                y <= boxkeyword.y + boxkeyword.height
-            ) {
-                foundIndex = index;
-                //the keywordimage should scale down and scale up again. Afterwards the detail keyword should open
-                console.log('Found index:', foundIndex);
+    const onHandlerStateChange = useCallback((event: any) => {
+        const { state } = event.nativeEvent;
+        if (state === State.ACTIVE) {
+            const { x, y } = event.nativeEvent;
+            let foundIndex = -1;
+            for (let index = 0; index < boundingBoxesKeywords.length; index++) {
+                const boxkeyword = boundingBoxesKeywords[index];
+                if (!boxkeyword) continue;
 
-                // Trigger animation
-                tappedSignal.value = { index: foundIndex, timestamp: Date.now() };
-                console.log('keywordData[index]:', keywordData[index], 'keywordImageSources:', keywordImageSources[index]);
-                handleOpendetailKeyword(keywordData[index], index, page, setPage, keywordImageSources, boundingBoxesKeywords);
-                return;
+                // Check if touch is within keyword bounding box
+                if (
+                    x >= boxkeyword.x &&
+                    x <= boxkeyword.x + boxkeyword.width &&
+                    y >= boxkeyword.y &&
+                    y <= boxkeyword.y + boxkeyword.height
+                ) {
+                    foundIndex = index;
+                    //the keywordimage should scale down and scale up again. Afterwards the detail keyword should open
+                    console.log('Found index:', foundIndex);
+
+                    // Trigger animation
+                    tappedSignal.value = { index: foundIndex, timestamp: Date.now() };
+                    console.log('keywordData[index]:', keywordData[index], 'keywordImageSources:', keywordImageSources[index]);
+                    handleOpendetailKeyword(keywordData[index], index, page, setPage, keywordImageSources, boundingBoxesKeywords);
+                    return;
+                }
             }
+
+            if (clusterPosition) {
+                if (
+                    x >= clusterPosition.x &&
+                    x <= clusterPosition.x + clusterPosition.width &&
+                    y >= clusterPosition.y &&
+                    y <= clusterPosition.y + clusterPosition.height
+                ) {
+                    console.log('Found cluster');
+                    tappedSignal.value = { index: -1, timestamp: Date.now() };
+                    handleOpendetailCluster(project.cluster, page, setPage, clusterImage, boundingBoxesCluster);
+                }
+            }
+        } else if (state === State.END || state === State.FAILED || state === State.CANCELLED) {
+            onRelease();
         }
 
-        if (clusterPosition) {
-            if (
-                x >= clusterPosition.x &&
-                x <= clusterPosition.x + clusterPosition.width &&
-                y >= clusterPosition.y &&
-                y <= clusterPosition.y + clusterPosition.height
-            ) {
-                console.log('Found cluster');
-                tappedSignal.value = { index: -1, timestamp: Date.now() };
-                handleOpendetailCluster(project.cluster, page, setPage, clusterImage, boundingBoxesCluster);
-            }
-        }
-
-    }, [boundingBoxesKeywords, keywordData, boundingBoxesCluster, page, setPage]);
+    }, [boundingBoxesKeywords, keywordData, boundingBoxesCluster, page, setPage, onRelease]);
 
     // Return loading state while images load
     //normally you shouldn't see this
@@ -534,7 +543,7 @@ const ProjectImage = ({ screenWidth, screenHeight, width, height, project, setPa
     if (showKeywords) {
         return (
             <View style={styles.container}>
-                <TapGestureHandler onHandlerStateChange={onTap}>
+                <TapGestureHandler onHandlerStateChange={onHandlerStateChange}>
                     <View
                         ref={canvasRef}
                         style={{ width: screenWidth, height: screenHeight }}>

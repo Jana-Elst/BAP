@@ -1,6 +1,6 @@
 // filepath: /Users/janaelst/Desktop/BAP/DEV/howest-research/scripts/getKeywordImages.js
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/10/2025, 5:44:46 PM
+// Generated on: 12/17/2025, 4:44:04 PM
 
 import G1 from "../assets/images/keywordsEnThemas/5G/0001.webp";
 import G2 from "../assets/images/keywordsEnThemas/5G/0002.webp";
@@ -1501,6 +1501,47 @@ import placeholder37 from "../assets/images/keywordsEnThemas/placeholder/0037.we
 import placeholder38 from "../assets/images/keywordsEnThemas/placeholder/0038.webp";
 import placeholder39 from "../assets/images/keywordsEnThemas/placeholder/0039.webp";
 import placeholder40 from "../assets/images/keywordsEnThemas/placeholder/0040.webp";
+
+import preventieveGezondheid1 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0001.webp";
+import preventieveGezondheid2 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0002.webp";
+import preventieveGezondheid3 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0003.webp";
+import preventieveGezondheid4 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0004.webp";
+import preventieveGezondheid5 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0005.webp";
+import preventieveGezondheid6 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0006.webp";
+import preventieveGezondheid7 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0007.webp";
+import preventieveGezondheid8 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0008.webp";
+import preventieveGezondheid9 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0009.webp";
+import preventieveGezondheid10 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0010.webp";
+import preventieveGezondheid11 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0011.webp";
+import preventieveGezondheid12 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0012.webp";
+import preventieveGezondheid13 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0013.webp";
+import preventieveGezondheid14 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0014.webp";
+import preventieveGezondheid15 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0015.webp";
+import preventieveGezondheid16 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0016.webp";
+import preventieveGezondheid17 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0017.webp";
+import preventieveGezondheid18 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0018.webp";
+import preventieveGezondheid19 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0019.webp";
+import preventieveGezondheid20 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0020.webp";
+import preventieveGezondheid21 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0021.webp";
+import preventieveGezondheid22 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0022.webp";
+import preventieveGezondheid23 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0023.webp";
+import preventieveGezondheid24 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0024.webp";
+import preventieveGezondheid25 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0025.webp";
+import preventieveGezondheid26 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0026.webp";
+import preventieveGezondheid27 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0027.webp";
+import preventieveGezondheid28 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0028.webp";
+import preventieveGezondheid29 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0029.webp";
+import preventieveGezondheid30 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0030.webp";
+import preventieveGezondheid31 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0031.webp";
+import preventieveGezondheid32 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0032.webp";
+import preventieveGezondheid33 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0033.webp";
+import preventieveGezondheid34 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0034.webp";
+import preventieveGezondheid35 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0035.webp";
+import preventieveGezondheid36 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0036.webp";
+import preventieveGezondheid37 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0037.webp";
+import preventieveGezondheid38 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0038.webp";
+import preventieveGezondheid39 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0039.webp";
+import preventieveGezondheid40 from "../assets/images/keywordsEnThemas/preventieveGezondheid/0040.webp";
 
 import productDesign1 from "../assets/images/keywordsEnThemas/productDesign/0001.webp";
 import productDesign2 from "../assets/images/keywordsEnThemas/productDesign/0002.webp";
@@ -3693,6 +3734,49 @@ const useGetKeywordImages = (keywordData) => {
         placeholder40,
     ];
 
+    const preventieveGezondheidImages = [
+        preventieveGezondheid1,
+        preventieveGezondheid2,
+        preventieveGezondheid3,
+        preventieveGezondheid4,
+        preventieveGezondheid5,
+        preventieveGezondheid6,
+        preventieveGezondheid7,
+        preventieveGezondheid8,
+        preventieveGezondheid9,
+        preventieveGezondheid10,
+        preventieveGezondheid11,
+        preventieveGezondheid12,
+        preventieveGezondheid13,
+        preventieveGezondheid14,
+        preventieveGezondheid15,
+        preventieveGezondheid16,
+        preventieveGezondheid17,
+        preventieveGezondheid18,
+        preventieveGezondheid19,
+        preventieveGezondheid20,
+        preventieveGezondheid21,
+        preventieveGezondheid22,
+        preventieveGezondheid23,
+        preventieveGezondheid24,
+        preventieveGezondheid25,
+        preventieveGezondheid26,
+        preventieveGezondheid27,
+        preventieveGezondheid28,
+        preventieveGezondheid29,
+        preventieveGezondheid30,
+        preventieveGezondheid31,
+        preventieveGezondheid32,
+        preventieveGezondheid33,
+        preventieveGezondheid34,
+        preventieveGezondheid35,
+        preventieveGezondheid36,
+        preventieveGezondheid37,
+        preventieveGezondheid38,
+        preventieveGezondheid39,
+        preventieveGezondheid40,
+    ];
+
     const productDesignImages = [
         productDesign1,
         productDesign2,
@@ -4384,6 +4468,7 @@ const useGetKeywordImages = (keywordData) => {
         if (keywordName === "onderwijsEnVorming") return onderwijsEnVormingImages;
         if (keywordName === "palliatieveZorg") return palliatieveZorgImages;
         if (keywordName === "placeholder") return placeholderImages;
+        if (keywordName === "preventieveGezondheid") return preventieveGezondheidImages;
         if (keywordName === "productDesign") return productDesignImages;
         if (keywordName === "qualityOfLife") return qualityOfLifeImages;
         if (keywordName === "simulatieOnderwijs") return simulatieOnderwijsImages;
