@@ -699,7 +699,7 @@ const CardsWorld = ({ projects, page, setPage, isDiscoverMode }) => {
     useEffect(() => {
         console.log('page.isTouched', page.isTouched);
         //Update camera & controls
-        if (cameraRef.current && controlsRef.current) {
+        if (!page.isTouched && cameraRef.current && controlsRef.current) {
             cameraRef.current.position.set(0, 0, 0);
             cameraRef.current.position.z = calculateCameraZForScreen(cameraRef.current, window.innerHeight);
 

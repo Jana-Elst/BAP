@@ -46,6 +46,12 @@ const Ipad = ({ page, setPage }) => {
         })
     }
 
+    // useEffect(() => {
+    //     if (!page.isTouched) {
+    //         handleClosePopUp(setPage, page);
+    //     }
+    // }, [page.isTouched]);
+
     return (
         <View style={styles.container}>
             <HomeScreen
