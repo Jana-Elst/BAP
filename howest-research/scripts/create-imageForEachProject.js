@@ -4,7 +4,7 @@ import path from 'path';
 import { Canvas } from 'skia-canvas';
 import { fileURLToPath } from 'url';
 import { useComposition } from './createProjectImageCompositionsNode.js';
-import { getProjectInfo } from './getData.js';
+import { getProjectInfo } from './getDataNode.js';
 
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

@@ -1,5 +1,5 @@
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/17/2025, 12:50:11 AM
+// Generated on: 12/17/2025, 1:20:14 AM
 
 import img_0 from '../assets/images/visualizationsProjects/5GPilotHealthCare.png';
 import img_1 from '../assets/images/visualizationsProjects/5GPilotZeevaart.png';

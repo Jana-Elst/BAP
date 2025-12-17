@@ -1,5 +1,5 @@
 // Auto-generated file. Do not edit manually.
-// Generated on: 12/17/2025, 12:50:02 AM
+// Generated on: 12/17/2025, 1:20:04 AM
 
 const clusterImagePaths = {
     "activeHealthCah": [
