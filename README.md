@@ -47,7 +47,7 @@ The project utilized multiple feature branches for parallel development:
 - **clusterImages** - Cluster image generation and management
 - **hologram-visualisations** - Holographic animation effects
 - **optimize-performances** - Performance improvements and optimizations
-- **mulitple-screens** - Multi-screen (iPad + external display) functionality
+- **multiple-screens** - Multi-screen (iPad + external display) functionality
 - **demo-materials** - Demo content and materials for presentation
 - **branch-luna** - Collaborative work with team member Luna
 - **User-test-2** - User testing iteration 2
@@ -602,13 +602,13 @@ Located in `howest-research/tsconfig.json`:
 
 **Image Generation Pipeline** (`scripts/`):
 - `create-imageForEachProject.js` - Generates composite project images
-  - Uses Sharp and skia-canvas for server-side image processing
-  - Creates canvas compositions with multiple layers
+  - Uses skia-canvas for server-side Canvas API implementation
+  - Creates compositions with multiple image layers
   - Exports as optimized PNG files
-- `createProjectImageCompositionsNode.js` - Node.js version of composition logic
-  - Calculates keyword label positions using radial clearance algorithm
-  - Prevents label overlap with cluster bounding boxes
-  - Uses trigonometric calculations for positioning
+- `createProjectImageCompositionsNode.js` - Node.js composition logic
+  - Calculates keyword label positions using degree-based placement
+  - Configures rotation and offset values for each keyword
+  - Uses predefined position configurations for different keyword counts
 - `create-getClusterImagesNode.js` - Generates cluster visualization images
   - Combines multiple keyword images into cluster compositions
   - Applies project-specific color schemes
@@ -662,12 +662,13 @@ Located in `howest-research/tsconfig.json`:
 
 **Advanced Algorithms**:
 
-1. **Radial Clearance Distance Calculation** (`projectImage.tsx`):
-   - Prevents keyword label overlap with cluster images
-   - Ray-casting algorithm from center point
-   - Calculates intersection points with bounding boxes
-   - Determines minimum distance to clear all obstacles
-   - Uses trigonometric functions (cos/sin) for angle-based positioning
+1. **Radial Clearance Distance Calculation** (`projectImage.tsx` - `getRadialClearanceDistance` function):
+   - Prevents keyword label overlap with cluster and keyword images
+   - Ray-casting algorithm from center point at specified angle
+   - Calculates intersection points with axis-aligned bounding boxes
+   - Determines maximum intersection distance to fully clear obstacles
+   - Uses trigonometric functions (cos/sin) for angle-based ray projection
+   - Returns the farthest intersection point for label positioning
 
 2. **Infinite Grid Tile Management**:
    - Viewport-based tile visibility calculation
