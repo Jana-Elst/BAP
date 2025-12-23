@@ -1,169 +1,104 @@
-# BAP - Bachelor Project: Interactive Research Portfolio
+# README.md
+This repository contains the source code for the Portable Infopoint, a dedicated application designed to showcase research clusters, themes, and keywords at Howest University of Applied Sciences.
 
-An interactive React Native application showcasing Howest research projects through an innovative dual-screen experience with 3D visualizations, holographic effects, and gesture-based interactions.
+## Key Features
+* **Dual-Screen Sync:** Main iPad touchscreen interface with real-time synchronization to an external display for holographic projections.
 
-## 📋 Project Overview
+* **Elliptical Composition:** A mathematical design system that dynamically positions keywords around research clusters.
 
-This Bachelor Project (BAP) is an interactive portfolio application designed for Howest research projects. The application features:
+* **Holographic Visuals:** Animated WEBP-based visualizations specifically optimized for the secondary display.
 
-- **Dual-Screen Display**: iPad main interface with external display support for holographic visualizations
-- **3D Grid**: Navigate through research projects in an immersive 3D space using Three.js
-- **Interactive Visualizations**: Dynamic cluster and keyword-based project categorization
-- **Gesture-Based Navigation**: Touch and pinch gestures for intuitive exploration
-- **Holographic images**: Animated WEBP-based hologram visualizations for project presentations
-
-## 🌿 Development Branches
-
-The project utilized multiple feature branches for parallel development:
-
-- **main** - Production-ready code with merged features
-- **threeJS** - 3D visualization experiments and Three.js integration
-- **infiniteGrid-threeJS** - Infinite grid implementation with Three.js
-- **Projects-infiniteScroll** - Infinite scroll for project cards
-- **Demo-infiniteScroll** - Demo version of infinite scrolling
-- **styling** - UI styling and visual design iterations
-- **clusterImages** - Cluster image generation and management
-- **hologram-visualisations** - Holographic animation effects
-- **multiple-screens** - Multi-screen (iPad + external display) functionality
-- **User-test-2** - SOTA for User testing iteration 2
----
-
-## 📦 Installation
-
+## Quick Start
 ### Prerequisites
-- Node.js (v18 or higher)
-- npm or yarn
-- Expo CLI
-- iOS Simulator (for macOS) or Android Studio (for Android development)
+Ensure your development environment meets the following requirements:
 
-### Setup
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Jana-Elst/BAP.git
-   cd BAP
-   ```
+* Node.js: Version 18 or higher.
 
-2. **Navigate to the main application:**
-   ```bash
-   cd howest-research
-   ```
+* Package Manager: npm or yarn.
 
-3. **Install dependencies:**
-   ```bash
-   npm install --legacy-peer-deps
-   ```
+* Expo CLI: Installed globally or accessible via npx.
 
-4. **Run image generation scripts (if needed):**
-   ```bash
-   node scripts/run-all-script
-   ```
+* Emulators: iOS Simulator (macOS) (I don't know if the application will fully work on android)
 
-5. **Open Xcode:**
-   ```bash
-   xed ios
-   ```
+### Setup Instructions
+Follow these steps to get the application running locally:
 
-6. **Start the development server:**
-   ```bash
-   npx expo start
-   ```
+1. **Clone the repository**
+````
+git clone https://github.com/Jana-Elst/BAP.git
+cd BAP
+`````
 
----
-
-## 🎮 Features
-
-### Multi-Screen Experience
-- **iPad Interface**: Main touchscreen interface for navigation and interaction
-- **External Display**: Secondary display for holographic project visualizations
-- **Synchronized States**: Real-time synchronization between both displays
-
-### Navigation Modes
-- **Discover Mode**: Infinite 3D grid exploration with gesture controls
-- **Gallery Mode**: Structured view of all projects
-- **Detail View**: Comprehensive project information with images and descriptions
-- **Cluster View**: Projects organized by research clusters
-- **Keyword View**: Projects categorized by keywords
-
-### Interactive Elements
-- **Touch Gestures**: Pan, pinch-to-zoom, and tap interactions
-- **Floating Animations**: Dynamic 3D object movements
-- **Holographic Effects**: WEBP-based animated visualizations
-- **Smooth Transitions**: GSAP-powered page transitions
-- **Loading States**: Shimmer effects for better UX
-
-### Visual Features
-- **Custom Fonts**: VAGRoundedStd and OpenSans
-- **Dynamic Colors**: Project-specific color schemes
-- **Gradient Effects**: Linear and radial gradients
-- **SVG Icons**: Scalable vector graphics
-- **Texture Overlays**: Enhanced visual depth, we tried, but did'nt succeed
-
----
-
-## 🎨 Image Generation System
-
-The project includes automated Node.js scripts for generating project visualizations:
-
-Located in `howest-research/scripts/`:
-- `create-images.js` - Generates project images with compositions
-- `create-cluster-images.js` - Creates cluster visualization images
-- `create-keyword-images.js` - Generates keyword-specific images
-- `generate-image-imports.js` - Creates TypeScript imports for all images
-- `ccreate_webp_aniamtions.js` - Creates WEBP animations for the hologram
-- `generate-all.js` - Runs all generation scripts in sequence
-
-Run all scripts at once:
-```bash
+2. **Navigate to the application folder**
+````
 cd howest-research
-node scripts/generate-all
-```
+````
 
----
+3. **Install dependencies**
+We use --legacy-peer-deps to ensure compatibility with specific package versions.
 
-## 🤝 Contributing
+````
+npm install --legacy-peer-deps
+````
+4. **Process assets**
+Run the internal script to generate the necessary image assets.
 
-This is a Bachelor Project (BAP) repository developed as part of an academic thesis at Howest. 
+````
+node scripts/run-all-script
+````
+5. **Launch the Application**
 
-**Note**: This project represents completed academic work. The repository is maintained for reference and portfolio purposes. While the codebase is available for viewing and learning, active contributions are not being accepted as this is a completed academic project.
+````
+xed ios
+````
+6. **Start the Expo development server:**
 
-For questions or discussions about the implementation, feel free to open an issue.
+````
+npx expo start
+````
+## Cluster Design System
+To ensure high-fidelity visual quality and smooth performance on mobile hardware, the system uses a pre-rendered 2D library rather than real-time 3D mesh rendering.
+So, the application utilizes a custom 2D rendering engine to create dynamic compositions. Because the system supports various colors, angles, and animations, the library consists of approximately 3,200 pre-rendered images.
 
----
+### Composition Logic
+The positioning of elements is based on elliptical geometries to ensure a balanced visual hierarchy between the central cluster and its surrounding keywords.
 
-## 👨‍💻 Developer
+* **The Foundational Ellipse:** The system generates an ellipse that exactly circumscribes the bounding box of the central cluster image.
 
-**Jana Elst**
-- GitHub: [@Jana-Elst](https://github.com/Jana-Elst)
+* **Offset Trajectory:** A specific margin (offset) is applied to this foundational ellipse. This outer boundary serves as the mathematical trajectory for all related keywords.
 
----
+* **Keyword Positioning:** Keywords are distributed clockwise around the cluster. Each keyword is assigned a specific radial angle from the center.
 
-## 📄 License
+* **Intersection Mapping:** The final coordinate for a keyword is the intersection point between its assigned radial line and the offset ellipse.
 
-This project was developed as part of a Bachelor thesis at Howest.
+## Asset Management
+As Howest Research expands, you can update the application with new 3D icons for clusters, themes, or keywords.
 
----
+### How to add new icons:
+1. **Design:** Create new icons according to the Blender Guideline document.
 
-## 🙏 Acknowledgments
+2. **Export:** Export the generated files from Blender. Follow the guidelines from the Blender Guideline document.
 
-- **Infinite Layers Grid** by [Jorge Toloza](http://jorgetoloza.co) - Base implementation for the infinite grid system
-- **Codrops** - Tutorial and inspiration for the infinite parallax grid
-- **Howest** - Research data and project information
-- **Gemini 3 PRO** - My virtual assistant, teacher, sparring partner, ...
+3. **File Placement:**
+* **Clusters:** Place the folder generated by Blender into assets/images/cluster.
 
----
+* **Keywords & Themes:** Place the image files into assets/images/keywordsEnThemas.
 
-## 📚 Additional Resources
+4. **Update Registry:** You must run the generation script to register the new images in the app:
 
-### Related Projects
-- The different branches of this repository represent different stages of the development process. If you want to see some demo's checkout some other branches.
-They are not that clean, and named well, but they do show my progress.
+````
+node scripts/run-all-scripts
+````
+5. **Rebuild:** Restart the development server to reflect the changes.
 
-### Documentation
-For specific component documentation, see inline code comments and TypeScript type definitions.
+## Hardware Overview
+The Portable Infopoint is designed as a dual-screen system. It uses a primary touch interface for navigation and a secondary display for immersive "holographic" visualizations.
 
-### README
-This readme file is created with the help of Copilot.
+All specific hardware components, cables, adapters, and structural materials required to build the infopoint are documented in the List of Materials (/docs)
 
----
+## Developer & Acknowledgments
+* Developer: Jana Elst (Developed as part of a Bachelor thesis at Howest).
+* Used Data: Howest research
 
-*Last Updated: December 17, 2025*
+## License
+This repository is maintained for reference and portfolio purposes. As this is a completed academic project, active contributions are not currently being accepted.
